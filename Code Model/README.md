@@ -10,7 +10,7 @@ Install virtual environment
 3. install virtualwrapper: pip install virtualenvwrapper
 
 4. then add the workspace: export WORKON_HOME=~/Envs (just paste it in terminal xD)
-	4.1 after export: source /usr/local/bin/virtualenvwrapper.sh (just paste)
+	4.1 after: source /usr/local/bin/virtualenvwrapper.sh (just paste)
 
 5. then run mkvirtualenv venv
 	<-- this will make a virtual environment named "venv" in Envs folder.
@@ -34,3 +34,25 @@ starting the project
 7. then, git remote add origin https://github.com/erikkaBaguio/Anon-Healthcare-System-.git
 8. after adding the remote: git pull origin master
 9. change directory to: Code Model
+10. run chmod +x db.py
+11. run python db.py db init
+12. run python db.py db migrate
+13. run python db.py db upgrade
+
+NOTE: Make sure you have user/role: anoncare with password: anoncare and database table acdb in postgres. If you don't have then make one xD. Then set user(anoncare) privileges to CREATEDB CREATEROLE, this will let your user create database tables and also users/roles.
+
+You can try running the application: python run.py
+
+steps summary:
+open fresh terminal
+export WORKON_HOME=~/Envs
+source /usr/local/bin/virtualenvwrapper.sh
+workon anoncareenv
+cd to Documents/flaskprojects/anocare/Code Models
+python run.py
+
+why use virtualenv wrapper?
+well, just to set virtual environment in a clean way! hahaha
+but if you want, you can suggest another style for a better working env. thanks.
+
+-bals
