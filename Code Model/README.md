@@ -21,3 +21,16 @@ Install virtual environment
 	<-- to delete the environment: run rmvirtualenv venv
 
 7. run deactivate
+
+
+starting the project
+
+1. open fresh terminal
+2. make virtual environment named anoncareenv: steps 4 and  5 in "install virtual environment"
+3. work on newly created environment: workon anocareenv (anyway anoncareenv will automatically activated after performing step 2 above.)
+4. anoncareenv is activated right? ( somethng like this -> (anoncareenv) setsuna@ELUCIDATOR:~$ )
+5. change directory: Documents/flaskprojects/anoncare
+6. inside anocare: git init
+7. then, git remote add origin https://github.com/erikkaBaguio/Anon-Healthcare-System-.git
+8. after adding the remote: git pull origin master
+9. change directory to: Code Model
