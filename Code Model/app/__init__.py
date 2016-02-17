@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
-
+from flask.ext.login import LoginManager
 # from flask_restful import Resource, Api
 from flask.ext.sqlalchemy import SQLAlchemy
 
@@ -15,5 +15,9 @@ app.CSRF_ENABLED = True
 
 #Create an instance of SQLAclhemy
 db = SQLAlchemy(app)
+
+#Instance of LoginManager
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 from app import views, models
