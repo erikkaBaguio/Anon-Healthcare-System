@@ -2,6 +2,8 @@ from flask import render_template, request,flash, redirect, url_for
 from app import app, db
 from app.models import Post
 
+USERS = {}
+
 @app.route('/add' , methods=['POST', 'GET'])
 def add():
     if request.method == 'POST':
