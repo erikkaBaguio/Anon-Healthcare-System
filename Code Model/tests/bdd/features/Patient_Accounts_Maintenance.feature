@@ -5,6 +5,6 @@ Feature: Patient Accounts Maintenance
 
   Scenario: Adding patient account in the system
     Given the patient is not yet registered in the system.
-	And admin fills up the account form
-	When admin clicks the save button.
+	And the admin fills up the account form
+	When the admin clicks the save button.
 	Then the system will display a success message that states that a new accout of a patient is saved.
