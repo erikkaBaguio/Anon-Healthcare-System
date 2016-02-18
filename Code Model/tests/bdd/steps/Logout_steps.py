@@ -11,4 +11,4 @@ def when_admin_doctor_nurse_clicks_the_logout_button(step):
 
 @step(u'Then admin/doctor/nurse will be redirected to homepage')
 def then_admin_doctor_nurse_will_be_redirected_to_homepage(step):
-    assert False, 'This step must be implemented
+    assert False, 'This step must be implemented'
