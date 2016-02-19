@@ -1,4 +1,5 @@
 CREATE TABLE Schedule(
   id INT PRIMARY KEY,
-  date_time_year DATE
+  date_time_year DATE,
+  done BOOLEAN
 );
