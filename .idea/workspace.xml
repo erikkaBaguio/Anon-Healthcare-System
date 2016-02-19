@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a1c1c313-8e09-41d6-a6aa-2c3de3070024" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/app/models.py" afterPath="$PROJECT_DIR$/Code Model/app/models.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/question.sql" afterPath="$PROJECT_DIR$/Code Model/question.sql" />
     </list>
     <ignored path="AnonCare_HS.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -91,11 +91,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="question.sql" pinned="false" current-in-tab="true">
+      <file leaf-file-name="question.sql" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Code Model/question.sql">
           <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-4.3448277">
+              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="question_answer.sql" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Code Model/question_answer.sql">
+          <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.048">
-              <caret line="1" column="18" selection-start-line="1" selection-start-column="18" selection-end-line="1" selection-end-column="18" />
+              <caret line="1" column="11" selection-start-line="1" selection-start-column="11" selection-end-line="1" selection-end-column="11" />
               <folding />
             </state>
           </provider>
@@ -119,6 +129,7 @@
         <option value="$PROJECT_DIR$/Code Model/tests/bdd/steps/Disease_Records_Maintenance_steps.py" />
         <option value="$PROJECT_DIR$/Code Model/app/models.py" />
         <option value="$PROJECT_DIR$/Code Model/question.sql" />
+        <option value="$PROJECT_DIR$/Code Model/question_answer.sql" />
       </list>
     </option>
   </component>
@@ -477,16 +488,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Code Model/db.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#36#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Code Model/app/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -923,8 +924,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Code Model/question.sql">
       <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.3448277">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code Model/question_answer.sql">
+      <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.048">
-          <caret line="1" column="18" selection-start-line="1" selection-start-column="18" selection-end-line="1" selection-end-column="18" />
+          <caret line="1" column="11" selection-start-line="1" selection-start-column="11" selection-end-line="1" selection-end-column="11" />
           <folding />
         </state>
       </provider>
