@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="a1c1c313-8e09-41d6-a6aa-2c3de3070024" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/question.sql" afterPath="$PROJECT_DIR$/Code Model/question.sql" />
     </list>
     <ignored path="AnonCare_HS.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -63,9 +62,12 @@
         <entry file="file://$PROJECT_DIR$/Code Model/app/views.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+              <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
               <folding>
                 <element signature="e#0#94#0" expanded="true" />
+                <marker date="1455883363159" expanded="true" signature="319:565" placeholder="..." />
+                <marker date="1455883363159" expanded="true" signature="654:689" placeholder="..." />
+                <marker date="1455883363159" expanded="true" signature="750:1262" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -75,7 +77,7 @@
         <entry file="file://$PROJECT_DIR$/Code Model/app/models.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="-0.58064514">
-              <caret line="8" column="24" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
+              <caret line="7" column="24" selection-start-line="7" selection-start-column="24" selection-end-line="7" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -94,18 +96,32 @@
       <file leaf-file-name="question.sql" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Code Model/question.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.3448277">
-              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-              <folding />
+            <state vertical-scroll-proportion="-0.40449437">
+              <caret line="2" column="21" selection-start-line="2" selection-start-column="21" selection-end-line="2" selection-end-column="21" />
+              <folding>
+                <marker date="1455881976839" expanded="true" signature="0:190" placeholder="create table... Question" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="question_answer.sql" pinned="false" current-in-tab="true">
+      <file leaf-file-name="question_answer.sql" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Code Model/question_answer.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.048">
-              <caret line="1" column="11" selection-start-line="1" selection-start-column="11" selection-end-line="1" selection-end-column="11" />
+            <state vertical-scroll-proportion="-0.80898875">
+              <caret line="4" column="69" selection-start-line="4" selection-start-column="69" selection-end-line="4" selection-end-column="69" />
+              <folding>
+                <marker date="1455881749703" expanded="true" signature="0:238" placeholder="create table... Question_answer" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Question_category.sql" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Code Model/Question_category.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.15606937">
+              <caret line="3" column="2" selection-start-line="3" selection-start-column="2" selection-end-line="3" selection-end-column="2" />
               <folding />
             </state>
           </provider>
@@ -128,8 +144,9 @@
         <option value="$PROJECT_DIR$/Code Model/tests/bdd/features/Disease_Records_Maintenance.feature" />
         <option value="$PROJECT_DIR$/Code Model/tests/bdd/steps/Disease_Records_Maintenance_steps.py" />
         <option value="$PROJECT_DIR$/Code Model/app/models.py" />
-        <option value="$PROJECT_DIR$/Code Model/question.sql" />
         <option value="$PROJECT_DIR$/Code Model/question_answer.sql" />
+        <option value="$PROJECT_DIR$/Code Model/Question_category.sql" />
+        <option value="$PROJECT_DIR$/Code Model/question.sql" />
       </list>
     </option>
   </component>
@@ -198,6 +215,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="Code Model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AnonCare_HS" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="flaskprojects" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Code Model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="db_scripts" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -450,9 +485,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="45" y="24" width="1321" height="744" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2682353" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2682353" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32941177" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -488,22 +523,15 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Code Model/app/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="20" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
-          <folding>
-            <element signature="e#0#75#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Code Model/app/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
           <folding>
             <element signature="e#0#94#0" expanded="true" />
+            <marker date="1455883363159" expanded="true" signature="319:565" placeholder="..." />
+            <marker date="1455883363159" expanded="true" signature="654:689" placeholder="..." />
+            <marker date="1455883363159" expanded="true" signature="750:1262" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -604,6 +632,9 @@
           <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
           <folding>
             <element signature="e#0#94#0" expanded="true" />
+            <marker date="1455883363159" expanded="true" signature="319:565" placeholder="..." />
+            <marker date="1455883363159" expanded="true" signature="654:689" placeholder="..." />
+            <marker date="1455883363159" expanded="true" signature="750:1262" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -859,9 +890,12 @@
     <entry file="file://$PROJECT_DIR$/Code Model/app/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
           <folding>
             <element signature="e#0#94#0" expanded="true" />
+            <marker date="1455883363159" expanded="true" signature="319:565" placeholder="..." />
+            <marker date="1455883363159" expanded="true" signature="654:689" placeholder="..." />
+            <marker date="1455883363159" expanded="true" signature="750:1262" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -909,7 +943,7 @@
     <entry file="file://$PROJECT_DIR$/Code Model/app/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.58064514">
-          <caret line="8" column="24" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
+          <caret line="7" column="24" selection-start-line="7" selection-start-column="24" selection-end-line="7" selection-end-column="24" />
           <folding />
         </state>
       </provider>
@@ -922,18 +956,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Code Model/question.sql">
+    <entry file="file://$PROJECT_DIR$/Code Model/question_answer.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.3448277">
-          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding />
+        <state vertical-scroll-proportion="-0.80898875">
+          <caret line="4" column="69" selection-start-line="4" selection-start-column="69" selection-end-line="4" selection-end-column="69" />
+          <folding>
+            <marker date="1455881749703" expanded="true" signature="0:238" placeholder="create table... Question_answer" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Code Model/question_answer.sql">
+    <entry file="file://$PROJECT_DIR$/Code Model/question.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.048">
-          <caret line="1" column="11" selection-start-line="1" selection-start-column="11" selection-end-line="1" selection-end-column="11" />
+        <state vertical-scroll-proportion="-0.40449437">
+          <caret line="2" column="21" selection-start-line="2" selection-start-column="21" selection-end-line="2" selection-end-column="21" />
+          <folding>
+            <marker date="1455881976839" expanded="true" signature="0:190" placeholder="create table... Question" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code Model/Question_category.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.15606937">
+          <caret line="3" column="2" selection-start-line="3" selection-start-column="2" selection-end-line="3" selection-end-column="2" />
           <folding />
         </state>
       </provider>
