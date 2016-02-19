@@ -3,14 +3,11 @@ from flask.ext.login import login_user, logout_user, current_user, login_require
 from app import app, db
 from app.models import Post
 
-<<<<<<< HEAD
+
 USERS = {}
 
-@app.route('/add' , methods=['POST', 'GET'])
-=======
+@app.route('/add' , methods=['POST', 'GET']
 
-@app.route('/add', methods=['POST', 'GET'])
->>>>>>> ff5a5fb03e4f4dce79c6f15f814f9c3d465d05fe
 def add():
     if request.method == 'POST':
         post = Post(request.form['title'], request.form['body'])
