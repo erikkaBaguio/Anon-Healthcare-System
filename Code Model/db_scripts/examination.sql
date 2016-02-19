@@ -12,12 +12,13 @@ CREATE OR REPLACE FUNCTION newexamination(par_id INT, par_user_id INT, par_sched
                                         par_answer_id INT, par_examination_name VARCHAR,
                                            par_done BOOLEAN) return TEXT as
 $$
-    declare
+    DECLARE
         loc_id TEXT;
         loc_res TEXT;
 
-    begin
+    BEGIN
         SELECT INTO loc_id id FROM Examination WHERE id = par_id;
+
         if loc_id isnull THEN
             INSERT INTO Examination(id, user_id, schedule_id, question_id, answer_id examination_name, done)
                               VALUES (par_id, par_user_id, par_schedule_id, par_question_id, par_answer_id,
@@ -28,6 +29,6 @@ $$
             loc_res = 'ID EXISTED';
          end if
          return loc_res;
-    end;
+    END;
 $$
     language 'plpgsql';
