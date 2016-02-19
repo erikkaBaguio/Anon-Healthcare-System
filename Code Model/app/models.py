@@ -1,6 +1,9 @@
 from app import db
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> ff5a5fb03e4f4dce79c6f15f814f9c3d465d05fe
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(128))
