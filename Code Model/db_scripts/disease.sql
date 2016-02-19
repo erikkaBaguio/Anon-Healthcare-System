@@ -1,4 +1,4 @@
 create table disease(
-  id int primary key,
-  name varchar(200),
+  id INT PRIMARY KEY,
+  name VARCHAR(200),
 );
