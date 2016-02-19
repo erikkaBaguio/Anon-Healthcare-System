@@ -1,7 +1,7 @@
 from flask import Flask, session, render_template, request, flash, redirect, url_for, abort, g
 from flask.ext.login import login_user, logout_user, current_user, login_required
-from app import app, db
-from app.models import Post
+from app import app, db, login_manager
+from app.models import Post, User
 
 
 @app.route('/add', methods=['POST', 'GET'])
