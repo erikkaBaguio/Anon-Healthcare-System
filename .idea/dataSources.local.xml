@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="PostgreSQL - acdb@localhost" uuid="cc9e23eb-f8a5-49a0-ad82-9ac26fdeb858">
+      <secret-storage>master_key</secret-storage>
+      <user-name>anoncare</user-name>
+      <schema-pattern>acdb.pg_catalog acdb.public</schema-pattern>
+      <default-schemas>acdb.public</default-schemas>
+    </data-source>
+  </component>
+</project>
