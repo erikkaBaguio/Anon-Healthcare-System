@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login| admin</title>
+	<script src="/static/jquery-2.2.0.min.js"></script>
+</head>
+<body>
+
+	<h1>Please log in to continue</h1>
+
+	<form method="POST" onsubmit="return false">
+		<label>username: </label>
+		<input name="username"></input>
+		<br><label>password: </label>
+		<input type="password" name="password"></input>
+
+		<br>
+		<button type="submit">Log in</button>
+	</form>
+
+	<script src="{{ url_for('static', filename="main.js") }}"></script>
+</body>
+</html>

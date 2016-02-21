@@ -6,8 +6,7 @@ from app.models import Post, User
 
 USERS = {}
 
-@app.route('/add' , methods=['POST', 'GET']
-
+@app.route('/add' , methods=['POST', 'GET'])
 def add():
     if request.method == 'POST':
         post = Post(request.form['title'], request.form['body'])
