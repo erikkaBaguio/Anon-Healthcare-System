@@ -3,7 +3,7 @@ create table Question_answer (
   question_id           INT FOREIGN KEY REFERENCES Question(id),
   answer_id             INT FOREIGN KEY REFERENCES  Answer(id),
   chained_to_question   INT FOREIGN KEY REFERENCES  Question(question),
-  done                  boolean
+  done                  Boolean
 );
 
 CREATE or replace function newquestion_answer(par_id int, par_question_id int, par_answer_id int, par_chained_to_question int, done boolean) returns text as

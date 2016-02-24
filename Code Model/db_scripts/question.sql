@@ -3,7 +3,7 @@ create table Question(
     question    VARCHAR (200),
     user_id     INT FOREIGN KEY REFERENCES Users(id),
     category_id INT FOREIGN KEY REFERENCES Question_category(id),
-    done        boolean
+    done        Boolean
 );
 
 create or replace function newquestion(par_id int, par_question varchar, par_user_id int, par_category_id int, par_done boolean) returns text as
