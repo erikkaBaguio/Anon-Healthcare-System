@@ -51,6 +51,7 @@ create table Symptom(
   id int primary key,
   symptom text
 );
+
 -----------------------------------------------------------------------------------------------------
 create table Schedule(
   id int primary key,
@@ -91,8 +92,30 @@ create table Examination (
 -----------------------------------------------------------------------------------------------------------
 create table Question_category (
     id int primary key,
-    category text
+    category text,
+    done BOOLEAN
 );
+
+create or replace function newquestion_category(par_id int, par_category text, par_done boolean) returns text as
+$$
+  declare
+    loc_id text;
+    loc_res text;
+  begin
+     select into loc_id id from Question_category where id = par_id;
+     if loc_id isnull then
+
+       insert into Question_category (id, category, done) values (par_id, par_category, par_done);
+       loc_res = 'OK';
+
+     else
+       loc_res = 'ID EXISTED';
+     end if;
+     return loc_res;
+  end;
+$$
+ language 'plpgsql';
+
 ------------------------------------------------------------------------------------------------------------
 create table Disease(
   id int primary key,
@@ -139,12 +162,37 @@ create table Question(
     id int primary key,
     question text,
     user_id int references UserInfo(id),
-    category_id int references Question_category(id)
+    category_id int references Question_category(id),
+    done BOOLEAN
 );
+
+create or replace function newquestion(par_id int, par_question text, par_user_id int, par_category_id int, par_done boolean) returns text as
+$$
+  declare
+    loc_id text;
+    loc_res text;
+
+  begin
+    select into loc_id id from Question where id = par_id;
+    if loc_id isnull then
+
+      insert into Question(id, question, user_id, category_id, done) values (par_id, par_question, par_user_id, par_category_id, par_done);
+       loc_res = 'OK';
+
+    else
+       loc_res = 'ID EXISTED';
+    end if;
+    return loc_res;
+  end;
+$$
+ language 'plpgsql';
 ------------------------------------------------------------------------------------------------------------
 create table Question_answer (
     id int primary key,
     question_id int references Question(id),
     answer_id int references  Answer(id),
-    chained_to_question int references  Question(question)
+    chained_to_question int references  Question(question),
+    done BOOLEAN
 );
+
+---------------------------------------------------------------------------------------------------------------
