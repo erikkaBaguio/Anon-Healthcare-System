@@ -1,20 +1,20 @@
 create table UserInfo (
 	id int primary key,
-	fname varchar(45),
-	mname varchar(45),
-	lname varchar(45),
-	email varchar(45),
-	password varchar(45),
+	fname text,
+	mname text,
+	lname text,
+	email text,
+	password text,
 	is_active boolean
 );
 
-create or replace newuserinfo(par_id int, par_fname varchar, par_mname varchar, par_lname varchar,
-                                par_email varchar, par_password varchar, par_is_active boolean) returns text
+create or replace function newuserinfo(par_id int, par_fname text, par_mname text, par_lname text,
+                                par_email text, par_password text, par_is_active boolean) returns text
                                 as
 $$
     declare
-        loc_id;
-        loc_res;
+        loc_id text;
+        loc_res text;
 
     begin
         select into loc_id id from UserInfo where id = par_id;
@@ -30,11 +30,25 @@ $$
     end;
 $$
   language 'plpgsql';
+
+create or replace function getuserinfo(out int, out text, out text, out text, out text,out boolean)
+                                            returns setof record as
+$$
+    select id, fname, mname, lname, email, is_active from UserInfo;
+$$
+  language 'sql';
+
+create or replace function getuserinfoid(in par_id int, out text, out text, out text, out text,
+                                                 out boolean) returns setof record as
+$$
+    select fname, mname, lname, email, is_active from UserInfo where par_id = id;
+$$
+  language 'sql';
 ----------------------------------------------------------------------------------------------------
 
 create table Symptom(
   id int primary key,
-  symptom varchar(200)
+  symptom text(200)
 );
 
 -----------------------------------------------------------------------------------------------------
@@ -48,8 +62,8 @@ CREATE TABLE Schedule(
 create or replace newschedule(par_id int, par_date_time_year date, par_done BOOLEAN) return text as
 $$
     declare
-        loc_id TEXT;
-        loc_res TEXT;
+        loc_id text;
+        loc_res text;
     begin
         select into loc_id id Schedule where id = par_id;
 
@@ -69,13 +83,13 @@ $$
 
 create table Question_category (
     id int primary key,
-    category varchar(100)
+    category text
 );
 
 ------------------------------------------------------------------------------------------------------------
 create table Disease(
   id int primary key,
-  name varchar(200),
+  name text,
   done boolean
 );
 
@@ -93,13 +107,13 @@ create table Examination (
   schedule_id int references Schedule(id),
   question_id int references Question(id),
   answer_id int references Answer(id),
-  examination_name varchar(200),
+  examination_name text,
   done BOOLEAN
 );
 ------------------------------------------------------------------------------------------------------------
 create table Question(
     id int primary key,
-    question varchar (200),
+    question text,
     user_id int references UserInfo(id),
     category_id int references Question_category(id)
 );
