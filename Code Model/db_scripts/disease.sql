@@ -24,5 +24,3 @@ $$
   end;
 $$
   language 'plpgsql'
-
-
