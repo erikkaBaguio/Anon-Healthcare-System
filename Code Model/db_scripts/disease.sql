@@ -15,7 +15,7 @@ $$
     if loc_id id isnull then
 
       insert into disease(id, name, done) values (par_id, pr_name, par_done);
-      loc_res = "OK"
+      loc_res = "New disease data is added."
 
     else
       loc_res = "ID EXISTED";

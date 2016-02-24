@@ -1,4 +1,4 @@
-create table User (
+create table UserInfo (
 	id INT PRIMARY KEY,
 	fname varchar(45),
 	mname varchar(45),
@@ -6,17 +6,8 @@ create table User (
 	email varchar(45),
 	is_active boolean
 );
-
-----------------------------------------------------------------------------------------------------
-
-create table Symptom(
-  id int primary key,
-  symptom varchar(200),
-);
-
 -----------------------------------------------------------------------------------------------------
-
-CREATE TABLE Schedule(
+create table Schedule(
   id int primary key,
   date_time_year date,
   done boolean
@@ -42,18 +33,53 @@ $$
 $$
     language 'plpgsql';
 
+------------------------------------------------------------------------------------------------------------
+create table Examination (
+  id int primary key,
+  user_id int references UserInfo(id),
+  schedule_id int references Schedule(id),
+  question_id int references Question(id),
+  answer_id int references Answer(id),
+  examination_name varchar(200)
+  done BOOLEAN
+);
 -----------------------------------------------------------------------------------------------------------
-
 create table Question_category (
     id int primary key,
     category varchar(100)
 );
-
 ------------------------------------------------------------------------------------------------------------
 create table Disease(
   id int primary key,
   name varchar(200),
-  done boolean,
+  done boolean
+);
+
+create or replace function newdisease(par_id int, par_name varchar, par_done boolean) returns text as
+$$
+  declare
+    loc_id text,
+    loc_res text,
+  begin
+    select into loc_id id from disease where id = par_id;
+    if loc_id id isnull then
+
+      insert into disease(id, name, done) values (par_id, pr_name, par_done);
+      loc_res = "New disease data is added."
+
+    else
+      loc_res = "ID EXISTED";
+    end if;
+    return loc_res;
+  end;
+$$
+  language 'plpgsql'
+
+----------------------------------------------------------------------------------------------------
+
+create table Symptom(
+  id int primary key,
+  symptom varchar(200),
 );
 
 ------------------------------------------------------------------------------------------------------------
@@ -61,23 +87,13 @@ create table Disease_Symptom(
   id int primary key,
   disease_id int references Disease(id),
   symptom_id int references Symptom(id),
-  user_id int references User(id),
-);
-------------------------------------------------------------------------------------------------------------
-create table Examination (
-  id int primary key,
-  user_id int references User(id),
-  schedule_id int references Schedule(id),
-  question_id int references Question(id),
-  answer_id int references Answer(id),
-  examination_name varchar(200)
-  done BOOLEAN
+  user_id int references UserInfo(id),
 );
 ------------------------------------------------------------------------------------------------------------
 create table Question(
     id int primary key,
     question varchar (200),
-    user_id int references User(id),
+    user_id int references UserInfo(id),
     category_id int references Question_category(id)
 );
 ------------------------------------------------------------------------------------------------------------
