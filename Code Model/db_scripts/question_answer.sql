@@ -1,9 +1,16 @@
 create table Question_answer (
+<<<<<<< HEAD
   id                    INT PRIMARY KEY,
   question_id           INT FOREIGN KEY REFERENCES Question(id),
   answer_id             INT FOREIGN KEY REFERENCES  Answer(id),
   chained_to_question   INT FOREIGN KEY REFERENCES  Question(question),
   done                  Boolean
+=======
+    id int primary key,
+    question_id int references Question(id),
+    answer_id int references  Answer(id),
+    chained_to_question int references  Question(question)
+>>>>>>> d678e53ccd72812727f3227d8eb6aff1f2d218e5
 );
 
 CREATE or replace function newquestion_answer(par_id int, par_question_id int, par_answer_id int, par_chained_to_question int, done boolean) returns text as
