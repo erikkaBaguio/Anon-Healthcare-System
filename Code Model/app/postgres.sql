@@ -4,4 +4,8 @@ create table User (
 	mname varchar(45),
 	lname varchar(45),
 	email varchar(45),
+	is_active boolean
 );
+
+----------------------------------------------------------------------------------------------------
+
