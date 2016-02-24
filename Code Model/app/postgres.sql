@@ -51,15 +51,21 @@ create table Symptom(
   symptom text(200)
 );
 
+	id INT PRIMARY KEY,
+	fname varchar(45),
+	mname varchar(45),
+	lname varchar(45),
+	email varchar(45),
+	is_active boolean
+);
 -----------------------------------------------------------------------------------------------------
-
-CREATE TABLE Schedule(
+create table Schedule(
   id int primary key,
   date_time_year date,
   done boolean
 );
 
-create or replace newschedule(par_id int, par_date_time_year date, par_done BOOLEAN) return text as
+create or replace function newschedule(par_id int, par_date_time_year date, par_done BOOLEAN) return text as
 $$
     declare
         loc_id text;
@@ -79,18 +85,59 @@ $$
 $$
     language 'plpgsql';
 
+------------------------------------------------------------------------------------------------------------
+create table Examination (
+  id int primary key,
+  user_id int references UserInfo(id),
+  schedule_id int references Schedule(id),
+  question_id int references Question(id),
+  answer_id int references Answer(id),
+  examination_name varchar(200)
+  done BOOLEAN
+);
 -----------------------------------------------------------------------------------------------------------
-
 create table Question_category (
     id int primary key,
     category text
 );
-
 ------------------------------------------------------------------------------------------------------------
 create table Disease(
   id int primary key,
   name text,
   done boolean
+);
+
+create or replace function newdisease(par_id int, par_name varchar, par_done boolean) returns text as
+$$
+  declare
+    loc_id text,
+    loc_res text,
+  begin
+    select into loc_id id from disease where id = par_id;
+    if loc_id id isnull then
+
+      insert into disease(id, name, done) values (par_id, pr_name, par_done);
+      loc_res = "New disease data is added.";
+
+    else
+      loc_res = "ID EXISTED";
+    end if;
+    return loc_res;
+  end;
+$$
+  language 'plpgsql';
+
+create or replace function getdiseaseinfo(in par_id int, out text, out boolean) returns setof record as
+$$
+  select name, done from Disease where id = par_id;
+$$
+  language 'sql'
+
+----------------------------------------------------------------------------------------------------
+
+create table Symptom(
+  id int primary key,
+  symptom text
 );
 
 ------------------------------------------------------------------------------------------------------------
@@ -108,11 +155,13 @@ create table Examination (
   question_id int references Question(id),
   answer_id int references Answer(id),
   examination_name text,
-  done BOOLEAN
+  done BOOLEAN,
+  user_id int references UserInfo(id)
 );
 ------------------------------------------------------------------------------------------------------------
 create table Question(
     id int primary key,
+    question text,
     question text,
     user_id int references UserInfo(id),
     category_id int references Question_category(id)
