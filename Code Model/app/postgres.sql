@@ -51,7 +51,7 @@ create table Question_category (
 ------------------------------------------------------------------------------------------------------------
 create table Disease(
   id int primary key,
-  name varchar(200),
+  name text,
   done boolean
 );
 
@@ -74,6 +74,12 @@ $$
   end;
 $$
   language 'plpgsql'
+
+create or replace a function getdiseaseinfo(in par_id int, out text, out boolean) returns setof records as
+$$
+  select name, done from Disease where id = par_id;
+$$
+  language = "sql";
 
 ----------------------------------------------------------------------------------------------------
 
