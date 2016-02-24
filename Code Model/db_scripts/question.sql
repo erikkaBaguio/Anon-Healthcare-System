@@ -1,7 +1,7 @@
 create table Question(
-    id INT primary key,
-    question VARCHAR (200),
-    user_id INT FOREIGN KEY REFERENCES User(id),
-    category_id INT FOREIGN KEY REFERENCES Question_category(id)
+    id int primary key,
+    question varchar (200),
+    user_id int references User(id),
+    category_id int references Question_category(id)
 );
 

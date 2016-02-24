@@ -1,4 +1,4 @@
 create table Question_category (
-    id Int PRIMARY KEY,
-    category VARCHAR(100)
+    id int primary key,
+    category varchar(100)
 );
