@@ -1,16 +1,10 @@
 create table Question(
-<<<<<<< HEAD
     id          INT primary key,
     question    VARCHAR (200),
     user_id     INT FOREIGN KEY REFERENCES Users(id),
     category_id INT FOREIGN KEY REFERENCES Question_category(id),
     done        Boolean
-=======
-    id int primary key,
-    question varchar (200),
-    user_id int references User(id),
-    category_id int references Question_category(id)
->>>>>>> d678e53ccd72812727f3227d8eb6aff1f2d218e5
+
 );
 
 create or replace function newquestion(par_id int, par_question varchar, par_user_id int, par_category_id int, par_done boolean) returns text as
