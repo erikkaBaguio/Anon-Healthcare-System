@@ -1,17 +1,40 @@
-create table User (
-	id INT PRIMARY KEY,
+create table UserInfo (
+	id int primary key,
 	fname varchar(45),
 	mname varchar(45),
 	lname varchar(45),
 	email varchar(45),
+	password varchar(45),
 	is_active boolean
 );
 
+create or replace newuserinfo(par_id int, par_fname varchar, par_mname varchar, par_lname varchar,
+                                par_email varchar, par_password varchar, par_is_active boolean) returns text
+                                as
+$$
+    declare
+        loc_id;
+        loc_res;
+
+    begin
+        select into loc_id id from UserInfo where id = par_id;
+        if loc_id isnull then
+
+            insert into UserInfo(id, fname, mname, lname, email, password, is_active) values
+                     (par_id, par_fname, par_mname, par_lname, par_email, par_password, par_is_active);
+            loc_res = 'OK';
+        else
+            loc_res = 'ID EXISTED';
+        end if;
+        return loc_res;
+    end;
+$$
+  language 'plpgsql';
 ----------------------------------------------------------------------------------------------------
 
 create table Symptom(
   id int primary key,
-  symptom varchar(200),
+  symptom varchar(200)
 );
 
 -----------------------------------------------------------------------------------------------------
@@ -53,7 +76,7 @@ create table Question_category (
 create table Disease(
   id int primary key,
   name varchar(200),
-  done boolean,
+  done boolean
 );
 
 ------------------------------------------------------------------------------------------------------------
@@ -61,7 +84,7 @@ create table Disease_Symptom(
   id int primary key,
   disease_id int references Disease(id),
   symptom_id int references Symptom(id),
-  user_id int references User(id),
+  user_id int references UserInfo(id)
 );
 ------------------------------------------------------------------------------------------------------------
 create table Examination (
@@ -70,14 +93,14 @@ create table Examination (
   schedule_id int references Schedule(id),
   question_id int references Question(id),
   answer_id int references Answer(id),
-  examination_name varchar(200)
+  examination_name varchar(200),
   done BOOLEAN
 );
 ------------------------------------------------------------------------------------------------------------
 create table Question(
     id int primary key,
     question varchar (200),
-    user_id int references User(id),
+    user_id int references UserInfo(id),
     category_id int references Question_category(id)
 );
 ------------------------------------------------------------------------------------------------------------
