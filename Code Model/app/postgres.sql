@@ -13,7 +13,7 @@ create table Schedule(
   done boolean
 );
 
-create or replace newschedule(par_id int, par_date_time_year date, par_done BOOLEAN) return text as
+create or replace function newschedule(par_id int, par_date_time_year date, par_done BOOLEAN) return text as
 $$
     declare
         loc_id TEXT;
@@ -65,7 +65,7 @@ $$
     if loc_id id isnull then
 
       insert into disease(id, name, done) values (par_id, pr_name, par_done);
-      loc_res = "New disease data is added."
+      loc_res = "New disease data is added.";
 
     else
       loc_res = "ID EXISTED";
@@ -73,19 +73,19 @@ $$
     return loc_res;
   end;
 $$
-  language 'plpgsql'
+  language 'plpgsql';
 
-create or replace a function getdiseaseinfo(in par_id int, out text, out boolean) returns setof records as
+create or replace function getdiseaseinfo(in par_id int, out text, out boolean) returns setof record as
 $$
   select name, done from Disease where id = par_id;
 $$
-  language = "sql";
+  language 'sql'
 
 ----------------------------------------------------------------------------------------------------
 
 create table Symptom(
   id int primary key,
-  symptom varchar(200),
+  symptom text,
 );
 
 ------------------------------------------------------------------------------------------------------------
