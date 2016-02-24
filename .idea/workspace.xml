@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a1c1c313-8e09-41d6-a6aa-2c3de3070024" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/db_scripts/question_category.sql" afterPath="$PROJECT_DIR$/Code Model/db_scripts/question_category.sql" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/tests/bdd/features/Disease_Records_Maintenance.feature" afterPath="$PROJECT_DIR$/Code Model/tests/bdd/features/Disease_Records_Maintenance.feature" />
-    </list>
+    <list default="true" id="a1c1c313-8e09-41d6-a6aa-2c3de3070024" name="Default" comment="" />
     <ignored path="AnonCare_HS.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -104,17 +100,27 @@
         <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/Disease_Records_Maintenance.feature">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="-4.645161">
-              <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+              <caret line="8" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Symptoms_Records_Maintenance.feature" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Symptoms_Records_Maintenance.feature" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/Symptoms_Records_Maintenance.feature">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.38502672">
-              <caret line="8" column="9" selection-start-line="8" selection-start-column="9" selection-end-line="8" selection-end-column="9" />
+            <state vertical-scroll-proportion="-5.225806">
+              <caret line="9" column="1" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Diagnostic_Questions_Records_Maintenance.feature" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/Diagnostic_Questions_Records_Maintenance.feature">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.24064171">
+              <caret line="5" column="10" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="10" />
               <folding />
             </state>
           </provider>
@@ -180,16 +186,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Forgot_Password.feature" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/Forgot_Password.feature">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Patient_Accounts_Maintenance.feature" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/Patient_Accounts_Maintenance.feature">
           <provider selected="true" editor-type-id="text-editor">
@@ -225,6 +221,7 @@
         <option value="$PROJECT_DIR$/Code Model/db_scripts/question_category.sql" />
         <option value="$PROJECT_DIR$/Code Model/tests/bdd/features/Disease_Records_Maintenance.feature" />
         <option value="$PROJECT_DIR$/Code Model/tests/bdd/features/Symptoms_Records_Maintenance.feature" />
+        <option value="$PROJECT_DIR$/Code Model/tests/bdd/features/Diagnostic_Questions_Records_Maintenance.feature" />
       </list>
     </option>
   </component>
@@ -650,13 +647,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Code Model/config.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Code Model/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;MultiMarkdownPreviewEditor]">
         <state split_layout="FIRST">
@@ -1008,14 +998,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/Disease_Records_Maintenance.feature">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.645161">
-          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/steps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1048,14 +1030,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/Appointment_Confirmation.feature">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/Doctor_Referral.feature">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1066,8 +1040,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/Symptoms_Records_Maintenance.feature">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.38502672">
-          <caret line="8" column="9" selection-start-line="8" selection-start-column="9" selection-end-line="8" selection-end-column="9" />
+        <state vertical-scroll-proportion="-5.225806">
+          <caret line="9" column="1" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/Appointment_Confirmation.feature">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/Disease_Records_Maintenance.feature">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.645161">
+          <caret line="8" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/Diagnostic_Questions_Records_Maintenance.feature">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.24064171">
+          <caret line="5" column="10" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="10" />
           <folding />
         </state>
       </provider>
