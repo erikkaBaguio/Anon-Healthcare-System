@@ -1,6 +1,6 @@
 create table Question_category (
     id       Int PRIMARY KEY,
-    category VARCHAR(100),
+    category_name VARCHAR(100),
     done     Boolean
 );
 
