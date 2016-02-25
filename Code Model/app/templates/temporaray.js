@@ -3,9 +3,10 @@
  */
 function newuser(fname, mname, lname, email, password, role, is_active) {
      return '<div class="col-lg-12">' +
-             '<div class="form-group">' +
-             '<label class="col-md-2 control-label">First Name</label>' +
-             '<div class="col-md-10"> + <input name="fname" type="text" class="form-control" </div></div>';
+            '<div class="form-group">' +
+            '<label class="col-md-2 control-label">' + fname + '</label>' +
+            '<div class="col-md-10">' +
+            '<input name="fname" type="text" class="form-control" </div></div>';
              //'<h4>' + id + "&nbsp;&nbsp;" + title + '</h4>' +
              //'<p>'+description+' </br> Status: '+done+'</p> </div>';
 }
