@@ -280,3 +280,13 @@ $$
 $$
  language 'plpgsql';
 ---------------------------------------------------------------------------------------------------------------
+
+create table Patient_status (
+  id int primary key,
+  blood_pressure int,
+  body_temp int,
+  patient_id int references Examination(id),
+  done BOOLEAN
+);
+
+-----------------------------------------------------------------------------------------------------------
