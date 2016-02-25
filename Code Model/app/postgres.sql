@@ -310,3 +310,12 @@ $$
     language 'plpgsql';
 
 -----------------------------------------------------------------------------------------------------------
+
+create table Diagnosis (
+  id int primary key,
+  examination_id int references Examination(id),
+  disease_id int references Disease(id),
+  done BOOLEAN
+);
+
+-----------------------------------------------------------------------------------------------------------
