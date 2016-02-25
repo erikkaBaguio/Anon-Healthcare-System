@@ -318,4 +318,24 @@ create table Diagnosis (
   done BOOLEAN
 );
 
+CREATE or replace function newdiagnosis(par_id int, par_examination_id int, par_disease_id int, par_done boolean) returns text AS
+$$
+  DECLARE
+    loc_id text;
+    loc_res text;
+  BEGIN
+      SELECT INTO loc_id id from Diagnosis WHERE id = par_id;
+      if loc_id isnull THEN
+
+        INSERT INTO Diagnosis(id, par_examination_id, par_disease_id, done) values (par_id, par_examination_id, par_disease_id, par_done);
+        loc_res = 'OK';
+
+      else
+            loc_res = 'ID EXISTED';
+        end if;
+        return loc_res;
+    end;
+$$
+    language 'plpgsql';
+
 -----------------------------------------------------------------------------------------------------------
