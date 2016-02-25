@@ -49,10 +49,29 @@ $$
 
 create table Symptom(
   id int primary key,
-  symptom text
+  symptom text,
+  done BOOLEAN
 );
 
-create or replace function newsymptom(par_id int, par_symptom text) returns as
+create or replace function newsymptom(par_id int, par_symptom text, par_done boolean) returns text AS
+$$
+  DECLARE
+      loc_id text;
+      loc_res text;
+  BEGIN
+      SELECT  INTO loc_id id Symptom where id = par_id;
+
+      if loc_id isnull THEN
+          insert INTO Symptom(id, symptom, done) values (par_id, par_symptom, par_done);
+          loc_res = 'OK';
+
+      else
+            loc_res = 'ID EXISTED';
+        end if;
+        return loc_res;
+  end;
+$$
+  language 'plpgsql';
 
 -----------------------------------------------------------------------------------------------------
 create table Schedule(
@@ -91,6 +110,29 @@ create table Examination (
   examination_name varchar(200),
   done BOOLEAN
 );
+
+CREATE or replace function newexamination(par_id int, par_user_id int, par_schedule_id int, par_question_id int,
+                                          par_answer_id int, par_examination_name varchar, par_done boolean) returns text AS
+$$
+  DECLARE
+    loc_id text;
+    loc_res text;
+  BEGIN
+      SELECT INTO loc_id id from Examination WHERE id = par_id;
+      if loc_id isnull THEN
+
+        INSERT INTO Examination(id, user_id, schedule_id, question_id, answer_id, examination_name, done) values (par_id, par_user_id, par_schedule_id, par_question_id,
+                                                                                                                  par_answer_id, par_examination_name, par_done);
+        loc_res = 'OK';
+
+      else
+            loc_res = 'ID EXISTED';
+        end if;
+        return loc_res;
+    end;
+$$
+    language 'plpgsql';
+
 -----------------------------------------------------------------------------------------------------------
 create table Question_category (
     id int primary key,
@@ -156,8 +198,30 @@ create table Disease_Symptom(
   id int primary key,
   disease_id int references Disease(id),
   symptom_id int references Symptom(id),
-  user_id int references UserInfo(id)
+  user_id int references UserInfo(id),
+  done BOOLEAN
 );
+
+CREATE  or replace function newdisease_symptom(par_id int, par_disease_id int, par_symptom_id int, par_user_id int, par_done boolean) returns text AS
+$$
+  DECLARE
+    loc_id text;
+    loc_res text;
+
+  BEGIN
+    SELECT INTO loc_id id FROM Disease_Symptom where id = par_id;
+    if loc_id isnull THEN
+
+      INSERT INTO Disease_Symptom(id, disease_id, symptom_id, user_id, done) VALUES (par_id, par_disease_id, par_symptom_id, par_user_id, par_done);
+      loc_res = 'OK';
+
+    else
+       loc_res = 'ID EXISTED';
+    end if;
+    return loc_res;
+  end;
+$$
+ language 'plpgsql';
 
 ------------------------------------------------------------------------------------------------------------
 create table Question(
@@ -197,4 +261,22 @@ create table Question_answer (
     done BOOLEAN
 );
 
+CREATE or replace function newquestion_answer(par_id int, par_question_id int, par_answer_id int, par_chained_to_question int, done boolean) returns text as
+$$
+  declare
+    loc_id text;
+    loc_res text;
+  begin
+     select into loc_id id from Question_answer where id = par_id;
+     if loc_id isnull then
+       insert into Question_answer (id, question_id, answer_id, chained_to_question, done) values (par_id, par_question_id, par_done);
+       loc_res = 'OK';
+
+     else
+       loc_res = 'ID EXISTED';
+     end if;
+     return loc_res;
+  end;
+$$
+ language 'plpgsql';
 ---------------------------------------------------------------------------------------------------------------
