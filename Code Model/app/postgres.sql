@@ -289,4 +289,24 @@ create table Patient_status (
   done BOOLEAN
 );
 
+CREATE or replace function newpatientstatus(par_id int, par_blood_pressure int, par_body_temp int, par_patiend_id int, par_done boolean) returns text AS
+$$
+  DECLARE
+    loc_id text;
+    loc_res text;
+  BEGIN
+      SELECT INTO loc_id id from Patient_status WHERE id = par_id;
+      if loc_id isnull THEN
+
+        INSERT INTO Patient_status(id, blood_pressure, body_temp, patient_id, done) values (par_id, par_blood_pressure, par_body_temp, par_patiend_id, par_done);
+        loc_res = 'OK';
+
+      else
+            loc_res = 'ID EXISTED';
+        end if;
+        return loc_res;
+    end;
+$$
+    language 'plpgsql';
+
 -----------------------------------------------------------------------------------------------------------
