@@ -6,6 +6,19 @@ from app.models import Post, User
 
 USERS = {}
 
+def spcall(qry, param, commit=False):
+    try:
+        dbo = DBconn()
+        cursor = dbo.getcursor()
+        cursor.callproc(qry, param)
+        res = cursor.fetchall()
+        if commit:
+            dbo.dbcommit()
+        return res
+    except:
+        res = [("Error: " + str(sys.exc_info()[0]) + " " + str(sys.exc_info()[1]),)]
+    return res
+
 @app.route('/add' , methods=['POST', 'GET'])
 def add():
     if request.method == 'POST':
@@ -35,3 +48,8 @@ def login():
     login_user(registered_user)
     flash('Logged in successfully')
     return redirect(request.args.get('next') or url_for('index'))
+
+@app.route('/addUser', methods=['GET'])
+def addUser(fname):
+
+    res = spcall()
