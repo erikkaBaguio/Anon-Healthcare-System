@@ -52,6 +52,8 @@ create table Symptom(
   symptom text
 );
 
+create or replace function newsymptom(par_id int, par_symptom text) returns as
+
 -----------------------------------------------------------------------------------------------------
 create table Schedule(
   id int primary key,
