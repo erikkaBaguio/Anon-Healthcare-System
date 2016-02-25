@@ -1,4 +1,4 @@
-from flask import Flask, session, render_template, request, flash, redirect, url_for, abort, g
+from flask import Flask, jsonify, session, render_template, request, flash, redirect, url_for, abort, g
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from app import app, db, login_manager
 from app.models import DBconn
@@ -53,3 +53,24 @@ def login():
 def addUser(fname):
 
     res = spcall()
+
+
+@app.route('/users', methods=['GET'])
+def loadusers():
+    res = spcall('getuserinfo', ())
+
+    if 'Error' in str(res[0][0]):
+        return jsonify({'status': 'error', 'message': res[0][0]})
+
+    recs = []
+
+    for r in res:
+        recs.append({"id": r[0],
+                     "fname": r[1],
+                     "mname": r[2],
+                     "lname": r[3],
+                     "email": r[4],
+                     "role": r[5],
+                     "is_active": str(r[6])})
+    return jsonify({'status': 'OK', 'message': res[0][0]})
+

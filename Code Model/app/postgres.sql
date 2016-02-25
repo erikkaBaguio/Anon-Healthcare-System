@@ -10,8 +10,8 @@ create table UserInfo (
 );
 
 create or replace function newuserinfo(par_id int, par_fname text, par_mname text, par_lname text,
-                                par_email text, par_password text, par_role int, par_is_active boolean) returns text
-                                as
+                                par_email text, par_password text, par_role int, par_is_active boolean)
+                                 returns text as
 $$
     declare
         loc_id text;
