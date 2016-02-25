@@ -1,42 +1,15 @@
-from app import db
+from sqlalchemy import create_engine
+import os
 
-class Post(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(128))
-    body = db.Column(db.Text)
+class DBconn:
+    def __init__(self):
+        engine = create_engine("postgresql://anoncare:anoncare@127.0.0.1:5432/acdb", echo=False)
+        self.conn = engine.connect()
+        self.trans = self.conn.begin()
 
-    def __init__(self, title, body):
-        self.title = title
-        self.body = body
+    def getcursor(self):
+        cursor = self.conn.connection.cursor()
+        return cursor
 
-
-class User(db.Model):
-    __tablename__ = "users"
-    id = db.Column(db.Integer, primary_key=True)
-    f_name = db.Column(db.String(45))
-    m_name = db.Column(db.String(45))
-    l_name = db.Column(db.String(45))
-    role = db.Column(db.Integer)  # 1-admin, 2-doctor, 3-nurse, 4-patient
-    username = db.Column(db.String(50), unique=True, index=True)
-    password = db.Column(db.String(50))
-    email = db.Column(db.String(50), unique=True, index=True)
-
-    def __init__(self, username, password, email):
-        self.username = username
-        self.password = password
-        self.email = email
-
-    def is_authenticated(self):
-        return True
-
-    def is_active(self):
-        return True
-
-    def is_anonymous(self):
-        return False
-
-    def get_id(self):
-        return unicode(self.id)
-
-    def __repr__(self):
-        return '<User %r>' % (self.username)
+    def dbcommit(self):
+        self.trans.commit()
