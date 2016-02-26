@@ -377,3 +377,14 @@ CREATE TABLE Cardiac(
 );
 
 ----------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE Neurologic(
+  id int PRIMARY KEY,
+  headache text,
+  seizure text,
+  dizziness text,
+  loss_of_consciousness text,
+  done BOOLEAN
+);
+
+-----------------------------------------------------------------------------------------------------------------
