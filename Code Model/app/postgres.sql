@@ -351,3 +351,17 @@ CREATE TABLE Illness(
   typhoid_fever text,
   done BOOLEAN
 );
+
+--------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE Personal_history(
+  id int PRIMARY KEY,
+  smoking text,
+  allergies text,
+  alcohol text,
+  medication_taken text,
+  drugs text,
+  done BOOLEAN
+);
+
+---------------------------------------------------------------------------------------------------------------
