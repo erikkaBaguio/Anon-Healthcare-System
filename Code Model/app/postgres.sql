@@ -365,3 +365,15 @@ CREATE TABLE Personal_history(
 );
 
 ---------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE Cardiac(
+  id int PRIMARY KEY,
+  chest_pain text,
+  palpitations text,
+  pedal_edema text,
+  orthopnea text,
+  nocturnal_dyspnea text,
+  done BOOLEAN
+);
+
+----------------------------------------------------------------------------------------------------------------
