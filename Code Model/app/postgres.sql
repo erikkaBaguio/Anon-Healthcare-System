@@ -353,3 +353,12 @@ create table Patient(
     height text,
     weight int,
   );
+
+---------------------------------------------------------------------------------------------------------------
+create table Pulmonary(
+    cough text,
+    dyspnea text,
+    hemoptysis text,
+    tb_exposure text
+);
+
