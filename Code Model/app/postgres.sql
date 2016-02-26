@@ -338,4 +338,16 @@ $$
 $$
     language 'plpgsql';
 
------------------------------------------------------------------------------------------------------------
+---------------- ---------------------------------------------------------------------------------------------
+
+CREATE TABLE Illness(
+  id int primary key,
+  asthma text,
+  ptb text,
+  heart_problem text,
+  hepatitis_a_b text,
+  chicken_pox text,
+  mumps text,
+  typhoid_fever text,
+  done BOOLEAN
+);
