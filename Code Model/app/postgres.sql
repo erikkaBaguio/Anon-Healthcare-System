@@ -339,3 +339,17 @@ $$
     language 'plpgsql';
 
 -----------------------------------------------------------------------------------------------------------
+create table Patient(
+    id int primary key,
+    fname text,
+    mname text,
+    lname test,
+    date_of_birth date,
+    age int,
+    sex text,
+    civil_status text,
+    name_of_parent text,
+    home_address text,
+    height text,
+    weight int,
+  );
