@@ -362,3 +362,11 @@ create table Pulmonary(
     tb_exposure text
 );
 
+create table Gut(
+    frequency text,
+    flank plan text,
+    discharge text,
+    dysuria text,
+    nocturia text,
+    dec_urine_amount text,
+);
