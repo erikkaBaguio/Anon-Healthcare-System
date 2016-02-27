@@ -26,7 +26,6 @@ def add():
         db.session.add(post)
         db.session.commit()
         flash('New entry was successfully posted')
-
     return render_template('add.html')
 
 

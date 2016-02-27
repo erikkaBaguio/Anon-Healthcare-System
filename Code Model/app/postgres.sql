@@ -370,3 +370,53 @@ create table Gut(
     nocturia text,
     dec_urine_amount text,
 );
+---------------- ---------------------------------------------------------------------------------------------
+
+CREATE TABLE Illness(
+  id int primary key,
+  asthma text,
+  ptb text,
+  heart_problem text,
+  hepatitis_a_b text,
+  chicken_pox text,
+  mumps text,
+  typhoid_fever text,
+  done BOOLEAN
+);
+
+--------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE Personal_history(
+  id int PRIMARY KEY,
+  smoking text,
+  allergies text,
+  alcohol text,
+  medication_taken text,
+  drugs text,
+  done BOOLEAN
+);
+
+---------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE Cardiac(
+  id int PRIMARY KEY,
+  chest_pain text,
+  palpitations text,
+  pedal_edema text,
+  orthopnea text,
+  nocturnal_dyspnea text,
+  done BOOLEAN
+);
+
+----------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE Neurologic(
+  id int PRIMARY KEY,
+  headache text,
+  seizure text,
+  dizziness text,
+  loss_of_consciousness text,
+  done BOOLEAN
+);
+
+-----------------------------------------------------------------------------------------------------------------
