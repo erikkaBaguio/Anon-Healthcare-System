@@ -342,6 +342,38 @@ $$
 $$
     language 'plpgsql';
 
+-----------------------------------------------------------------------------------------------------------
+create table Patient(
+    id int primary key,
+    fname text,
+    mname text,
+    lname test,
+    date_of_birth date,
+    age int,
+    sex text,
+    civil_status text,
+    name_of_parent text,
+    home_address text,
+    height text,
+    weight int,
+  );
+
+---------------------------------------------------------------------------------------------------------------
+create table Pulmonary(
+    cough text,
+    dyspnea text,
+    hemoptysis text,
+    tb_exposure text
+);
+
+create table Gut(
+    frequency text,
+    flank plan text,
+    discharge text,
+    dysuria text,
+    nocturia text,
+    dec_urine_amount text,
+);
 ---------------- ---------------------------------------------------------------------------------------------
 
 CREATE TABLE Illness(
