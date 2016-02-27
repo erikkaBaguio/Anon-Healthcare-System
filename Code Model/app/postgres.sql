@@ -1,3 +1,4 @@
+-- sequence will make the id (pk) auto increment.
 CREATE SEQUENCE user_id_seq;
 create table UserInfo (
 	id int primary key not null DEFAULT nextval('user_id_seq'),
@@ -48,12 +49,13 @@ $$
 $$
   language 'sql';
 ----------------------------------------------------------------------------------------------------
-
+CREATE SEQUENCE symtom_id_seq;
 create table Symptom(
-  id int primary key,
+  id int primary key not null DEFAULT nextval('symtom_id_seq'),
   symptom text,
   done BOOLEAN
 );
+ALTER SEQUENCE symtom_id_seq OWNED BY Symptom.id;
 
 create or replace function newsymptom(par_id int, par_symptom text, par_done boolean) returns text AS
 $$
