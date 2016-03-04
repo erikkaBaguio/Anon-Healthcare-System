@@ -298,8 +298,8 @@ $$
       SELECT INTO loc_id id from Patient_status WHERE id = par_id;
       if loc_id isnull THEN
 
-        INSERT INTO Patient_status(id, blood_pressure, body_temp, patient_id, done) values (par_id, par_blood_pressure, par_body_temp, par_patiend_id, par_done);
-        loc_res = 'OK';
+      INSERT INTO Patient_status(id, blood_pressure, body_temp, patient_id, done) values (par_id, par_blood_pressure, par_body_temp, par_patiend_id, par_done);
+      loc_res = 'OK';
 
       else
             loc_res = 'ID EXISTED';
@@ -330,13 +330,14 @@ $$
         INSERT INTO Diagnosis(id, par_examination_id, par_disease_id, done) values (par_id, par_examination_id, par_disease_id, par_done);
         loc_res = 'OK';
 
-      else
+        else
             loc_res = 'ID EXISTED';
         end if;
         return loc_res;
     end;
 $$
     language 'plpgsql';
+
 
 ---------------- ---------------------------------------------------------------------------------------------
 
@@ -352,6 +353,27 @@ CREATE TABLE Illness(
   done BOOLEAN
 );
 
+create or replace function newillness(par_id int, par_asthma text, par_ptb text, par_heart_problem text
+                                      par_hepatitis_a_b text, par_chicken_pox text, par_mumps text, par_typhoid_fever text, done boolean) returns text as
+$$
+  declare
+    loc_id text;
+    loc_res text;
+  BEGIN
+     SELECT into loc_id id from Illness where id = par_id;
+     if loc_id isnull THEN
+
+         insert into Illness(id, asthma, ptb, heart_problem, hepatitis_a_b, chicken_pox, mumps, typhoid_fever, done) values (par_id, par_asthma, par_ptb, par_heart_problem,
+                                                                                                    par_hepatitis_a_b, par_chicken_pox, par_mumps, par_typhoid_fever, par_done);
+          loc_res = 'OK';
+
+      else
+            loc_res = 'ID EXISTED';
+        end if;
+        return loc_res;
+    end;
+$$
+    language 'plpgsql';
 --------------------------------------------------------------------------------------------------------------
 
 CREATE TABLE Personal_history(
