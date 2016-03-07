@@ -1,5 +1,7 @@
+-- sequence will make the id (pk) auto increment.
+CREATE SEQUENCE user_id_seq;
 create table UserInfo (
-	id int primary key,
+	id serial8 primary key not null DEFAULT nextval('user_id_seq'),
 	fname text,
 	mname text,
 	lname text,
@@ -8,8 +10,9 @@ create table UserInfo (
 	role int,
 	is_active boolean
 );
+ALTER SEQUENCE user_id_seq OWNED BY userInfo.id;
 
-create or replace function newuserinfo(par_id int, par_fname text, par_mname text, par_lname text,
+create or replace function newuserinfo(par_id serial8, par_fname text, par_mname text, par_lname text,
                                 par_email text, par_password text, par_role int, par_is_active boolean)
                                  returns text as
 $$
@@ -46,12 +49,13 @@ $$
 $$
   language 'sql';
 ----------------------------------------------------------------------------------------------------
-
+CREATE SEQUENCE symtom_id_seq;
 create table Symptom(
-  id int primary key,
+  id int primary key not null DEFAULT nextval('symtom_id_seq'),
   symptom text,
   done BOOLEAN
 );
+ALTER SEQUENCE symtom_id_seq OWNED BY Symptom.id;
 
 create or replace function newsymptom(par_id int, par_symptom text, par_done boolean) returns text AS
 $$
@@ -135,7 +139,7 @@ $$
 
 -----------------------------------------------------------------------------------------------------------
 create table Question_category (
-    id int primary key,
+    id serial8 primary key,
     category text,
     done BOOLEAN
 );
@@ -159,6 +163,7 @@ $$
   end;
 $$
  language 'plpgsql';
+
 
 ------------------------------------------------------------------------------------------------------------
 create table Disease(
@@ -225,14 +230,14 @@ $$
 
 ------------------------------------------------------------------------------------------------------------
 create table Question(
-    id int primary key,
+    id serial8 primary key,
     question text,
     user_id int references UserInfo(id),
     category_id int references Question_category(id),
     done BOOLEAN
 );
 
-create or replace function newquestion(par_id int, par_question text, par_user_id int, par_category_id int, par_done boolean) returns text as
+create or replace function newquestion(par_id serial8, par_question text, par_user_id int, par_category_id int, par_done boolean) returns text as
 $$
   declare
     loc_id text;
@@ -252,16 +257,18 @@ $$
   end;
 $$
  language 'plpgsql';
+
+
 ------------------------------------------------------------------------------------------------------------
 create table Question_answer (
-    id int primary key,
+    id serial8 primary key,
     question_id int references Question(id),
     answer_id int references  Answer(id),
     chained_to_question int references  Question(question),
     done BOOLEAN
 );
 
-CREATE or replace function newquestion_answer(par_id int, par_question_id int, par_answer_id int, par_chained_to_question int, done boolean) returns text as
+CREATE or replace function newquestion_answer(par_id serial8, par_question_id int, par_answer_id int, par_chained_to_question int, done boolean) returns text as
 $$
   declare
     loc_id text;
@@ -338,11 +345,43 @@ $$
 $$
     language 'plpgsql';
 
+-----------------------------------------------------------------------------------------------------------
+create table Patient(
+    id int primary key,
+    fname text,
+    mname text,
+    lname test,
+    date_of_birth date,
+    age int,
+    sex text,
+    civil_status text,
+    name_of_parent text,
+    home_address text,
+    height text,
+    weight int,
+  );
+
+---------------------------------------------------------------------------------------------------------------
+create table Pulmonary(
+    cough text,
+    dyspnea text,
+    hemoptysis text,
+    tb_exposure text
+);
+
+create table Gut(
+    frequency text,
+    flank plan text,
+    discharge text,
+    dysuria text,
+    nocturia text,
+    dec_urine_amount text,
+);
 
 ---------------- ---------------------------------------------------------------------------------------------
 
 CREATE TABLE Illness(
-  id int primary key,
+  id serial8 primary key,
   asthma text,
   ptb text,
   heart_problem text,
@@ -353,7 +392,7 @@ CREATE TABLE Illness(
   done BOOLEAN
 );
 
-create or replace function newillness(par_id int, par_asthma text, par_ptb text, par_heart_problem text
+create or replace function newillness(par_id serial8, par_asthma text, par_ptb text, par_heart_problem text
                                       par_hepatitis_a_b text, par_chicken_pox text, par_mumps text, par_typhoid_fever text, done boolean) returns text as
 $$
   declare
@@ -377,7 +416,7 @@ $$
 --------------------------------------------------------------------------------------------------------------
 
 CREATE TABLE Personal_history(
-  id int PRIMARY KEY,
+  id serial8 PRIMARY KEY,
   smoking text,
   allergies text,
   alcohol text,
@@ -385,6 +424,28 @@ CREATE TABLE Personal_history(
   drugs text,
   done BOOLEAN
 );
+
+create or replace function newpersonal_history(par_id serial8, par_smoking text, par_allergies text, par_alcohol text,
+                                               par_medication_taken text, par_drugs text, par_done) returns text as
+$$
+ declare
+   loc_id text;
+   loc_res text;
+ BEGIN
+   SELECT into loc_id id from Personal_history where id = par_id;
+   if loc_id isnull THEN
+
+       INSERT into Personal_history(id, smoking, allergies, alcohol, medication_taken, drugs, done) VALUES (par_id, par_smoking, par_allergies,
+                                                par_alcohol, par_medication_taken, par_drugs, par_done);
+       loc_res = 'OK';
+
+   ELSE
+       loc_res = 'ID EXISTED';
+   END if
+   return loc_res;
+ END;
+$$
+ language 'plpsql';
 
 ---------------------------------------------------------------------------------------------------------------
 

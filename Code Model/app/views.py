@@ -1,10 +1,11 @@
-from flask import Flask, jsonify, session, render_template, request, flash, redirect, url_for, abort, g
-from flask.ext.login import login_user, logout_user, current_user, login_required
-from app import app, db, login_manager
-from app.models import DBconn
+#!flask/bin/python
+from flask import Flask, jsonify, render_template, request
+from flask.ext.httpauth import HTTPBasicAuth
+from model import DBconn
+import sys,flask
 
-
-USERS = {}
+app = Flask(__name__)
+auth = HTTPBasicAuth()
 
 def spcall(qry, param, commit=False):
     try:
@@ -19,57 +20,65 @@ def spcall(qry, param, commit=False):
         res = [("Error: " + str(sys.exc_info()[0]) + " " + str(sys.exc_info()[1]),)]
     return res
 
-@app.route('/add' , methods=['POST', 'GET'])
-def add():
-    if request.method == 'POST':
-        post = Post(request.form['title'], request.form['body'])
-        db.session.add(post)
-        db.session.commit()
-        flash('New entry was successfully posted')
-    return render_template('add.html')
+@auth.get_password
+def getpassword(email):
+    return spcall("getpassword", (email,))[0][0]
 
 
-@login_manager.user_loader  # function loads user from the database
-def load_user(id):
-    return User.query.get(int(id))
+@app.route('/')
+def index():
+    return "Hello, World!"
 
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'GET':
-        return render_template('login.html')
-    username = request.form['username']
-    password = request.form['password']
-    registered_user = User.query.filter_by(username=username, password=password).first()
-    if registered_user is None:
-        flash('Username or Password is invalid', 'error')
-        return redirect(url_for('login'))
-    login_user(registered_user)
-    flash('Logged in successfully')
-    return redirect(request.args.get('next') or url_for('index'))
-
-@app.route('/addUser', methods=['GET'])
-def addUser(fname):
-
-    res = spcall()
-
-
-@app.route('/users', methods=['GET'])
-def loadusers():
-    res = spcall('getuserinfo', ())
+@app.route('/tasks', methods=['GET', 'POST'])
+@auth.login_required
+def getalltasks():
+    res = spcall('gettasks', ())
 
     if 'Error' in str(res[0][0]):
         return jsonify({'status': 'error', 'message': res[0][0]})
 
     recs = []
-
     for r in res:
-        recs.append({"id": r[0],
-                     "fname": r[1],
-                     "mname": r[2],
-                     "lname": r[3],
-                     "email": r[4],
-                     "role": r[5],
-                     "is_active": str(r[6])})
-    return jsonify({'status': 'OK', 'message': res[0][0]})
+        recs.append({"id": r[0], "title": r[1], "description": r[2], "done": str(r[3])})
 
+    if request.method == 'POST':
+        return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
+
+    return render_template('index.html')
+
+@app.route('/tasks/<int:id>/<string:title>/<string:description>/<string:done>')
+def inserttask(id, title, description, done):
+
+    res = spcall("newtask", (id, title, description, done=='true'), True)
+
+    if 'Error' in res[0][0]:
+        return jsonify({'status': 'error', 'message': res[0][0]})
+
+    return jsonify({'status': 'ok', 'message': res[0][0]})
+
+@app.route('/tasks/delete/<int:id>')
+def deletetask(id):
+
+    res = spcall('deletetask', (id, 'true'=='true'),True)
+
+    if 'Error' in str(res[0][0]):
+        return jsonify({'status': 'error', 'message': res[0][0]})
+
+    return jsonify({'status': 'Deleted'})
+
+@app.after_request
+def add_cors(resp):
+    resp.headers['Access-Control-Allow-Origin'] = flask.request.headers.get('Origin', '*')
+    resp.headers['Access-Control-Allow-Credentials'] = True
+    resp.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS, GET, PUT, DELETE'
+    resp.headers['Access-Control-Allow-Headers'] = flask.request.headers.get('Access-Control-Request-Headers',
+                                                                             'Authorization')
+    # set low for debugging
+
+    if app.debug:
+        resp.headers["Access-Control-Max-Age"] = '1'
+    return resp
+
+if __name__ == '__main__':
+    app.run()
