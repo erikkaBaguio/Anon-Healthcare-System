@@ -426,7 +426,7 @@ CREATE TABLE Personal_history(
 );
 
 create or replace function newpersonal_history(par_id serial8, par_smoking text, par_allergies text, par_alcohol text,
-                                               par_medication_taken text, par_drugs text, par_done) returns text as
+                                               par_medication_taken text, par_drugs text, par_done boolean) returns text as
 $$
  declare
    loc_id text;
@@ -441,7 +441,7 @@ $$
 
    ELSE
        loc_res = 'ID EXISTED';
-   END if
+   END if;
    return loc_res;
  END;
 $$
@@ -450,7 +450,7 @@ $$
 ---------------------------------------------------------------------------------------------------------------
 
 CREATE TABLE Cardiac(
-  id int PRIMARY KEY,
+  id serial8 PRIMARY KEY,
   chest_pain text,
   palpitations text,
   pedal_edema text,
@@ -458,6 +458,26 @@ CREATE TABLE Cardiac(
   nocturnal_dyspnea text,
   done BOOLEAN
 );
+
+CREATE  or replace function newcardiac(par_id serial8, par_chest_pain text, par_palpitations text, par_pedal_edema text, par_orthopnea text, par_nocturnal_dyspnea text, par_done boolean) returns text as
+$$
+  DECLARE
+    loc_id text;
+    loc_res text;
+  BEGIN
+    SELECT INTO  loc_id id from Cardiac where id = par_id;
+    if loc_id isnull THEN
+
+      INSERT into Cardiac(id, chest_pain, palpitations, pedal_edema, orthopnea, nocturnal_dyspnea, done) VALUES (par_id, par_chest_pain, par_palpitations, par_pedal_edema, par_orthopnea, par_nocturnal_dyspnea, par_done);
+      loc_res = 'OK';
+
+    ELSE
+      loc_res = 'ID EXISTED';
+    END if;
+    return loc_res;
+  END ;
+$$
+ LANGUAGE 'plpgsql';
 
 ----------------------------------------------------------------------------------------------------------------
 
