@@ -482,12 +482,32 @@ $$
 ----------------------------------------------------------------------------------------------------------------
 
 CREATE TABLE Neurologic(
-  id int PRIMARY KEY,
+  id serial8 PRIMARY KEY,
   headache text,
   seizure text,
   dizziness text,
   loss_of_consciousness text,
   done BOOLEAN
 );
+
+create or replace function newneurologic(par_id serial8, par_headache text, par_seizure text, par_dizziness text, par_loss_of_consciousness text, par_done boolean) returns text as
+$$
+ DECLARE
+   loc_id text;
+   loc_res text;
+ BEGIN
+   SELECT into loc_id id from Neurologic where id = par_id;
+   if loc_id isnull THEN
+
+     INSERT INTO Neurologic(id, headache, seizure, dizziness, loss_of_consciousness, done) values (par_id, par_headache, par_seizure, par_dizziness, par_loss_of_consciousness, par_done);
+     loc_res = 'OK';
+
+   ELSE
+     loc_res = 'ID EXISTED';
+   END if;
+   return loc_res;
+ END;
+$$
+ LANGUAGE  'plpgsql';
 
 -----------------------------------------------------------------------------------------------------------------
