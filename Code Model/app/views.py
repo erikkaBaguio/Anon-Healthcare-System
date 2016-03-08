@@ -76,9 +76,14 @@ def add_cors(resp):
                                                                              'Authorization')
     # set low for debugging
 
+<<<<<<< HEAD
     if app.debug:
         resp.headers["Access-Control-Max-Age"] = '1'
     return resp
+=======
+@app.route('/addUser', methods=['POST'])
+def addUser(fname):
+>>>>>>> f8397e3fc4df7f4af73780dc46e9518041ff8ed4
 
 if __name__ == '__main__':
     app.run()
