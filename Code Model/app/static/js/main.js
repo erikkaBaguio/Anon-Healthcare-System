@@ -3,9 +3,9 @@
  */
 $(document).ready(function(){
 	console.log("hgdhsjjka");
-	$("#content").load("home.html");
+	$("#content").load("/static/pages/home.html");
 });
 
 function login(){
-	$("#content").load("login.html");
+	$("#content").load("/static/pages/login.html");
 }
