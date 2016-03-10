@@ -1,10 +1,12 @@
 #!flask/bin/python
+import os
+from os import sys
 from flask import Flask, jsonify, render_template, request
 from flask.ext.httpauth import HTTPBasicAuth
 from models import DBconn
-import sys,flask
+import json, flask
+from app import app
 
-app = Flask(__name__)
 auth = HTTPBasicAuth()
 
 def spcall(qry, param, commit=False):
@@ -27,7 +29,7 @@ def getpassword(email):
 
 @app.route('/')
 def index():
-    return "Hello, World!"
+    return render_template('index.html')
 
 
 @app.route('/tasks', methods=['GET', 'POST'])
