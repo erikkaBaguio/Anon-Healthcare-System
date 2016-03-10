@@ -1,21 +1,11 @@
+/**
+ * Created by erikka on 3/9/16.
+ */
 $(document).ready(function(){
-	$("#home").load("templates/index.html");
-	//$("form").on("submit", function(){
-	//	console.log("the form has been submitted!")
-    //
-	//	var valueOne = $('input[name="username"]').val()
-	//	var valuetwo= $('input[name="password"]').val()
-	//	console.log(valueOne, valuetwo)
-    //
-	//	$.ajax({
-	//		type: "POST",
-	//		url: "/",
-	//		data: {first: valueOne, second: valuetwo}
-	//	})
-	//})
-
+	console.log("hgdhsjjka");
+	$("#content").load("/static/pages/home.html");
 });
 
 function login(){
-	window.load("templates/login.html");
+	$("#content").load("/static/pages/login.html");
 }
