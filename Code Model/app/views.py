@@ -27,8 +27,6 @@ def spcall(qry, param, commit=False):
 def index():
     return render_template('index.html')
 
-<<<<<<< HEAD
-
 
 @app.route('/question', methods=['GET'])
 def get_all_questions():
@@ -56,11 +54,11 @@ def get_question(question_id):
 @auth.login_required
 def getalltasks():
     res = spcall('gettasks', ())
-=======
+
 @app.errorhandler(404)
 def page_not_found(e):
     return 'Sorry, the page you were looking for was not found.'
->>>>>>> 8addfa95b1b1dbee7e76a69cc97862d4d4800d96
+
 
 @app.errorhandler(500)
 def internal_server_error(e):
