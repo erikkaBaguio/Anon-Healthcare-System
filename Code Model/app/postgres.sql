@@ -1,3 +1,8 @@
+create table roles(
+  id serial4 primary key,
+  role_name text
+);
+
 create table userinfo (
   	id serial8 primary key,
   	fname text,
@@ -5,8 +10,9 @@ create table userinfo (
   	lname text,
   	email text,
   	password text,
-  	is_active BOOLEAN
-  );
+  	is_active BOOLEAN,
+    role_id int references roles(id)
+);
 
 create table Symptom(
   id serial8 primary key,
