@@ -377,6 +377,23 @@ $$
 $$
  language 'plpgsql';
 
+--[GET] retrieve certain disease_symptom data.
+-- select getdisease_symptom(1);
+create or replace function getdisease_symptom(in par_id int, out int, out int, out int, out boolean) returns setof record as
+$$
+  select disease_id, symptom_id, user_id, done from disease_symptom where id = par_id;
+$$
+  language 'sql';
+
+
+--[GET] retrieve all disease_symptom data.
+--select get_all_disease_symptom();
+create or replace function get_all_disease_symptom(out int, out int, out int, out int, out boolean) returns setof record as
+$$
+  select id, disease_id, symptom_id, user_id, done from disease_symptom;
+$$
+  language 'sql';
+
 ------------------------------------------------------------------------------------------------------------
 
 create or replace function newquestion(par_question text, par_user_id int, par_category_id int, par_done boolean) returns text as
