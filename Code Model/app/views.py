@@ -29,7 +29,7 @@ def getpassword(email):
 
 @app.route('/')
 def index():
-    return render_template('dashboard.html')
+    return render_template('index.html')
 
 
 @app.route('/tasks', methods=['GET', 'POST'])
