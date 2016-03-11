@@ -34,18 +34,18 @@ def page_not_found(e):
 def internal_server_error(e):
     return '(Error 500) Sorry, there was an internal server error.'
 
-@app.route('/users', methods=['POST'])
-@auth.login_required
-def get_all_users():
-    res = spcall('get_all_users', ())
-
-    if 'Error' in str(res[0][0]):
-        return jsonify({'status': 'error', 'message': res[0][0]})
-
-    recs = []
-    for r in res:
-        recs.append({"id": r[0], "fname": r[1], "mname": r[2], "lname": r[3], "email":r[4], "password": r[5], "role": [6], "done":r[7]})
-    return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    form = LoginForm()
+    if request.method == 'POST':
+        user = db.session.query(User).filter(User.email == request.form['email']).one()
+        if request.form['password'] == user.password:
+            login_user(user, remember=True)
+            return redirect(url_for('home'))
+        else:
+            error = 'Invalid credentials. Try again.'
+    return render_template('login.html', title='Sign In', form=form, error=error)
 
 @app.route('/users', methods=['GET'])
 @auth.login_required
