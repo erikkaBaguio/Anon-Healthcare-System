@@ -8,6 +8,7 @@ create table userinfo (
   	fname text,
   	mname text,
   	lname text,
+  	username text unique,
   	email text,
   	password text,
   	is_active BOOLEAN,
@@ -164,23 +165,59 @@ CREATE TABLE Neurologic(
 -----------------------------------------------------------------------------------------------------------
 -----STORED PROCEDURE FUNCTIONS-----
 -----------------------------------------------------------------------------------------------------------
-create or replace function newuser(par_fname  text, par_mname  text, par_lname  text, par_email text) returns text as
-$$
-  declare
-    loc_id text;
-    loc_res text;
-  begin
+
+--table userinfo
 
 create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
                                 par_email text)
                                  returns text as
-       insert into userinfo (fname, mname, lname, email, password) values (par_fname, par_mname, par_lname, par_email, par_password);
+$$
+
+    declare
+        loc_res text;
+        random_password text;
+        username text;
+
+    begin
+
+        username := par_fname || '.' || par_lname;
+        random_password := generate_password();
+
+       insert into userinfo (fname, mname, lname, email, username, password)
+                values (par_fname, par_mname, par_lname, par_email, username, random_password);
+
+
        loc_res = 'OK';
-       return loc_res;
+       return random_password;
   end;
 $$
  language 'plpgsql';
 
+ create or replace function generate_password() returns text as
+ $$
+    declare
+        characters text;
+        random_password text;
+        len int4;
+        placevalue int4;
+
+    begin
+        characters := 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~!@#$%^&*()_+=_';
+        len := length(characters);
+        random_password := '';
+
+        while(length(random_password) < 16) loop
+
+            placevalue := int4(random() * len);
+            random_password := random_password || substr(characters, placevalue + 1, 1);
+
+        end loop;
+
+        return random_password;
+    end;
+$$
+
+LANGUAGE 'plpgsql';
 
 
 --select newuserinfo('Mary Grace', 'Pasco', 'Cabolbol', 'marygracecabolbol@gmail.com', 'password', 1, true);
@@ -283,7 +320,8 @@ $$
       SELECT INTO loc_id id from Examination WHERE id = par_id;
       if loc_id isnull THEN
 
-        INSERT INTO Examination(id, user_id, schedule_id, question_id, answer_id, examination_name, done) values (par_id, par_user_id, par_schedule_id, par_question_id,
+        INSERT INTO Examination(id, user_id, schedule_id, question_id, answer_id, examination_name, done)
+                        values (par_id, par_user_id, par_schedule_id, par_question_id)
                                                                                                                   par_answer_id, par_examination_name, par_done);
         loc_res = 'OK';
 
