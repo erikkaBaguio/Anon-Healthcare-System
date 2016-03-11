@@ -22,6 +22,8 @@ def spcall(qry, param, commit=False):
         res = [("Error: " + str(sys.exc_info()[0]) + " " + str(sys.exc_info()[1]),)]
     return res
 
+
+
 @auth.get_password
 def getpassword(email):
     return spcall("getpassword", (email,))[0][0]
