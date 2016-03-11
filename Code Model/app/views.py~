@@ -78,7 +78,7 @@ def insertuser():
 	valueEmail = request.form.get('email')
 	valuePass = request.form.get('pass')
 	done = ""
-	res = spcall("newuser", (valueName, valueMName, valueLName, valueEmail, valuePass, True), True)
+	res = spcall("newuserinfo", (valueName, valueMName, valueLName, valueEmail, valuePass, True), True)
 	return jsonify({'status': 'ok',})
 
 	if 'Error' in res[0][0]:
