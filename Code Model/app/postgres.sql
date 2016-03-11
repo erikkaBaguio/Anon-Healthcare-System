@@ -258,7 +258,22 @@ $$
 $$
  language 'plpgsql';
 
+--select newquestion(1,'What do you feel?',2013-1288, '1', false);
 
+create or replace function get_newquestion(out serial8, out text, out int, out int, out boolean) returns setof record as
+$$
+  select id, question, user_id, category_id, done from Question;
+$$
+ language 'sql';
+
+--select * from get_newquestion();
+
+create or replace function get_newquestion_id(in par_id serial8, out text, out int, out int, out boolean) returns setof record as
+$$
+  select question, user_id, category_id, done from Question where id = par_id;
+$$
+
+--select * from get_newquestion_id(1);
 ------------------------------------------------------------------------------------------------------------
 create table Question_answer (
     id serial8 primary key,

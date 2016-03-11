@@ -32,6 +32,8 @@ def index():
     return render_template('dashboard.html')
 
 
+@app.route('/question', methods=['GET'])
+def get_question(id)
 @app.route('/tasks', methods=['GET', 'POST'])
 @auth.login_required
 def getalltasks():
