@@ -160,7 +160,7 @@ CREATE TABLE Neurologic(
 -----STORED PROCEDURE FUNCTIONS-----
 -----------------------------------------------------------------------------------------------------------
 
-create or replace function newuserinfo(par_id serial8, par_fname text, par_mname text, par_lname text,
+create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
                                 par_email text, par_password text, par_role int, par_is_active boolean)
                                  returns text as
 $$
@@ -169,11 +169,10 @@ $$
         loc_res text;
 
     begin
-        select into loc_id id from UserInfo where id = par_id;
-        if loc_id isnull then
 
-            insert into UserInfo(id, fname, mname, lname, email, password, role, is_active) values
-                 (par_id, par_fname, par_mname, par_lname, par_email, par_password, par_role, par_is_active);
+        if loc_id isnull then
+            insert into UserInfo(fname, mname, lname, email, password, role, is_active) values
+                 (par_fname, par_mname, par_lname, par_email, par_password, par_role, par_is_active);
             loc_res = 'OK';
         else
             loc_res = 'ID EXISTED';
@@ -183,12 +182,17 @@ $$
 $$
   language 'plpgsql';
 
-create or replace function getuserinfo(out int, out text, out text, out text, out text, out int, out boolean)
+--select newuserinfo('Mary Grace', 'Pasco', 'Cabolbol', 'marygracecabolbol@gmail.com', 'password', 1, true);
+--select newuserinfo('Ma.Erikka', 'P' , 'Baguio', 'ma.erikkabaguio@gmail.com', 'password' , 1, true);
+
+create or replace function getuserinfo(out text, out text, out text, out text, out int, out boolean)
                                             returns setof record as
 $$
-    select id, fname, mname, lname, email, role, is_active from UserInfo;
+    select fname, mname, lname, email, role, is_active from UserInfo;
 $$
   language 'sql';
+
+--select * from getuserinfo();
 
 create or replace function getuserinfoid(in par_id int, out text, out text, out text, out text,
                                                  out int, out boolean) returns setof record as
@@ -196,6 +200,8 @@ $$
     select fname, mname, lname, email, role, is_active from UserInfo where par_id = id;
 $$
   language 'sql';
+
+--select * from getuserinfoid(1);
 ----------------------------------------------------------------------------------------------------
 
 create or replace function newsymptom(par_id int, par_symptom text, par_done boolean) returns text AS
@@ -266,16 +272,15 @@ $$
 
 -----------------------------------------------------------------------------------------------------------
 
-create or replace function newquestion_category(par_id int, par_category text, par_done boolean) returns text as
+create or replace function newquestion_category(par_category text, par_done boolean) returns text as
 $$
   declare
     loc_id text;
     loc_res text;
   begin
-     select into loc_id id from Question_category where id = par_id;
      if loc_id isnull then
 
-       insert into Question_category (id, category, done) values (par_id, par_category, par_done);
+       insert into Question_category (category, done) values (par_category, par_done);
        loc_res = 'OK';
 
      else
@@ -286,6 +291,24 @@ $$
 $$
  language 'plpgsql';
 
+--select newquestion_category('moderate', false);
+--select newquestion_category('severe', false);
+
+create or replace function get_newquestion_category(out text, out boolean) returns setof record as
+$$
+  select category, done from Question_category;
+$$
+ language 'sql';
+
+--select * from get_newquestion_category();
+
+create or replace function get_newquestion_category_id(in par_id int, out text, out boolean) returns setof record as
+$$
+  select category, done from Question_category where par_id = id;
+$$
+ language 'sql';
+
+--select * from get_newquestion_category_id(3);
 
 ------------------------------------------------------------------------------------------------------------
 
@@ -340,18 +363,17 @@ $$
 
 ------------------------------------------------------------------------------------------------------------
 
-create or replace function newquestion(par_id serial8, par_question text, par_user_id int, par_category_id int, par_done boolean) returns text as
+create or replace function newquestion(par_question text, par_user_id int, par_category_id int, par_done boolean) returns text as
 $$
   declare
     loc_id text;
     loc_res text;
 
   begin
-    select into loc_id id from Question where id = par_id;
     if loc_id isnull then
 
-      insert into Question(id, question, user_id, category_id, done) values (par_id, par_question, par_user_id, par_category_id, par_done);
-       l    oc_res = 'OK';
+      insert into Question( question, user_id, category_id, done) values (par_question, par_user_id, par_category_id, par_done);
+       loc_res = 'OK';
 
     else
        loc_res = 'ID EXISTED';
@@ -361,8 +383,25 @@ $$
 $$
  language 'plpgsql';
 
+--select newquestion('What do you feel?', 1 , 1, false);
+--select newquestion('How old are you?', 1 , 1 , false);
 
-------------------------------------------------------------------------------------------------------------
+create or replace function get_newquestion(out text, out int, out int, out boolean) returns setof record as
+$$
+  select question, user_id, category_id, done from Question;
+$$
+ language 'sql';
+
+--select * from get_newquestion();
+
+create or replace function get_newquestion_id(in par_id int, out text, out int, out par int, out boolean) returns setof record as
+$$
+  select question, user_id, category_id, done from Question where par_id = id;
+$$
+ language 'sql';
+
+SELECT * from get_newquestion_id(1);
+-----------------------------------------------------------------------------------------------------------
 
 CREATE or replace function newquestion_answer(par_id serial8, par_question_id int, par_answer_id int, par_chained_to_question int, done boolean) returns text as
 $$
