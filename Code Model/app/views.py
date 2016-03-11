@@ -24,6 +24,19 @@ def spcall(qry, param, commit=False):
         res = [("Error: " + str(sys.exc_info()[0]) + " " + str(sys.exc_info()[1]),)]
     return res
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return 'Sorry, the page you were looking for was not found.'
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return '(Error 500) Sorry, there was an internal server error.'
+
+@app.route('/users', methods=['GET'])
+# @auth.login_required
+def get_all_users():
+    res = spcall('getuserinfo', ())
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -37,7 +50,9 @@ def get_all_questions():
 
     recs = []
     for r in res:
-        recs.append({"question": r[0], "user_id": r[1], "category_id": r[2], "done": str(r[3])})
+        recs.append({"fname": r[0], "mname": r[1], "lname": r[2], "email": r[3], "password": r[4],
+                     "role":r[5], "is_active": str[6]})
+
     return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
 
 @app.route('/question/<question_id>/', methods = ['GET'])
@@ -47,16 +62,12 @@ def get_question(question_id):
     if 'Error' in res[0][0]:
         return jsonify({'status': 'error', 'message': res[0][0]})
 
+    return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
+
+@app.route('/question', methods=['GET'])
+# def get_question(id){}
     r = res[0]
     return jsonify({"id": r[0], "question": r[1], "user_id": r[2], "category_id": r[3], "done": str(r[4])})
-
-@app.errorhandler(404)
-def page_not_found(e):
-    return 'Sorry, the page you were looking for was not found.'
-
-@app.errorhandler(500)
-def internal_server_error(e):
-    return '(Error 500) Sorry, there was an internal server error.'
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

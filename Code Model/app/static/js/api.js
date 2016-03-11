@@ -1,3 +1,35 @@
+
+function get_all_users() {
+    $.ajax({
+        url: 'http://127.0.0.1:5000/users/',
+        type: "GET",
+        datatype: 'json',
+        success: function(resp) {
+            $("#users").html("");
+            if(resp == 'ok') {
+                for(i = 0; i < resp.count; i++) {
+                    id = resp.entries[i].id;
+                    fname = resp.entries[i].fname;
+                    mname = resp.entries[i].mname;
+                    lname = resp.entries[i].lname;
+                    email = resp.entries[i].email;
+                    password = resp.entries[i].password;
+                    role = resp.entries[i].role;
+                    is_active = resp.entries[i].is_active;
+                }
+            }
+            else {
+                $("users").html("");
+                alert(resp.message);
+            }
+        },
+        error: function(e) {
+            alert("danger" + e.status);
+        }
+
+    });
+}
+
 function get_disease_data() {
     $.ajax({
         url: 'http://127.0.0.1:5000/disease/',
