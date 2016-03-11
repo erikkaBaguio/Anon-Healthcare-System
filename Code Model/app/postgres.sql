@@ -223,6 +223,14 @@ $$
 $$
   language 'sql';
 
+--[GET] retrieve list of symptoms.
+--select get_all_symptom();
+create or replace function get_all_symptom(out int, out text, out boolean) returns setof record as
+$$
+  select id, symptom, done from Symptom;
+$$
+  language 'sql';
+
 -----------------------------------------------------------------------------------------------------
 
 create or replace function newschedule(par_id int, par_date_time_year date, par_done BOOLEAN) returns text as
