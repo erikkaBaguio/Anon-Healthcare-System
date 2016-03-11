@@ -215,6 +215,13 @@ $$
 $$
   language 'plpgsql';
 
+--[GET] retrieve a specific symptom.
+--select get_symptom(2);
+create or replace function get_symptom(in par_id int, out text, out boolean) returns setof record as
+$$
+  select symptom, done from Symptom where id = par_id;
+$$
+  language 'sql';
 
 -----------------------------------------------------------------------------------------------------
 
