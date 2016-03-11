@@ -24,21 +24,6 @@ def spcall(qry, param, commit=False):
         res = [("Error: " + str(sys.exc_info()[0]) + " " + str(sys.exc_info()[1]),)]
     return res
 
-<<<<<<< HEAD
-=======
-@app.errorhandler(404)
-def page_not_found(e):
-    return 'Sorry, the page you were looking for was not found.'
-
-@app.errorhandler(500)
-def internal_server_error(e):
-    return '(Error 500) Sorry, there was an internal server error.'
-
->>>>>>> 9f73cf9c4238c17bd3a9d12214530b12a0738a54
-@app.route('/users', methods=['GET'])
-# @auth.login_required
-def get_all_users():
-    res = spcall('getuserinfo', ())
 
 @app.route('/')
 def index():
@@ -66,6 +51,19 @@ def get_question(question_id):
         return jsonify({'status': 'error', 'message': res[0][0]})
 
     return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
+
+@app.route('/question_category', methods = ['GET'])
+def get_all_category():
+    res =spcall('get_newquestion_category', ())
+
+    if 'Error' in str(res[0][0]):
+        return jsonify({'status': 'error', 'message': res[0][0]})
+
+    recs = []
+    for r in res:
+        recs.append({"category": r[0], "done": str(r[1])})
+    return jsonify({'status': 'OK', 'entries': recs, 'count':len(recs)})
+
 
 
 @app.route('/tasks', methods=['GET', 'POST'])
