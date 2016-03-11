@@ -22,6 +22,31 @@ def spcall(qry, param, commit=False):
         res = [("Error: " + str(sys.exc_info()[0]) + " " + str(sys.exc_info()[1]),)]
     return res
 
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return 'Sorry, the page you were looking for was not found.'
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return '(Error 500) Sorry, there was an internal server error.'
+
+@app.route('/users', methods=['POST'])
+@auth.login_required
+def get_all_users():
+    res = spcall('get_all_users', ())
+
+    if 'Error' in str(res[0][0]):
+        return jsonify({'status': 'error', 'message': res[0][0]})
+
+    recs = []
+    for r in res:
+        recs.append({"id": r[0], "fname": r[1], "mname": r[2], "lname": r[3], "email":r[4], "password": r[5], "role": [6], "done":r[7]})
+    return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
+
 @app.route('/users', methods=['GET'])
 @auth.login_required
 def get_all_users():
@@ -32,57 +57,13 @@ def get_all_users():
 
     recs = []
     for r in res:
-        recs.append({"id": r[0], "fname": r[1], "mname": r[2], "lname": r[3], "email":r[4], "password": r[5], "done":r[6]})
+        recs.append({"id": r[0], "fname": r[1], "mname": r[2], "lname": r[3], "email":r[4], "password": r[5], "role": [6], "done":r[7]})
     return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
 
 @auth.get_password
 def getpassword(email):
     return spcall("getpassword", (email,))[0][0]
 
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/question', methods=['GET'])
-def get_question(id){}
-
-@app.route('/tasks', methods=['GET', 'POST'])
-@auth.login_required
-def getalltasks():
-    res = spcall('gettasks', ())
-
-    if 'Error' in str(res[0][0]):
-        return jsonify({'status': 'error', 'message': res[0][0]})
-
-    recs = []
-    for r in res:
-        recs.append({"id": r[0], "title": r[1], "description": r[2], "done": str(r[3])})
-
-    if request.method == 'POST':
-        return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
-
-    return render_template('index.html')
-
-@app.route('/tasks/<int:id>/<string:title>/<string:description>/<string:done>')
-def inserttask(id, title, description, done):
-
-    res = spcall("newtask", (id, title, description, done=='true'), True)
-
-    if 'Error' in res[0][0]:
-        return jsonify({'status': 'error', 'message': res[0][0]})
-
-    return jsonify({'status': 'ok', 'message': res[0][0]})
-
-@app.route('/tasks/delete/<int:id>')
-def deletetask(id):
-
-    res = spcall('deletetask', (id, 'true'=='true'),True)
-
-    if 'Error' in str(res[0][0]):
-        return jsonify({'status': 'error', 'message': res[0][0]})
-
-    return jsonify({'status': 'Deleted'})
 
 @app.after_request
 def add_cors(resp):
@@ -97,9 +78,6 @@ def add_cors(resp):
     if app.debug:
         resp.headers["Access-Control-Max-Age"] = '1'
     return resp
-
-# @app.route('/addUser', methods=['POST'])
-# def addUser(fname):
 
 
 if __name__ == '__main__':
