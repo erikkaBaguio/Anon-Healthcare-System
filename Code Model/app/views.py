@@ -23,16 +23,17 @@ def spcall(qry, param, commit=False):
     return res
 
 @app.route('/users', methods=['GET'])
-@auth.login_required
+# @auth.login_required
 def get_all_users():
-    res = spcall('get_all_users', ())
+    res = spcall('getuserinfo', ())
 
     if 'Error' in str(res[0][0]):
         return jsonify({'status': 'error', 'message': res[0][0]})
 
     recs = []
     for r in res:
-        recs.append({"id": r[0], "fname": r[1], "mname": r[2], "lname": r[3], "email":r[4], "password": r[5], "done":r[6]})
+        recs.append({"fname": r[0], "mname": r[1], "lname": r[2], "email": r[3], "password": r[4],
+                     "role":r[5], "is_active": str[6]})
     return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
 
 @auth.get_password
@@ -45,7 +46,7 @@ def index():
     return render_template('index.html')
 
 @app.route('/question', methods=['GET'])
-def get_question(id){}
+# def get_question(id){}
 
 @app.route('/tasks', methods=['GET', 'POST'])
 @auth.login_required
