@@ -1,4 +1,4 @@
-function add_new_disease_data(){
+function get_disease_data(){
     $.ajax({
         url : 'http://127.0.0.1:5000/disease/',
         type: "GET",
