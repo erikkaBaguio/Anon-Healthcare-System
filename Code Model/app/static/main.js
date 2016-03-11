@@ -8,15 +8,14 @@ function register(){
 
 	$.ajax({
 		type: "POST",
-		url: "/user",
+		url: "/user/",
 		data: {fname:valueName, mname:valueMName, lname:valueLName, email:valueEmail, pass:valuePass},
 		success: function(resp){
 			console.log(resp.status);
 
 				$("#results").html('<p>successfully register ' + valueName + '</p>');
 
-				// $("input").val("")	
-			
+				// $("input").val("")
 		},
 		error: function(error){
 			console.log(error);

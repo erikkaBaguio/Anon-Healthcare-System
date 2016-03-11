@@ -1,4 +1,4 @@
-create table UserInfo (
+create table userinfo (
   	id serial8 primary key,
   	fname text,
   	mname text,
@@ -157,28 +157,21 @@ CREATE TABLE Neurologic(
 -----------------------------------------------------------------------------------------------------------
 -----STORED PROCEDURE FUNCTIONS-----
 -----------------------------------------------------------------------------------------------------------
-
-create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
-                                par_email text, par_password text)
-                                 returns text as
+create or replace function newuser(par_fname  text, par_mname  text, par_lname  text, par_email text, par_password text) returns text as
 $$
-    declare
-        loc_id text;
-        loc_res text;
+  declare
+    loc_id text;
+    loc_res text;
+  begin
 
-    begin
-
-        if loc_id isnull then
-            insert into UserInfo(fname, mname, lname, email, password) values
-                 (par_fname, par_mname, par_lname, par_email, par_password);
-            loc_res = 'OK';
-        else
-            loc_res = 'ID EXISTED';
-        end if;
-        return loc_res;
-    end;
+       insert into userinfo (fname, mname, lname, email, password) values (par_fname, par_mname, par_lname, par_email, par_password);
+       loc_res = 'OK';
+       return loc_res;
+  end;
 $$
-  language 'plpgsql';
+ language 'plpgsql';
+
+
 
 --select newuserinfo('Mary Grace', 'Pasco', 'Cabolbol', 'marygracecabolbol@gmail.com', 'password', 1, true);
 --select newuserinfo('Ma.Erikka', 'P' , 'Baguio', 'ma.erikkabaguio@gmail.com', 'password' , 1, true);

@@ -7,6 +7,7 @@ from models import DBconn
 import json, flask
 from app import app
 
+USERS = {}
 auth = HTTPBasicAuth()
 
 def spcall(qry, param, commit=False):
@@ -60,18 +61,20 @@ def get_all_users():
         recs.append({"id": r[0], "fname": r[1], "mname": r[2], "lname": r[3], "email":r[4], "password": r[5], "role": [6], "done":r[7]})
     return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
 
-@app.route('/user/', methods=['POST'])
+@app.route('/user/', methods=['POST', 'GET'])
 def insertuser():
-	valueName = request.form.get('fname')
-	valueMName = request.form.get('mname')
-	valueLName = request.form.get('lname')
-	valueEmail = request.form.get('email')
-	valuePass = request.form.get('pass')
-	done = ""
-	res = spcall("newuserinfo", (valueName, valueMName, valueLName, valueEmail, valuePass, True), True)
-	return jsonify({'status': 'ok',})
+    if request.method == 'POST':
+        valueName = request.form.get('fname')
+        valueMName = request.form.get('mname')
+        valueLName = request.form.get('lname')
+        valueEmail = request.form.get('email')
+        valuePass = request.form.get('pass')
 
-	if 'Error' in res[0][0]:
+        res = spcall("newuser", (valueName, valueMName, valueLName, valueEmail, valuePass), True)
+        return jsonify({'status': 'ok'})
+    return render_template('index2.html')
+
+    if 'Error' in res[0][0]:
 		return jsonify({'status': 'error', 'message': res[0][0]})
 
 @app.after_request
