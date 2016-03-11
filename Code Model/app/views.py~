@@ -9,7 +9,6 @@ from app import app
 
 auth = HTTPBasicAuth()
 
-QUESTIONS = {}
 def spcall(qry, param, commit=False):
     try:
         dbo = DBconn()
@@ -23,74 +22,53 @@ def spcall(qry, param, commit=False):
         res = [("Error: " + str(sys.exc_info()[0]) + " " + str(sys.exc_info()[1]),)]
     return res
 
+@auth.get_password
+def getpassword(email):
+    return spcall("getpassword", (email,))[0][0]
+
+
 @app.route('/')
 def index():
-    return render_template('index.html')
-
-<<<<<<< HEAD
-
+    return render_template('index2.html')
 
 @app.route('/question', methods=['GET'])
-def get_all_questions():
-    res= spcall('get_newquestion',())
-
-    if 'Error' in str(res[0][0]):
-        return jsonify({'status': 'error', 'message': res[0][0]})
-
-    recs = []
-    for r in res:
-        recs.append({"question": r[0], "user_id": r[1], "category_id": r[2], "done": str(r[3])})
-    return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
-
-@app.route('/question/<question_id>/', methods = ['GET'])
-def get_question(question_id):
-    res= spcall('get_newquestion_id', (question_id))
-
-    if 'Error' in res[0][0]:
-        return jsonify({'status': 'error', 'message': res[0][0]})
-
-    r = res[0]
-    return jsonify({"id": r[0], "question": r[1], "user_id": r[2], "category_id": r[3], "done": str(r[4])})
-
+def get_question(id)
 @app.route('/tasks', methods=['GET', 'POST'])
 @auth.login_required
 def getalltasks():
     res = spcall('gettasks', ())
-=======
-@app.errorhandler(404)
-def page_not_found(e):
-    return 'Sorry, the page you were looking for was not found.'
->>>>>>> 8addfa95b1b1dbee7e76a69cc97862d4d4800d96
-
-@app.errorhandler(500)
-def internal_server_error(e):
-    return '(Error 500) Sorry, there was an internal server error.'
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    error = None
-    form = LoginForm()
-    if request.method == 'POST':
-        user = db.session.query(User).filter(User.email == request.form['email']).one()
-        if request.form['password'] == user.password:
-            login_user(user, remember=True)
-            return redirect(url_for('home'))
-        else:
-            error = 'Invalid credentials. Try again.'
-    return render_template('login.html', title='Sign In', form=form, error=error)
-
-@app.route('/users', methods=['GET'])
-@auth.login_required
-def get_all_users():
-    res = spcall('get_all_users', ())
 
     if 'Error' in str(res[0][0]):
         return jsonify({'status': 'error', 'message': res[0][0]})
 
     recs = []
     for r in res:
-        recs.append({"id": r[0], "fname": r[1], "mname": r[2], "lname": r[3], "email":r[4], "password": r[5], "role": [6], "done":r[7]})
-    return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
+        recs.append({"id": r[0], "title": r[1], "description": r[2], "done": str(r[3])})
+
+    if request.method == 'POST':
+        return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
+
+    return render_template('index.html')
+
+@app.route('/tasks/<int:id>/<string:title>/<string:description>/<string:done>')
+def inserttask(id, title, description, done):
+
+    res = spcall("newtask", (id, title, description, done=='true'), True)
+
+    if 'Error' in res[0][0]:
+        return jsonify({'status': 'error', 'message': res[0][0]})
+
+    return jsonify({'status': 'ok', 'message': res[0][0]})
+
+@app.route('/tasks/delete/<int:id>')
+def deletetask(id):
+
+    res = spcall('deletetask', (id, 'true'=='true'),True)
+
+    if 'Error' in str(res[0][0]):
+        return jsonify({'status': 'error', 'message': res[0][0]})
+
+    return jsonify({'status': 'Deleted'})
 
 @app.route('/user/', methods=['POST'])
 def insertuser():
@@ -119,6 +97,9 @@ def add_cors(resp):
     if app.debug:
         resp.headers["Access-Control-Max-Age"] = '1'
     return resp
+
+# @app.route('/addUser', methods=['POST'])
+# def addUser(fname):
 
 
 if __name__ == '__main__':
