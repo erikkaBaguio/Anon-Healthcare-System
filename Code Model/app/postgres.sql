@@ -5,9 +5,10 @@ create table roles(
 
 create table userinfo (
   	id serial8 primary key,
-  	fname text unique,
-  	mname text unique,
-  	lname text unique,
+  	fname text,
+  	mname text,
+  	lname text,
+  	username text unique,
   	email text,
   	password text,
   	is_active BOOLEAN,
@@ -167,13 +168,6 @@ CREATE TABLE Neurologic(
 
 --table userinfo
 
---create or replace function newuser(par_fname  text, par_mname  text, par_lname  text, par_email text) returns text as
---$$
---  declare
---    loc_id text;
---    loc_res text;
---  begin
-
 create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
                                 par_email text)
                                  returns text as
@@ -182,13 +176,15 @@ $$
     declare
         loc_res text;
         random_password text;
+        username text;
 
     begin
 
+        username := par_fname || '.' || par_lname;
         random_password := generate_password();
 
-       insert into userinfo (fname, mname, lname, email, password)
-                values (par_fname, par_mname, par_lname, par_email, random_password);
+       insert into userinfo (fname, mname, lname, email, username, password)
+                values (par_fname, par_mname, par_lname, par_email, username, random_password);
 
 
        loc_res = 'OK';
