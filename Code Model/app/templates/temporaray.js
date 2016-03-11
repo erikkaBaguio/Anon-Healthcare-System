@@ -18,6 +18,8 @@ function rowusers(id, fname, mname, lname, email, role, is_active) {
           '<p>'+email+' </br> Role: '+role+'</br> is_active: '+is_active+'</p> </div>';
 }
 
+
+
 function adduser() {
 
     $.ajax({
@@ -57,6 +59,8 @@ function loadusers() {
         },
         error: function (e) {
             alert("danger");
+
         }
     });
 }
+
