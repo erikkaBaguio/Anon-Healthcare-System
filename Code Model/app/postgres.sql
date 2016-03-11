@@ -1,3 +1,8 @@
+create table roles(
+  id serial4 primary key,
+  role_name text
+);
+
 create table userinfo (
   	id serial8 primary key,
   	fname text,
@@ -5,7 +10,9 @@ create table userinfo (
   	lname text,
   	email text,
   	password text,
-  );
+  	is_active BOOLEAN,
+    role_id int references roles(id)
+);
 
 create table Symptom(
   id serial8 primary key,
@@ -157,13 +164,16 @@ CREATE TABLE Neurologic(
 -----------------------------------------------------------------------------------------------------------
 -----STORED PROCEDURE FUNCTIONS-----
 -----------------------------------------------------------------------------------------------------------
-create or replace function newuser(par_fname  text, par_mname  text, par_lname  text, par_email text, par_password text) returns text as
+create or replace function newuser(par_fname  text, par_mname  text, par_lname  text, par_email text) returns text as
 $$
   declare
     loc_id text;
     loc_res text;
   begin
 
+create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
+                                par_email text)
+                                 returns text as
        insert into userinfo (fname, mname, lname, email, password) values (par_fname, par_mname, par_lname, par_email, par_password);
        loc_res = 'OK';
        return loc_res;
@@ -193,6 +203,30 @@ $$
   language 'sql';
 
 --select * from getuserinfoid(1);
+----------------------------------------------------------------------------------------------------
+
+create or replace function newrole(par_rolename  text) returns text as
+$$
+  declare
+    loc_name text;
+    loc_res text;
+  begin
+
+    select into loc_name role_name from roles where role_name = par_rolename;
+
+    if loc_name isnull then
+      insert into roles(role_name) values (par_rolename);
+      loc_res = 'OK';
+
+    else
+      loc_res = 'ROLE NAME EXISTED';
+
+    end if;
+      return loc_res;
+  end;
+$$
+ language 'plpgsql';
+
 ----------------------------------------------------------------------------------------------------
 
 create or replace function newsymptom(par_id int, par_symptom text, par_done boolean) returns text AS
