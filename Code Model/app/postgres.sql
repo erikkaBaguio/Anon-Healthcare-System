@@ -205,6 +205,30 @@ $$
 --select * from getuserinfoid(1);
 ----------------------------------------------------------------------------------------------------
 
+create or replace function newrole(par_rolename  text) returns text as
+$$
+  declare
+    loc_name text;
+    loc_res text;
+  begin
+
+    select into loc_name role_name from roles where role_name = par_rolename;
+
+    if loc_name isnull then
+      insert into roles(role_name) values (par_rolename);
+      loc_res = 'OK';
+
+    else
+      loc_res = 'ROLE NAME EXISTED';
+
+    end if;
+      return loc_res;
+  end;
+$$
+ language 'plpgsql';
+
+----------------------------------------------------------------------------------------------------
+
 create or replace function newsymptom(par_id int, par_symptom text, par_done boolean) returns text AS
 $$
   DECLARE
