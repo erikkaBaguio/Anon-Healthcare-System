@@ -22,7 +22,18 @@ def spcall(qry, param, commit=False):
         res = [("Error: " + str(sys.exc_info()[0]) + " " + str(sys.exc_info()[1]),)]
     return res
 
+@app.route('/users', methods=['GET'])
+@auth.login_required
+def get_all_users():
+    res = spcall('get_all_users', ())
 
+    if 'Error' in str(res[0][0]):
+        return jsonify({'status': 'error', 'message': res[0][0]})
+
+    recs = []
+    for r in res:
+        recs.append({"id": r[0], "fname": r[1], "mname": r[2], "lname": r[3], "email":r[4], "password": r[5], "done":r[6]})
+    return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
 
 @auth.get_password
 def getpassword(email):
