@@ -7,6 +7,7 @@ from models import DBconn
 import json, flask
 from app import app
 
+USERS = {}
 auth = HTTPBasicAuth()
 
 QUESTIONS = {}
@@ -23,6 +24,17 @@ def spcall(qry, param, commit=False):
         res = [("Error: " + str(sys.exc_info()[0]) + " " + str(sys.exc_info()[1]),)]
     return res
 
+<<<<<<< HEAD
+=======
+@app.errorhandler(404)
+def page_not_found(e):
+    return 'Sorry, the page you were looking for was not found.'
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return '(Error 500) Sorry, there was an internal server error.'
+
+>>>>>>> 9f73cf9c4238c17bd3a9d12214530b12a0738a54
 @app.route('/users', methods=['GET'])
 # @auth.login_required
 def get_all_users():
@@ -31,7 +43,6 @@ def get_all_users():
 @app.route('/')
 def index():
     return render_template('index.html')
-
 
 @app.route('/question', methods=['GET'])
 def get_all_questions():
@@ -54,25 +65,12 @@ def get_question(question_id):
     if 'Error' in res[0][0]:
         return jsonify({'status': 'error', 'message': res[0][0]})
 
+    return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
+
 @app.route('/question', methods=['GET'])
 # def get_question(id){}
     r = res[0]
     return jsonify({"id": r[0], "question": r[1], "user_id": r[2], "category_id": r[3], "done": str(r[4])})
-
-
-@app.route('/tasks', methods=['GET', 'POST'])
-@auth.login_required
-def getalltasks():
-    res = spcall('gettasks', ())
-
-@app.errorhandler(404)
-def page_not_found(e):
-    return 'Sorry, the page you were looking for was not found.'
-
-
-@app.errorhandler(500)
-def internal_server_error(e):
-    return '(Error 500) Sorry, there was an internal server error.'
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -100,18 +98,20 @@ def get_all_users():
         recs.append({"id": r[0], "fname": r[1], "mname": r[2], "lname": r[3], "email":r[4], "password": r[5], "role": [6], "done":r[7]})
     return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
 
-@app.route('/user/', methods=['POST'])
+@app.route('/user/', methods=['POST', 'GET'])
 def insertuser():
-	valueName = request.form.get('fname')
-	valueMName = request.form.get('mname')
-	valueLName = request.form.get('lname')
-	valueEmail = request.form.get('email')
-	valuePass = request.form.get('pass')
-	done = ""
-	res = spcall("newuserinfo", (valueName, valueMName, valueLName, valueEmail, valuePass, True), True)
-	return jsonify({'status': 'ok',})
+    if request.method == 'POST':
+        valueName = request.form.get('fname')
+        valueMName = request.form.get('mname')
+        valueLName = request.form.get('lname')
+        valueEmail = request.form.get('email')
+        valuePass = request.form.get('pass')
 
-	if 'Error' in res[0][0]:
+        res = spcall("newuser", (valueName, valueMName, valueLName, valueEmail, valuePass), True)
+        return jsonify({'status': 'ok'})
+    return render_template('index2.html')
+
+    if 'Error' in res[0][0]:
 		return jsonify({'status': 'error', 'message': res[0][0]})
 
 @app.after_request

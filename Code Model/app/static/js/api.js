@@ -83,3 +83,32 @@ function get_questions(){
 
     })
 }
+
+function get_userinfo(){
+    $.ajax({
+        url: 'http://127.0.0.1:5000/question',
+        type: "GET",
+        datatype: "json",
+        success: function(resp) {
+            $("#user-informations").html("");
+            if (resp == "OK") {
+                for (i = 0; i < resp.count; i++) {
+                    id = resp.entries[i].id;
+                    fname = resp.entries[i].fname;
+                    mname = resp.entries[i].mname;
+                    lname = resp.entries[i].lname;
+                    email = resp.entries[i].email;
+                    role = resp.entries[i].role;
+                    is_active = resp.entries[i].is_active;
+                }
+            } else {
+                $("user-informations").html("");
+                alert(resp.message);
+            }
+        },
+        error: function (e) {
+            alert("danger" + e.status);
+        }
+
+    })
+}
