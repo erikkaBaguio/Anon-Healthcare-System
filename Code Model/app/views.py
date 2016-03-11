@@ -32,11 +32,6 @@ def page_not_found(e):
 def internal_server_error(e):
     return '(Error 500) Sorry, there was an internal server error.'
 
-@app.route('/users', methods=['GET'])
-# @auth.login_required
-def get_all_users():
-    res = spcall('getuserinfo', ())
-
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -64,26 +59,20 @@ def get_question(question_id):
 
     return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
 
-@app.route('/question', methods=['GET'])
-# def get_question(id){}
-    r = res[0]
-    return jsonify({"id": r[0], "question": r[1], "user_id": r[2], "category_id": r[3], "done": str(r[4])})
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    error = None
-    form = LoginForm()
-    if request.method == 'POST':
-        user = db.session.query(User).filter(User.email == request.form['email']).one()
-        if request.form['password'] == user.password:
-            login_user(user, remember=True)
-            return redirect(url_for('home'))
-        else:
-            error = 'Invalid credentials. Try again.'
-    return render_template('login.html', title='Sign In', form=form, error=error)
+# @app.route('/login', methods=['GET', 'POST'])
+# def login():
+#     error = None
+#     form = LoginForm()
+#     if request.method == 'POST':
+#         user = db.session.query(User).filter(User.email == request.form['email']).one()
+#         if request.form['password'] == user.password:
+#             login_user(user, remember=True)
+#             return redirect(url_for('home'))
+#         else:
+#             error = 'Invalid credentials. Try again.'
+#     return render_template('login.html', title='Sign In', form=form, error=error)
 
 @app.route('/users', methods=['GET'])
-@auth.login_required
 def get_all_users():
     res = spcall('get_all_users', ())
 

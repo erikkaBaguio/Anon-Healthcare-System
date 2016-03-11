@@ -44,13 +44,13 @@ create table Examination (
 );
 
 create table Disease(
-  id int primary key,
+  id serial8 primary key,
   name text,
   done boolean
 );
 
 create table Disease_Symptom(
-  id int primary key,
+  id serial8 primary key,
   disease_id int references Disease(id),
   symptom_id int references Symptom(id),
   user_id int references UserInfo(id),
@@ -195,16 +195,16 @@ $$
 --select * from getuserinfoid(1);
 ----------------------------------------------------------------------------------------------------
 
-create or replace function newsymptom(par_id int, par_symptom text, par_done boolean) returns text AS
+--[POST] Create new symptom data
+--select newsymptom('cough', True);
+create or replace function newsymptom(par_symptom text, par_done boolean) returns text AS
 $$
   DECLARE
       loc_id text;
       loc_res text;
   BEGIN
-      SELECT  INTO loc_id id Symptom where id = par_id;
-
       if loc_id isnull THEN
-          insert INTO Symptom(id, symptom, done) values (par_id, par_symptom, par_done);
+          insert INTO Symptom(symptom, done) values (par_symptom, par_done);
           loc_res = 'OK';
 
       else
@@ -214,6 +214,7 @@ $$
   end;
 $$
   language 'plpgsql';
+
 
 -----------------------------------------------------------------------------------------------------
 
@@ -302,18 +303,18 @@ $$
 --select * from get_newquestion_category_id(3);
 
 ------------------------------------------------------------------------------------------------------------
-
-create or replace function newdisease(par_id int, par_name varchar, par_done boolean) returns text as
+--[POST] Create new disease data.
+--select newdisease('dengue',True);
+create or replace function newdisease(par_name text, par_done boolean) returns text as
 $$
   declare
     loc_id text;
     loc_res text;
   begin
-    select into loc_id id from disease where id = par_id;
     if loc_id isnull then
 
-      insert into disease(id, name, done) values (par_id, pr_name, par_done);
-      loc_res = "New disease data is added.";
+      insert into disease(name, done) values (par_name, par_done);
+      loc_res = 'New disease data is added.';
 
     else
       loc_res = "ID EXISTED";
@@ -323,25 +324,34 @@ $$
 $$
   language 'plpgsql';
 
-create or replace function getdiseaseinfo(in par_id int, out text, out boolean) returns setof record as
+--[GET] Retrieve certain disease data.
+--select get_disease_data(3);
+create or replace function get_disease_data(in par_id int, out text, out boolean) returns setof record as
 $$
   select name, done from Disease where id = par_id;
 $$
   language 'sql';
 
+--[GET] Retrieve list of diseases data.
+-- select get_all_diseases_data();
+create or replace function get_all_diseases_data(out bigint, out text, out boolean) returns setof record as
+$$
+  select id, name, done from Disease;
+$$
+  language 'sql';
+
 ------------------------------------------------------------------------------------------------------------
 
-CREATE  or replace function newdisease_symptom(par_id int, par_disease_id int, par_symptom_id int, par_user_id int, par_done boolean) returns text AS
+CREATE  or replace function newdisease_symptom(par_disease_id int, par_symptom_id int, par_user_id int, par_done boolean) returns text AS
 $$
   DECLARE
     loc_id text;
     loc_res text;
 
   BEGIN
-    SELECT INTO loc_id id FROM Disease_Symptom where id = par_id;
     if loc_id isnull THEN
 
-      INSERT INTO Disease_Symptom(id, disease_id, symptom_id, user_id, done) VALUES (par_id, par_disease_id, par_symptom_id, par_user_id, par_done);
+      INSERT INTO Disease_Symptom(disease_id, symptom_id, user_id, done) VALUES (par_disease_id, par_symptom_id, par_user_id, par_done);
       loc_res = 'OK';
 
     else
