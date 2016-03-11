@@ -1,3 +1,8 @@
+create table roles(
+  id serial4 primary key,
+  role_name text
+);
+
 create table userinfo (
   	id serial8 primary key,
   	fname text unique,
@@ -5,8 +10,9 @@ create table userinfo (
   	lname text unique,
   	email text,
   	password text,
-  	is_active BOOLEAN
-  );
+  	is_active BOOLEAN,
+    role_id int references roles(id)
+);
 
 create table Symptom(
   id serial8 primary key,
@@ -218,24 +224,6 @@ $$
 LANGUAGE 'plpgsql';
 
 
-
---create or replace function getuserinfoid(out serial8) returns integer as
---$$
---    declare
---        loc_res text;
---        loc_id integer;
---
---    begin
---       loc_id = 'select max(id) from userinfo';
---
---
---       loc_res = 'OK';
---       return loc_id;
---    end;
---$$
--- language 'plpgsql' VOLATILE;
-
-
 --select newuserinfo('Mary Grace', 'Pasco', 'Cabolbol', 'marygracecabolbol@gmail.com', 'password', 1, true);
 --select newuserinfo('Ma.Erikka', 'P' , 'Baguio', 'ma.erikkabaguio@gmail.com', 'password' , 1, true);
 
@@ -256,6 +244,30 @@ $$
   language 'sql';
 
 --select * from getuserinfoid(1);
+----------------------------------------------------------------------------------------------------
+
+create or replace function newrole(par_rolename  text) returns text as
+$$
+  declare
+    loc_name text;
+    loc_res text;
+  begin
+
+    select into loc_name role_name from roles where role_name = par_rolename;
+
+    if loc_name isnull then
+      insert into roles(role_name) values (par_rolename);
+      loc_res = 'OK';
+
+    else
+      loc_res = 'ROLE NAME EXISTED';
+
+    end if;
+      return loc_res;
+  end;
+$$
+ language 'plpgsql';
+
 ----------------------------------------------------------------------------------------------------
 
 create or replace function newsymptom(par_id int, par_symptom text, par_done boolean) returns text AS

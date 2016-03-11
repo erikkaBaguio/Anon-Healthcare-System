@@ -44,10 +44,6 @@ def get_all_users():
 def index():
     return render_template('index.html')
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 9f73cf9c4238c17bd3a9d12214530b12a0738a54
 @app.route('/question', methods=['GET'])
 def get_all_questions():
     res= spcall('get_newquestion',())
@@ -71,12 +67,7 @@ def get_question(question_id):
 
     return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
 
-@app.route('/question', methods=['GET'])
-# def get_question(id){}
-    r = res[0]
-    return jsonify({"id": r[0], "question": r[1], "user_id": r[2], "category_id": r[3], "done": str(r[4])})
 
-<<<<<<< HEAD
 @app.route('/tasks', methods=['GET', 'POST'])
 @auth.login_required
 def getalltasks():
@@ -91,8 +82,7 @@ def page_not_found(e):
 def internal_server_error(e):
     return '(Error 500) Sorry, there was an internal server error.'
 
-=======
->>>>>>> 9f73cf9c4238c17bd3a9d12214530b12a0738a54
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
