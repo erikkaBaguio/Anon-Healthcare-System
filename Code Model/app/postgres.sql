@@ -5,6 +5,7 @@ create table UserInfo (
   	lname text,
   	email text,
   	password text,
+  	is_active BOOLEAN
   );
 
 create table Symptom(
@@ -159,7 +160,7 @@ CREATE TABLE Neurologic(
 -----------------------------------------------------------------------------------------------------------
 
 create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
-                                par_email text, par_password text)
+                                par_email text)
                                  returns text as
 $$
     declare

@@ -23,7 +23,6 @@ def spcall(qry, param, commit=False):
         res = [("Error: " + str(sys.exc_info()[0]) + " " + str(sys.exc_info()[1]),)]
     return res
 
-<<<<<<< HEAD
 @app.route('/users', methods=['GET'])
 # @auth.login_required
 def get_all_users():
