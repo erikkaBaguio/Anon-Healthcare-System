@@ -62,7 +62,7 @@ create table Question_answer (
     id serial8 primary key,
     question_id int references Question(id),
     --answer_id int references  Answer(id),
-    chained_to_question int references  Question(question),
+    chained_to_question int references  Question(id),
     done BOOLEAN
 );
 
@@ -144,7 +144,7 @@ CREATE TABLE Cardiac(
 );
 
 CREATE TABLE Neurologic(
-  id serial8 PRIMARY KEY,
+  id serial8 UNIQUE PRIMARY KEY,
   headache text,
   seizure text,
   dizziness text,
