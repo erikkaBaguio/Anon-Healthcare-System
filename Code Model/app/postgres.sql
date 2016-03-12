@@ -256,7 +256,7 @@ $$
       loc_res = 'OK';
 
     else
-      loc_res = 'ROLE NAME EXISTED';
+      loc_res = 'EXISTED';
 
     end if;
       return loc_res;

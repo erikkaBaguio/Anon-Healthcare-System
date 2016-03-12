@@ -29,6 +29,10 @@ def spcall(qry, param, commit=False):
 def index():
     return render_template('index.html')
 
+@app.route('/admin')
+def index_admin():
+    return render_template('admin/index.html')
+
 @app.route('/question', methods=['GET'])
 def get_all_questions():
     res= spcall('get_newquestion',())
