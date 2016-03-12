@@ -169,7 +169,7 @@ CREATE TABLE Neurologic(
 --table userinfo
 
 create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
-                                par_email text)
+                                par_email text, par_active boolean, par_role int)
                                  returns text as
 $$
 
@@ -183,8 +183,8 @@ $$
         username := par_fname || '.' || par_lname;
         random_password := generate_password();
 
-       insert into userinfo (fname, mname, lname, email, username, password)
-                values (par_fname, par_mname, par_lname, par_email, username, random_password);
+       insert into userinfo (fname, mname, lname, username, email, password, is_active, role_id)
+                values (par_fname, par_mname, par_lname, username, par_email, random_password, par_active, par_role);
 
 
        loc_res = 'OK';
