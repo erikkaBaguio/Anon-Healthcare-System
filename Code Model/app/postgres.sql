@@ -206,6 +206,7 @@ $$
         len := length(characters);
         random_password := '';
 
+
         while(length(random_password) < 16) loop
 
             placevalue := int4(random() * len);
