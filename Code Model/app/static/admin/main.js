@@ -1,49 +1,24 @@
-function register(){
+$(document).ready(function(){
 
-	function generatePassword() {
-    var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~!@#$%^&*()';
+	$("#role-registration-form").hide()
 
-    console.log(random);
+});
 
-    var generated = '';
-
-    for(var i = 0; i < 13; i++) {
-
-        var random = Math.floor((Math.random() * 73) + 1)
-        generated = generated + chars[random];
-        console.log(generated);
-    }
-
-	password = generated.toString();
-
-    return password;
-
-	}
-
-	password = generatePassword().toString();
+function showRoleForm(){ $("#role-registration-form").show() }
+function addRole(){
 
 	var valueName = $('input[name="name"]').val()
-	var valueUsername = $('input[name="username"]').val()
-	//var valuePass = $('input[name="password"]').val()
-	var valuePass = $('input[name="password"]').val()
-	//$('input[name="password"]') = password;
-	//var valuePass = generatePassword().toString();
-	console.log(valueName, valueUsername, valuePass);
 
 	$.ajax({
 		type: "POST",
-		url: "/",
-		data: {name:valueName, username:valueUsername, pass:valuePass},
+		url: "role/",
+		data: {name:valueName},
 		success: function(resp){
-			console.log(resp.status);
-
-				$("#results").html('<p>successfully register ' + valueName + '</p>');
-
-				// $("input").val("")	
-			
+			$("#role-result").html('<div class="alert alert-success"> <strong>Success!</strong> Indicates a successful or positive action.</div>');
 		},
 		error: function(error){
 			console.log(error);
 		},
 	});
+
 }
