@@ -15,6 +15,14 @@ create table userinfo (
     role_id int references roles(id)
 );
 
+create table Appointment(
+  id serial8 primary key,
+  patient_id int references userinfo(id),
+  doctor_id int references userinfo(id),
+  is_read boolean not null default FALSE,
+  is_accepted boolean not null default FALSE
+);
+
 create table Symptom(
   id serial8 primary key,
   symptom text,
