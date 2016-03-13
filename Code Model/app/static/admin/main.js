@@ -8,11 +8,12 @@ function showRoleForm(){ $("#role-registration-form").show() }
 function addRole(){
 
 	var valueName = $('input[name="name"]').val()
+	console.log(valueName)
 
 	$.ajax({
 		type: "POST",
-		url: "role/",
-		data: {name:valueName},
+		url: "/admin/role",
+		data: $('form').serialize(),
 		success: function(resp){
 			$("#role-result").html('<div class="alert alert-success"> <strong>Success!</strong> Indicates a successful or positive action.</div>');
 		},
