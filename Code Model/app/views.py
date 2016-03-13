@@ -46,8 +46,14 @@ def index_admin():
     return render_template('admin/index.html')
 
 @app.route('/admin/<int:par_doctor_id>', methods=['GET'])
-def index_admin(par_doctor_id):
-    return appointments = spcall('getappointments', (par_doctor_id,))
+def home_admin(par_doctor_id):
+    appointments = spcall('getappointments', (par_doctor_id,))
+
+    recs = []
+    for r in appointments:
+        recs.append({"id":r[0], "patient":r[1], "doctor":r[2], "time":r[3], "is_read":r[4], "is_accepted":r[5]})
+
+    return jsonify({"status":'ok', 'appointments':recs, 'count':len(recs)})
 
 @app.route('/admin/role', methods=['POST'])
 def addRole():

@@ -4,6 +4,16 @@ $(document).ready(function(){
 
 	$.ajax({
 		type: "GET",
+		url: "/admin/<int:par_doctor_id>",
+		dataType: "json",
+		success: function(resp){
+			if(resp.status == 'ok'){
+				$("#active-appointments").html('<p>' + resp.count +'</p>')
+			}
+		},
+		error: function(resp){
+			alert("error loading appointment count");
+		},
 	});
 
 });
