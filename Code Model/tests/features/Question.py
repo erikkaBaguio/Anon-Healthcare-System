@@ -17,13 +17,13 @@ def given_some_questions_are_in_a_system(step):
     """
     QUESTIONS.update({'question': 'Hoarseness or a problem with your voice', 'user_id': '1', 'category_id': '1', 'is_active': 'true'})
 
-@step("I retrieve a diagnostic question \'(.*)\'")
+@step("I retrieve a diagnostic question \'(.*)\' ")
 
 def when_I_retrieve_a_diagnostic_question1(step, id):
     """
     :type step: lettuce.core.Step
     """
-    world.response = world.app.get('question/<question_id>'.format(question_id))
+    world.response = world.app.get('/question/{}'.format(id))
 
 
 @step("I should get a \'(.*)\' response")

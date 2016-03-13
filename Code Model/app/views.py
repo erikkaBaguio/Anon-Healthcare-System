@@ -24,7 +24,6 @@ def spcall(qry, param, commit=False):
         res = [("Error: " + str(sys.exc_info()[0]) + " " + str(sys.exc_info()[1]),)]
     return res
 
-
 # @app.errorhandler(404)
 # def page_not_found(e):
 #     return 'Sorry, the page you were looking for was not found.'
@@ -41,6 +40,10 @@ def spcall(qry, param, commit=False):
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/admin')
+def index_admin():
+    return render_template('admin/index.html')
 
 @app.route('/question', methods=['GET'])
 def get_all_questions():
@@ -64,6 +67,19 @@ def get_question(question_id):
         return jsonify({'status': 'error', 'message': res[0][0]})
 
     return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
+
+@app.route('/question_category', methods = ['GET'])
+def get_all_category():
+    res =spcall('get_newquestion_category', ())
+
+    if 'Error' in str(res[0][0]):
+        return jsonify({'status': 'error', 'message': res[0][0]})
+
+    recs = []
+    for r in res:
+        recs.append({"category": r[0], "done": str(r[1])})
+    return jsonify({'status': 'OK', 'entries': recs, 'count':len(recs)})
+
 
 
 @app.route('/tasks', methods=['GET', 'POST'])
