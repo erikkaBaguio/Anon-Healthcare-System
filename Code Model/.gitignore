@@ -4,4 +4,4 @@ db.sqlite3
 .sass-cache
 venv/
 .idea
-*.pyc
+/app/*.pyc
