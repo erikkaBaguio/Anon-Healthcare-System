@@ -31,7 +31,16 @@ def index():
 
 @app.route('/admin')
 def index_admin():
-    return render_template('admin/index.html')
+    return render_template('index3.html')
+
+@app.route('/admin/role', methods=['POST'])
+def addRole():
+    valueName = request.form['name']
+    print valueName
+    res = spcall("newrole", (valueName,), True)
+    print "added!"
+    print res
+    return jsonify({'status': 'ok',})
 
 @app.route('/question', methods=['GET'])
 def get_all_questions():
