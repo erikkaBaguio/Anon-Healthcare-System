@@ -202,9 +202,10 @@ $$
         placevalue int4;
 
     begin
-        characters := 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~!@#$%^&*()_+=_';
+        characters := 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~!@#$%^&*()+=';
         len := length(characters);
         random_password := '';
+
 
         while(length(random_password) < 16) loop
 
