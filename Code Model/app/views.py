@@ -43,7 +43,11 @@ def index():
 
 @app.route('/admin')
 def index_admin():
-    return render_template('index3.html')
+    return render_template('admin/index.html')
+
+@app.route('/admin/<int:par_doctor_id>', methods=['GET'])
+def index_admin(par_doctor_id):
+    return appointments = spcall('getappointments', (par_doctor_id,))
 
 @app.route('/admin/role', methods=['POST'])
 def addRole():

@@ -2,6 +2,10 @@ $(document).ready(function(){
 
 	$("#role-registration-form").hide()
 
+	$.ajax({
+		type: "GET",
+	});
+
 });
 
 function showRoleForm(){ $("#role-registration-form").show() }
