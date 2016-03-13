@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <!-- This file has been downloaded from Bootsnipp.com. Enjoy! -->
     <title>Anoncare|Admin</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="static/admin/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
         .mini-submenu{
@@ -42,8 +42,6 @@
   cursor: pointer;
 }
     </style>
-    <script src="static/admin/jquery-1.11.0.min.js"></script>
-    <script src="static/admin/bootstrap.min.js"></script>
     <link href="static/admin/font-awesome.css" rel="stylesheet">
 </head>
 <body>
@@ -163,11 +161,11 @@
 
             <div id="role-result"></div>
 
-            <form class="form-horizontal" role="form" onsubmit="return false">
+            <form class="form-horizontal" onsubmit="return false">
               <div class="form-group">
-                <label class="control-label col-sm-2" for="email">Role name:</label>
+                <label class="control-label col-sm-2">Role name:</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" id="email" placeholder="Enter role name">
+                  <input type="text" class="form-control" name="name" placeholder="Enter role name">
                 </div>
               </div>
               <div class="form-group"> 
@@ -186,8 +184,10 @@
 
 </div>
 
+<script src="{{ url_for('static', filename="admin/jquery-1.11.0.min.js") }}"></script>
+<script src="{{ url_for('static', filename="admin/bootstrap.min.js") }}"></script>
+<script src="{{ url_for('static', filename="admin/main.js") }}"></script>
 
-<script src="static/admin/main.js"></script>
 <script type="text/javascript">
 $(function(){
 
