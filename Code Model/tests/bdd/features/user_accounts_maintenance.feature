@@ -1,6 +1,6 @@
 # Created by josiah at 3/12/16
 Feature: User Accounts Maintenance
-As an admin, I want to add a new account for a new user.
+	As an admin, I want to add a new account for a new user.
 
 
   Scenario: Create a user account in the system

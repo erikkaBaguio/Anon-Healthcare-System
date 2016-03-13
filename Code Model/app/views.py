@@ -8,9 +8,10 @@ import json, flask
 from app import app
 
 USERS = {}
+QUESTIONS = {}
 auth = HTTPBasicAuth()
 
-QUESTIONS = {}
+
 def spcall(qry, param, commit=False):
     try:
         dbo = DBconn()
@@ -42,6 +43,23 @@ def get_all_questions():
                      "role":r[5], "is_active": str[6]})
 
     return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
+
+@app.route('/question', methods =['POST'])
+def new_question():
+    id = request.form['inputID']
+    question = request.form['inputquestion']
+    user_id = request.form['inputUserID']
+    category_id = request.form['inputCategoryID']
+    is_active = False
+
+    res = spcall('newquestion', (
+        id, question, category_id, is_active), True)
+
+    if 'Error' in res[0][0]:
+        return jsonify({'status': 'error', 'message': res[0][0]})
+
+    return jsonify({'status': 'ok', 'message': res[0][0]})
+
 
 @app.route('/question/<question_id>/', methods = ['GET'])
 def get_question(question_id):

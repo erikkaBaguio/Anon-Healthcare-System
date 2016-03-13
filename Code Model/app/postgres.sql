@@ -38,7 +38,7 @@ create table Question(
     question text,
     user_id int references UserInfo(id),
     category_id int references Question_category(id),
-    done BOOLEAN
+    is_active BOOLEAN
 );
 
 create table Examination (
@@ -426,7 +426,7 @@ $$
 
 ------------------------------------------------------------------------------------------------------------
 
-create or replace function newquestion(par_question text, par_user_id int, par_category_id int, par_done boolean) returns text as
+create or replace function newquestion(par_question text, par_user_id int, par_category_id int, par_is_active boolean) returns text as
 $$
   declare
     loc_id text;
@@ -435,7 +435,7 @@ $$
   begin
     if loc_id isnull then
 
-      insert into Question( question, user_id, category_id, done) values (par_question, par_user_id, par_category_id, par_done);
+      insert into Question( question, user_id, category_id, is_active) values (par_question, par_user_id, par_category_id, par_is_active);
        loc_res = 'OK';
 
     else
@@ -448,10 +448,10 @@ $$
 
 --select newquestion('What do you feel?', 1 , 1, false);
 --select newquestion('How old are you?', 1 , 1 , false);
-
+--select newquestion('Hoarseness or a problem with your voice', 1, 1, false);
 create or replace function get_newquestion(out text, out int, out int, out boolean) returns setof record as
 $$
-  select question, user_id, category_id, done from Question;
+  select question, user_id, category_id, is_active from Question;
 $$
  language 'sql';
 
@@ -459,7 +459,7 @@ $$
 
 create or replace function get_newquestion_id(in par_id int, out text, out int, out par int, out boolean) returns setof record as
 $$
-  select question, user_id, category_id, done from Question where par_id = id;
+  select question, user_id, category_id, is_active from Question where par_id = id;
 $$
  language 'sql';
 
