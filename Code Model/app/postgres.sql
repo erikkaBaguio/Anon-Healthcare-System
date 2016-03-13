@@ -290,6 +290,13 @@ $$
 $$
  language 'plpgsql';
 
+
+create or replace function getappointments(in par_doctor int) returns setof record as
+$$
+   select * from Appointment where doctor_id = par_doctor;
+
+$$
+ language 'sql';
 ----------------------------------------------------------------------------------------------------
 
 create or replace function newsymptom(par_id int, par_symptom text, par_done boolean) returns text AS
