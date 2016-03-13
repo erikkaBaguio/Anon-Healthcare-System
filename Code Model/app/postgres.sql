@@ -19,6 +19,7 @@ create table Appointment(
   id serial8 primary key,
   patient_id int references userinfo(id),
   doctor_id int references userinfo(id),
+  time_requested timestamp,
   is_read boolean not null default FALSE,
   is_accepted boolean not null default FALSE
 );
@@ -269,6 +270,22 @@ $$
 
     end if;
       return loc_res;
+  end;
+$$
+ language 'plpgsql';
+
+----------------------------------------------------------------------------------------------------
+
+ create or replace function newappointment(par_patient int, par_doctor int, par_time timestamp) returns text as
+$$
+  declare
+    loc_res text;
+  begin
+
+    insert into Appointment(patient_id, doctor_id, time_requested) values (par_patient, par_doctor, par_time);
+    loc_res = 'OK';
+    return loc_res;
+
   end;
 $$
  language 'plpgsql';
