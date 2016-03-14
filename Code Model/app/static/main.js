@@ -21,5 +21,3 @@ function register(){
 		},
 	});
 }
-
-function
