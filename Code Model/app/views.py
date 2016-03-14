@@ -25,10 +25,35 @@ def spcall(qry, param, commit=False):
         res = [("Error: " + str(sys.exc_info()[0]) + " " + str(sys.exc_info()[1]),)]
     return res
 
+# @app.errorhandler(404)
+# def page_not_found(e):
+#     return 'Sorry, the page you were looking for was not found.'
+#
+# @app.errorhandler(500)
+# def internal_server_error(e):
+#     return '(Error 500) Sorry, there was an internal server error.'
+#
+# @app.route('/users', methods=['GET'])
+# # @auth.login_required
+# def get_all_users():
+#     res = spcall('getuserinfo', ())
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/admin')
+def index_admin():
+    return render_template('index3.html')
+
+@app.route('/admin/role', methods=['POST'])
+def addRole():
+    valueName = request.form['name']
+    print valueName
+    res = spcall("newrole", (valueName,), True)
+    print "added!"
+    print res
+    return jsonify({'status': 'ok',})
 
 @app.route('/question', methods=['GET'])
 def get_all_questions():
@@ -132,9 +157,10 @@ def insertuser():
         valueMName = request.form.get('mname')
         valueLName = request.form.get('lname')
         valueEmail = request.form.get('email')
-        valuePass = request.form.get('pass')
+        # valuePass = request.form.get('pass')
 
-        res = spcall("newuser", (valueName, valueMName, valueLName, valueEmail, valuePass), True)
+        # res = spcall("newuser", (valueName, valueMName, valueLName, valueEmail, valuePass), True)
+        res = spcall("newuserinfo", (valueName, valueMName, valueLName, valueEmail), True)
         return jsonify({'status': 'ok'})
     return render_template('index2.html')
 
