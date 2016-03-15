@@ -236,7 +236,7 @@ $$
 create or replace function getuserinfoid(in par_id int, out text, out text, out text, out text,
                                                  out int, out boolean) returns setof record as
 $$
-    select fname, mname, lname, email, role, is_active from UserInfo where par_id = id;
+    select fname, mname, lname, email, role_id, is_active from UserInfo where par_id = id;
 $$
   language 'sql';
 

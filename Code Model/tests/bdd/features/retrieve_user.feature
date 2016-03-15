@@ -5,7 +5,8 @@ Feature: Retrieve User
   Scenario: Retrieve User Details
     Given Some users are in the system
 
-    When I retrieve user with id ‘3’
+    When I retrieve all users
+
 
     Then I should get a ‘200’ response
 
