@@ -1,3 +1,69 @@
+function register(){
+
+	var valueName = $('input[name="fname"]').val()
+	var valueMName = $('input[name="mname"]').val()
+	var valueLName = $('input[name="lname"]').val()
+	var valueEmail = $('input[name="email"]').val()
+	var valuePass = $('input[name="password"]').val()
+
+	$.ajax({
+		type: "POST",
+		url: "/user/",
+		data: {fname:valueName, mname:valueMName, lname:valueLName, email:valueEmail, pass:valuePass},
+		success: function(resp){
+			console.log(resp.status);
+
+				$("#results").html('<p>successfully register ' + valueName + '</p>');
+
+				// $("input").val("")
+		},
+		error: function(error){
+			console.log(error);
+		},
+	});
+}
+
+function login() {
+    //$('#loginform').submit(function (event) {
+    //    event.preventDefault();
+		//var valueUsername = $('input[name="username"]').val()
+		//var valuePassword = $('input[name="password"]').val()
+    //
+    //    $.ajax({
+		//	type: 'POST',
+    //        url: '/login/',
+    //        data: {username:valueUsername, password:valuePassword},
+    //        timeout: 1000,
+    //    success: function(resp) {
+    //        if(resp == 'ok'){
+    //            window.location = "/dashboard/";
+    //    },
+    //    error: function(e) {
+    //         $("#result").html('<p> Invalid ' + e.status + '</p>');
+    //    };
+    //
+    //    })
+    //});
+    var valueUsername = $('input[name="username"]').val()
+    var valuePassword = $('input[name="password"]').val()
+
+    $.ajax({
+        type: 'POST',
+        url: '/login/',
+        data: {username:valueUsername, password:valuePassword},
+        timeout: 1000,
+    success: function(resp) {
+        if(resp == 'ok'){
+        window.location = "/dashboard/";
+		alert("OK");
+        }
+	},
+    error: function(e) {
+        $("#result").html('<p> Invalid ' + e.status + '</p>');
+    }
+    })
+}
+
 
 function get_all_users() {
     $.ajax({

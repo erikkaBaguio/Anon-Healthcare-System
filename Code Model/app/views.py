@@ -2,15 +2,19 @@
 import os
 from os import sys
 from flask import Flask, jsonify, render_template, request
-from flask.ext.httpauth import HTTPBasicAuth
+# from flask.ext.httpauth import HTTPBasicAuth
 from models import DBconn
 import json, flask
 from app import app
 
-USERS = {}
-auth = HTTPBasicAuth()
 
+
+# auth = HTTPBasicAuth()
+DISEASES = {}
+SYMPTOMS = {}
+DISEASE_RECORDS = {}
 QUESTIONS = {}
+
 def spcall(qry, param, commit=False):
     try:
         dbo = DBconn()
@@ -36,69 +40,78 @@ def internal_server_error(e):
 def index():
     return render_template('index.html')
 
-@app.route('/question', methods=['GET'])
-def get_all_questions():
-    res= spcall('get_newquestion',())
+@app.route('/dashboard/')
+def dashboard():
+    return render_template('dashboard.html')
+
+@app.route('/anoncare.api/diseases')
+def get_all_diseases_data():
+    res = spcall('get_all_diseases_data',())
 
     if 'Error' in str(res[0][0]):
         return jsonify({'status': 'error', 'message': res[0][0]})
 
     recs = []
     for r in res:
-        recs.append({"fname": r[0], "mname": r[1], "lname": r[2], "email": r[3], "password": r[4],
-                     "role":r[5], "is_active": str[6]})
+        recs.append({"id": r[0], "name": r[1], "done": str(r[2])})
 
     return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
 
-@app.route('/question/<question_id>/', methods = ['GET'])
-def get_question(question_id):
-    res= spcall('get_newquestion_id', (question_id))
-
-    if 'Error' in res[0][0]:
-        return jsonify({'status': 'error', 'message': res[0][0]})
-
-    return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
-
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     error = None
-#     form = LoginForm()
-#     if request.method == 'POST':
-#         user = db.session.query(User).filter(User.email == request.form['email']).one()
-#         if request.form['password'] == user.password:
-#             login_user(user, remember=True)
-#             return redirect(url_for('home'))
-#         else:
-#             error = 'Invalid credentials. Try again.'
-#     return render_template('login.html', title='Sign In', form=form, error=error)
-
-@app.route('/users', methods=['GET'])
-def get_all_users():
-    res = spcall('get_all_users', ())
+@app.route('/anoncare.api/diseases/<int:disease_id>/', methods = ['GET'])
+def get_disease_data(disease_id):
+    res = spcall('get_disease_data', str(disease_id))
 
     if 'Error' in str(res[0][0]):
         return jsonify({'status': 'error', 'message': res[0][0]})
 
-    recs = []
-    for r in res:
-        recs.append({"id": r[0], "fname": r[1], "mname": r[2], "lname": r[3], "email":r[4], "password": r[5], "role": [6], "done":r[7]})
-    return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
+    r = res[0]
+    return jsonify({"id": str(disease_id), "name": str(r[0]), "done": str(r[1])})
 
-@app.route('/user/', methods=['POST', 'GET'])
-def insertuser():
-    if request.method == 'POST':
-        valueName = request.form.get('fname')
-        valueMName = request.form.get('mname')
-        valueLName = request.form.get('lname')
-        valueEmail = request.form.get('email')
-        valuePass = request.form.get('pass')
+@app.route('/anoncare.api/symptoms', methods = ['GET'])
+def get_symptoms():
+    listOfSymptoms = spcall('get_all_symptom',())
 
-        res = spcall("newuser", (valueName, valueMName, valueLName, valueEmail, valuePass), True)
-        return jsonify({'status': 'ok'})
-    return render_template('index2.html')
+    if 'Error' in str(listOfSymptoms[0][0]):
+        return jsonify({'status': 'error', 'message': res[0][0]})
 
-    if 'Error' in res[0][0]:
-		return jsonify({'status': 'error', 'message': res[0][0]})
+    symptom = []
+    for r in listOfSymptoms:
+        symptom.append({"id": r[0], "name": r[1], "done": str(r[2])})
+
+    return jsonify({'status': 'ok', 'entries': symptom, 'count': len(symptom)})
+
+@app.route('/anoncare.api/symptoms/<int:id>/', methods = ['GET'])
+def get_symptom(id):
+    res = spcall('get_symptom', str(id))
+
+    if 'Error' in str(res[0][0]):
+        return jsonify({'status': 'error', 'message': res[0][0]})
+
+    r = res[0]
+    return jsonify({"id": str(id), "name": str(r[0]), "done": str(r[1])})
+
+@app.route('/anoncare.api/disease_records', methods = ['GET'])
+def get_disease_records():
+    diseases = spcall('getalldiseaserecords', ())
+
+    if 'Error' in str(diseases[0][0]):
+        return jsonify({'status': 'error', 'message': res[0][0]})
+
+    disease = []
+    for r in diseases:
+        disease.append({"id": r[0], "disease_id": r[1], "symptom_id": r[2], "done": r[3]})
+
+    return jsonify({'status': 'ok', 'entries': disease, 'count': len(disease)})
+
+@app.route('/anoncare.api/disease_records/<int:id>/', methods = ['GET'])
+def get_disease_recordID(id):
+    disease_records = spcall('getdiseaserecordID', str(id))
+
+    if 'Error' in str(disease_records[0][0]):
+        return jsonify({'status': 'error', 'message': disease_records[0][0]})
+
+    disease = disease_records[0]
+    return jsonify({"id": str(id), "disease_id": str(disease[0]), "symptom_id": str(disease[1]), "done": str(disease[2])})
 
 @app.after_request
 def add_cors(resp):
