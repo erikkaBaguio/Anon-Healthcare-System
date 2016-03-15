@@ -160,4 +160,3 @@ function get_question_category(){
         }
     })
 }
-

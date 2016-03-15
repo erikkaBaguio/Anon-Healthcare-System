@@ -160,7 +160,7 @@ def insertuser():
         # valuePass = request.form.get('pass')
 
         # res = spcall("newuser", (valueName, valueMName, valueLName, valueEmail, valuePass), True)
-        res = spcall("newuserinfo", (valueName, valueMName, valueLName, valueEmail), True)
+        res = spcall("newuserinfo", (valueName, valueMName, valueLName, valueEmail, True, 1), True)
         return jsonify({'status': 'ok'})
     return render_template('index2.html')
 

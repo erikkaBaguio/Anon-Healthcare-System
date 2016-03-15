@@ -227,7 +227,7 @@ LANGUAGE 'plpgsql';
 create or replace function getuserinfo(out text, out text, out text, out text, out int, out boolean)
                                             returns setof record as
 $$
-    select fname, mname, lname, email, role, is_active from UserInfo;
+    select fname, mname, lname, email, role_id, is_active from UserInfo;
 $$
   language 'sql';
 
