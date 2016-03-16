@@ -10,6 +10,7 @@ function register(){
 		type: "POST",
 		url: "/user/",
 		data: {fname:valueName, mname:valueMName, lname:valueLName, email:valueEmail, pass:valuePass},
+
 		success: function(resp){
 			console.log(resp.status);
 
@@ -63,7 +64,6 @@ function login() {
     }
     })
 }
-
 
 function get_all_users() {
     $.ajax({
@@ -178,3 +178,28 @@ function get_userinfo(){
 
     })
 }
+
+function get_question_category(){
+    $.ajax({
+        url:'http://127.0.0.1:5000/question_category',
+        type:'GET',
+        datatype:'json',
+        success: function(resp){
+            $("#question_category").html("");
+            if (resp == 'OK'){
+                for(i=0; i< resp.count; i++){
+                    id = resp.entries[i].id;
+                    category = resp.entries[i].category;
+                    done = resp.entries[i].done;
+                }
+            }else{
+                $("#question_category").html("");
+                alert(resp.message);
+            }
+        },
+        error:function(e){
+            alert("danger" + e.status);
+        }
+    })
+}
+

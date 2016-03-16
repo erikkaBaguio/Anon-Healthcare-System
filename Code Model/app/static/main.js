@@ -4,12 +4,11 @@ function register(){
 	var valueMName = $('input[name="mname"]').val()
 	var valueLName = $('input[name="lname"]').val()
 	var valueEmail = $('input[name="email"]').val()
-	var valuePass = $('input[name="password"]').val()
 
 	$.ajax({
 		type: "POST",
 		url: "/user/",
-		data: {fname:valueName, mname:valueMName, lname:valueLName, email:valueEmail, pass:valuePass},
+		data: {fname:valueName, mname:valueMName, lname:valueLName, email:valueEmail},
 		success: function(resp){
 			console.log(resp.status);
 
