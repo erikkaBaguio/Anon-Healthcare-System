@@ -95,7 +95,6 @@ def get_question(question_id):
 
     return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
 
-@app.route('/question_category', methods = ['GET'])
 def get_all_category():
     res =spcall('get_newquestion_category', ())
 
@@ -137,18 +136,25 @@ def login():
             error = 'Invalid credentials. Try again.'
     return render_template('login.html', title='Sign In', form=form, error=error)
 
-@app.route('/users', methods=['GET'])
-@auth.login_required
-def get_all_users():
-    res = spcall('get_all_users', ())
+@app.route('/users/<int:id>/', methods=['GET'])
+def get_user_with_id(id):
+    res = spcall('getuserinfoid', str(id))
 
     if 'Error' in str(res[0][0]):
         return jsonify({'status': 'error', 'message': res[0][0]})
 
-    recs = []
-    for r in res:
-        recs.append({"id": r[0], "fname": r[1], "mname": r[2], "lname": r[3], "email":r[4], "password": r[5], "role": [6], "done":r[7]})
-    return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
+    r = res[0]
+
+    print r[0]
+    print r[1]
+    print r[2]
+    print r[3]
+    print r[4]
+    print r[5]
+
+
+    return jsonify({"fname": r[0], "mname": r[1], "lname": r[2], "email": r[3], "role": r[4]})
+    # return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
 
 @app.route('/user/', methods=['POST', 'GET'])
 def insertuser():
@@ -157,10 +163,9 @@ def insertuser():
         valueMName = request.form.get('mname')
         valueLName = request.form.get('lname')
         valueEmail = request.form.get('email')
-        # valuePass = request.form.get('pass')
 
         # res = spcall("newuser", (valueName, valueMName, valueLName, valueEmail, valuePass), True)
-        res = spcall("newuserinfo", (valueName, valueMName, valueLName, valueEmail, True, 1), True)
+        res = spcall("newuserinfo", (valueName, valueMName, valueLName, valueEmail, True, 3), True)
         return jsonify({'status': 'ok'})
     return render_template('index2.html')
 

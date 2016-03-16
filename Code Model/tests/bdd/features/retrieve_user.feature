@@ -8,8 +8,8 @@ Feature: Retrieve User
     When I retrieve all users
 
 
-    Then I should get a ‘200’ response
+#    Then I should get a ‘200’ response
 
-    And The following user details are returned:
-              |fname|  |mname|      |lname|        |email|
-              |Josiah| |Timonera|  |Regencia|    |jetregencia@gmail.com|
+    Then The following user details are returned:
+              |fname|  |mname|    |lname|    |email|                 |role| |is_active|
+              |Josiah| |Timonera| |Regencia| |jetregencia@gmail.com| |1   | |TRUE     |
