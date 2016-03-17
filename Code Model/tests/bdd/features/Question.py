@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # import json
 # from lettuce import step, world, before
 # from nose.tools import assert_equals
@@ -42,14 +42,13 @@
 #     """
 #     :type step: lettuce.core.Step
 #     """
-#     assert_equals(step.hashes, [json.loads(world.response.data)])
-=======
+#     assert_equals(step.hashes, [json.loads(world.response.data)
 from lettuce import step, world, before
 from nose.tools import assert_equals, assert_raises, raises
 from flask import *
 from webtest import TestApp
 from app import app
-from app.views import CATEGORY
+# from app.views import CATEGORY
 import json
 
 @before.all
@@ -74,4 +73,3 @@ def the_following_category_is_returned(step):
     assert_equals(step.hashes, [json.loads(world.response.data)])
 
 
->>>>>>> 53bf8fa7156128892450c31fad9c48b18666ea8f

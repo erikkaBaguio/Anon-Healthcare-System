@@ -118,6 +118,18 @@ def get_college(college_id):
     #                 "username": r[5]})
     # return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
 
+@app.route('/anoncare.api/users/<int:id>/', methods=['GET'])
+def get_user_with_id(id):
+    res = spcall('getuserinfoid', str(id))
+
+    if 'Error' in str(res[0][0]):
+        return jsonify({'status': 'error', 'message': res[0][0]})
+
+    r = res[0]
+
+    return jsonify({"id": str(id), "fname": str(r[0]), "mname": str(r[1]), "lname": str(r[2]),
+                    "email": str(r[3]), "username": str(r[4])})
+
 @app.route('/user/', methods=['POST', 'GET'])
 def insertuser():
     if request.method == 'POST':
