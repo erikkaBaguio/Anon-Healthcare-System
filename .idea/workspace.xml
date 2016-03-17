@@ -2,10 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a1c1c313-8e09-41d6-a6aa-2c3de3070024" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/AnonCare_HS.iml" afterPath="$PROJECT_DIR$/.idea/AnonCare_HS.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Code Model/tests/bdd/features/retrieve_user.feature" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/retrieve_user.py" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/user_accounts_maintenance.py" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/.gitignore" afterPath="$PROJECT_DIR$/Code Model/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/app/__init__.py" afterPath="$PROJECT_DIR$/Code Model/app/__init__.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/app/models.py" afterPath="$PROJECT_DIR$/Code Model/app/models.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/app/postgres.sql" afterPath="$PROJECT_DIR$/Code Model/app/postgres.sql" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/app/static/js/api.js" afterPath="$PROJECT_DIR$/Code Model/app/static/js/api.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/app/static/main.js" afterPath="$PROJECT_DIR$/Code Model/app/static/main.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/app/templates/index2.html" afterPath="$PROJECT_DIR$/Code Model/app/templates/index2.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/app/views.py" afterPath="$PROJECT_DIR$/Code Model/app/views.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/tests/bdd/features/Question.py" afterPath="$PROJECT_DIR$/Code Model/tests/bdd/features/Question.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/PatientFile.feature" afterPath="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/PatientFile.feature" />
       <change type="MODIFICATION" beforePath="$USER_HOME$/erikka/rest/app.py" afterPath="$USER_HOME$/erikka/rest/app.py" />
       <change type="MODIFICATION" beforePath="$USER_HOME$/erikka/rest/model.py" afterPath="$USER_HOME$/erikka/rest/model.py" />
       <change type="MODIFICATION" beforePath="$USER_HOME$/erikka/rest/progress.sql" afterPath="$USER_HOME$/erikka/rest/progress.sql" />
@@ -109,20 +119,30 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Code Model/app/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.096774">
-              <caret line="102" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="132" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="16" column="35" selection-start-line="16" selection-start-column="35" selection-end-line="16" selection-end-column="35" />
               <folding>
-                <element signature="e#19#28#0" expanded="true" />
+                <element signature="e#20#29#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DiseaseRecordsMaintenance.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/steps/DiseaseRecordsMaintenance.py">
+      <file leaf-file-name="Assessment.feature" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/Assessment.feature">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="11" column="27" selection-start-line="0" selection-start-column="0" selection-end-line="45" selection-end-column="65" />
+              <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Assessment_steps.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/steps/Assessment_steps.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="18" column="40" selection-start-line="18" selection-start-column="40" selection-end-line="18" selection-end-column="40" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -130,54 +150,36 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SymptomRecordsMaintenance.feature" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/SymptomRecordsMaintenance.feature">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="2" column="60" selection-start-line="0" selection-start-column="0" selection-end-line="12" selection-end-column="41" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SymptomRecordsMaintenance.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/steps/SymptomRecordsMaintenance.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.44160584">
-              <caret line="15" column="8" selection-start-line="15" selection-start-column="8" selection-end-line="15" selection-end-column="8" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DiseaseRecordsMaintenance.feature" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/DiseaseRecordsMaintenance.feature">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="15" column="24" selection-start-line="0" selection-start-column="0" selection-end-line="20" selection-end-column="58" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="postgres.sql" pinned="false" current-in-tab="false">
+      <file leaf-file-name="postgres.sql" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Code Model/app/postgres.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.774194">
-              <caret line="458" column="58" selection-start-line="458" selection-start-column="58" selection-end-line="458" selection-end-column="58" />
+            <state vertical-scroll-proportion="1.0349345">
+              <caret line="39" column="13" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/__init__.py">
+      <file leaf-file-name="progress.sql" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/erikka/rest/progress.sql">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="19" selection-start-line="0" selection-start-column="19" selection-end-line="0" selection-end-column="19" />
+              <caret line="110" column="20" selection-start-line="110" selection-start-column="20" selection-end-line="110" selection-end-column="20" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Code Model/app/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="15" column="38" selection-start-line="15" selection-start-column="38" selection-end-line="15" selection-end-column="38" />
+              <folding>
+                <marker date="1458229459926" expanded="false" signature="0:46" placeholder="import ..." />
+                <marker date="1458229459926" expanded="true" signature="61:700" placeholder="..." />
+                <marker date="1458229459926" expanded="true" signature="85:552" placeholder="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -188,8 +190,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
-        <option value="Python Script" />
         <option value="Gherkin feature file" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -199,8 +201,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Code Model/tests/features/login.feature" />
-        <option value="$PROJECT_DIR$/Code Model/migrations/alembic.ini" />
         <option value="$PROJECT_DIR$/Code Model/tests/bdd/steps/Disease_Records_Maintenance_steps.py" />
         <option value="$PROJECT_DIR$/Code Model/question_answer.sql" />
         <option value="$PROJECT_DIR$/Code Model/Question_category.sql" />
@@ -214,7 +214,6 @@
         <option value="$PROJECT_DIR$/Code Model/db_scripts/question_answer.sql" />
         <option value="$PROJECT_DIR$/Code Model/db_scripts/question.sql" />
         <option value="$PROJECT_DIR$/Code Model/run.py" />
-        <option value="$PROJECT_DIR$/Code Model/app/models.py" />
         <option value="$PROJECT_DIR$/Code Model/app/templates/dashboard.html" />
         <option value="$PROJECT_DIR$/Code Model/app/templates/main.js" />
         <option value="$PROJECT_DIR$/Code Model/app/templates/home.html" />
@@ -233,23 +232,26 @@
         <option value="$PROJECT_DIR$/Code Model/tests/bdd/features/Login.feature" />
         <option value="$PROJECT_DIR$/Code Model/app/__init__.py" />
         <option value="$PROJECT_DIR$/Code Model/tests/bdd/features/login.py" />
-        <option value="$PROJECT_DIR$/Code Model/tests/bdd/features/login.feature" />
         <option value="$PROJECT_DIR$/Code Model/app/static/main.js" />
         <option value="$USER_HOME$/erikka/rest/app.py" />
         <option value="$USER_HOME$/erikka/rest/progress.sql" />
         <option value="$PROJECT_DIR$/Code Model/app/templates/index.html" />
         <option value="$PROJECT_DIR$/Code Model/app/static/pages/login.html" />
         <option value="$PROJECT_DIR$/Code Model/app/static/js/main.js" />
-        <option value="$PROJECT_DIR$/Code Model/app/static/js/api.js" />
         <option value="$PROJECT_DIR$/Code Model/tests/bdd/features/__init__.py" />
         <option value="$PROJECT_DIR$/Code Model/tests/bdd/features/DiseaseRecordsMaintenance1.py" />
         <option value="$PROJECT_DIR$/Code Model/tests/bdd/features/DiseaseRecordsMaintenance.py" />
         <option value="$PROJECT_DIR$/Code Model/tests/bdd/features/SymptomRecordsMaintenance.feature" />
         <option value="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/SymptomRecordsMaintenance.py" />
-        <option value="$PROJECT_DIR$/Code Model/app/postgres.sql" />
         <option value="$PROJECT_DIR$/Code Model/tests/bdd/features/DiseaseRecordsMaintenance.feature" />
+        <option value="$PROJECT_DIR$/Code Model/tests/bdd/features/login.feature" />
+        <option value="$PROJECT_DIR$/Code Model/app/static/js/api.js" />
         <option value="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/DiseaseRecordsMaintenance.py" />
+        <option value="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/Assessment_steps.py" />
+        <option value="$PROJECT_DIR$/Code Model/tests/bdd/features/Assessment.feature" />
+        <option value="$PROJECT_DIR$/Code Model/app/models.py" />
         <option value="$PROJECT_DIR$/Code Model/app/views.py" />
+        <option value="$PROJECT_DIR$/Code Model/app/postgres.sql" />
       </list>
     </option>
   </component>
@@ -260,9 +262,9 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="33" />
-    <option name="y" value="24" />
+    <option name="y" value="-4" />
     <option name="width" value="1333" />
-    <option name="height" value="744" />
+    <option name="height" value="772" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -322,7 +324,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="AnonCare" />
+              <option name="myItemId" value="rest" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -333,84 +335,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="AnonCare" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Code Model" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AnonCare_HS" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AnonCare" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Code Model" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bdd" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="features" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AnonCare_HS" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AnonCare" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Code Model" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bdd" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="features" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="steps" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AnonCare_HS" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AnonCare" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Code Model" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -424,7 +348,7 @@
     <property name="last_opened_file_path" value="$USER_HOME$/erikka/rest" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="js-jscs-nodeInterpreter" value="/usr/bin/node" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.postfix.templates" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Font" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
   </component>
@@ -683,14 +607,14 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="33" y="24" width="1333" height="744" extended-state="6" />
+    <frame x="33" y="-4" width="1333" height="772" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.5301391" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.5517774" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32941177" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23853923" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.08780109" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32921174" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -719,40 +643,11 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/Code Model/app/views.py</url>
-        </line-breakpoint>
-      </breakpoints>
       <option name="time" value="1" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/erikka/rest/requirements.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Code Model/app/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="113" column="40" selection-start-line="113" selection-start-column="40" selection-end-line="113" selection-end-column="40" />
-          <folding>
-            <element signature="e#19#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Code Model/app/static/js/api.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="56" column="1" selection-start-line="56" selection-start-column="1" selection-end-line="56" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Code Model/app/postgres.sql">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -901,20 +796,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Code Model/app/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18181819">
-          <caret line="5" column="83" selection-start-line="5" selection-start-column="83" selection-end-line="5" selection-end-column="83" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Code Model/app/anoncareDB.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="41" column="36" selection-start-line="41" selection-start-column="36" selection-end-line="41" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/erikka/rest/requirements.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -926,13 +807,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="14" selection-start-line="0" selection-start-column="7" selection-end-line="0" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/erikka/rest/progress.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6006826">
-          <caret line="106" column="11" selection-start-line="106" selection-start-column="9" selection-end-line="106" selection-end-column="11" />
         </state>
       </provider>
     </entry>
@@ -968,20 +842,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.2222222">
           <caret line="15" column="55" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Code Model/app/static/js/api.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6273292">
-          <caret line="57" column="20" selection-start-line="57" selection-start-column="20" selection-end-line="57" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Code Model/app/static/js/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4834437">
-          <caret line="20" column="18" selection-start-line="20" selection-start-column="18" selection-end-line="20" selection-end-column="18" />
         </state>
       </provider>
     </entry>
@@ -1028,70 +888,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/login.feature">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.43003413">
-          <caret line="7" column="20" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="19" selection-start-line="0" selection-start-column="19" selection-end-line="0" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Code Model/app/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.16304348">
           <caret line="4" column="21" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Code Model/app/postgres.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.774194">
-          <caret line="458" column="58" selection-start-line="458" selection-start-column="58" selection-end-line="458" selection-end-column="58" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Code Model/app/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.096774">
-          <caret line="102" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="132" selection-end-column="0" />
-          <folding>
-            <element signature="e#19#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/steps/DiseaseRecordsMaintenance.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="27" selection-start-line="0" selection-start-column="0" selection-end-line="45" selection-end-column="65" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/DiseaseRecordsMaintenance.feature">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="15" column="24" selection-start-line="0" selection-start-column="0" selection-end-line="20" selection-end-column="58" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/SymptomRecordsMaintenance.feature">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="2" column="60" selection-start-line="0" selection-start-column="0" selection-end-line="12" selection-end-column="41" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1099,9 +899,125 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.44160584">
           <caret line="15" column="8" selection-start-line="15" selection-start-column="8" selection-end-line="15" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="19" selection-start-line="0" selection-start-column="19" selection-end-line="0" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/SymptomRecordsMaintenance.feature">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0882353">
+          <caret line="2" column="60" selection-start-line="0" selection-start-column="0" selection-end-line="12" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code Model/app/static/js/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.88235295">
+          <caret line="20" column="18" selection-start-line="20" selection-start-column="18" selection-end-line="20" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code Model/app/static/js/api.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7916667">
+          <caret line="202" column="6" selection-start-line="202" selection-start-column="6" selection-end-line="202" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code Model/app/anoncareDB.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.13235295">
+          <caret line="43" column="20" selection-start-line="43" selection-start-column="20" selection-end-line="43" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/login.feature">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.22058824">
+          <caret line="5" column="31" selection-start-line="0" selection-start-column="0" selection-end-line="9" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/Question.feature">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/DiseaseRecordsMaintenance.feature">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.29387754">
+          <caret line="4" column="18" selection-start-line="4" selection-start-column="18" selection-end-line="4" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/steps/DiseaseRecordsMaintenance.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7209302">
+          <caret line="15" column="45" selection-start-line="15" selection-start-column="45" selection-end-line="15" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/Assessment.feature">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code Model/app/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="38" selection-start-line="15" selection-start-column="38" selection-end-line="15" selection-end-column="38" />
+          <folding>
+            <marker date="1458229459926" expanded="false" signature="0:46" placeholder="import ..." />
+            <marker date="1458229459926" expanded="true" signature="61:700" placeholder="..." />
+            <marker date="1458229459926" expanded="true" signature="85:552" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/steps/Assessment_steps.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="18" column="40" selection-start-line="18" selection-start-column="40" selection-end-line="18" selection-end-column="40" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/erikka/rest/progress.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="110" column="20" selection-start-line="110" selection-start-column="20" selection-end-line="110" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code Model/app/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="16" column="35" selection-start-line="16" selection-start-column="35" selection-end-line="16" selection-end-column="35" />
+          <folding>
+            <element signature="e#20#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code Model/app/postgres.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.0349345">
+          <caret line="39" column="13" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
