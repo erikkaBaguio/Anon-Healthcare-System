@@ -58,6 +58,7 @@ create table Personal_info(
     is_active boolean
 );
 
+
 create table Patient(
     id serial8 primary key,
     fname text,
@@ -172,11 +173,16 @@ create table Notification(
   id serial8 primary key,
   assessment_id int references Assessment(id),
   doctor_id int references userinfo(id),
-  is_read boolean default FALSE,
+  is_read boolean default FALSE
 );
 -----------------------------------------------------------------------------------------------------------
 -----STORED PROCEDURE FUNCTIONS-----
 -----------------------------------------------------------------------------------------------------------
+
+create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
+                                par_email text, par_active boolean, par_role int)
+                                 returns text as
+
 
 create or replace function checkauth(par_email text,par_password text) returns text as
 $$
@@ -398,11 +404,9 @@ $$
 $$
   language 'sql';
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 create or replace function newpatient(par_fname text, par_mname text, par_lname text, par_age int, par_sex text, 
                                       par_department_id int, par_patient_type_id int, par_personal_info_id int, par_is_active boolean) returns text as
@@ -453,14 +457,15 @@ $$
       loc_id text;
       loc_res text;
   begin
-        insert into Personal_info(height, weight, date_of_birth, civil_status, name_of_guardian, home_address, is_active);
-        loc_res = 'Ok'
-      end if; 
-      return loc_res;
+        insert into Personal_info(height, weight, date_of_birth, civil_status, name_of_guardian, home_address, is_active) values 
+                                  (par_height , par_weight , par_date_of_birth , par_civil_status, par_name_of_guardian , par_home_address , is_active );                            
+        loc_res = 'Ok';
+     
   end;
 $$
   language 'plpgsql';
 
+--select newpersonal_info('4ft 11inch', '84', 'July 25, 1996', 'single', 'Marissa Cabolbol', 'Biga, Lugait, Misamis Oriental');
 
 create or replace function get_newpersonal_info(out text, out float, out date, out text, out text, out text, out boolean) returns setof record as
 $$
@@ -469,13 +474,11 @@ $$
   language 'sql';
 
 
-create or replace function get_newpersonal_info_id(in par_id int, out text, out float, out date, out text, out text, out text, out boolean) from Personal_info where par_id = id;
+create or replace function get_newpersonal_info_id(in par_id int, out text, out float, out date, out text, out text, out text, out boolean) returns setof record as
 $$  
-  select fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active from Personal_info where par_id = id;
+  select height, weight, date_of_birth, civil_status, name_of_guardian, home_address, is_active from Personal_info where par_id = id;
 $$
   language 'sql';
-
--------------------------------------------------------------------------------------------------------------------------------------
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------
@@ -552,6 +555,7 @@ create or replace function new_assessment(par_typeofpatient int, par_nameofpatie
  $$
   language 'plpgsql';
 
+
 --[GET] Retrieve specific Patient's assessment
 --select getassessmentID(1);
 create or replace function getassessmentID(in par_id int, out int, out int,out int,out int, out text, out int,
@@ -570,3 +574,4 @@ $$
   select * from Assessment;
 $$
   language 'sql';
+
