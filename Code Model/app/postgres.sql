@@ -8,8 +8,6 @@ create table userinfo (
   	is_active boolean
   );
 
-<<<<<<< HEAD
-=======
 create table College(
   id serial8 primary key,
   name text not null,
@@ -43,21 +41,10 @@ create table Personal_history(
   done BOOLEAN
 );
 
-create table Diagnosis (
-  id int primary key,
-  examination_id int references Examination(id),
-  disease_id int references Disease(id),
-  done BOOLEAN
-);
->>>>>>> 39c036af6ecc04e1b4c4e1b89835de054880dc2d
 
 create table Patient_type(
     id serial8 primary key,
     type text,
-<<<<<<< HEAD
-    is_active BOOLEAN default True
-);
-=======
 );
 
 create table Personal_info(
@@ -70,7 +57,7 @@ create table Personal_info(
     home_address text,
     is_active boolean
 );
->>>>>>> 39c036af6ecc04e1b4c4e1b89835de054880dc2d
+
 
 create table Patient(
     id serial8 primary key,
@@ -82,7 +69,6 @@ create table Patient(
     department_id int references Department(id),
     patient_type_id int references Patient_type(id),
     Personal_info_id int references Personal_info(id),
-<<<<<<< HEAD
     is_active BOOLEAN default True
 
 );
@@ -97,10 +83,6 @@ create table Personal_info(
     home_address text, 
     is_active BOOLEAN default True  
 );
-=======
-    is_active boolean
-  );
->>>>>>> 39c036af6ecc04e1b4c4e1b89835de054880dc2d
 
 create table Pulmonary(
     cough text,
@@ -186,19 +168,15 @@ create table Notification(
   id serial8 primary key,
   assessment_id int references Assessment(id),
   doctor_id int references userinfo(id),
-  is_read boolean default FALSE,
+  is_read boolean default FALSE
 );
 -----------------------------------------------------------------------------------------------------------
 -----STORED PROCEDURE FUNCTIONS-----
 -----------------------------------------------------------------------------------------------------------
-<<<<<<< HEAD
-=======
-
 create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
                                 par_email text, par_active boolean, par_role int)
                                  returns text as
 
->>>>>>> 39c036af6ecc04e1b4c4e1b89835de054880dc2d
 create or replace function checkauth(par_email text,par_password text) returns text as
 $$
   declare
@@ -380,11 +358,9 @@ $$
 $$
   language 'sql';
 
-<<<<<<< HEAD
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
-=======
---------------------------------------------------------------------------------------------------------------------------
->>>>>>> 39c036af6ecc04e1b4c4e1b89835de054880dc2d
+
 
 create or replace function newpatient(par_fname text, par_mname text, par_lname text, par_age int, par_sex text, 
                                       par_department_id int, par_patient_type_id int, par_personal_info_id int, par_is_active boolean) returns text as
@@ -435,16 +411,16 @@ $$
       loc_id text;
       loc_res text;
   begin
-        insert into Personal_info(height, weight, date_of_birth, civil_status, name_of_guardian, home_address, is_active);
-        loc_res = 'Ok'
-      end if; 
-      return loc_res;
+        insert into Personal_info(height, weight, date_of_birth, civil_status, name_of_guardian, home_address, is_active) values 
+                                  (par_height , par_weight , par_date_of_birth , par_civil_status, par_name_of_guardian , par_home_address , is_active );                            
+        loc_res = 'Ok';
+     
   end;
 $$
   language 'plpgsql';
 
+--select newpersonal_info('4ft 11inch', '84', 'July 25, 1996', 'single', 'Marissa Cabolbol', 'Biga, Lugait, Misamis Oriental');
 
-<<<<<<< HEAD
 create or replace function get_newpersonal_info(out text, out float, out date, out text, out text, out text, out boolean) returns setof record as
 $$
   select height, weight, date_of_birth, civil_status, name_of_guardian, home_address, is_active from Personal_info; 
@@ -452,14 +428,11 @@ $$
   language 'sql';
 
 
-create or replace function get_newpersonal_info_id(in par_id int, out text, out float, out date, out text, out text, out text, out boolean) from Personal_info where par_id = id;
+create or replace function get_newpersonal_info_id(in par_id int, out text, out float, out date, out text, out text, out text, out boolean) returns setof record as
 $$  
-  select fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active from Personal_info where par_id = id;
+  select height, weight, date_of_birth, civil_status, name_of_guardian, home_address, is_active from Personal_info where par_id = id;
 $$
   language 'sql';
-
--------------------------------------------------------------------------------------------------------------------------------------
-=======
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 -- NOTIFICATIONS
@@ -529,4 +502,3 @@ create or replace function new_assessment(par_typeofpatient int, par_nameofpatie
   end;
  $$
   language 'plpgsql';
->>>>>>> 39c036af6ecc04e1b4c4e1b89835de054880dc2d
