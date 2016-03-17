@@ -1,10 +1,9 @@
-from flask import Flask, render_template, request, flash, redirect, url_for
-from flask.ext.login import LoginManager
-# from flask_restful import Resource, Api
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask import Flask
 
-
-#Create an Instance of Flask
 app = Flask(__name__)
 
+<<<<<<< HEAD
 from app import views
+=======
+from app import views
+>>>>>>> 53bf8fa7156128892450c31fad9c48b18666ea8f

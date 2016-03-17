@@ -1,17 +1,30 @@
 function register(){
 
+<<<<<<< HEAD
 	var valueName = $("#fname").val()
 	var valueMName = $("#mname").val()
 	var valueLName = $("#lname").val()
 	var valueEmail = $("#email").val()
 
 	var user_info = {"fname": valuenName, "mname": valueMName, "lname": valueLName, "email": valueEmail}
+=======
+	var valueName = $('input[name="fname"]').val()
+	var valueMName = $('input[name="mname"]').val()
+	var valueLName = $('input[name="lname"]').val()
+	var valueEmail = $('input[name="email"]').val()
+	var valuePass = $('input[name="password"]').val()
+>>>>>>> 53bf8fa7156128892450c31fad9c48b18666ea8f
 
 	$.ajax({
 		type: "POST",
 		url: "/user/",
+<<<<<<< HEAD
 		dataType: json,
 		data: JSON.stringify(user_info),
+=======
+		data: {fname:valueName, mname:valueMName, lname:valueLName, email:valueEmail, pass:valuePass},
+
+>>>>>>> 53bf8fa7156128892450c31fad9c48b18666ea8f
 		success: function(resp){
 			console.log(resp.status);
 
@@ -23,6 +36,46 @@ function register(){
 	});
 }
 
+function login() {
+    //$('#loginform').submit(function (event) {
+    //    event.preventDefault();
+		//var valueUsername = $('input[name="username"]').val()
+		//var valuePassword = $('input[name="password"]').val()
+    //
+    //    $.ajax({
+		//	type: 'POST',
+    //        url: '/login/',
+    //        data: {username:valueUsername, password:valuePassword},
+    //        timeout: 1000,
+    //    success: function(resp) {
+    //        if(resp == 'ok'){
+    //            window.location = "/dashboard/";
+    //    },
+    //    error: function(e) {
+    //         $("#result").html('<p> Invalid ' + e.status + '</p>');
+    //    };
+    //
+    //    })
+    //});
+    var valueUsername = $('input[name="username"]').val()
+    var valuePassword = $('input[name="password"]').val()
+
+    $.ajax({
+        type: 'POST',
+        url: '/login/',
+        data: {username:valueUsername, password:valuePassword},
+        timeout: 1000,
+    success: function(resp) {
+        if(resp == 'ok'){
+        window.location = "/dashboard/";
+		alert("OK");
+        }
+	},
+    error: function(e) {
+        $("#result").html('<p> Invalid ' + e.status + '</p>');
+    }
+    })
+}
 
 //function get_user_with_id() {
 //    $.ajax({
@@ -119,7 +172,7 @@ function get_questions(){
     $.ajax({
         url: 'http://127.0.0.1:5000/question',
         type: "GET",
-        datatype: "json",
+        datatype: 'json',
         success: function(resp) {
             $("#questions").html("");
             if (resp == "OK") {
@@ -128,10 +181,10 @@ function get_questions(){
                     question = resp.entries[i].question;
                     user_id = resp.entries[i].user_id;
                     category_id = resp.entries[i].category_id;
-                    done = resp.entries[i].done;
+                    is_active = resp.entries[i].is_active;
                 }
             } else {
-                $("questions").html("");
+                $("#questions").html("");
                 alert(resp.message);
             }
         },
@@ -174,7 +227,7 @@ function get_userinfo(){
 
 function get_question_category(){
     $.ajax({
-        url:'http://127.0.0.1:5000/question_category',
+        url:'http://127.0.0.1:5000/api.anoncare/question_category',
         type:'GET',
         datatype:'json',
         success: function(resp){
@@ -182,7 +235,7 @@ function get_question_category(){
             if (resp == 'OK'){
                 for(i=0; i< resp.count; i++){
                     id = resp.entries[i].id;
-                    category = resp.entries[i].category;
+                    category_name = resp.entries[i].category_name;
                     done = resp.entries[i].done;
                 }
             }else{

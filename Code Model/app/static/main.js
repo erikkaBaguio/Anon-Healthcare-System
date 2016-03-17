@@ -22,3 +22,50 @@ function register(){
 		},
 	});
 }
+<<<<<<< HEAD
+=======
+
+
+jQuery(document).ready(function ($) {
+    $('#loginform').submit(function (event) {
+        event.preventDefault();
+		var valueUsername = $('input[name="username"]').val()
+		var valuePassword = $('input[name="password"]').val()
+
+        $.ajax({
+			type: 'POST',
+            url: '/login/',
+            data: {username:valueUsername, password:valuePassword},
+            timeout: 1000,
+
+        }).success(function(data, textStatus, jqXHR) {
+            var preLoginInfo = JSON.parse($.cookie('dashboard.pre.login.request'));
+            window.location = preLoginInfo.url;
+
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            alert('Booh! Wrong credentials, try again!');
+        });
+    });
+});
+
+//Login a new user
+function login(name, password) {
+    var userData = {
+        name: name,
+        password: password
+    };
+
+    $.ajax({
+        url: "http://localhost:4730/login",
+        type: "POST",
+        dataType: "json",
+        data: userData,
+        error: function (xhr, status) {
+            console.log("Sorry, there was a problem!");
+        },
+        complete: function (xhr, status) {
+            console.log(xhr);
+        }
+    });
+}
+>>>>>>> 53bf8fa7156128892450c31fad9c48b18666ea8f

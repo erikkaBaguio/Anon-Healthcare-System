@@ -1,11 +1,21 @@
-create table UserInfo (
+create table userinfo (
   	id serial8 primary key,
   	fname text,
   	mname text,
   	lname text,
   	email text,
   	password text,
+  	is_active boolean
   );
+
+create table Appointment(
+  id serial8 primary key,
+  patient_id int references userinfo(id),
+  doctor_id int references userinfo(id),
+  time_requested timestamp,
+  is_read boolean not null default FALSE,
+  is_accepted boolean not null default FALSE
+);
 
 create table Symptom(
   id serial8 primary key,
@@ -21,7 +31,7 @@ create table Schedule(
 
 create table Question_category (
     id serial8 primary key,
-    category text,
+    category_name text UNIQUE, 
     done BOOLEAN
 );
 
@@ -44,16 +54,15 @@ create table Examination (
 );
 
 create table Disease(
-  id int primary key,
-  name text,
+  id serial8 primary key,
+  name text not null,
   done boolean
 );
 
-create table Disease_Symptom(
-  id int primary key,
+create table Disease_Record(
+  id serial8 primary key,
   disease_id int references Disease(id),
   symptom_id int references Symptom(id),
-  user_id int references UserInfo(id),
   done BOOLEAN
 );
 
@@ -62,7 +71,7 @@ create table Question_answer (
     id serial8 primary key,
     question_id int references Question(id),
     --answer_id int references  Answer(id),
-    chained_to_question int references  Question(question),
+    chained_to_question int references  Question(id),
     done BOOLEAN
 );
 
@@ -74,6 +83,16 @@ create table Patient_status (
   done BOOLEAN
 );
 
+CREATE TABLE Personal_history(
+  id serial8 PRIMARY KEY,
+  smoking text,
+  allergies text,
+  alcohol text,
+  medication_taken text,
+  drugs text,
+  done BOOLEAN
+);
+
 create table Diagnosis (
   id int primary key,
   examination_id int references Examination(id),
@@ -82,19 +101,35 @@ create table Diagnosis (
 );
 
 create table Patient(
-    id int primary key,
+    id serial8 primary key,
     fname text,
     mname text,
     lname text,
-    date_of_birth date,
     age int,
     sex text,
-    civil_status text,
-    name_of_parent text,
-    home_address text,
-    height text,
-    weight int
+    department_id int references Department(id),
+    patient_type_id int references Patient_type(id),
+    Personal_info_id int references Personal_info(id),
+    is_active boolean
   );
+
+create table Personal_info(
+    id serial8 primary key,
+    height text,
+    weight float,
+    date_of_birth date,
+    civil_status text,
+    name_of_guardian text,
+    home_address text, 
+    is_active boolean  
+);
+
+create table Patient_type(
+    id serial8 primary key;
+    type text,
+    is_active boolean
+);
+  
 create table Pulmonary(
     cough text,
     dyspnea text,
@@ -123,15 +158,6 @@ CREATE TABLE Illness(
 done BOOLEAN
 );
 
-CREATE TABLE Personal_history(
-  id serial8 PRIMARY KEY,
-  smoking text,
-  allergies text,
-  alcohol text,
-  medication_taken text,
-  drugs text,
-  done BOOLEAN
-);
 
 CREATE TABLE Cardiac(
   id serial8 PRIMARY KEY,
@@ -144,7 +170,7 @@ CREATE TABLE Cardiac(
 );
 
 CREATE TABLE Neurologic(
-  id serial8 PRIMARY KEY,
+  id serial8 UNIQUE PRIMARY KEY,
   headache text,
   seizure text,
   dizziness text,
@@ -153,40 +179,53 @@ CREATE TABLE Neurologic(
 );
 
 
-
 -----------------------------------------------------------------------------------------------------------
 -----STORED PROCEDURE FUNCTIONS-----
 -----------------------------------------------------------------------------------------------------------
-
-create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
-                                par_email text, par_password text)
-                                 returns text as
+create or replace function checkauth(par_email text,par_password text) returns text as
 $$
-    declare
-        loc_id text;
-        loc_res text;
-
-    begin
-
-        if loc_id isnull then
-            insert into UserInfo(fname, mname, lname, email, password) values
-                 (par_fname, par_mname, par_lname, par_email, par_password);
-            loc_res = 'OK';
-        else
-            loc_res = 'ID EXISTED';
-        end if;
-        return loc_res;
-    end;
+  declare
+    loc_email text;
+    loc_password text;
+    loc_res text;
+  begin
+    select into loc_email email from userinfo where email = par_email and password = par_password;
+       if loc_email isnull then
+        loc_res = 'email';
+       elseif loc_password isnull then
+        loc_res = 'password!';
+      else
+        loc_res = 'OK';
+      end if;
+      return loc_res;
+  end;
 $$
   language 'plpgsql';
+
+--select newuser('Jobee','Mcdo', 'Chowking', 'j@e.com', 'password');
+create or replace function newuser(par_fname  text, par_mname  text, par_lname  text, par_email text, par_password text) returns text as
+$$
+  declare
+    loc_id text;
+    loc_res text;
+  begin
+
+       insert into userinfo (fname, mname, lname, email, password, is_active) values (par_fname, par_mname, par_lname, par_email, par_password, 'True');
+       loc_res = 'OK';
+       return loc_res;
+  end;
+$$
+ language 'plpgsql';
+
+
 
 --select newuserinfo('Mary Grace', 'Pasco', 'Cabolbol', 'marygracecabolbol@gmail.com', 'password', 1, true);
 --select newuserinfo('Ma.Erikka', 'P' , 'Baguio', 'ma.erikkabaguio@gmail.com', 'password' , 1, true);
 
-create or replace function getuserinfo(out text, out text, out text, out text, out int, out boolean)
-                                            returns setof record as
+create or replace function getuserinfo(out text, out text, out text, out text, out boolean)
+                                              returns setof record as
 $$
-    select fname, mname, lname, email, role, is_active from UserInfo;
+    select fname, mname, lname, email, is_active from UserInfo;
 $$
   language 'sql';
 
@@ -202,16 +241,67 @@ $$
 --select * from getuserinfoid(1);
 ----------------------------------------------------------------------------------------------------
 
+<<<<<<< HEAD
+create or replace function newrole(par_rolename  text) returns text as
+$$
+  declare
+    loc_name text;
+    loc_res text;
+  begin
+
+    select into loc_name role_name from roles where role_name = par_rolename;
+
+    if loc_name isnull then
+      insert into roles(role_name) values (par_rolename);
+      loc_res = 'OK';
+
+    else
+      loc_res = 'EXISTED';
+
+    end if;
+      return loc_res;
+  end;
+$$
+ language 'plpgsql';
+
+----------------------------------------------------------------------------------------------------
+
+ create or replace function newappointment(par_patient int, par_doctor int, par_time timestamp) returns text as
+$$
+  declare
+    loc_res text;
+  begin
+
+    insert into Appointment(patient_id, doctor_id, time_requested) values (par_patient, par_doctor, par_time);
+    loc_res = 'OK';
+    return loc_res;
+
+  end;
+$$
+ language 'plpgsql';
+
+
+create or replace function getappointments(in par_doctor int) returns setof record as
+$$
+   select * from Appointment where doctor_id = par_doctor;
+
+$$
+ language 'sql';
+----------------------------------------------------------------------------------------------------
+
 create or replace function newsymptom(par_id int, par_symptom text, par_done boolean) returns text AS
+=======
+--[POST] Create new symptom data
+--select newsymptom('cough', True);
+create or replace function newsymptom(par_symptom text, par_done boolean) returns text AS
+
 $$
   DECLARE
       loc_id text;
       loc_res text;
   BEGIN
-      SELECT  INTO loc_id id Symptom where id = par_id;
-
       if loc_id isnull THEN
-          insert INTO Symptom(id, symptom, done) values (par_id, par_symptom, par_done);
+          insert INTO Symptom(symptom, done) values (par_symptom, par_done);
           loc_res = 'OK';
 
       else
@@ -221,6 +311,22 @@ $$
   end;
 $$
   language 'plpgsql';
+
+--[GET] retrieve a specific symptom.
+--select get_symptom(2);
+create or replace function get_symptom(in par_id int, out text, out boolean) returns setof record as
+$$
+  select symptom, done from Symptom where id = par_id;
+$$
+  language 'sql';
+
+--[GET] retrieve list of symptoms.
+--select get_all_symptom();
+create or replace function get_all_symptom(out int, out text, out boolean) returns setof record as
+$$
+  select id, symptom, done from Symptom;
+$$
+  language 'sql';
 
 -----------------------------------------------------------------------------------------------------
 
@@ -270,31 +376,32 @@ $$
 
 -----------------------------------------------------------------------------------------------------------
 
-create or replace function newquestion_category(par_category text, par_done boolean) returns text as
+create or replace function newquestion_category(par_category_name text, par_done boolean) returns text as
 $$
   declare
-    loc_id text;
+    loc_category_name text;
     loc_res text;
   begin
-     if loc_id isnull then
+  SELECT INTO loc_category_name  category_name from Question_category where category_name = par_category_name;
+     if loc_category_name isnull then
 
-       insert into Question_category (category, done) values (par_category, par_done);
+       insert into Question_category (category_name, done) values (par_category_name, par_done);
        loc_res = 'OK';
 
      else
-       loc_res = 'ID EXISTED';
+       loc_res = 'Category already EXISTED';
      end if;
      return loc_res;
   end;
 $$
  language 'plpgsql';
 
---select newquestion_category('moderate', false);
+--select newquestion_category('reflux', false);
 --select newquestion_category('severe', false);
 
 create or replace function get_newquestion_category(out text, out boolean) returns setof record as
 $$
-  select category, done from Question_category;
+  select category_name, done from Question_category;
 $$
  language 'sql';
 
@@ -302,25 +409,25 @@ $$
 
 create or replace function get_newquestion_category_id(in par_id int, out text, out boolean) returns setof record as
 $$
-  select category, done from Question_category where par_id = id;
+  select category_name, done from Question_category where par_id = id;
 $$
  language 'sql';
 
 --select * from get_newquestion_category_id(3);
 
 ------------------------------------------------------------------------------------------------------------
-
-create or replace function newdisease(par_id int, par_name varchar, par_done boolean) returns text as
+--[POST] Create new disease data.
+--select newdisease('dengue',True);
+create or replace function newdisease(par_name text, par_done boolean) returns text as
 $$
   declare
     loc_id text;
     loc_res text;
   begin
-    select into loc_id id from disease where id = par_id;
     if loc_id isnull then
 
-      insert into disease(id, name, done) values (par_id, pr_name, par_done);
-      loc_res = "New disease data is added.";
+      insert into disease(name, done) values (par_name, par_done);
+      loc_res = 'New disease data is added.';
 
     else
       loc_res = "ID EXISTED";
@@ -330,25 +437,35 @@ $$
 $$
   language 'plpgsql';
 
-create or replace function getdiseaseinfo(in par_id int, out text, out boolean) returns setof record as
+--[GET] Retrieve certain disease data.
+--select get_disease_data(3);
+create or replace function get_disease_data(in par_id int, out text, out boolean) returns setof record as
 $$
   select name, done from Disease where id = par_id;
 $$
   language 'sql';
 
-------------------------------------------------------------------------------------------------------------
+--[GET] Retrieve list of diseases data.
+-- select get_all_diseases_data();
+create or replace function get_all_diseases_data(out bigint, out text, out boolean) returns setof record as
+$$
+  select id, name, done from Disease;
+$$
+  language 'sql';
 
-CREATE  or replace function newdisease_symptom(par_id int, par_disease_id int, par_symptom_id int, par_user_id int, par_done boolean) returns text AS
+------------------------------------------------------------------------------------------------------------
+--[POST] add disease record in the databse
+--select newdiseaserecord(1,1,True)
+CREATE  or replace function newdiseaserecord(par_disease_id int, par_symptom_id int, par_done boolean) returns text AS
 $$
   DECLARE
     loc_id text;
     loc_res text;
 
   BEGIN
-    SELECT INTO loc_id id FROM Disease_Symptom where id = par_id;
     if loc_id isnull THEN
 
-      INSERT INTO Disease_Symptom(id, disease_id, symptom_id, user_id, done) VALUES (par_id, par_disease_id, par_symptom_id, par_user_id, par_done);
+      INSERT INTO Disease_Record(disease_id, symptom_id, done) VALUES (par_disease_id, par_symptom_id, par_done);
       loc_res = 'OK';
 
     else
@@ -358,6 +475,23 @@ $$
   end;
 $$
  language 'plpgsql';
+
+--[GET] retrieve certain disease_symptom data.
+--  select getdiseaserecordID(1);
+create or replace function getdiseaserecordID(in par_id int, out int, out int, out boolean) returns setof record as
+$$
+  select disease_id, symptom_id, done from Disease_Record where id = par_id;
+$$
+  language 'sql';
+
+
+--[GET] retrieve all disease_symptom data.
+-- select getalldiseaserecords();
+create or replace function getalldiseaserecords(out bigint, out int, out int, out boolean) returns setof record as
+$$
+  select id, disease_id, symptom_id, done from Disease_Record;
+$$
+  language 'sql';
 
 ------------------------------------------------------------------------------------------------------------
 
@@ -392,24 +526,24 @@ $$
 
 --select * from get_newquestion();
 
-create or replace function get_newquestion_id(in par_id int, out text, out int, out par int, out boolean) returns setof record as
+create or replace function get_newquestion_id(out text, out int, in par int, out boolean) returns setof record as
 $$
   select question, user_id, category_id, done from Question where par_id = id;
 $$
  language 'sql';
 
-SELECT * from get_newquestion_id(1);
+--SELECT * from get_newquestion_id(1);
 -----------------------------------------------------------------------------------------------------------
 
-CREATE or replace function newquestion_answer(par_id serial8, par_question_id int, par_answer_id int, par_chained_to_question int, done boolean) returns text as
+CREATE or replace function newquestion_answer(par_question_id int, par_answer_id int, par_chained_to_question int, done boolean) returns text as
 $$
   declare
     loc_id text;
     loc_res text;
   begin
-     select into loc_id id from Question_answer where id = par_id;
+     select into loc_id id from Question_answer;
      if loc_id isnull then
-       insert into Question_answer (id, question_id, answer_id, chained_to_question, done) values (par_id, par_question_id, par_done);
+       insert into Question_answer (question_id, answer_id, chained_to_question, done) values (par_question_id, par_done);
        loc_res = 'OK';
 
      else
@@ -443,16 +577,16 @@ $$
 
 -----------------------------------------------------------------------------------------------------------
 
-CREATE or replace function newdiagnosis(par_id int, par_examination_id int, par_disease_id int, par_done boolean) returns text AS
+CREATE or replace function newdiagnosis(par_examination_id int, par_disease_id int, par_done boolean) returns text AS
 $$
   DECLARE
     loc_id text;
     loc_res text;
   BEGIN
-      SELECT INTO loc_id id from Diagnosis WHERE id = par_id;
+      SELECT INTO loc_id id from Diagnosis;
       if loc_id isnull THEN
 
-        INSERT INTO Diagnosis(id, par_examination_id, par_disease_id, done) values (par_id, par_examination_id, par_disease_id, par_done);
+        INSERT INTO Diagnosis(par_examination_id, par_disease_id, done) values (par_examination_id, par_disease_id, par_done);
         loc_res = 'OK';
 
         else
@@ -464,17 +598,17 @@ $$
     language 'plpgsql';
 
 -----------------------------------------------------------------------------------------------------------
-create or replace function newillness(par_id serial8, par_asthma text, par_ptb text, par_heart_problem text,
+create or replace function newillness(par_asthma text, par_ptb text, par_heart_problem text,
                                       par_hepatitis_a_b text, par_chicken_pox text, par_mumps text, par_typhoid_fever text, done boolean) returns text as
 $$
   declare
     loc_id text;
     loc_res text;
   BEGIN
-     SELECT into loc_id id from Illness where id = par_id;
+     SELECT into loc_id id from Illness;
      if loc_id isnull THEN
 
-         insert into Illness(id, asthma, ptb, heart_problem, hepatitis_a_b, chicken_pox, mumps, typhoid_fever, done) values (par_id, par_asthma, par_ptb, par_heart_problem,
+         insert into Illness(asthma, ptb, heart_problem, hepatitis_a_b, chicken_pox, mumps, typhoid_fever, done) values (par_asthma, par_ptb, par_heart_problem,
                                                                                                     par_hepatitis_a_b, par_chicken_pox, par_mumps, par_typhoid_fever, par_done);
           loc_res = 'OK';
 
@@ -487,17 +621,17 @@ $$
     language 'plpgsql';
 --------------------------------------------------------------------------------------------------------------
 
-create or replace function newpersonal_history(par_id serial8, par_smoking text, par_allergies text, par_alcohol text,
+create or replace function newpersonal_history(par_smoking text, par_allergies text, par_alcohol text,
                                                par_medication_taken text, par_drugs text, par_done boolean) returns text as
 $$
  declare
    loc_id text;
    loc_res text;
  BEGIN
-   SELECT into loc_id id from Personal_history where id = par_id;
+   #SELECT into loc_id id from Personal_history;
    if loc_id isnull THEN
 
-       INSERT into Personal_history(id, smoking, allergies, alcohol, medication_taken, drugs, done) VALUES (par_id, par_smoking, par_allergies,
+       INSERT into Personal_history(smoking, allergies, alcohol, medication_taken, drugs, done) VALUES (par_smoking, par_allergies,
                                                 par_alcohol, par_medication_taken, par_drugs, par_done);
        loc_res = 'OK';
 
@@ -507,20 +641,20 @@ $$
    return loc_res;
  END;
 $$
- language 'plpsql';
+ language 'plpgsql';
 
 ---------------------------------------------------------------------------------------------------------------
 
-CREATE  or replace function newcardiac(par_id serial8, par_chest_pain text, par_palpitations text, par_pedal_edema text, par_orthopnea text, par_nocturnal_dyspnea text, par_done boolean) returns text as
+CREATE  or replace function newcardiac(par_chest_pain text, par_palpitations text, par_pedal_edema text, par_orthopnea text, par_nocturnal_dyspnea text, par_done boolean) returns text as
 $$
   DECLARE
     loc_id text;
     loc_res text;
   BEGIN
-    SELECT INTO  loc_id id from Cardiac where id = par_id;
+    SELECT INTO  loc_id id from Cardiac;
     if loc_id isnull THEN
 
-      INSERT into Cardiac(id, chest_pain, palpitations, pedal_edema, orthopnea, nocturnal_dyspnea, done) VALUES (par_id, par_chest_pain, par_palpitations, par_pedal_edema, par_orthopnea, par_nocturnal_dyspnea, par_done);
+      INSERT into Cardiac(chest_pain, palpitations, pedal_edema, orthopnea, nocturnal_dyspnea, done) VALUES (par_chest_pain, par_palpitations, par_pedal_edema, par_orthopnea, par_nocturnal_dyspnea, par_done);
       loc_res = 'OK';
 
     ELSE
@@ -533,16 +667,16 @@ $$
 
 ----------------------------------------------------------------------------------------------------------------
 
-create or replace function newneurologic(par_id serial8, par_headache text, par_seizure text, par_dizziness text, par_loss_of_consciousness text, par_done boolean) returns text as
+create or replace function newneurologic(par_headache text, par_seizure text, par_dizziness text, par_loss_of_consciousness text, par_done boolean) returns text as
 $$
  DECLARE
    loc_id text;
    loc_res text;
  BEGIN
-   SELECT into loc_id id from Neurologic where id = par_id;
+   SELECT into loc_id id from Neurologic;
    if loc_id isnull THEN
 
-     INSERT INTO Neurologic(id, headache, seizure, dizziness, loss_of_consciousness, done) values (par_id, par_headache, par_seizure, par_dizziness, par_loss_of_consciousness, par_done);
+     INSERT INTO Neurologic(headache, seizure, dizziness, loss_of_consciousness, done) values (par_headache, par_seizure, par_dizziness, par_loss_of_consciousness, par_done);
      loc_res = 'OK';
 
    ELSE
@@ -554,3 +688,49 @@ $$
  LANGUAGE  'plpgsql';
 
 -----------------------------------------------------------------------------------------------------------------
+
+create or replace function newpatient(par_fname text, par_mname text, par_lname text, par_age int, par_sex text, 
+                                      par_department_id int, par_patient_type_id int, par_personal_info_id int, par_is_active boolean) returns text as
+$$
+  declare
+      loc_fname text;
+      loc_mname text;
+      loc_lname text;
+      loc_res text;
+
+  begin
+      SELECT INTO loc_fname fname from Patient where fname = par_fname AND mname = par_mname AND lname = par_lname;
+      if loc_fname isnull THEN
+         insert into Patient(fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active) values 
+          (par_fname, par_mname, par_lname, par_age, par_sex, par_department_id, par_patient_type_id, par_personal_info_id par_is_active);
+
+         loc_res = 'OK';
+      else
+        loc_res = 'Patient already EXISTED';
+      end if;
+      return loc_res;
+    end;
+$$
+  language 'plpgsql';
+
+--select newpatient('Mary Grace', 'Pasco', 'Cabolbol', 'July 25, 1996', '19', 'female', 'single', 'Marissa Cabolbol', 'Biga, Lugait, Misamis Oriental', '4 ft 11 inch', '81', 'true');
+
+create or replace function get_newpatient(out text, out text, out text, out int, out text, out int, out int, out int, out boolean) returns setof record as
+$$
+  select fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active from Patient;
+$$
+  language 'sql';
+
+--select * from get_newpatient();
+
+create or replace function get_newpatient_id(in par_id int, out text, out text, out text, out int, out text, out int, out int, out int, out boolean) returns setof record as
+$$
+  select fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active from Patient where par_id = id;
+$$
+  language 'sql';
+
+--select * from get_newpatient_id(1);
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
