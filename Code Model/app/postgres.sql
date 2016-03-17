@@ -29,7 +29,7 @@ create table Schedule(
 
 create table Question_category (
     id serial8 primary key,
-    category text,
+    category_name text UNIQUE, 
     done BOOLEAN
 );
 
@@ -90,7 +90,7 @@ create table Diagnosis (
 );
 
 create table Patient(
-    id int primary key,
+    id serial8 primary key,
     fname text,
     mname text,
     lname text,
@@ -101,7 +101,8 @@ create table Patient(
     name_of_parent text,
     home_address text,
     height text,
-    weight int
+    weight double,
+    is_active boolean
   );
 create table Pulmonary(
     cough text,
@@ -336,31 +337,32 @@ $$
 
 -----------------------------------------------------------------------------------------------------------
 
-create or replace function newquestion_category(par_category text, par_done boolean) returns text as
+create or replace function newquestion_category(par_category_name text, par_done boolean) returns text as
 $$
   declare
-    loc_id text;
+    loc_category_name text;
     loc_res text;
   begin
-     if loc_id isnull then
+  SELECT INTO loc_category_name  category_name from Question_category where category_name = par_category_name;
+     if loc_category_name isnull then
 
-       insert into Question_category (category, done) values (par_category, par_done);
+       insert into Question_category (category_name, done) values (par_category_name, par_done);
        loc_res = 'OK';
 
      else
-       loc_res = 'ID EXISTED';
+       loc_res = 'Category already EXISTED';
      end if;
      return loc_res;
   end;
 $$
  language 'plpgsql';
 
---select newquestion_category('moderate', false);
+--select newquestion_category('reflux', false);
 --select newquestion_category('severe', false);
 
 create or replace function get_newquestion_category(out text, out boolean) returns setof record as
 $$
-  select category, done from Question_category;
+  select category_name, done from Question_category;
 $$
  language 'sql';
 
@@ -368,7 +370,7 @@ $$
 
 create or replace function get_newquestion_category_id(in par_id int, out text, out boolean) returns setof record as
 $$
-  select category, done from Question_category where par_id = id;
+  select category_name, done from Question_category where par_id = id;
 $$
  language 'sql';
 
@@ -458,13 +460,13 @@ $$
 
 --select * from get_newquestion();
 
-create or replace function get_newquestion_id(in par_id int, out text, out int, out par int, out boolean) returns setof record as
+create or replace function get_newquestion_id(out text, out int, in par int, out boolean) returns setof record as
 $$
   select question, user_id, category_id, is_active from Question where par_id = id;
 $$
  language 'sql';
 
-SELECT * from get_newquestion_id(1);
+--SELECT * from get_newquestion_id(1);
 -----------------------------------------------------------------------------------------------------------
 
 CREATE or replace function newquestion_answer(par_question_id int, par_answer_id int, par_chained_to_question int, done boolean) returns text as
@@ -560,7 +562,7 @@ $$
    loc_id text;
    loc_res text;
  BEGIN
-   SELECT into loc_id id from Personal_history;
+   #SELECT into loc_id id from Personal_history;
    if loc_id isnull THEN
 
        INSERT into Personal_history(smoking, allergies, alcohol, medication_taken, drugs, done) VALUES (par_smoking, par_allergies,
@@ -575,6 +577,7 @@ $$
 $$
  language 'plpgsql';
 
+create or replace funtion
 ---------------------------------------------------------------------------------------------------------------
 
 CREATE  or replace function newcardiac(par_chest_pain text, par_palpitations text, par_pedal_edema text, par_orthopnea text, par_nocturnal_dyspnea text, par_done boolean) returns text as
@@ -620,3 +623,31 @@ $$
  LANGUAGE  'plpgsql';
 
 -----------------------------------------------------------------------------------------------------------------
+
+create or replace function newpatient(par_fname text, par_mname text, par_lname text, par_date_of_birth date,
+                                      par_age int, par_sex text, par_civil_status text, par_name_parent text,
+                                      par_home_address text, par_height text, par_weight double, par_is_active boolean) returns text as
+$$
+  declare
+      loc_fname text,
+      loc_mname text,
+      loc_lname text,
+      loc_res text;
+
+  begin
+      if loc_name and loc_name and loc_lname isnull then
+        insert into Patient(fname, mname, lname, date_of_birth, age, sex, civil_status, par_name_parent,
+                            home_address, height, weight, is_active) values (par_fname, par_mname, par_lname, par_date_of_birth,
+                                      par_age, par_sex, par_civil_status, par_name_parent, par_home_address, par_height, par_weight, par_is_active)
+
+        loc_res = 'OK'
+      else
+        loc_res = 'Patient already EXISTED';
+      end if;
+      return loc_res;
+    end;
+$$
+  language 'plpgsql';
+
+
+

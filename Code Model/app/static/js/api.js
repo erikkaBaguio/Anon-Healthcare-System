@@ -85,7 +85,7 @@ function get_questions(){
     $.ajax({
         url: 'http://127.0.0.1:5000/question',
         type: "GET",
-        datatype: "json",
+        datatype: 'json',
         success: function(resp) {
             $("#questions").html("");
             if (resp == "OK") {
@@ -94,10 +94,10 @@ function get_questions(){
                     question = resp.entries[i].question;
                     user_id = resp.entries[i].user_id;
                     category_id = resp.entries[i].category_id;
-                    done = resp.entries[i].done;
+                    is_active = resp.entries[i].is_active;
                 }
             } else {
-                $("questions").html("");
+                $("#questions").html("");
                 alert(resp.message);
             }
         },
@@ -139,7 +139,7 @@ function get_userinfo(){
 
 function get_question_category(){
     $.ajax({
-        url:'http://127.0.0.1:5000/question_category',
+        url:'http://127.0.0.1:5000/api.anoncare/question_category',
         type:'GET',
         datatype:'json',
         success: function(resp){
@@ -147,7 +147,7 @@ function get_question_category(){
             if (resp == 'OK'){
                 for(i=0; i< resp.count; i++){
                     id = resp.entries[i].id;
-                    category = resp.entries[i].category;
+                    category_name = resp.entries[i].category_name;
                     done = resp.entries[i].done;
                 }
             }else{

@@ -9,6 +9,7 @@ from app import app
 
 USERS = {}
 QUESTIONS = {}
+CATEGORY = {}
 auth = HTTPBasicAuth()
 
 
@@ -25,18 +26,6 @@ def spcall(qry, param, commit=False):
         res = [("Error: " + str(sys.exc_info()[0]) + " " + str(sys.exc_info()[1]),)]
     return res
 
-# @app.errorhandler(404)
-# def page_not_found(e):
-#     return 'Sorry, the page you were looking for was not found.'
-#
-# @app.errorhandler(500)
-# def internal_server_error(e):
-#     return '(Error 500) Sorry, there was an internal server error.'
-#
-# @app.route('/users', methods=['GET'])
-# # @auth.login_required
-# def get_all_users():
-#     res = spcall('getuserinfo', ())
 
 @app.route('/')
 def index():
@@ -55,30 +44,30 @@ def addRole():
     print res
     return jsonify({'status': 'ok',})
 
-@app.route('/question', methods=['GET'])
+@app.route('/api.anoncare/question', methods=['GET'])
 def get_all_questions():
-    res= spcall('get_newquestion',())
-
+    res = spcall('get_newquestion',())
+    print res
     if 'Error' in str(res[0][0]):
         return jsonify({'status': 'error', 'message': res[0][0]})
 
     recs = []
     for r in res:
-        recs.append({"fname": r[0], "mname": r[1], "lname": r[2], "email": r[3], "password": r[4],
-                     "role":r[5], "is_active": str[6]})
+        recs.append({"question": r[0], "user_id": r[1], "category_id": r[2], "is_active": str([3])})
 
     return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
 
-@app.route('/question', methods =['POST'])
+
+
+@app.route('/api.anoncare/question', methods =['POST'])
 def new_question():
     id = request.form['inputID']
     question = request.form['inputquestion']
     user_id = request.form['inputUserID']
     category_id = request.form['inputCategoryID']
     is_active = False
-
-    res = spcall('newquestion', (
-        id, question, category_id, is_active), True)
+    
+    res = spcall('newquestion', (id, question, category_id, is_active), True)
 
     if 'Error' in res[0][0]:
         return jsonify({'status': 'error', 'message': res[0][0]})
@@ -86,16 +75,19 @@ def new_question():
     return jsonify({'status': 'ok', 'message': res[0][0]})
 
 
-@app.route('/question/<question_id>/', methods = ['GET'])
+@app.route('/question/<category_id>/', methods = ['GET'])
 def get_question(question_id):
-    res= spcall('get_newquestion_id', (question_id))
+    res= spcall('get_newquestion_id', (category_id))
 
     if 'Error' in res[0][0]:
         return jsonify({'status': 'error', 'message': res[0][0]})
 
-    return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
+    r = res[0]
+    return jsonify({"id": r[0], "question": r[1], "user_id": r[2], "category_id": r[3], "is_active": str[4]})
 
-@app.route('/question_category', methods = ['GET'])
+
+
+@app.route('/api.anoncare/question_category', methods = ['GET'])
 def get_all_category():
     res =spcall('get_newquestion_category', ())
 
@@ -104,8 +96,21 @@ def get_all_category():
 
     recs = []
     for r in res:
-        recs.append({"category": r[0], "done": str(r[1])})
+        recs.append({"category_name": r[0], "is_active": str(r[1])})
     return jsonify({'status': 'OK', 'entries': recs, 'count':len(recs)})
+
+
+
+    
+@app.route('/api.anoncare/question_category/<id>/', methods = ['GET'])
+def get_category(id):
+    res = spcall('get_newquestion_category_id', (id))
+
+    if 'Error' in str(res[0][0]):
+        return jsonify({'status': 'error', 'message': res[0][0]})
+
+    r = res[0]
+    return jsonify({"id": (id), "category_name": str(r[0]), "done": str(r[1])})
 
 
 
