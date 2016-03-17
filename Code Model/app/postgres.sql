@@ -137,7 +137,6 @@ create table Assessment(
   nameofpatient int references Patient(id),
   age int,
   department int references Department(id),
-  sex text not null,
   vital_signs int references Vital_signs(id),
   chiefcomplaint text,
   historyofpresentillness text,
@@ -532,7 +531,7 @@ $$
 -- [POST] Create new assessment
 --select new_assessment(1,1,12,1,'female',1,'parts','history','medication','diagnosis', 'reccommendation', 1);
 create or replace function new_assessment(par_typeofpatient int, par_nameofpatient int, par_age int, par_department int,
- par_sex text, par_vital_signs int, par_chiefcomplaint text, par_historyofpresentillness text,
+ par_vital_signs int, par_chiefcomplaint text, par_historyofpresentillness text,
  par_medicationstaken text, par_diagnosis text, par_reccomendation text, par_attendingphysician int) returns text as
  $$
   declare
@@ -541,9 +540,9 @@ create or replace function new_assessment(par_typeofpatient int, par_nameofpatie
   begin
     select into loc_id id from Assessment;
     if loc_id isnull then
-      insert into Assessment (typeofpatient, nameofpatient, age, department,sex ,vital_signs ,chiefcomplaint ,
+      insert into Assessment (typeofpatient, nameofpatient, age, department,vital_signs ,chiefcomplaint ,
       historyofpresentillness ,medicationstaken ,diagnosis ,reccomendation ,attendingphysician )
-      values (par_typeofpatient, par_nameofpatient, par_age, par_department, par_sex,par_vital_signs,
+      values (par_typeofpatient, par_nameofpatient, par_age, par_department, par_vital_signs,
       par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken, par_diagnosis,
       par_reccomendation, par_attendingphysician);
       loc_res = 'OK';
@@ -558,18 +557,18 @@ create or replace function new_assessment(par_typeofpatient int, par_nameofpatie
 
 --[GET] Retrieve specific Patient's assessment
 --select getassessmentID(1);
-create or replace function getassessmentID(in par_id int, out int, out int,out int,out int, out text, out int,
-out text,out text,out text,out text,out text,out int) returns setof record as
+create or replace function getassessmentID(in par_id int, out int, out int,out int,out int,out int, out text,
+out text,out text,out text,out text,out int) returns setof record as
 $$
-  select typeofpatient, nameofpatient, age, department,sex ,vital_signs ,chiefcomplaint ,
+  select typeofpatient, nameofpatient, age, department,vital_signs ,chiefcomplaint ,
       historyofpresentillness ,medicationstaken ,diagnosis ,reccomendation ,attendingphysician from Assessment where id = par_id;
 $$
   language 'sql';
 
 -- [GET] Retrieve all patients' assessment
 --select getallassessment();
-create or replace function getallassessment(out bigint, out int,out int,out int,out int, out text, out int,
-out text,out text,out text,out text,out text,out int) returns setof record as
+create or replace function getallassessment(out bigint, out int, out int,out int,out int,out int, out text,
+out text,out text,out text,out text,out int) returns setof record as
 $$
   select * from Assessment;
 $$
