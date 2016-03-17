@@ -1,4 +1,4 @@
-create Role (
+create table Role (
     id serial8 primary key,
     role_name text
 );
