@@ -707,4 +707,13 @@ $$
 $$
   language 'sql';
 
+create or replace function get_newpatient_id(in par_id int, out text, out text, out text, out date, out int, out text, out text, out text, out text, out text, out double, out boolean) returns setof record as
+$$
+  select fname, mname, lname, date_of_birth, age, sex, civil_status, name_of_parent, home_address, height, weight, is_activefrom Patient where par_id = id;
+$$
+  language 'sql';
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
