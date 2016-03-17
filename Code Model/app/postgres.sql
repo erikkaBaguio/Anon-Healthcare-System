@@ -1,6 +1,6 @@
 create table Role (
     id serial8 primary key,
-    role_name text
+    rolename text
 );
 
 
@@ -207,7 +207,7 @@ $$
   language 'plpgsql';
 
 --select newuser('Jobee','Mcdo', 'Chowking', 'j@e.com', 'password');
-create or replace function newUserinfo(par_fname text, par_mname text, par_lname text,
+create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
                                 par_email text)
                                  returns text as
 $$
@@ -231,6 +231,8 @@ $$
   end;
 $$
  language 'plpgsql';
+
+ select newuserinfo('Josiah', 'Timonera', 'Regencia', 'jetregencia@gmail.com');
 
 
   create or replace function generate_password() returns text as
