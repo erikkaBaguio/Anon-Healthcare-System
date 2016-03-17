@@ -233,12 +233,13 @@ $$
 $$
   language 'sql';
 
---select * from getuserinfo();
 
 create or replace function getuserinfoid(in par_id int, out text, out text, out text, out text,
-                                                 out int, out boolean) returns setof record as
+                                                 out int, out text, out text, out boolean)
+                                                  returns setof record as
 $$
-    select fname, mname, lname, email, role_id, is_active from UserInfo where par_id = id;
+    select fname, mname, lname, email, role_id, username, password, is_active
+     from UserInfo where par_id = id;
 $$
   language 'sql';
 
@@ -266,6 +267,10 @@ $$
   end;
 $$
  language 'plpgsql';
+
+ select newrole('doctor');
+ select newrole('nurse');
+ select newrole('system administrator');
 
 ----------------------------------------------------------------------------------------------------
 

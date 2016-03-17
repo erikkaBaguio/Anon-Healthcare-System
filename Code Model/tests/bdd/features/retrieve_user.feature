@@ -2,14 +2,10 @@
 Feature: Retrieve User
   As an admin, I want to be able to retrieve data from a particular user.
 
-  Scenario: Retrieve User Details
-    Given Some users are in the system
-
-    When I retrieve all users
-
-
-#    Then I should get a ‘200’ response
-
-    Then The following user details are returned:
-              |fname|  |mname|    |lname|    |email|                 |role| |is_active|
-              |Josiah| |Timonera| |Regencia| |jetregencia@gmail.com| |1   | |TRUE     |
+  Scenario: Retrieve a customers details
+  Given some users are in the system
+  When I retrieve the user with id '3'
+  Then I should get a '200' response
+  And the following user details are returned:
+  | email |                | fname | | lname |     | mname | | password |         | role | | username |
+  | neiel.care@gmail.com | | Neiel | | Paradiang | | Care  | | 6x(Rf7Ip3%^sn8fC | | 3    | |Neiel.Paradiang|
