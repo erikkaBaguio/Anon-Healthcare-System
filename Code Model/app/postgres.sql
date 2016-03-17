@@ -506,3 +506,10 @@ $$
 $$
   language 'plpgsql';
 
+-- GET FINAL DIAGNOSIS
+--select getdepartmentID(1);
+create or replace function getFinalDiagnosis(in par_id int, out int, out int, out text) returns text as
+$$
+  select * from Final_diagnosis where id = par_id;
+$$
+  language 'sql';
