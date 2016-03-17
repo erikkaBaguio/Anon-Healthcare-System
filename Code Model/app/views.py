@@ -8,14 +8,7 @@ from models import DBconn
 import json, flask
 from app import app
 
-
-# auth = HTTPBasicAuth()
-COLLEGES = {}
-DISEASES = {}
-SYMPTOMS = {}
-DISEASE_RECORDS = {}
-QUESTIONS = {}
-APPOINTMENTS = {}
+#auth = HTTPBasicAuth()
 
 def spcall(qry, param, commit=False):
     try:
@@ -39,18 +32,6 @@ def page_not_found(e):
 def internal_server_error(e):
     return '(Error 500) Sorry, there was an internal server error.'
 
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/dashboard/')
-def dashboard():
-    return render_template('dashboard.html')
-
-
-<<<<<<< HEAD
-=======
 @app.route('/api.anoncare/question', methods=['GET'])
 def get_all_questions():
     res = spcall('get_newquestion',())
@@ -124,7 +105,6 @@ def login():
             error = 'Invalid credentials. Try again.'
     return render_template('login.html', title='Sign In', form=form, error=error)
 
-
 @app.route('/anoncare.api/colleges/<int:college_id>/', methods = ['GET'])
 def get_college(college_id):
     res = spcall('getcollegeID', str(college_id))
@@ -133,10 +113,9 @@ def get_college(college_id):
         return jsonify({'status': 'error', 'message': res[0][0]})
 
     r = res[0]
-
-
-    return jsonify({"fname": r[0], "mname": r[1], "lname": r[2], "email": r[3], "role": r[4],
-                    "username": r[5]})
+    return jsonify({"college_id": str(college_id), "college_name": str(r[0])})
+    # return jsonify({"fname": r[0], "mname": r[1], "lname": r[2], "email": r[3], "role": r[4],
+    #                 "username": r[5]})
     # return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
 
 @app.route('/user/', methods=['POST', 'GET'])
@@ -160,9 +139,7 @@ def insertuser():
 
         return jsonify({'status': 'ok'})
     return render_template('index2.html')
-    return jsonify({"college_id": str(college_id), "college_name": str(r[0])})
 
->>>>>>> 03edfce1e38bc6cceb6ace17984ab38b9e7373fb
 @app.route('/anoncare.api/departments/<int:department_id>/', methods = ['GET'])
 def get_departmet(department_id):
     res = spcall('getdepartmentID', str(department_id))
