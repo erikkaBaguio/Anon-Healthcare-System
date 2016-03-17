@@ -15,6 +15,7 @@ DISEASES = {}
 SYMPTOMS = {}
 DISEASE_RECORDS = {}
 QUESTIONS = {}
+APPOINTMENTS = {}
 
 def spcall(qry, param, commit=False):
     try:
