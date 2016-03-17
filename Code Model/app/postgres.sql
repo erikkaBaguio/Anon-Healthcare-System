@@ -100,6 +100,23 @@ create table Diagnosis (
   done BOOLEAN
 );
 
+create table Patient_type(
+    id serial8 primary key;
+    type text,
+    is_active boolean
+);
+
+create table Personal_info(
+    id serial8 primary key,
+    height text,
+    weight float,
+    date_of_birth date,
+    civil_status text,
+    name_of_guardian text,
+    home_address text, 
+    is_active boolean  
+);
+
 create table Patient(
     id serial8 primary key,
     fname text,
@@ -113,22 +130,8 @@ create table Patient(
     is_active boolean
   );
 
-create table Personal_info(
-    id serial8 primary key,
-    height text,
-    weight float,
-    date_of_birth date,
-    civil_status text,
-    name_of_guardian text,
-    home_address text, 
-    is_active boolean  
-);
 
-create table Patient_type(
-    id serial8 primary key;
-    type text,
-    is_active boolean
-);
+
   
 create table Pulmonary(
     cough text,
@@ -687,6 +690,12 @@ $$
 $$
  LANGUAGE  'plpgsql';
 
+
+-----------------------------------------------------------------------------------------------------------------
+
+create or replace function newpersonal_info(par_height text, par_weight float, par_date_of_birth date, par_civil_status text, par_name_of_guardian text, par_is_active boolean) returns text as
+$$
+
 -----------------------------------------------------------------------------------------------------------------
 
 create or replace function newpatient(par_fname text, par_mname text, par_lname text, par_age int, par_sex text, 
@@ -713,8 +722,7 @@ $$
 $$
   language 'plpgsql';
 
---select newpatient('Mary Grace', 'Pasco', 'Cabolbol', 'July 25, 1996', '19', 'female', 'single', 'Marissa Cabolbol', 'Biga, Lugait, Misamis Oriental', '4 ft 11 inch', '81', 'true');
-
+--select newpatient('Mary Grace', 'Pasco', 'Cabolbol', '19', 'female', '1' , '1', '1', 'true');
 create or replace function get_newpatient(out text, out text, out text, out int, out text, out int, out int, out int, out boolean) returns setof record as
 $$
   select fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active from Patient;
@@ -732,5 +740,16 @@ $$
 --select * from get_newpatient_id(1);
 ------------------------------------------------------------------------------------------------------------------------------------------
 
-
-
+create or replace function newpersonal_info(par_height text, par_weight float, par_date_of_birth date, par_civil_status text, par_name_of_guardian text, par_home_address text, is_active boolean) returns text as
+$$
+  declare
+      loc_id text;
+      loc_res text;
+  begin
+        insert into Personal_info(height, weight, date_of_birth, civil_status, name_of_guardian, home_address, is_active);
+        loc_res = 'Ok'
+      end if; 
+      return loc_res;
+  end;
+$$
+  language 'plpgsql';
