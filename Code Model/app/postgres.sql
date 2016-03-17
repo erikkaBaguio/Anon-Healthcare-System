@@ -83,6 +83,16 @@ create table Patient_status (
   done BOOLEAN
 );
 
+CREATE TABLE Personal_history(
+  id serial8 PRIMARY KEY,
+  smoking text,
+  allergies text,
+  alcohol text,
+  medication_taken text,
+  drugs text,
+  done BOOLEAN
+);
+
 create table Diagnosis (
   id int primary key,
   examination_id int references Examination(id),
@@ -95,16 +105,31 @@ create table Patient(
     fname text,
     mname text,
     lname text,
-    date_of_birth date,
     age int,
     sex text,
-    civil_status text,
-    name_of_parent text,
-    home_address text,
-    height text,
-    weight double,
+    department_id int references Department(id),
+    patient_type_id int references Patient_type(id),
+    Personal_info_id int references Personal_info(id),
     is_active boolean
   );
+
+create table Personal_info(
+    id serial8 primary key,
+    height text,
+    weight float,
+    date_of_birth date,
+    civil_status text,
+    name_of_guardian text,
+    home_address text, 
+    is_active boolean  
+);
+
+create table Patient_type(
+    id serial8 primary key;
+    type text,
+    is_active boolean
+);
+  
 create table Pulmonary(
     cough text,
     dyspnea text,
@@ -133,15 +158,6 @@ CREATE TABLE Illness(
 done BOOLEAN
 );
 
-CREATE TABLE Personal_history(
-  id serial8 PRIMARY KEY,
-  smoking text,
-  allergies text,
-  alcohol text,
-  medication_taken text,
-  drugs text,
-  done BOOLEAN
-);
 
 CREATE TABLE Cardiac(
   id serial8 PRIMARY KEY,
@@ -161,7 +177,6 @@ CREATE TABLE Neurologic(
   loss_of_consciousness text,
   done BOOLEAN
 );
-
 
 
 -----------------------------------------------------------------------------------------------------------
@@ -628,7 +643,6 @@ $$
 $$
  language 'plpgsql';
 
-create or replace funtion
 ---------------------------------------------------------------------------------------------------------------
 
 CREATE  or replace function newcardiac(par_chest_pain text, par_palpitations text, par_pedal_edema text, par_orthopnea text, par_nocturnal_dyspnea text, par_done boolean) returns text as
@@ -675,23 +689,22 @@ $$
 
 -----------------------------------------------------------------------------------------------------------------
 
-create or replace function newpatient(par_fname text, par_mname text, par_lname text, par_date_of_birth date,
-                                      par_age int, par_sex text, par_civil_status text, par_name_parent text,
-                                      par_home_address text, par_height text, par_weight double, par_is_active boolean) returns text as
+create or replace function newpatient(par_fname text, par_mname text, par_lname text, par_age int, par_sex text, 
+                                      par_department_id int, par_patient_type_id int, par_personal_info_id int, par_is_active boolean) returns text as
 $$
   declare
-      loc_fname text,
-      loc_mname text,
-      loc_lname text,
+      loc_fname text;
+      loc_mname text;
+      loc_lname text;
       loc_res text;
 
   begin
-      if loc_name and loc_name and loc_lname isnull then
-        insert into Patient(fname, mname, lname, date_of_birth, age, sex, civil_status, par_name_parent,
-                            home_address, height, weight, is_active) values (par_fname, par_mname, par_lname, par_date_of_birth,
-                                      par_age, par_sex, par_civil_status, par_name_parent, par_home_address, par_height, par_weight, par_is_active)
+      SELECT INTO loc_fname fname from Patient where fname = par_fname AND mname = par_mname AND lname = par_lname;
+      if loc_fname isnull THEN
+         insert into Patient(fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active) values 
+          (par_fname, par_mname, par_lname, par_age, par_sex, par_department_id, par_patient_type_id, par_personal_info_id par_is_active);
 
-        loc_res = 'OK'
+         loc_res = 'OK';
       else
         loc_res = 'Patient already EXISTED';
       end if;
@@ -700,19 +713,23 @@ $$
 $$
   language 'plpgsql';
 
+--select newpatient('Mary Grace', 'Pasco', 'Cabolbol', 'July 25, 1996', '19', 'female', 'single', 'Marissa Cabolbol', 'Biga, Lugait, Misamis Oriental', '4 ft 11 inch', '81', 'true');
 
-create or replace function get_newpatient(out text, out text, out text, out date, out int, out text, out text, out text, out text, out text, out double, out boolean) returns setof record as
+create or replace function get_newpatient(out text, out text, out text, out int, out text, out int, out int, out int, out boolean) returns setof record as
 $$
-  select fname, mname, lname, date_of_birth, age, sex, civil_status, name_of_parent, home_address, height, weight, is_active from Patient;
+  select fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active from Patient;
 $$
   language 'sql';
 
-create or replace function get_newpatient_id(in par_id int, out text, out text, out text, out date, out int, out text, out text, out text, out text, out text, out double, out boolean) returns setof record as
+--select * from get_newpatient();
+
+create or replace function get_newpatient_id(in par_id int, out text, out text, out text, out int, out text, out int, out int, out int, out boolean) returns setof record as
 $$
-  select fname, mname, lname, date_of_birth, age, sex, civil_status, name_of_parent, home_address, height, weight, is_activefrom Patient where par_id = id;
+  select fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active from Patient where par_id = id;
 $$
   language 'sql';
 
+--select * from get_newpatient_id(1);
 ------------------------------------------------------------------------------------------------------------------------------------------
 
 
