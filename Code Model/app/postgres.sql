@@ -489,3 +489,20 @@ create or replace function notify() RETURNS trigger AS '
 
 CREATE TRIGGER notify_trigger AFTER INSERT ON Assessment FOR each ROW
 EXECUTE PROCEDURE notify();
+
+------------------------------------------------------------------------------------------------------------------------------------------
+-- FINAL DIAGNOSIS
+
+--CREATE FINAL DIAGNOSIS
+create or replace function createFinalDiagnosis(par_assessment_id int, par_doctor_id int, par_description text) returns text as
+$$
+  declare
+      loc_response text;
+  begin
+        insert into Final_diagnosis(assessment_id, doctor_id, description) values (par_assessment_id, par_doctor_id, par_description);
+        loc_response = 'Ok';
+        return loc_res;
+  end;
+$$
+  language 'plpgsql';
+
