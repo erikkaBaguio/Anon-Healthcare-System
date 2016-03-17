@@ -4,7 +4,7 @@ from lettuce import step, world, before
 from nose.tools import assert_equals
 
 from app import app
-from app.views import SYMPTOMS
+import app.views
 
 
 @before.all

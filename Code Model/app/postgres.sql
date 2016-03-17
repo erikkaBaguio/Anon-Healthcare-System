@@ -8,12 +8,6 @@ create table userinfo (
   	is_active boolean
   );
 
-create table Schedule(
-  id int primary key,
-  date_time_year date,
-  done boolean
-);
-
 create table Patient_status (
   id serial8 primary key,
   temperature int,
@@ -25,20 +19,46 @@ create table Patient_status (
   done boolean
 );
 
+CREATE TABLE Personal_history(
+  id serial8 PRIMARY KEY,
+  smoking text,
+  allergies text,
+  alcohol text,
+  medication_taken text,
+  drugs text,
+  done BOOLEAN
+);
+
 create table Patient(
-    id int primary key,
+    id serial8 primary key,
     fname text,
     mname text,
     lname text,
-    date_of_birth date,
     age int,
     sex text,
-    civil_status text,
-    name_of_parent text,
-    home_address text,
-    height text,
-    weight int
+    department_id int references Department(id),
+    patient_type_id int references Patient_type(id),
+    Personal_info_id int references Personal_info(id),
+    is_active boolean
   );
+
+create table Personal_info(
+    id serial8 primary key,
+    height text,
+    weight float,
+    date_of_birth date,
+    civil_status text,
+    name_of_guardian text,
+    home_address text, 
+    is_active boolean  
+);
+
+create table Patient_type(
+    id serial8 primary key;
+    type text,
+    is_active boolean
+);
+  
 create table Pulmonary(
     cough text,
     dyspnea text,
@@ -67,15 +87,6 @@ CREATE TABLE Illness(
 done BOOLEAN
 );
 
-CREATE TABLE Personal_history(
-  id serial8 PRIMARY KEY,
-  smoking text,
-  allergies text,
-  alcohol text,
-  medication_taken text,
-  drugs text,
-  done BOOLEAN
-);
 
 CREATE TABLE Cardiac(
   id serial8 PRIMARY KEY,
@@ -188,7 +199,29 @@ $$
 
 --select * from getuserinfoid(1);
 ----------------------------------------------------------------------------------------------------
+create or replace function newrole(par_rolename  text) returns text as
+$$
+  declare
+    loc_name text;
+    loc_res text;
+  begin
 
+    select into loc_name role_name from roles where role_name = par_rolename;
+
+    if loc_name isnull then
+      insert into roles(role_name) values (par_rolename);
+      loc_res = 'OK';
+
+    else
+      loc_res = 'EXISTED';
+
+    end if;
+      return loc_res;
+  end;
+$$
+ language 'plpgsql';
+
+----------------------------------------------------------------------------------------------------
 CREATE or replace function newpatientstatus(par_id int, par_blood_pressure int, par_body_temp int, par_patiend_id int, par_done boolean) returns text AS
 $$
   DECLARE
@@ -218,7 +251,7 @@ $$
    loc_id text;
    loc_res text;
  BEGIN
-   SELECT into loc_id id from Personal_history;
+   #SELECT into loc_id id from Personal_history;
    if loc_id isnull THEN
 
        INSERT into Personal_history(smoking, allergies, alcohol, medication_taken, drugs, done) VALUES (par_smoking, par_allergies,
@@ -278,7 +311,6 @@ $$
  LANGUAGE  'plpgsql';
 
 -----------------------------------------------------------------------------------------------------------------
-
 --select getallcolleges();
 create or replace function getallcolleges(out bigint, out text) returns setof record as
 $$
@@ -312,3 +344,46 @@ $$
   select name from Department where id = par_id;
 $$
   language 'sql';
+
+create or replace function newpatient(par_fname text, par_mname text, par_lname text, par_age int, par_sex text, 
+                                      par_department_id int, par_patient_type_id int, par_personal_info_id int, par_is_active boolean) returns text as
+$$
+  declare
+      loc_fname text;
+      loc_mname text;
+      loc_lname text;
+      loc_res text;
+
+  begin
+      SELECT INTO loc_fname fname from Patient where fname = par_fname AND mname = par_mname AND lname = par_lname;
+      if loc_fname isnull THEN
+         insert into Patient(fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active) values 
+          (par_fname, par_mname, par_lname, par_age, par_sex, par_department_id, par_patient_type_id, par_personal_info_id par_is_active);
+
+         loc_res = 'OK';
+      else
+        loc_res = 'Patient already EXISTED';
+      end if;
+      return loc_res;
+    end;
+$$
+  language 'plpgsql';
+
+--select newpatient('Mary Grace', 'Pasco', 'Cabolbol', 'July 25, 1996', '19', 'female', 'single', 'Marissa Cabolbol', 'Biga, Lugait, Misamis Oriental', '4 ft 11 inch', '81', 'true');
+
+create or replace function get_newpatient(out text, out text, out text, out int, out text, out int, out int, out int, out boolean) returns setof record as
+$$
+  select fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active from Patient;
+$$
+  language 'sql';
+
+--select * from get_newpatient();
+
+create or replace function get_newpatient_id(in par_id int, out text, out text, out text, out int, out text, out int, out int, out int, out boolean) returns setof record as
+$$
+  select fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active from Patient where par_id = id;
+$$
+  language 'sql';
+
+--select * from get_newpatient_id(1);
+------------------------------------------------------------------------------------------------------------------------------------------

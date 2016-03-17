@@ -9,13 +9,13 @@ import json, flask
 from app import app
 
 
-
 # auth = HTTPBasicAuth()
 COLLEGES = {}
 DISEASES = {}
 SYMPTOMS = {}
 DISEASE_RECORDS = {}
 QUESTIONS = {}
+APPOINTMENTS = {}
 
 def spcall(qry, param, commit=False):
     try:
@@ -30,6 +30,7 @@ def spcall(qry, param, commit=False):
         res = [("Error: " + str(sys.exc_info()[0]) + " " + str(sys.exc_info()[1]),)]
     return res
 
+
 @app.errorhandler(404)
 def page_not_found(e):
     return 'Sorry, the page you were looking for was not found.'
@@ -37,6 +38,7 @@ def page_not_found(e):
 @app.errorhandler(500)
 def internal_server_error(e):
     return '(Error 500) Sorry, there was an internal server error.'
+
 
 @app.route('/')
 def index():
@@ -46,15 +48,38 @@ def index():
 def dashboard():
     return render_template('dashboard.html')
 
+
+@app.route('/api.anoncare/question', methods=['GET'])
+def get_all_questions():
+    res = spcall('get_newquestion',())
+    print res
+
 @app.route('/anoncare.api/diseases')
 def get_all_diseases_data():
     res = spcall('get_all_diseases_data',())
-
     if 'Error' in str(res[0][0]):
         return jsonify({'status': 'error', 'message': res[0][0]})
 
     recs = []
     for r in res:
+        recs.append({"question": r[0], "user_id": r[1], "category_id": r[2], "is_active": str([3])})
+
+    return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
+
+
+
+@app.route('/api.anoncare/question', methods =['POST'])
+def new_question():
+    id = request.form['inputID']
+    question = request.form['inputquestion']
+    user_id = request.form['inputUserID']
+    category_id = request.form['inputCategoryID']
+    is_active = False
+    
+    res = spcall('newquestion', (id, question, category_id, is_active), True)
+
+    if 'Error' in res[0][0]:
+
         recs.append({"id": r[0], "name": r[1], "done": str(r[2])})
 
     return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
@@ -64,6 +89,7 @@ def get_disease_data(disease_id):
     res = spcall('get_disease_data', str(disease_id))
 
     if 'Error' in str(res[0][0]):
+
         return jsonify({'status': 'error', 'message': res[0][0]})
 
     r = res[0]
@@ -73,6 +99,21 @@ def get_disease_data(disease_id):
 def get_symptoms():
     listOfSymptoms = spcall('get_all_symptom',())
 
+@app.route('/question/<category_id>/', methods = ['GET'])
+def get_question(question_id):
+    res= spcall('get_newquestion_id', (category_id))
+
+    if 'Error' in res[0][0]:
+        return jsonify({'status': 'error', 'message': res[0][0]})
+
+    r = res[0]
+    return jsonify({"id": r[0], "question": r[1], "user_id": r[2], "category_id": r[3], "is_active": str[4]})
+
+
+
+@app.route('/api.anoncare/question_category', methods = ['GET'])
+def get_all_category():
+    res =spcall('get_newquestion_category', ())
     if 'Error' in str(listOfSymptoms[0][0]):
         return jsonify({'status': 'error', 'message': res[0][0]})
 
@@ -88,14 +129,35 @@ def get_symptom(id):
 
     if 'Error' in str(res[0][0]):
         return jsonify({'status': 'error', 'message': res[0][0]})
+    recs = []
+    for r in res:
+        recs.append({"category_name": r[0], "is_active": str(r[1])})
+    return jsonify({'status': 'OK', 'entries': recs, 'count':len(recs)})
 
+
+    
+@app.route('/api.anoncare/question_category/<id>/', methods = ['GET'])
+def get_category(id):
+    res = spcall('get_newquestion_category_id', (id))
+
+    if 'Error' in str(res[0][0]):
+        return jsonify({'status': 'error', 'message': res[0][0]})
+
+    r = res[0]
+    return jsonify({"id": (id), "category_name": str(r[0]), "done": str(r[1])})
+
+
+
+@app.route('/tasks', methods=['GET', 'POST'])
+@auth.login_required
+def getalltasks():
+    res = spcall('gettasks', ())
     r = res[0]
     return jsonify({"id": str(id), "name": str(r[0]), "done": str(r[1])})
 
 @app.route('/anoncare.api/disease_records', methods = ['GET'])
 def get_disease_records():
     diseases = spcall('getalldiseaserecords', ())
-
     if 'Error' in str(diseases[0][0]):
         return jsonify({'status': 'error', 'message': res[0][0]})
 
@@ -114,6 +176,7 @@ def get_disease_recordID(id):
 
     disease = disease_records[0]
     return jsonify({"id": str(id), "disease_id": str(disease[0]), "symptom_id": str(disease[1]), "done": str(disease[2])})
+
 
 @app.route('/anoncare.api/colleges/<int:college_id>/', methods = ['GET'])
 def get_college(college_id):
@@ -134,7 +197,6 @@ def get_departmet(department_id):
 
     r = res[0]
     return jsonify({"department_id": str(department_id), "department_name": str(r[0])})
-
 
 @app.after_request
 def add_cors(resp):
