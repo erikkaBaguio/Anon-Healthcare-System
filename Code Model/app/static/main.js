@@ -68,4 +68,3 @@ function login(name, password) {
         }
     });
 }
->>>>>>> 53bf8fa7156128892450c31fad9c48b18666ea8f

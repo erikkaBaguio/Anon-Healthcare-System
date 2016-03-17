@@ -29,7 +29,6 @@ CREATE TABLE Personal_history(
   done BOOLEAN
 );
 
-<<<<<<< HEAD
 create table Diagnosis (
   id int primary key,
   examination_id int references Examination(id),
@@ -40,7 +39,7 @@ create table Diagnosis (
 create table Patient_type(
     id serial8 primary key;
     type text,
-=======
+
 create table Patient(
     id serial8 primary key,
     fname text,
@@ -51,7 +50,6 @@ create table Patient(
     department_id int references Department(id),
     patient_type_id int references Patient_type(id),
     Personal_info_id int references Personal_info(id),
->>>>>>> 2bca06f00f967528885ec49f61c225797e8af6d5
     is_active boolean
 );
 
@@ -164,7 +162,6 @@ insert into College values (8,'CSM');
 -----------------------------------------------------------------------------------------------------------
 -----STORED PROCEDURE FUNCTIONS-----
 -----------------------------------------------------------------------------------------------------------
-<<<<<<< HEAD
 
 --table userinfo
 
@@ -173,9 +170,7 @@ insert into College values (8,'CSM');
 create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
                                 par_email text, par_active boolean, par_role int)
                                  returns text as
-=======
 create or replace function checkauth(par_email text,par_password text) returns text as
->>>>>>> 53bf8fa7156128892450c31fad9c48b18666ea8f
 $$
   declare
     loc_email text;
@@ -210,7 +205,6 @@ $$
 $$
  language 'plpgsql';
 
-<<<<<<< HEAD
  select newuserinfo('Josiah', 'Timonera', 'Regencia', 'jetregencia@gmail.com', true, 1);
 
  create or replace function generate_password() returns text as
@@ -239,26 +233,21 @@ $$
 $$
 
 LANGUAGE 'plpgsql';
-=======
->>>>>>> 53bf8fa7156128892450c31fad9c48b18666ea8f
 
 
 --select newuserinfo('Mary Grace', 'Pasco', 'Cabolbol', 'marygracecabolbol@gmail.com', 'password', 1, true);
 --select newuserinfo('Ma.Erikka', 'P' , 'Baguio', 'ma.erikkabaguio@gmail.com', 'password' , 1, true);
 
-<<<<<<< HEAD
 --create or replace function getuserinfo(out text, out text, out text, out text, out int, out boolean)
 create or replace function getuserinfo(out text, out text, out text, out text,
                                 out text, out int, out boolean)
                                             returns setof record as
 $$
     select fname, mname, lname, email, password, role_id, is_active from UserInfo;
-=======
 create or replace function getuserinfo(out text, out text, out text, out text, out boolean)
                                               returns setof record as
 $$
     select fname, mname, lname, email, is_active from UserInfo;
->>>>>>> 53bf8fa7156128892450c31fad9c48b18666ea8f
 $$
   language 'sql';
 
@@ -471,7 +460,6 @@ $$
 
 --select * from get_newpatient_id(1);
 ------------------------------------------------------------------------------------------------------------------------------------------
-<<<<<<< HEAD
 
 create or replace function newpersonal_info(par_height text, par_weight float, par_date_of_birth date, par_civil_status text, par_name_of_guardian text, par_home_address text, is_active boolean) returns text as
 $$
@@ -486,5 +474,3 @@ $$
   end;
 $$
   language 'plpgsql';
-=======
->>>>>>> 2bca06f00f967528885ec49f61c225797e8af6d5

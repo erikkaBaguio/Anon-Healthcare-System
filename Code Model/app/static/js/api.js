@@ -13,18 +13,14 @@ function register(){
 	var valueLName = $('input[name="lname"]').val()
 	var valueEmail = $('input[name="email"]').val()
 	var valuePass = $('input[name="password"]').val()
->>>>>>> 53bf8fa7156128892450c31fad9c48b18666ea8f
 
 	$.ajax({
 		type: "POST",
 		url: "/user/",
-<<<<<<< HEAD
 		dataType: json,
 		data: JSON.stringify(user_info),
-=======
 		data: {fname:valueName, mname:valueMName, lname:valueLName, email:valueEmail, pass:valuePass},
 
->>>>>>> 53bf8fa7156128892450c31fad9c48b18666ea8f
 		success: function(resp){
 			console.log(resp.status);
 
