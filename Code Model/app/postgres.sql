@@ -491,3 +491,32 @@ $$
   select * from Final_diagnosis where id = par_id;
 $$
   language 'sql';
+-----------------------------------------------------------------------------------------------------------------------------
+
+-- patient_type
+-- vital_signs
+-- assessment
+-- department
+create or replace function new_assessment(par_typeofpatient int, par_nameofpatient int, par_age int, par_department int,
+ par_sex text, par_vital_signs int, par_chiefcomplaint text, par_historyofpresentillness text,
+ par_medicationstaken text, par_diagnosis text, par_reccomendation text, par_attendingphysician int) returns text as
+ $$
+  declare
+    loc_id int;
+    loc_res text;
+  begin
+    select into loc_id id from Assessment where id = par_id;
+    if loc_id isnull then
+      insert into Assessment (typeofpatient, par_nameofpatient, age, department,sex ,vital_signs ,chiefcomplaint ,
+      historyofpresentillness ,medicationstaken ,diagnosis ,reccomendation ,attendingphysician )
+      values (par_typeofpatient, par_nameofpatient, par_age, par_department, par_sex,par_vital_signs,
+      par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken, par_diagnosis,
+      par_reccomendation, par_attendingphysician);
+      loc_res = 'OK';
+    else
+      loc_res = 'ID EXISTED';
+    end if;
+    return loc_res;
+  end;
+ $$
+  language 'plpgsql';

@@ -2,20 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a1c1c313-8e09-41d6-a6aa-2c3de3070024" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Code Model/tests/bdd/features/retrieve_user.feature" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/retrieve_user.py" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/user_accounts_maintenance.py" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/.gitignore" afterPath="$PROJECT_DIR$/Code Model/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/app/__init__.py" afterPath="$PROJECT_DIR$/Code Model/app/__init__.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/app/models.py" afterPath="$PROJECT_DIR$/Code Model/app/models.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/app/postgres.sql" afterPath="$PROJECT_DIR$/Code Model/app/postgres.sql" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/app/static/js/api.js" afterPath="$PROJECT_DIR$/Code Model/app/static/js/api.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/app/static/main.js" afterPath="$PROJECT_DIR$/Code Model/app/static/main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/app/templates/index2.html" afterPath="$PROJECT_DIR$/Code Model/app/templates/index2.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/app/views.py" afterPath="$PROJECT_DIR$/Code Model/app/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/tests/bdd/features/Question.py" afterPath="$PROJECT_DIR$/Code Model/tests/bdd/features/Question.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/PatientFile.feature" afterPath="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/PatientFile.feature" />
       <change type="MODIFICATION" beforePath="$USER_HOME$/erikka/rest/app.py" afterPath="$USER_HOME$/erikka/rest/app.py" />
       <change type="MODIFICATION" beforePath="$USER_HOME$/erikka/rest/model.py" afterPath="$USER_HOME$/erikka/rest/model.py" />
       <change type="MODIFICATION" beforePath="$USER_HOME$/erikka/rest/progress.sql" afterPath="$USER_HOME$/erikka/rest/progress.sql" />
@@ -153,8 +141,8 @@
       <file leaf-file-name="postgres.sql" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Code Model/app/postgres.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.0349345">
-              <caret line="39" column="13" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
+            <state vertical-scroll-proportion="1.6615385">
+              <caret line="512" column="70" selection-start-line="512" selection-start-column="70" selection-end-line="512" selection-end-column="70" />
               <folding />
             </state>
           </provider>
@@ -610,7 +598,7 @@
     <frame x="33" y="-4" width="1333" height="772" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.5517774" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.6043277" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32941177" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1015,8 +1003,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Code Model/app/postgres.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.0349345">
-          <caret line="39" column="13" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
+        <state vertical-scroll-proportion="1.6615385">
+          <caret line="512" column="70" selection-start-line="512" selection-start-column="70" selection-end-line="512" selection-end-column="70" />
           <folding />
         </state>
       </provider>
