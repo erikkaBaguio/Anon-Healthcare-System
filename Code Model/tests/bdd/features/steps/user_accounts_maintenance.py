@@ -1,7 +1,7 @@
 from lettuce import step, world
 
 
-@step("the user is not yet registered in the system\.")
+@step("the user is not yet registered in the system.")
 def step_impl(step):
     """
     :type step: lettuce.core.Step
@@ -17,7 +17,7 @@ def step_impl(step):
     pass
 
 
-@step("I should get a ‘200’ response")
+@step("I should get a '200 response")
 def step_impl(step):
     """
     :type step: lettuce.core.Step
