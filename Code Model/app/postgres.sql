@@ -41,12 +41,6 @@ create table Personal_history(
   done BOOLEAN
 );
 
-create table Diagnosis (
-  id int primary key,
-  examination_id int references Examination(id),
-  disease_id int references Disease(id),
-  done BOOLEAN
-);
 
 create table Patient_type(
     id serial8 primary key,
@@ -161,6 +155,11 @@ insert into College values (5,'SET');
 insert into College values (6,'CBAA');
 insert into College values (7,'CON');
 insert into College values (8,'CSM');
+
+insert into Patient_type values (1,'Student');
+insert into Patient_type values (2,'Faculty');
+insert into Patient_type values (3,'Staff');
+insert into Patient_type values (4,'Outpatient Department');
 
 
 create table Final_diagnosis(
@@ -361,10 +360,11 @@ $$
 $$
   language 'sql';
 
-
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 create or replace function newpatient(par_fname text, par_mname text, par_lname text, par_age int, par_sex text, 
                                       par_department_id int, par_patient_type_id int, par_personal_info_id int, par_is_active boolean) returns text as
@@ -424,7 +424,6 @@ $$
   language 'plpgsql';
 
 
-<<<<<<< HEAD
 create or replace function get_newpersonal_info(out text, out float, out date, out text, out text, out text, out boolean) returns setof record as
 $$
   select height, weight, date_of_birth, civil_status, name_of_guardian, home_address, is_active from Personal_info; 
@@ -439,6 +438,7 @@ $$
   language 'sql';
 
 -------------------------------------------------------------------------------------------------------------------------------------
+
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 -- NOTIFICATIONS
@@ -481,10 +481,8 @@ $$
   language 'sql';
 -----------------------------------------------------------------------------------------------------------------------------
 
--- patient_type
--- vital_signs
--- assessment
--- department
+-- [POST] Create new assessment
+--select new_assessment(1,1,12,1,'female',1,'parts','history','medication','diagnosis', 'reccommendation', 1);
 create or replace function new_assessment(par_typeofpatient int, par_nameofpatient int, par_age int, par_department int,
  par_sex text, par_vital_signs int, par_chiefcomplaint text, par_historyofpresentillness text,
  par_medicationstaken text, par_diagnosis text, par_reccomendation text, par_attendingphysician int) returns text as
@@ -493,9 +491,9 @@ create or replace function new_assessment(par_typeofpatient int, par_nameofpatie
     loc_id int;
     loc_res text;
   begin
-    select into loc_id id from Assessment where id = par_id;
+    select into loc_id id from Assessment;
     if loc_id isnull then
-      insert into Assessment (typeofpatient, par_nameofpatient, age, department,sex ,vital_signs ,chiefcomplaint ,
+      insert into Assessment (typeofpatient, nameofpatient, age, department,sex ,vital_signs ,chiefcomplaint ,
       historyofpresentillness ,medicationstaken ,diagnosis ,reccomendation ,attendingphysician )
       values (par_typeofpatient, par_nameofpatient, par_age, par_department, par_sex,par_vital_signs,
       par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken, par_diagnosis,
@@ -508,3 +506,22 @@ create or replace function new_assessment(par_typeofpatient int, par_nameofpatie
   end;
  $$
   language 'plpgsql';
+
+--[GET] Retrieve specific Patient's assessment
+--select getassessmentID(1);
+create or replace function getassessmentID(in par_id int, out int, out int,out int,out int, out text, out int,
+out text,out text,out text,out text,out text,out int) returns setof record as
+$$
+  select typeofpatient, nameofpatient, age, department,sex ,vital_signs ,chiefcomplaint ,
+      historyofpresentillness ,medicationstaken ,diagnosis ,reccomendation ,attendingphysician from Assessment where id = par_id;
+$$
+  language 'sql';
+
+-- [GET] Retrieve all patients' assessment
+--select getallassessment();
+create or replace function getallassessment(out bigint, out int,out int,out int,out int, out text, out int,
+out text,out text,out text,out text,out text,out int) returns setof record as
+$$
+  select * from Assessment;
+$$
+  language 'sql';
