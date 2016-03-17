@@ -191,14 +191,7 @@ create table Notification(
 -----------------------------------------------------------------------------------------------------------
 -----STORED PROCEDURE FUNCTIONS-----
 -----------------------------------------------------------------------------------------------------------
-<<<<<<< HEAD
-=======
 
-create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
-                                par_email text, par_active boolean, par_role int)
-                                 returns text as
-
->>>>>>> 39c036af6ecc04e1b4c4e1b89835de054880dc2d
 create or replace function checkauth(par_email text,par_password text) returns text as
 $$
   declare
