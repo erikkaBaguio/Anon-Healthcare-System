@@ -1,11 +1,18 @@
-create table userinfo (
-  	id serial8 primary key,
-  	fname text,
-  	mname text,
-  	lname text,
-  	email text,
-  	password text,
-  	is_active boolean
+create Role (
+    id serial8 primary key,
+    role_name text
+);
+
+
+create table Userinfo (
+    id serial8 primary key,
+    fname text,
+    mname text,
+    lname text,
+    email text,
+    password text,
+    role_id int references Role(id),
+    is_active boolean
   );
 
 create table College(
@@ -80,8 +87,8 @@ create table Personal_info(
     date_of_birth date,
     civil_status text,
     name_of_guardian text,
-    home_address text, 
-    is_active BOOLEAN default True  
+    home_address text,
+    is_active BOOLEAN default True
 );
 
 create table Pulmonary(
@@ -143,7 +150,7 @@ create table Assessment(
   medicationstaken text,
   diagnosis text,
   reccomendation text,
-  attendingphysician int references userinfo(id)
+  attendingphysician int references Userinfo(id)
 );
 
 insert into College values (1,'SCS');
@@ -164,23 +171,19 @@ insert into Patient_type values (4,'Outpatient Department');
 create table Final_diagnosis(
   id serial8 primary key,
   assessment_id int references Assessment(id),
-  doctor_id int references userinfo(id),
+  doctor_id int references Userinfo(id),
   description text
 );
 
 create table Notification(
   id serial8 primary key,
   assessment_id int references Assessment(id),
-  doctor_id int references userinfo(id),
+  doctor_id int references Userinfo(id),
   is_read boolean default FALSE
 );
 -----------------------------------------------------------------------------------------------------------
 -----STORED PROCEDURE FUNCTIONS-----
 -----------------------------------------------------------------------------------------------------------
-
-create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
-                                par_email text, par_active boolean, par_role int)
-                                 returns text as
 
 
 create or replace function checkauth(par_email text,par_password text) returns text as
@@ -190,7 +193,7 @@ $$
     loc_password text;
     loc_res text;
   begin
-    select into loc_email email from userinfo where email = par_email and password = par_password;
+    select into loc_email email from Userinfo where email = par_email and password = par_password;
        if loc_email isnull then
         loc_res = 'email';
        elseif loc_password isnull then
@@ -204,7 +207,7 @@ $$
   language 'plpgsql';
 
 --select newuser('Jobee','Mcdo', 'Chowking', 'j@e.com', 'password');
-create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
+create or replace function newUserinfo(par_fname text, par_mname text, par_lname text,
                                 par_email text)
                                  returns text as
 $$
@@ -219,7 +222,7 @@ $$
         username := par_fname || '.' || par_lname;
         random_password := generate_password();
 
-       insert into userinfo (fname, mname, lname, email, username, password)
+       insert into Userinfo (fname, mname, lname, email, username, password)
                 values (par_fname, par_mname, par_lname, par_email, username, random_password);
 
 
@@ -259,26 +262,26 @@ LANGUAGE 'plpgsql';
 
 
 
---select newuserinfo('Mary Grace', 'Pasco', 'Cabolbol', 'marygracecabolbol@gmail.com', 'password', 1, true);
---select newuserinfo('Ma.Erikka', 'P' , 'Baguio', 'ma.erikkabaguio@gmail.com', 'password' , 1, true);
+--select newUserinfo('Mary Grace', 'Pasco', 'Cabolbol', 'marygracecabolbol@gmail.com', 'password', 1, true);
+--select newUserinfo('Ma.Erikka', 'P' , 'Baguio', 'ma.erikkabaguio@gmail.com', 'password' , 1, true);
 
-create or replace function getuserinfo(out text, out text, out text, out text, out boolean)
+create or replace function getUserinfo(out text, out text, out text, out text, out boolean)
                                               returns setof record as
 $$
-    select fname, mname, lname, email, is_active from UserInfo;
+    select fname, mname, lname, email, is_active from Userinfo;
 $$
   language 'sql';
 
---select * from getuserinfo();
+--select * from getUserinfo();
 
-create or replace function getuserinfoid(in par_id int, out text, out text, out text, out text,
+create or replace function getUserinfoid(in par_id int, out text, out text, out text, out text,
                                                  out int, out boolean) returns setof record as
 $$
-    select fname, mname, lname, email, role, is_active from UserInfo where par_id = id;
+    select fname, mname, lname, email, role, is_active from Userinfo where par_id = id;
 $$
   language 'sql';
 
---select * from getuserinfoid(1);
+--select * from getUserinfoid(1);
 ----------------------------------------------------------------------------------------------------
 create or replace function newrole(par_rolename  text) returns text as
 $$
@@ -375,9 +378,9 @@ $$
 --select getallcolleges();
 create or replace function getallcolleges(out bigint, out text) returns setof record as
 $$
-	select id, name from College;
+    select id, name from College;
 $$
-	language 'sql';
+    language 'sql';
 
 --[GET] Retrieve specific college
 --select getcollegeID(1);
@@ -391,9 +394,9 @@ $$
 --select getalldepartments();
 create or replace function getalldepartments(out bigint, out text) returns setof record as
 $$
-	select id, name from Department;
+    select id, name from Department;
 $$
-	language 'sql';
+    language 'sql';
 
 --[GET] Retrieve specific department
 --select getdepartmentID(1);
