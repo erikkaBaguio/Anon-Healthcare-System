@@ -29,18 +29,6 @@ CREATE TABLE Personal_history(
   done BOOLEAN
 );
 
-<<<<<<< HEAD
-create table Diagnosis (
-  id int primary key,
-  examination_id int references Examination(id),
-  disease_id int references Disease(id),
-  done BOOLEAN
-);
-
-create table Patient_type(
-    id serial8 primary key;
-    type text,
-=======
 create table Patient(
     id serial8 primary key,
     fname text,
@@ -51,7 +39,6 @@ create table Patient(
     department_id int references Department(id),
     patient_type_id int references Patient_type(id),
     Personal_info_id int references Personal_info(id),
->>>>>>> 2bca06f00f967528885ec49f61c225797e8af6d5
     is_active boolean
 );
 
@@ -161,21 +148,18 @@ insert into College values (6,'CBAA');
 insert into College values (7,'CON');
 insert into College values (8,'CSM');
 
+
+create table Final_diagnosis(
+  id serial8 primary key,
+  assessment_id int references Assessment(id),
+  doctor_id int references userinfo(id),
+  description text
+);
+
 -----------------------------------------------------------------------------------------------------------
 -----STORED PROCEDURE FUNCTIONS-----
 -----------------------------------------------------------------------------------------------------------
-<<<<<<< HEAD
-
---table userinfo
-
-
-
-create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
-                                par_email text, par_active boolean, par_role int)
-                                 returns text as
-=======
 create or replace function checkauth(par_email text,par_password text) returns text as
->>>>>>> 53bf8fa7156128892450c31fad9c48b18666ea8f
 $$
   declare
     loc_email text;
