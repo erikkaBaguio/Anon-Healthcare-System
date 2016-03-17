@@ -166,17 +166,11 @@ create table Notification(
 -----------------------------------------------------------------------------------------------------------
 -----STORED PROCEDURE FUNCTIONS-----
 -----------------------------------------------------------------------------------------------------------
-<<<<<<< HEAD
-=======
-
---table userinfo
-
-
 
 create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
                                 par_email text, par_active boolean, par_role int)
                                  returns text as
->>>>>>> 8799026a51d78cbdde58a539a6edb3b2577f5920
+
 create or replace function checkauth(par_email text,par_password text) returns text as
 $$
   declare
@@ -473,3 +467,27 @@ create or replace function notify() RETURNS trigger AS '
 
 CREATE TRIGGER notify_trigger AFTER INSERT ON Assessment FOR each ROW
 EXECUTE PROCEDURE notify();
+
+------------------------------------------------------------------------------------------------------------------------------------------
+-- FINAL DIAGNOSIS
+
+--CREATE FINAL DIAGNOSIS
+create or replace function createFinalDiagnosis(par_assessment_id int, par_doctor_id int, par_description text) returns text as
+$$
+  declare
+      loc_response text;
+  begin
+        insert into Final_diagnosis(assessment_id, doctor_id, description) values (par_assessment_id, par_doctor_id, par_description);
+        loc_response = 'Ok';
+        return loc_res;
+  end;
+$$
+  language 'plpgsql';
+
+-- GET FINAL DIAGNOSIS
+--select getdepartmentID(1);
+create or replace function getFinalDiagnosis(in par_id int, out int, out int, out text) returns text as
+$$
+  select * from Final_diagnosis where id = par_id;
+$$
+  language 'sql';
