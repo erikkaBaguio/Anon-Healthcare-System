@@ -576,3 +576,13 @@ $$
 
 $$
   language 'plpgsql';
+
+--[GET] Retrieve patient's vital signs.
+-- select getvitalsignsID(1);
+create or replace function getvitalsignsID(in par_id int, out float, out float, out text ,out text ,out float) returns setof record as
+$$
+  select temperature,pulse_rate,respiration_rate,blood_pressure,weight from Vital_signs where id = par_id;
+$$
+  language 'sql';
+
+------------------------------------------------------------------------------------------------------------------
