@@ -8,12 +8,69 @@ create table userinfo (
   	is_active boolean
   );
 
+<<<<<<< HEAD
+=======
+create table College(
+  id serial8 primary key,
+  name text not null,
+  is_active boolean default True
+);
+
+create table Department(
+  id serial8 primary key,
+  name text not null,
+  college_id int references College(id),
+  is_active boolean default True
+);
+
+create table Vital_signs  (
+  id serial8 primary key,
+  temperature int,
+  pulse_rate float,
+  respiration_rate text,
+  blood_pressure text,
+  weight float,
+  done boolean
+);
+
+create table Personal_history(
+  id serial8 primary key,
+  smoking text,
+  allergies text,
+  alcohol text,
+  medication_taken text,
+  drugs text,
+  done BOOLEAN
+);
+
+create table Diagnosis (
+  id int primary key,
+  examination_id int references Examination(id),
+  disease_id int references Disease(id),
+  done BOOLEAN
+);
+>>>>>>> 39c036af6ecc04e1b4c4e1b89835de054880dc2d
 
 create table Patient_type(
     id serial8 primary key,
     type text,
+<<<<<<< HEAD
     is_active BOOLEAN default True
 );
+=======
+);
+
+create table Personal_info(
+    id serial8 primary key,
+    height text,
+    weight float,
+    date_of_birth date,
+    civil_status text,
+    name_of_guardian text,
+    home_address text,
+    is_active boolean
+);
+>>>>>>> 39c036af6ecc04e1b4c4e1b89835de054880dc2d
 
 create table Patient(
     id serial8 primary key,
@@ -25,6 +82,7 @@ create table Patient(
     department_id int references Department(id),
     patient_type_id int references Patient_type(id),
     Personal_info_id int references Personal_info(id),
+<<<<<<< HEAD
     is_active BOOLEAN default True
 
 );
@@ -39,8 +97,11 @@ create table Personal_info(
     home_address text, 
     is_active BOOLEAN default True  
 );
+=======
+    is_active boolean
+  );
+>>>>>>> 39c036af6ecc04e1b4c4e1b89835de054880dc2d
 
-  
 create table Pulmonary(
     cough text,
     dyspnea text,
@@ -57,7 +118,7 @@ create table Gut(
     dec_urine_amount text
 );
 
-CREATE TABLE Illness(
+create table Illness(
   id serial8 primary key,
   asthma text,
   ptb text,
@@ -66,11 +127,10 @@ CREATE TABLE Illness(
   chicken_pox text,
   mumps text,
   typhoid_fever text,
-done BOOLEAN
+  done BOOLEAN
 );
 
-
-CREATE TABLE Cardiac(
+create table Cardiac(
   id serial8 PRIMARY KEY,
   chest_pain text,
   palpitations text,
@@ -80,7 +140,7 @@ CREATE TABLE Cardiac(
   done BOOLEAN
 );
 
-CREATE TABLE Neurologic(
+create table Neurologic(
   id serial8 UNIQUE PRIMARY KEY,
   headache text,
   seizure text,
@@ -91,24 +151,18 @@ CREATE TABLE Neurologic(
 
 create table Assessment(
   id serial8 primary key,
-  typeofpatient text not null,
-  nameofpatient text not null,
+  typeofpatient int references Patient_type(id),
+  nameofpatient int references Patient(id),
   age int,
-  college int references College(id),
-  department text not null,
+  department int references Department(id),
   sex text not null,
+  vital_signs int references Vital_signs(id),
   chiefcomplaint text,
   historyofpresentillness text,
   medicationstaken text,
   diagnosis text,
   reccomendation text,
-  attendingphysician int ,
-);
-
-create table College(
-  id serial8 primary key,
-  name text not null,
-  is_active boolean default True
+  attendingphysician int references userinfo(id)
 );
 
 insert into College values (1,'SCS');
@@ -120,9 +174,31 @@ insert into College values (6,'CBAA');
 insert into College values (7,'CON');
 insert into College values (8,'CSM');
 
+
+create table Final_diagnosis(
+  id serial8 primary key,
+  assessment_id int references Assessment(id),
+  doctor_id int references userinfo(id),
+  description text
+);
+
+create table Notification(
+  id serial8 primary key,
+  assessment_id int references Assessment(id),
+  doctor_id int references userinfo(id),
+  is_read boolean default FALSE,
+);
 -----------------------------------------------------------------------------------------------------------
 -----STORED PROCEDURE FUNCTIONS-----
 -----------------------------------------------------------------------------------------------------------
+<<<<<<< HEAD
+=======
+
+create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
+                                par_email text, par_active boolean, par_role int)
+                                 returns text as
+
+>>>>>>> 39c036af6ecc04e1b4c4e1b89835de054880dc2d
 create or replace function checkauth(par_email text,par_password text) returns text as
 $$
   declare
@@ -204,27 +280,6 @@ $$
  language 'plpgsql';
 
 ----------------------------------------------------------------------------------------------------
-CREATE or replace function newpatientstatus(par_id int, par_blood_pressure int, par_body_temp int, par_patiend_id int, par_done boolean) returns text AS
-$$
-  DECLARE
-    loc_id text;
-    loc_res text;
-  BEGIN
-      SELECT INTO loc_id id from Patient_status WHERE id = par_id;
-      if loc_id isnull THEN
-
-      INSERT INTO Patient_status(id, blood_pressure, body_temp, patient_id, done) values (par_id, par_blood_pressure, par_body_temp, par_patiend_id, par_done);
-      loc_res = 'OK';
-
-      else
-            loc_res = 'ID EXISTED';
-        end if;
-        return loc_res;
-    end;
-$$
-    language 'plpgsql';
-
------------------------------------------------------------------------------------------------------------
 
 create or replace function newpersonal_history(par_smoking text, par_allergies text, par_alcohol text,
                                                par_medication_taken text, par_drugs text, par_done boolean) returns text as
@@ -293,6 +348,7 @@ $$
  LANGUAGE  'plpgsql';
 
 -----------------------------------------------------------------------------------------------------------------
+--[GET] Retrieve list of colleges
 --select getallcolleges();
 create or replace function getallcolleges(out bigint, out text) returns setof record as
 $$
@@ -300,19 +356,15 @@ $$
 $$
 	language 'sql';
 
+--[GET] Retrieve specific college
+--select getcollegeID(1);
 create or replace function getcollegeID(in par_id int, out text) returns text as
 $$
   select name from College where id = par_id;
 $$
   language 'sql';
 
-create table Department(
-  id serial8 primary key,
-  name text not null,
-  college_id int references College(id),
-  is_active boolean default True
-);
-
+--[GET] Retrieve list of departments
 --select getalldepartments();
 create or replace function getalldepartments(out bigint, out text) returns setof record as
 $$
@@ -320,6 +372,7 @@ $$
 $$
 	language 'sql';
 
+--[GET] Retrieve specific department
 --select getdepartmentID(1);
 create or replace function getdepartmentID(in par_id int, out text) returns text as
 $$
@@ -327,7 +380,11 @@ $$
 $$
   language 'sql';
 
+<<<<<<< HEAD
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+=======
+--------------------------------------------------------------------------------------------------------------------------
+>>>>>>> 39c036af6ecc04e1b4c4e1b89835de054880dc2d
 
 create or replace function newpatient(par_fname text, par_mname text, par_lname text, par_age int, par_sex text, 
                                       par_department_id int, par_patient_type_id int, par_personal_info_id int, par_is_active boolean) returns text as
@@ -369,6 +426,7 @@ $$
   language 'sql';
 
 --select * from get_newpatient_id(1);
+
 ------------------------------------------------------------------------------------------------------------------------------------------
 
 create or replace function newpersonal_info(par_height text, par_weight float, par_date_of_birth date, par_civil_status text, par_name_of_guardian text, par_home_address text, is_active boolean) returns text as
@@ -386,6 +444,7 @@ $$
   language 'plpgsql';
 
 
+<<<<<<< HEAD
 create or replace function get_newpersonal_info(out text, out float, out date, out text, out text, out text, out boolean) returns setof record as
 $$
   select height, weight, date_of_birth, civil_status, name_of_guardian, home_address, is_active from Personal_info; 
@@ -400,3 +459,74 @@ $$
   language 'sql';
 
 -------------------------------------------------------------------------------------------------------------------------------------
+=======
+
+------------------------------------------------------------------------------------------------------------------------------------------
+-- NOTIFICATIONS
+
+-- TRIGGER (notification) - if new assessment is created, automatically create new notification
+create or replace function notify() RETURNS trigger AS '
+  BEGIN
+    IF tg_op = ''INSERT'' THEN
+      INSERT INTO Notification (assessment_id, doctor_id)
+          VALUES (new.id, new.attendingphysician);
+    END IF;
+  END
+  ' LANGUAGE plpgsql;
+
+CREATE TRIGGER notify_trigger AFTER INSERT ON Assessment FOR each ROW
+EXECUTE PROCEDURE notify();
+
+------------------------------------------------------------------------------------------------------------------------------------------
+-- FINAL DIAGNOSIS
+
+--CREATE FINAL DIAGNOSIS
+create or replace function createFinalDiagnosis(par_assessment_id int, par_doctor_id int, par_description text) returns text as
+$$
+  declare
+      loc_response text;
+  begin
+        insert into Final_diagnosis(assessment_id, doctor_id, description) values (par_assessment_id, par_doctor_id, par_description);
+        loc_response = 'Ok';
+        return loc_res;
+  end;
+$$
+  language 'plpgsql';
+
+-- GET FINAL DIAGNOSIS
+--select getdepartmentID(1);
+create or replace function getFinalDiagnosis(in par_id int, out int, out int, out text) returns text as
+$$
+  select * from Final_diagnosis where id = par_id;
+$$
+  language 'sql';
+-----------------------------------------------------------------------------------------------------------------------------
+
+-- patient_type
+-- vital_signs
+-- assessment
+-- department
+create or replace function new_assessment(par_typeofpatient int, par_nameofpatient int, par_age int, par_department int,
+ par_sex text, par_vital_signs int, par_chiefcomplaint text, par_historyofpresentillness text,
+ par_medicationstaken text, par_diagnosis text, par_reccomendation text, par_attendingphysician int) returns text as
+ $$
+  declare
+    loc_id int;
+    loc_res text;
+  begin
+    select into loc_id id from Assessment where id = par_id;
+    if loc_id isnull then
+      insert into Assessment (typeofpatient, par_nameofpatient, age, department,sex ,vital_signs ,chiefcomplaint ,
+      historyofpresentillness ,medicationstaken ,diagnosis ,reccomendation ,attendingphysician )
+      values (par_typeofpatient, par_nameofpatient, par_age, par_department, par_sex,par_vital_signs,
+      par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken, par_diagnosis,
+      par_reccomendation, par_attendingphysician);
+      loc_res = 'OK';
+    else
+      loc_res = 'ID EXISTED';
+    end if;
+    return loc_res;
+  end;
+ $$
+  language 'plpgsql';
+>>>>>>> 39c036af6ecc04e1b4c4e1b89835de054880dc2d

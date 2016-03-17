@@ -3,7 +3,7 @@ db.sqlite3
 *.py[co]
 .sass-cache
 venv/
-.idea
+.idea/
 /app/*.pyc
 /app/models.py
-
+*.idea/ 
