@@ -701,4 +701,10 @@ $$
   language 'plpgsql';
 
 
+create or replace function get_newpatient(out text, out text, out text, out date, out int, out text, out text, out text, out text, out text, out double, out boolean) returns setof record as
+$$
+  select fname, mname, lname, date_of_birth, age, sex, civil_status, name_of_parent, home_address, height, weight, is_active from Patient;
+$$
+  language 'sql';
+
 
