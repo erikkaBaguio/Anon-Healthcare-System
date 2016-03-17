@@ -8,25 +8,54 @@ create table userinfo (
   	is_active boolean
   );
 
-create table Patient_status (
+create table College(
+  id serial8 primary key,
+  name text not null,
+  is_active boolean default True
+);
+
+create table Department(
+  id serial8 primary key,
+  name text not null,
+  college_id int references College(id),
+  is_active boolean default True
+);
+
+create table Vital_signs  (
   id serial8 primary key,
   temperature int,
   pulse_rate float,
   respiration_rate text,
   blood_pressure text,
   weight float,
-  patient_id int references Examination(id),
   done boolean
 );
 
-CREATE TABLE Personal_history(
-  id serial8 PRIMARY KEY,
+create table Personal_history(
+  id serial8 primary key,
   smoking text,
   allergies text,
   alcohol text,
   medication_taken text,
   drugs text,
   done BOOLEAN
+);
+
+create table Patient_type(
+    id serial8 primary key,
+    patient_type text,
+    is_active boolean
+);
+
+create table Personal_info(
+    id serial8 primary key,
+    height text,
+    weight float,
+    date_of_birth date,
+    civil_status text,
+    name_of_guardian text,
+    home_address text,
+    is_active boolean
 );
 
 create table Patient(
@@ -42,23 +71,6 @@ create table Patient(
     is_active boolean
   );
 
-create table Personal_info(
-    id serial8 primary key,
-    height text,
-    weight float,
-    date_of_birth date,
-    civil_status text,
-    name_of_guardian text,
-    home_address text, 
-    is_active boolean  
-);
-
-create table Patient_type(
-    id serial8 primary key;
-    type text,
-    is_active boolean
-);
-  
 create table Pulmonary(
     cough text,
     dyspnea text,
@@ -75,7 +87,7 @@ create table Gut(
     dec_urine_amount text
 );
 
-CREATE TABLE Illness(
+create table Illness(
   id serial8 primary key,
   asthma text,
   ptb text,
@@ -84,11 +96,11 @@ CREATE TABLE Illness(
   chicken_pox text,
   mumps text,
   typhoid_fever text,
-done BOOLEAN
+  done BOOLEAN
 );
 
 
-CREATE TABLE Cardiac(
+create table Cardiac(
   id serial8 PRIMARY KEY,
   chest_pain text,
   palpitations text,
@@ -98,7 +110,7 @@ CREATE TABLE Cardiac(
   done BOOLEAN
 );
 
-CREATE TABLE Neurologic(
+create table Neurologic(
   id serial8 UNIQUE PRIMARY KEY,
   headache text,
   seizure text,
@@ -109,24 +121,18 @@ CREATE TABLE Neurologic(
 
 create table Assessment(
   id serial8 primary key,
-  typeofpatient text not null,
-  nameofpatient text not null,
+  typeofpatient int references Patient_type(id),
+  nameofpatient int references Patient(id),
   age int,
-  college int references College(id),
-  department text not null,
+  department int references Department(id),
   sex text not null,
+  vital_signs int references Vital_signs(id),
   chiefcomplaint text,
   historyofpresentillness text,
   medicationstaken text,
   diagnosis text,
   reccomendation text,
-  attendingphysician int ,
-);
-
-create table College(
-  id serial8 primary key,
-  name text not null,
-  is_active boolean default True
+  attendingphysician int references userinfo(id)
 );
 
 insert into College values (1,'SCS');
@@ -222,27 +228,6 @@ $$
  language 'plpgsql';
 
 ----------------------------------------------------------------------------------------------------
-CREATE or replace function newpatientstatus(par_id int, par_blood_pressure int, par_body_temp int, par_patiend_id int, par_done boolean) returns text AS
-$$
-  DECLARE
-    loc_id text;
-    loc_res text;
-  BEGIN
-      SELECT INTO loc_id id from Patient_status WHERE id = par_id;
-      if loc_id isnull THEN
-
-      INSERT INTO Patient_status(id, blood_pressure, body_temp, patient_id, done) values (par_id, par_blood_pressure, par_body_temp, par_patiend_id, par_done);
-      loc_res = 'OK';
-
-      else
-            loc_res = 'ID EXISTED';
-        end if;
-        return loc_res;
-    end;
-$$
-    language 'plpgsql';
-
------------------------------------------------------------------------------------------------------------
 
 create or replace function newpersonal_history(par_smoking text, par_allergies text, par_alcohol text,
                                                par_medication_taken text, par_drugs text, par_done boolean) returns text as
@@ -311,6 +296,7 @@ $$
  LANGUAGE  'plpgsql';
 
 -----------------------------------------------------------------------------------------------------------------
+--[GET] Retrieve list of colleges
 --select getallcolleges();
 create or replace function getallcolleges(out bigint, out text) returns setof record as
 $$
@@ -318,19 +304,15 @@ $$
 $$
 	language 'sql';
 
+--[GET] Retrieve specific college
+--select getcollegeID(1);
 create or replace function getcollegeID(in par_id int, out text) returns text as
 $$
   select name from College where id = par_id;
 $$
   language 'sql';
 
-create table Department(
-  id serial8 primary key,
-  name text not null,
-  college_id int references College(id),
-  is_active boolean default True
-);
-
+--[GET] Retrieve list of departments
 --select getalldepartments();
 create or replace function getalldepartments(out bigint, out text) returns setof record as
 $$
@@ -338,12 +320,15 @@ $$
 $$
 	language 'sql';
 
+--[GET] Retrieve specific department
 --select getdepartmentID(1);
 create or replace function getdepartmentID(in par_id int, out text) returns text as
 $$
   select name from Department where id = par_id;
 $$
   language 'sql';
+
+--------------------------------------------------------------------------------------------------------------------------
 
 create or replace function newpatient(par_fname text, par_mname text, par_lname text, par_age int, par_sex text, 
                                       par_department_id int, par_patient_type_id int, par_personal_info_id int, par_is_active boolean) returns text as
@@ -386,4 +371,4 @@ $$
   language 'sql';
 
 --select * from get_newpatient_id(1);
-------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------
