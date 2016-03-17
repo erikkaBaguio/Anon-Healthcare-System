@@ -10,6 +10,7 @@ create table Userinfo (
     mname text,
     lname text,
     email text,
+    username text unique,
     password text,
     role_id int references Role(id),
     is_active boolean
@@ -206,7 +207,34 @@ $$
 $$
   language 'plpgsql';
 
---select newuser('Jobee','Mcdo', 'Chowking', 'j@e.com', 'password');
+
+create or replace function newrole(par_rolename  text) returns text as
+$$
+  declare
+    loc_name text;
+    loc_res text;
+  begin
+
+    select into loc_name rolename from Role where rolename = par_rolename;
+
+    if loc_name isnull then
+      insert into Role(rolename) values (par_rolename);
+      loc_res = 'OK';
+
+    else
+      loc_res = 'EXISTED';
+
+    end if;
+      return loc_res;
+  end;
+$$
+ language 'plpgsql';
+
+ select newrole('doctor');
+ select newrole('nurse');
+ select newrole('system administrator');
+
+
 create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
                                 par_email text)
                                  returns text as
@@ -232,10 +260,8 @@ $$
 $$
  language 'plpgsql';
 
- select newuserinfo('Josiah', 'Timonera', 'Regencia', 'jetregencia@gmail.com');
 
-
-  create or replace function generate_password() returns text as
+ create or replace function generate_password() returns text as
  $$
     declare
         characters text;
@@ -263,49 +289,29 @@ $$
 LANGUAGE 'plpgsql';
 
 
+select newuserinfo('Josiah', 'Timonera', 'Regencia', 'jetregencia@gmail.com');
 
---select newUserinfo('Mary Grace', 'Pasco', 'Cabolbol', 'marygracecabolbol@gmail.com', 'password', 1, true);
---select newUserinfo('Ma.Erikka', 'P' , 'Baguio', 'ma.erikkabaguio@gmail.com', 'password' , 1, true);
 
-create or replace function getUserinfo(out text, out text, out text, out text, out boolean)
+
+create or replace function getuserinfo(out text, out text, out text, out text, out text)
                                               returns setof record as
 $$
-    select fname, mname, lname, email, is_active from Userinfo;
+    select fname, mname, lname, email, username from Userinfo;
 $$
   language 'sql';
 
 --select * from getUserinfo();
 
-create or replace function getUserinfoid(in par_id int, out text, out text, out text, out text,
-                                                 out int, out boolean) returns setof record as
+create or replace function getuserinfoid(in par_id int, out text, out text, out text, out text,
+                                                 out text) returns setof record as
 $$
-    select fname, mname, lname, email, role, is_active from Userinfo where par_id = id;
+    select fname, mname, lname, email, username from Userinfo where par_id = id;
 $$
   language 'sql';
 
 --select * from getUserinfoid(1);
+
 ----------------------------------------------------------------------------------------------------
-create or replace function newrole(par_rolename  text) returns text as
-$$
-  declare
-    loc_name text;
-    loc_res text;
-  begin
-
-    select into loc_name role_name from roles where role_name = par_rolename;
-
-    if loc_name isnull then
-      insert into roles(role_name) values (par_rolename);
-      loc_res = 'OK';
-
-    else
-      loc_res = 'EXISTED';
-
-    end if;
-      return loc_res;
-  end;
-$$
- language 'plpgsql';
 
 ----------------------------------------------------------------------------------------------------
 
