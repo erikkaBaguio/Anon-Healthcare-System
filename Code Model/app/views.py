@@ -49,6 +49,8 @@ def dashboard():
     return render_template('dashboard.html')
 
 
+<<<<<<< HEAD
+=======
 @app.route('/api.anoncare/question', methods=['GET'])
 def get_all_questions():
     res = spcall('get_newquestion',())
@@ -160,6 +162,7 @@ def insertuser():
     return render_template('index2.html')
     return jsonify({"college_id": str(college_id), "college_name": str(r[0])})
 
+>>>>>>> 03edfce1e38bc6cceb6ace17984ab38b9e7373fb
 @app.route('/anoncare.api/departments/<int:department_id>/', methods = ['GET'])
 def get_departmet(department_id):
     res = spcall('getdepartmentID', str(department_id))
