@@ -26,7 +26,6 @@ def then_i_should_get_a_group1_response(step, expected_status_code):
 @step(u'And the following disease details are returned:')
 def and_the_following_disease_details_are_returned(step):
     assert_equals(step.hashes, [json.loads(world.response.data)])
-
 # =====================================================================================
 
 @step(u'Given disease records that are already stored in the system')

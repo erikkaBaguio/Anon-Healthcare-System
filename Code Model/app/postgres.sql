@@ -611,3 +611,74 @@ $$
  LANGUAGE  'plpgsql';
 
 -----------------------------------------------------------------------------------------------------------------
+create table Assessment(
+  id serial8 primary key,
+  typeofpatient text not null,
+  nameofpatient text not null,
+  age int,
+  college int references College(id),
+  department text not null,
+  sex text not null,
+  temperature int,
+  pulserate double,
+  respirationrate text,
+  bloodpressure text,
+  weight double,
+  chiefcomplaint text,
+  historyofpresentillness text,
+  medicationstaken text,
+  diagnosis text,
+  reccomendation text,
+  attendingphysician text,
+);
+
+create table College(
+  id serial8 primary key,
+  name text not null,
+  is_active boolean default True
+);
+
+insert into College values (1,'SCS');
+insert into College values (2,'COE');
+insert into College values (3,'CED');
+insert into College values (4,'CASS');
+insert into College values (5,'SET');
+insert into College values (6,'CBAA');
+insert into College values (7,'CON');
+insert into College values (8,'CSM');
+
+--select getallcolleges();
+create or replace function getallcolleges(out bigint, out text) returns setof record as
+$$
+	select id, name from College;
+$$
+	language 'sql';
+
+create or replace function getcollegeID(in par_id int, out text) returns text as
+$$
+  select name from College where id = par_id;
+$$
+  language 'sql';
+
+create table Department(
+  id serial8 primary key,
+  name text not null,
+  college_id int references College(id),
+  is_active boolean default True
+);
+
+--select getalldepartments();
+create or replace function getalldepartments(out bigint, out text) returns setof record as
+$$
+	select id, name from Department;
+$$
+	language 'sql';
+
+--select getdepartmentID(1);
+create or replace function getdepartmentID(in par_id int, out text) returns text as
+$$
+  select name from Department where id = par_id;
+$$
+  language 'sql';
+
+
