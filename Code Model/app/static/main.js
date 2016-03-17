@@ -22,9 +22,6 @@ function register(){
 		},
 	});
 }
-<<<<<<< HEAD
-=======
-
 
 jQuery(document).ready(function ($) {
     $('#loginform').submit(function (event) {
