@@ -10,6 +10,7 @@ from app import app
 
 
 # auth = HTTPBasicAuth()
+COLLEGES = {}
 DISEASES = {}
 SYMPTOMS = {}
 DISEASE_RECORDS = {}
@@ -177,9 +178,25 @@ def get_disease_recordID(id):
     return jsonify({"id": str(id), "disease_id": str(disease[0]), "symptom_id": str(disease[1]), "done": str(disease[2])})
 
 
-#@app.route('/anoncare.api/patient_file', methods = ['GET'])
+@app.route('/anoncare.api/colleges/<int:college_id>/', methods = ['GET'])
+def get_college(college_id):
+    res = spcall('getcollegeID', str(college_id))
 
+    if 'Error' in str(res[0][0]):
+        return jsonify({'status': 'error', 'message': res[0][0]})
 
+    r = res[0]
+    return jsonify({"college_id": str(college_id), "college_name": str(r[0])})
+
+@app.route('/anoncare.api/departments/<int:department_id>/', methods = ['GET'])
+def get_departmet(department_id):
+    res = spcall('getdepartmentID', str(department_id))
+
+    if 'Error' in str(res[0][0]):
+        return jsonify({'status': 'error', 'message': res[0][0]})
+
+    r = res[0]
+    return jsonify({"department_id": str(department_id), "department_name": str(r[0])})
 
 @app.after_request
 def add_cors(resp):
