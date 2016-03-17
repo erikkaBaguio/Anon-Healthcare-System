@@ -29,7 +29,6 @@ CREATE TABLE Personal_history(
   done BOOLEAN
 );
 
-<<<<<<< HEAD
 create table Diagnosis (
   id int primary key,
   examination_id int references Examination(id),
@@ -40,7 +39,8 @@ create table Diagnosis (
 create table Patient_type(
     id serial8 primary key;
     type text,
-=======
+);
+
 create table Patient(
     id serial8 primary key,
     fname text,
@@ -51,7 +51,6 @@ create table Patient(
     department_id int references Department(id),
     patient_type_id int references Patient_type(id),
     Personal_info_id int references Personal_info(id),
->>>>>>> 2bca06f00f967528885ec49f61c225797e8af6d5
     is_active boolean
 );
 
@@ -65,21 +64,6 @@ create table Personal_info(
     home_address text, 
     is_active boolean  
 );
-
-create table Patient(
-    id serial8 primary key,
-    fname text,
-    mname text,
-    lname text,
-    age int,
-    sex text,
-    department_id int references Department(id),
-    patient_type_id int references Patient_type(id),
-    Personal_info_id int references Personal_info(id),
-    is_active boolean
-  );
-
-
 
   
 create table Pulmonary(
@@ -333,12 +317,6 @@ $$
 $$
  LANGUAGE  'plpgsql';
 
-
------------------------------------------------------------------------------------------------------------------
-
-create or replace function newpersonal_info(par_height text, par_weight float, par_date_of_birth date, par_civil_status text, par_name_of_guardian text, par_is_active boolean) returns text as
-$$
-
 -----------------------------------------------------------------------------------------------------------------
 --select getallcolleges();
 create or replace function getallcolleges(out bigint, out text) returns setof record as
@@ -415,7 +393,6 @@ $$
 
 --select * from get_newpatient_id(1);
 ------------------------------------------------------------------------------------------------------------------------------------------
-<<<<<<< HEAD
 
 create or replace function newpersonal_info(par_height text, par_weight float, par_date_of_birth date, par_civil_status text, par_name_of_guardian text, par_home_address text, is_active boolean) returns text as
 $$
@@ -430,5 +407,3 @@ $$
   end;
 $$
   language 'plpgsql';
-=======
->>>>>>> 2bca06f00f967528885ec49f61c225797e8af6d5
