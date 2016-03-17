@@ -156,6 +156,12 @@ create table Final_diagnosis(
   description text
 );
 
+create table Notification(
+  id serial8 primary key,
+  assessment_id int references Assessment(id),
+  doctor_id int references userinfo(id),
+  is_read boolean default FALSE,
+);
 -----------------------------------------------------------------------------------------------------------
 -----STORED PROCEDURE FUNCTIONS-----
 -----------------------------------------------------------------------------------------------------------
