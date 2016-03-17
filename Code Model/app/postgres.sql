@@ -491,22 +491,38 @@ $$
 -- TRIGGER (notification) - if new assessment is created, automatically create new notification
 create or replace function notify() RETURNS trigger AS '
 
-  declare
-    loc_response text;
-
   BEGIN
 
     IF tg_op = ''INSERT'' THEN
       INSERT INTO Notification (assessment_id, doctor_id)
           VALUES (new.id, new.attendingphysician);
+    RETURN new;
     END IF;
 
-    return loc_res = ''Ok'';
   END
   ' LANGUAGE plpgsql;
 
-CREATE TRIGGER notify_trigger AFTER INSERT ON Assessment FOR each ROW
+create TRIGGER notify_trigger AFTER INSERT ON Assessment FOR each ROW
 EXECUTE PROCEDURE notify();
+
+create or replace function createnotify(par_assessment_id int, par_doctor_id int) returns text as
+$$
+  declare
+      loc_response text;
+      loc_id int;
+  begin
+        select into loc_id assessment_id from Notification where assessment_id = par_assessment_id;
+        if loc_id isnull then
+          insert into Notification(assessment_id, doctor_id) values (par_assessment_id, par_doctor_id);                            
+          loc_response = 'Ok';
+
+        else
+          loc_response = 'ID EXISTED';
+        end if;
+        return loc_response;
+  end;
+$$
+  language 'plpgsql';
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 -- FINAL DIAGNOSIS
