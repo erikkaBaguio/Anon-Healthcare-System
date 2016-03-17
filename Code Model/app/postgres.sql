@@ -215,6 +215,34 @@ $$
  language 'plpgsql';
 
 
+  create or replace function generate_password() returns text as
+ $$
+    declare
+        characters text;
+        random_password text;
+        len int4;
+        placevalue int4;
+
+    begin
+        characters := 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~!@#$%^&*()+=';
+        len := length(characters);
+        random_password := '';
+
+
+        while(length(random_password) < 16) loop
+
+            placevalue := int4(random() * len);
+            random_password := random_password || substr(characters, placevalue + 1, 1);
+
+        end loop;
+
+        return random_password;
+    end;
+$$
+
+LANGUAGE 'plpgsql';
+
+
 
 --select newuserinfo('Mary Grace', 'Pasco', 'Cabolbol', 'marygracecabolbol@gmail.com', 'password', 1, true);
 --select newuserinfo('Ma.Erikka', 'P' , 'Baguio', 'ma.erikkabaguio@gmail.com', 'password' , 1, true);
