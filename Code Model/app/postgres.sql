@@ -8,8 +8,6 @@ create table userinfo (
   	is_active boolean
   );
 
-<<<<<<< HEAD
-=======
 create table College(
   id serial8 primary key,
   name text not null,
@@ -49,15 +47,11 @@ create table Diagnosis (
   disease_id int references Disease(id),
   done BOOLEAN
 );
->>>>>>> 39c036af6ecc04e1b4c4e1b89835de054880dc2d
 
 create table Patient_type(
     id serial8 primary key,
     type text,
-<<<<<<< HEAD
     is_active BOOLEAN default True
-);
-=======
 );
 
 create table Personal_info(
@@ -70,7 +64,6 @@ create table Personal_info(
     home_address text,
     is_active boolean
 );
->>>>>>> 39c036af6ecc04e1b4c4e1b89835de054880dc2d
 
 create table Patient(
     id serial8 primary key,
@@ -82,7 +75,6 @@ create table Patient(
     department_id int references Department(id),
     patient_type_id int references Patient_type(id),
     Personal_info_id int references Personal_info(id),
-<<<<<<< HEAD
     is_active BOOLEAN default True
 
 );
@@ -97,10 +89,6 @@ create table Personal_info(
     home_address text, 
     is_active BOOLEAN default True  
 );
-=======
-    is_active boolean
-  );
->>>>>>> 39c036af6ecc04e1b4c4e1b89835de054880dc2d
 
 create table Pulmonary(
     cough text,
@@ -373,11 +361,10 @@ $$
 $$
   language 'sql';
 
-<<<<<<< HEAD
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
-=======
+
 --------------------------------------------------------------------------------------------------------------------------
->>>>>>> 39c036af6ecc04e1b4c4e1b89835de054880dc2d
 
 create or replace function newpatient(par_fname text, par_mname text, par_lname text, par_age int, par_sex text, 
                                       par_department_id int, par_patient_type_id int, par_personal_info_id int, par_is_active boolean) returns text as
@@ -452,7 +439,6 @@ $$
   language 'sql';
 
 -------------------------------------------------------------------------------------------------------------------------------------
-=======
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 -- NOTIFICATIONS
@@ -522,4 +508,3 @@ create or replace function new_assessment(par_typeofpatient int, par_nameofpatie
   end;
  $$
   language 'plpgsql';
->>>>>>> 39c036af6ecc04e1b4c4e1b89835de054880dc2d
