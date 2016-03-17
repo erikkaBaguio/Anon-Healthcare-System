@@ -147,27 +147,28 @@ def get_user_with_id(id):
 
 
     return jsonify({"fname": r[0], "mname": r[1], "lname": r[2], "email": r[3], "role": r[4],
-                    "username": r[5], "password": r[6]})
+                    "username": r[5]})
     # return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
 
 @app.route('/user/', methods=['POST', 'GET'])
 def insertuser():
     if request.method == 'POST':
         user_info = request.json
+
+        print "user_info is "
+        print user_info
+
+
         valueName = user_info['fname']
         valueMName = user_info['mname']
         valueLName = user_info['lname']
         valueEmail = user_info['email']
 
 
-        print valueName
-        print valueMName
-        print valueLName
-        print valueEmail
-
-
         # res = spcall("newuser", (valueName, valueMName, valueLName, valueEmail, valuePass), True)
         res = spcall("newuserinfo", (valueName, valueMName, valueLName, valueEmail, True, 3), True)
+
+
         return jsonify({'status': 'ok'})
     return render_template('index2.html')
 

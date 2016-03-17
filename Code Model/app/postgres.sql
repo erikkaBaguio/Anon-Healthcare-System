@@ -168,6 +168,8 @@ CREATE TABLE Neurologic(
 
 --table userinfo
 
+
+
 create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
                                 par_email text, par_active boolean, par_role int)
                                  returns text as
@@ -192,6 +194,8 @@ $$
   end;
 $$
  language 'plpgsql';
+
+ select newuserinfo('Josiah', 'Timonera', 'Regencia', 'jetregencia@gmail.com', true, 1);
 
  create or replace function generate_password() returns text as
  $$
@@ -235,10 +239,10 @@ $$
 
 
 create or replace function getuserinfoid(in par_id int, out text, out text, out text, out text,
-                                                 out int, out text, out text, out boolean)
+                                                 out int, out text, out boolean)
                                                   returns setof record as
 $$
-    select fname, mname, lname, email, role_id, username, password, is_active
+    select fname, mname, lname, email, role_id, username, is_active
      from UserInfo where par_id = id;
 $$
   language 'sql';
