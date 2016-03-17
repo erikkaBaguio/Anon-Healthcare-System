@@ -41,15 +41,8 @@ create table Personal_history(
   done BOOLEAN
 );
 
-create table Diagnosis (
-  id int primary key,
-  examination_id int references Examination(id),
-  disease_id int references Disease(id),
-  done BOOLEAN
-);
-
 create table Patient_type(
-    id serial8 primary key;
+    id serial8 primary key,
     type text,
 );
 
@@ -74,8 +67,20 @@ create table Patient(
     department_id int references Department(id),
     patient_type_id int references Patient_type(id),
     Personal_info_id int references Personal_info(id),
-    is_active boolean
-  );
+    is_active BOOLEAN default True
+
+);
+
+create table Personal_info(
+    id serial8 primary key,
+    height text,
+    weight float,
+    date_of_birth date,
+    civil_status text,
+    name_of_guardian text,
+    home_address text, 
+    is_active BOOLEAN default True  
+);
 
 create table Pulmonary(
     cough text,
@@ -172,10 +177,6 @@ create table Notification(
 -----STORED PROCEDURE FUNCTIONS-----
 -----------------------------------------------------------------------------------------------------------
 
-create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
-                                par_email text, par_active boolean, par_role int)
-                                 returns text as
-
 create or replace function checkauth(par_email text,par_password text) returns text as
 $$
   declare
@@ -211,45 +212,11 @@ $$
 $$
  language 'plpgsql';
 
- select newuserinfo('Josiah', 'Timonera', 'Regencia', 'jetregencia@gmail.com', true, 1);
-
- create or replace function generate_password() returns text as
- $$
-    declare
-        characters text;
-        random_password text;
-        len int4;
-        placevalue int4;
-
-    begin
-        characters := 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~!@#$%^&*()+=';
-        len := length(characters);
-        random_password := '';
-
-
-        while(length(random_password) < 16) loop
-
-            placevalue := int4(random() * len);
-            random_password := random_password || substr(characters, placevalue + 1, 1);
-
-        end loop;
-
-        return random_password;
-    end;
-$$
-
-LANGUAGE 'plpgsql';
 
 
 --select newuserinfo('Mary Grace', 'Pasco', 'Cabolbol', 'marygracecabolbol@gmail.com', 'password', 1, true);
 --select newuserinfo('Ma.Erikka', 'P' , 'Baguio', 'ma.erikkabaguio@gmail.com', 'password' , 1, true);
 
---create or replace function getuserinfo(out text, out text, out text, out text, out int, out boolean)
-create or replace function getuserinfo(out text, out text, out text, out text,
-                                out text, out int, out boolean)
-                                            returns setof record as
-$$
-    select fname, mname, lname, email, password, role_id, is_active from UserInfo;
 create or replace function getuserinfo(out text, out text, out text, out text, out boolean)
                                               returns setof record as
 $$
@@ -257,13 +224,12 @@ $$
 $$
   language 'sql';
 
+--select * from getuserinfo();
 
 create or replace function getuserinfoid(in par_id int, out text, out text, out text, out text,
-                                                 out int, out text, out boolean)
-                                                  returns setof record as
+                                                 out int, out boolean) returns setof record as
 $$
-    select fname, mname, lname, email, role_id, username, is_active
-     from UserInfo where par_id = id;
+    select fname, mname, lname, email, role, is_active from UserInfo where par_id = id;
 $$
   language 'sql';
 
@@ -290,10 +256,6 @@ $$
   end;
 $$
  language 'plpgsql';
-
- select newrole('doctor');
- select newrole('nurse');
- select newrole('system administrator');
 
 ----------------------------------------------------------------------------------------------------
 
@@ -396,7 +358,8 @@ $$
 $$
   language 'sql';
 
---------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 create or replace function newpatient(par_fname text, par_mname text, par_lname text, par_age int, par_sex text, 
                                       par_department_id int, par_patient_type_id int, par_personal_info_id int, par_is_active boolean) returns text as
@@ -456,8 +419,21 @@ $$
   language 'plpgsql';
 
 
+<<<<<<< HEAD
+create or replace function get_newpersonal_info(out text, out float, out date, out text, out text, out text, out boolean) returns setof record as
+$$
+  select height, weight, date_of_birth, civil_status, name_of_guardian, home_address, is_active from Personal_info; 
+$$
+  language 'sql';
 
-------------------------------------------------------------------------------------------------------------------------------------------
+
+create or replace function get_newpersonal_info_id(in par_id int, out text, out float, out date, out text, out text, out text, out boolean) from Personal_info where par_id = id;
+$$  
+  select fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active from Personal_info where par_id = id;
+$$
+  language 'sql';
+
+-------------------------------------------------------------------------------------------------------------------------------------
 -- NOTIFICATIONS
 
 -- TRIGGER (notification) - if new assessment is created, automatically create new notification
