@@ -471,3 +471,21 @@ $$
   end;
 $$
   language 'plpgsql';
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+-- NOTIFICATIONS
+
+-- TRIGGER (notification) - if new assessment is created, automatically create new notification
+create or replace function notify() RETURNS trigger AS '
+  BEGIN
+    IF tg_op = ''INSERT'' THEN
+      INSERT INTO Notification (assessment_id, doctor_id)
+          VALUES (new.id, new.attendingphysician);
+    END IF;
+  END
+  ' LANGUAGE plpgsql;
+
+CREATE TRIGGER notify_trigger AFTER INSERT ON Assessment FOR each ROW
+EXECUTE PROCEDURE notify();
