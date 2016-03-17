@@ -44,8 +44,7 @@ create table Personal_history(
 
 create table Patient_type(
     id serial8 primary key,
-    type text,
-    is_active BOOLEAN default True
+    type text
 );
 
 create table Personal_info(
