@@ -200,16 +200,27 @@ $$
   language 'plpgsql';
 
 --select newuser('Jobee','Mcdo', 'Chowking', 'j@e.com', 'password');
-create or replace function newuser(par_fname  text, par_mname  text, par_lname  text, par_email text, par_password text) returns text as
+create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
+                                par_email text)
+                                 returns text as
 $$
-  declare
-    loc_id text;
-    loc_res text;
-  begin
 
-       insert into userinfo (fname, mname, lname, email, password, is_active) values (par_fname, par_mname, par_lname, par_email, par_password, 'True');
+    declare
+        loc_res text;
+        random_password text;
+        username text;
+
+    begin
+
+        username := par_fname || '.' || par_lname;
+        random_password := generate_password();
+
+       insert into userinfo (fname, mname, lname, email, username, password)
+                values (par_fname, par_mname, par_lname, par_email, username, random_password);
+
+
        loc_res = 'OK';
-       return loc_res;
+       return random_password;
   end;
 $$
  language 'plpgsql';
