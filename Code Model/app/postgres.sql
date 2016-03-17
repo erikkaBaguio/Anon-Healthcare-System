@@ -41,10 +41,16 @@ create table Personal_history(
   done BOOLEAN
 );
 
+create table Diagnosis (
+  id int primary key,
+  examination_id int references Examination(id),
+  disease_id int references Disease(id),
+  done BOOLEAN
+);
+
 create table Patient_type(
-    id serial8 primary key,
-    patient_type text,
-    is_active boolean
+    id serial8 primary key;
+    type text,
 );
 
 create table Personal_info(
@@ -99,7 +105,6 @@ create table Illness(
   done BOOLEAN
 );
 
-
 create table Cardiac(
   id serial8 PRIMARY KEY,
   chest_pain text,
@@ -144,9 +149,34 @@ insert into College values (6,'CBAA');
 insert into College values (7,'CON');
 insert into College values (8,'CSM');
 
+
+create table Final_diagnosis(
+  id serial8 primary key,
+  assessment_id int references Assessment(id),
+  doctor_id int references userinfo(id),
+  description text
+);
+
+create table Notification(
+  id serial8 primary key,
+  assessment_id int references Assessment(id),
+  doctor_id int references userinfo(id),
+  is_read boolean default FALSE,
+);
 -----------------------------------------------------------------------------------------------------------
 -----STORED PROCEDURE FUNCTIONS-----
 -----------------------------------------------------------------------------------------------------------
+<<<<<<< HEAD
+=======
+
+--table userinfo
+
+
+
+create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
+                                par_email text, par_active boolean, par_role int)
+                                 returns text as
+>>>>>>> 8799026a51d78cbdde58a539a6edb3b2577f5920
 create or replace function checkauth(par_email text,par_password text) returns text as
 $$
   declare
@@ -182,11 +212,45 @@ $$
 $$
  language 'plpgsql';
 
+ select newuserinfo('Josiah', 'Timonera', 'Regencia', 'jetregencia@gmail.com', true, 1);
+
+ create or replace function generate_password() returns text as
+ $$
+    declare
+        characters text;
+        random_password text;
+        len int4;
+        placevalue int4;
+
+    begin
+        characters := 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~!@#$%^&*()+=';
+        len := length(characters);
+        random_password := '';
+
+
+        while(length(random_password) < 16) loop
+
+            placevalue := int4(random() * len);
+            random_password := random_password || substr(characters, placevalue + 1, 1);
+
+        end loop;
+
+        return random_password;
+    end;
+$$
+
+LANGUAGE 'plpgsql';
 
 
 --select newuserinfo('Mary Grace', 'Pasco', 'Cabolbol', 'marygracecabolbol@gmail.com', 'password', 1, true);
 --select newuserinfo('Ma.Erikka', 'P' , 'Baguio', 'ma.erikkabaguio@gmail.com', 'password' , 1, true);
 
+--create or replace function getuserinfo(out text, out text, out text, out text, out int, out boolean)
+create or replace function getuserinfo(out text, out text, out text, out text,
+                                out text, out int, out boolean)
+                                            returns setof record as
+$$
+    select fname, mname, lname, email, password, role_id, is_active from UserInfo;
 create or replace function getuserinfo(out text, out text, out text, out text, out boolean)
                                               returns setof record as
 $$
@@ -194,12 +258,13 @@ $$
 $$
   language 'sql';
 
---select * from getuserinfo();
 
 create or replace function getuserinfoid(in par_id int, out text, out text, out text, out text,
-                                                 out int, out boolean) returns setof record as
+                                                 out int, out text, out boolean)
+                                                  returns setof record as
 $$
-    select fname, mname, lname, email, role, is_active from UserInfo where par_id = id;
+    select fname, mname, lname, email, role_id, username, is_active
+     from UserInfo where par_id = id;
 $$
   language 'sql';
 
@@ -226,6 +291,10 @@ $$
   end;
 $$
  language 'plpgsql';
+
+ select newrole('doctor');
+ select newrole('nurse');
+ select newrole('system administrator');
 
 ----------------------------------------------------------------------------------------------------
 
@@ -354,8 +423,7 @@ $$
 $$
   language 'plpgsql';
 
---select newpatient('Mary Grace', 'Pasco', 'Cabolbol', 'July 25, 1996', '19', 'female', 'single', 'Marissa Cabolbol', 'Biga, Lugait, Misamis Oriental', '4 ft 11 inch', '81', 'true');
-
+--select newpatient('Mary Grace', 'Pasco', 'Cabolbol', '19', 'female', '1' , '1', '1', 'true');
 create or replace function get_newpatient(out text, out text, out text, out int, out text, out int, out int, out int, out boolean) returns setof record as
 $$
   select fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active from Patient;
@@ -371,4 +439,37 @@ $$
   language 'sql';
 
 --select * from get_newpatient_id(1);
----------------------------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+create or replace function newpersonal_info(par_height text, par_weight float, par_date_of_birth date, par_civil_status text, par_name_of_guardian text, par_home_address text, is_active boolean) returns text as
+$$
+  declare
+      loc_id text;
+      loc_res text;
+  begin
+        insert into Personal_info(height, weight, date_of_birth, civil_status, name_of_guardian, home_address, is_active);
+        loc_res = 'Ok'
+      end if; 
+      return loc_res;
+  end;
+$$
+  language 'plpgsql';
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+-- NOTIFICATIONS
+
+-- TRIGGER (notification) - if new assessment is created, automatically create new notification
+create or replace function notify() RETURNS trigger AS '
+  BEGIN
+    IF tg_op = ''INSERT'' THEN
+      INSERT INTO Notification (assessment_id, doctor_id)
+          VALUES (new.id, new.attendingphysician);
+    END IF;
+  END
+  ' LANGUAGE plpgsql;
+
+CREATE TRIGGER notify_trigger AFTER INSERT ON Assessment FOR each ROW
+EXECUTE PROCEDURE notify();
