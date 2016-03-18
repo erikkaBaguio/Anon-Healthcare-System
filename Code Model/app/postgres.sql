@@ -596,3 +596,13 @@ $$
   select type from Patient_type where id = par_id;
 $$
   language 'sql';
+
+------------------------------------------------------------------------------------------------------------------
+--[GET] Retrieve assessment of specific patient.
+create or replace function getpatientID(in par_id int, out timestamp, ) returns setof record as
+$$
+  select Assessment.assessment_date, Assessment.nameofpatient, Assessment.age, Assessment.department.name,
+
+  from Patient, Assessment
+  where
+$$

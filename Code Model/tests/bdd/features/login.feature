@@ -1,10 +1,12 @@
 # Created by erikka at 3/12/16
 Feature: Login
-  As a user, I want to login to the website so that I can access the system.
+  As an admin/nurse/doctor, I want to login to the website so that I can access the system.
 
 
-    Scenario: valid credentials
-    Given the user on the login page
-    When the user provides the username "fname.lname"
-    And the user provides the password "pass"
-    Then the user should be successfully logged in
+    Scenario: admin/nurse/doctor logins successfully.
+            Given the admin/nurse/doctor has registered username and password
+            When the admin/nurse/doctor enters username 'fname.lname'
+            And the admin/nurse/doctor enters password pass'
+            Then the admin/nurse/doctor should be successfully logged in
+
+
