@@ -32,6 +32,10 @@ def page_not_found(e):
 def internal_server_error(e):
     return '(Error 500) Sorry, there was an internal server error.'
 
+@app.route('/admin', methods=['GET'])
+def admin_home():
+    return render_template('/admin/index.html')
+
 @app.route('/api.anoncare/question', methods=['GET'])
 def get_all_questions():
     res = spcall('get_newquestion',())
