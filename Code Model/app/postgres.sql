@@ -380,9 +380,11 @@ $$
 
 --[GET] Retrieve specific department
 --select getdepartmentID(1);
-create or replace function getdepartmentID(in par_id int, out text) returns text as
+create or replace function getdepartmentID(in par_id int, out text, out text) returns setof record as
 $$
-  select name from Department where id = par_id;
+  select Department.name, College.name
+  from Department, College
+  where Department.id = par_id and College.id = Department.college_id;
 $$
   language 'sql';
 
@@ -505,7 +507,7 @@ $$
 -----------------------------------------------------------------------------------------------------------------------------
 
 -- [POST] Create new assessment
---select new_assessment(1,1,12,1,'female',1,'parts','history','medication','diagnosis', 'reccommendation', 1);
+-- select new_assessment(1,18,1,1,'doc','history','medication','diagnosis', 'recccomendation', 1);
 create or replace function new_assessment(par_nameofpatient int, par_age int, par_department int, par_vital_signs int,
 par_chiefcomplaint text, par_historyofpresentillness text, par_medicationstaken text,
 par_diagnosis text, par_reccomendation text, par_attendingphysician int) returns text as

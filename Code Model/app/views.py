@@ -105,7 +105,7 @@ def login():
             error = 'Invalid credentials. Try again.'
     return render_template('login.html', title='Sign In', form=form, error=error)
 
-@app.route('/anoncare.api/colleges/<int:college_id>/', methods = ['GET'])
+@app.route('/anoncare.api/colleges/<college_id>/', methods = ['GET'])
 def get_college(college_id):
     res = spcall('getcollegeID', str(college_id))
 
@@ -114,9 +114,7 @@ def get_college(college_id):
 
     r = res[0]
     return jsonify({"college_id": str(college_id), "college_name": str(r[0])})
-    # return jsonify({"fname": r[0], "mname": r[1], "lname": r[2], "email": r[3], "role": r[4],
-    #                 "username": r[5]})
-    # return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
+
 
 @app.route('/user/', methods=['POST', 'GET'])
 def insertuser():
@@ -148,7 +146,9 @@ def get_departmet(department_id):
         return jsonify({'status': 'error', 'message': res[0][0]})
 
     r = res[0]
-    return jsonify({"department_id": str(department_id), "department_name": str(r[0])})
+    return jsonify({"department_id": str(department_id),
+                    "department_name": str(r[0]),
+                    "college_name": str(r[1])})
 
 @app.after_request
 def add_cors(resp):
