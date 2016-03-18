@@ -32,6 +32,10 @@ def page_not_found(e):
 def internal_server_error(e):
     return '(Error 500) Sorry, there was an internal server error.'
 
+@app.route('/admin', methods=['GET'])
+def admin_home():
+    return render_template('/admin/index.html')
+
 @app.route('/api.anoncare/question', methods=['GET'])
 def get_all_questions():
     res = spcall('get_newquestion',())
@@ -160,16 +164,26 @@ def get_departmet(department_id):
     r = res[0]
     return jsonify({"department_id": str(department_id), "department_name": str(r[0])})
 
-@app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['POST', 'GET'])
+@app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['POST'])
 def notify(assessment_id, doctor_id):
-    # res = spcall("newuser", (valueName, valueMName, valueLName, valueEmail, valuePass), True)
     response = spcall("createnotify", (assessment_id, doctor_id), True)
 
     if 'Error' in str(response[0][0]):
         return jsonify({'status': 'error', 'message': response[0][0]})
 
-    # , 'assessment_id': notification[1], 'doctor_id': notification[2], 'is_read': notification[3]
     return jsonify({'status': response[0][0]})
+
+@app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['GET'])
+def getnotify(assessment_id, doctor_id):
+    notification = spcall("getnotify", (assessment_id, doctor_id))
+
+    if 'Error' in str(notification[0][0]):
+        return jsonify({'status': 'error', 'message': notification[0][0]})
+
+    records = []
+    for r in notification:
+        records.append({ "doctor_id": str(r[0]), "is_read": str(r[1]) })
+    return jsonify({'status': 'Ok','entries': records, 'count': len(records) })
 
 @app.after_request
 def add_cors(resp):

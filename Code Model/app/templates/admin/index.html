@@ -1,209 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <!-- This file has been downloaded from Bootsnipp.com. Enjoy! -->
-    <title>Anoncare|Admin</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="static/admin/bootstrap.min.css" rel="stylesheet">
-    <style type="text/css">
-        .mini-submenu{
-  display:none;  
-  background-color: rgba(0, 0, 0, 0);  
-  border: 1px solid rgba(0, 0, 0, 0.9);
-  border-radius: 4px;
-  padding: 9px;  
-  /*position: relative;*/
-  width: 42px;
+<html>
+  <head>
+    <title>Bootstrap Admin Theme v3</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="{{ url_for('static', filename="admin/bootstrap/css/bootstrap.min.css") }}" rel="stylesheet">
+    <!-- styles -->
+    <link href="{{ url_for('static', filename="admin/css/styles.css") }}" rel="stylesheet">
 
-}
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+  	<div class="header">
+	     <div class="container">
+	        <div class="row">
+	           <div class="col-md-5">
+	              <!-- Logo -->
+	              <div class="logo">
+	                 <h1><a href="index.html">Anoncare Health System</a></h1>
+	              </div>
+	           </div>
+	           <div class="col-md-5">
+	              <div class="row">
+	                <div class="col-lg-12">
+	                  <div class="input-group form">
+	                       <input type="text" class="form-control" placeholder="Search...">
+	                       <span class="input-group-btn">
+	                         <button class="btn btn-primary" type="button">Search</button>
+	                       </span>
+	                  </div>
+	                </div>
+	              </div>
+	           </div>
+	           <div class="col-md-2">
+	              <div class="navbar navbar-inverse" role="banner">
+	                  <nav class="collapse navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
+	                    <ul class="nav navbar-nav">
+	                      <li class="dropdown">
+	                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account <b class="caret"></b></a>
+	                        <ul class="dropdown-menu animated fadeInUp">
+	                          <li><a href="profile.html">Profile</a></li>
+	                          <li><a href="login.html">Logout</a></li>
+	                        </ul>
+	                      </li>
+	                    </ul>
+	                  </nav>
+	              </div>
+	           </div>
+	        </div>
+	     </div>
+	</div>
 
-.mini-submenu:hover{
-  cursor: pointer;
-}
+    <div class="page-content">
+    	<div class="row">
+		  <div class="col-md-2">
+		  	<div class="sidebar content-box" style="display: block;">
+                <ul class="nav">
+                    <!-- Main menu -->
+                    <li class="current"><a href="index.html"><i class="glyphicon glyphicon-home"></i> Dashboard</a></li>
+                    <li><a href="calendar.html"><i class="glyphicon glyphicon-calendar"></i> Calendar</a></li>
+                    <li><a href="stats.html"><i class="glyphicon glyphicon-stats"></i> Statistics (Charts)</a></li>
+                    <li><a href="tables.html"><i class="glyphicon glyphicon-list"></i> Tables</a></li>
+                    <li><a href="buttons.html"><i class="glyphicon glyphicon-record"></i> Buttons</a></li>
+                    <li><a href="editors.html"><i class="glyphicon glyphicon-pencil"></i> Editors</a></li>
+                    <li><a href="forms.html"><i class="glyphicon glyphicon-tasks"></i> Forms</a></li>
+                    <li class="submenu">
+                         <a href="#">
+                            <i class="glyphicon glyphicon-list"></i> Pages
+                            <span class="caret pull-right"></span>
+                         </a>
+                         <!-- Sub menu -->
+                         <ul>
+                            <li><a href="login.html">Login</a></li>
+                            <li><a href="signup.html">Signup</a></li>
+                        </ul>
+                    </li>
+                </ul>
+             </div>
+		  </div>
 
-.mini-submenu .icon-bar {
-  border-radius: 1px;
-  display: block;
-  height: 2px;
-  width: 22px;
-  margin-top: 3px;
-}
-
-.mini-submenu .icon-bar {
-  background-color: #000;
-}
-
-#slide-submenu{
-  background: rgba(0, 0, 0, 0.45);
-  display: inline-block;
-  padding: 0 8px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-    </style>
-    <link href="static/admin/font-awesome.css" rel="stylesheet">
-</head>
-<body>
-
-<div class="container">
-<nav class="navbar navbar-default" role="navigation">
-
-
-  <div class="container-fluid">
-
-
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Anoncare</a>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
-
-          <ul class="nav navbar-nav">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add data <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Add user</a></li>
-                <li><a href="#" onclick="showRoleForm();">Add user roles</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li class="divider"></li>
-                <li><a href="#">Separated link</a></li>
-                <li class="divider"></li>
-                <li><a href="#">One more separated link</a></li>
-              </ul>
-            </li>
-          </ul>
-
-
-          <form class="navbar-form navbar-left" role="search">
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="Search">
-            </div>
-            <button type="submit" class="btn btn-default">Submit</button>
-          </form>
-
-
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Link</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li class="divider"></li>
-                <li><a href="#">Log out</a></li>
-              </ul>
-            </li>
-          </ul>
-
-
-        </div><!-- /.navbar-collapse -->
-
-
-  </div><!-- /.container-fluid -->
-
-
-</nav>
-
-<div class="row">
-
-    <div class="col-sm-4 col-md-3 sidebar">
-            <div class="mini-submenu">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </div>
-
-
-            <div class="list-group">
-
-                <span href="#" class="list-group-item active">
-                    Submenu
-                    <span class="pull-right" id="slide-submenu">
-                        <i class="fa fa-times"></i>
-                    </span>
-                </span>
-
-                <a href="#" class="list-group-item">
-                    <i class="fa fa-comment-o"></i> Lorem ipsum
-                </a>
-                <a href="#" class="list-group-item">
-                    <i class="fa fa-search"></i> Lorem ipsum
-                </a>
-                <a href="#" class="list-group-item">
-                    <i class="fa fa-user"></i> Lorem ipsum
-                </a>
-                <a href="#" class="list-group-item">
-                    <i class="fa fa-folder-open-o"></i> Lorem ipsum <span id="active-appointments" class="badge"></span>
-                </a>
-                <a href="#" class="list-group-item">
-                    <i class="fa fa-bar-chart-o"></i> Lorem ipsumr <span class="badge">14</span>
-                </a>
-                <a href="#" class="list-group-item">
-                    <i class="fa fa-envelope"></i> Lorem ipsum
-                </a>
-            </div>        
+		  </div>
     </div>
 
-    <div class="col-sm-4 col-md-9">
-        <!--     role registration form -->
-        <div id="role-registration-form">
+    <footer>
+         <div class="container">
+         
+            <div class="copy text-center">
+               Copyright 2014 <a href='#'>Website</a>
+            </div>
+            
+         </div>
+    </footer>
 
-            <div id="role-result"></div>
-
-            <form class="form-horizontal" onsubmit="return false">
-              <div class="form-group">
-                <label class="control-label col-sm-2">Role name:</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" name="name" placeholder="Enter role name">
-                </div>
-              </div>
-              <div class="form-group"> 
-                <div class="col-sm-offset-2 col-sm-10">
-                  <button type="submit" class="btn btn-default" onclick="addRole();">Add</button>
-                </div>
-              </div>
-            </form>
-        </div>
-        <!--     end role registration form -->     
-    </div>
-
-</div>
-<!--     end submenu row -->
-
-
-</div>
-
-<script src="{{ url_for('static', filename="admin/jquery-1.11.0.min.js") }}"></script>
-<script src="{{ url_for('static', filename="admin/bootstrap.min.js") }}"></script>
-<script src="{{ url_for('static', filename="admin/main.js") }}"></script>
-
-<script type="text/javascript">
-$(function(){
-
-    $('#slide-submenu').on('click',function() {                 
-        $(this).closest('.list-group').fadeOut('slide',function(){
-            $('.mini-submenu').fadeIn();    
-        });
-        
-      });
-
-    $('.mini-submenu').on('click',function(){       
-        $(this).next('.list-group').toggle('slide');
-        $('.mini-submenu').hide();
-    })
-})
-
-</script>
-</body>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{{ url_for('static', filename="admin/jquery-1.11.0.min.js") }}"></script>
+    <script src="{{ url_for('static', filename="admin/bootstrap.min.js") }}"></script>
+    <script src="{{ url_for('static', filename="admin/main.js") }}"></script>
+    <script src="{{ url_for('static', filename="admin/js/custom.js") }}"></script>
+  </body>
 </html>
