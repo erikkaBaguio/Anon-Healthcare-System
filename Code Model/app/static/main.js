@@ -1,27 +1,53 @@
+//function register(){
+//
+//	var valueName = $("#fname").val()
+//	var valueMName = $("#mname").val()
+//	var valueLName = $("#lname").val()
+//	var valueEmail = $("#email").val()
+//
+//	var user_info = {fname: valueName, mname: valueMName, lname: valueLName, email: valueEmail}
+//
+//	$.ajax({
+//		type: "POST",
+//		url: "/user/",
+//		data: JSON.stringify(user_info),
+//		dataType: "json",
+//		success: function(resp){
+//			console.log(resp.status);
+//
+//				$("#results").html('<p>OK!</p>');
+//		},
+//		error: function(error){
+//			console.log(error);
+//		},
+//	});
+//}
+
 function register(){
 
-	var valueName = $("#fname").val()
-	var valueMName = $("#mname").val()
-	var valueLName = $("#lname").val()
-	var valueEmail = $("#email").val()
-
-	var user_info = {fname: valueName, mname: valueMName, lname: valueLName, email: valueEmail}
+	var valueName = $('input[name="fname"]').val()
+	var valueMName = $('input[name="mname"]').val()
+	var valueLName = $('input[name="lname"]').val()
+	var valueEmail = $('input[name="email"]').val()
+	var valuePass = $('input[name="password"]').val()
 
 	$.ajax({
 		type: "POST",
 		url: "/user/",
-		data: JSON.stringify(user_info),
-		dataType: "json",
+		data: {fname:valueName, mname:valueMName, lname:valueLName, email:valueEmail, pass:valuePass},
 		success: function(resp){
 			console.log(resp.status);
 
-				$("#results").html('<p>OK!</p>');
+				$("#results").html('<p>successfully register ' + valueName + '</p>');
+
+				// $("input").val("")
 		},
 		error: function(error){
 			console.log(error);
 		},
 	});
 }
+
 
 jQuery(document).ready(function ($) {
     $('#loginform').submit(function (event) {

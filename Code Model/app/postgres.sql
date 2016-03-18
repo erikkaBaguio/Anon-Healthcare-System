@@ -248,6 +248,7 @@ $$
        return random_password;
   end;
 $$
+
  language 'plpgsql';
 
 
