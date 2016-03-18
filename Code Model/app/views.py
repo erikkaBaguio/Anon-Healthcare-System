@@ -127,7 +127,7 @@ def get_user_with_id(id):
 
     r = res[0]
 
-    return jsonify({"id": str(id), "fname": str(r[0]), "mname": str(r[1]), "lname": str(r[2]),
+    return jsonify({"fname": str(r[0]), "mname": str(r[1]), "lname": str(r[2]),
                     "email": str(r[3]), "username": str(r[4])})
 
 @app.route('/user/', methods=['POST', 'GET'])
@@ -144,8 +144,6 @@ def insertuser():
         valueLName = user_info['lname']
         valueEmail = user_info['email']
 
-
-        # res = spcall("newuser", (valueName, valueMName, valueLName, valueEmail, valuePass), True)
         res = spcall("newuserinfo", (valueName, valueMName, valueLName, valueEmail, True, 3), True)
 
 
@@ -161,6 +159,17 @@ def get_departmet(department_id):
 
     r = res[0]
     return jsonify({"department_id": str(department_id), "department_name": str(r[0])})
+
+@app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['POST', 'GET'])
+def notify(assessment_id, doctor_id):
+    # res = spcall("newuser", (valueName, valueMName, valueLName, valueEmail, valuePass), True)
+    response = spcall("createnotify", (assessment_id, doctor_id), True)
+
+    if 'Error' in str(response[0][0]):
+        return jsonify({'status': 'error', 'message': response[0][0]})
+
+    # , 'assessment_id': notification[1], 'doctor_id': notification[2], 'is_read': notification[3]
+    return jsonify({'status': response[0][0]})
 
 @app.after_request
 def add_cors(resp):

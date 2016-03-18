@@ -5,7 +5,7 @@ function register(){
 	var valueLName = $("#lname").val()
 	var valueEmail = $("#email").val()
 
-	var user_info = {"fname": valueName, "mname": valueMName, "lname": valueLName, "email": valueEmail}
+	var user_info = {fname: valueName, mname: valueMName, lname: valueLName, email: valueEmail}
 
 	$.ajax({
 		type: "POST",

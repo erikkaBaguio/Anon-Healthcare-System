@@ -55,16 +55,6 @@ create table Patient_type(
     type text
 );
 
-create table Personal_info(
-    id serial8 primary key,
-    height text,
-    weight float,
-    date_of_birth date,
-    civil_status text,
-    name_of_guardian text,
-    home_address text,
-    is_active boolean
-);
 
 
 create table Patient(
@@ -431,7 +421,7 @@ $$
       SELECT INTO loc_fname fname from Patient where fname = par_fname AND mname = par_mname AND lname = par_lname;
       if loc_fname isnull THEN
          insert into Patient(fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active) values 
-          (par_fname, par_mname, par_lname, par_age, par_sex, par_department_id, par_patient_type_id, par_personal_info_id par_is_active);
+          (par_fname, par_mname, par_lname, par_age, par_sex, par_department_id, par_patient_type_id, par_personal_info_id, par_is_active);
 
          loc_res = 'OK';
       else
@@ -443,6 +433,7 @@ $$
   language 'plpgsql';
 
 --select newpatient('Mary Grace', 'Pasco', 'Cabolbol', '19', 'female', '1' , '1', '1', 'true');
+
 create or replace function get_newpatient(out text, out text, out text, out int, out text, out int, out int, out int, out boolean) returns setof record as
 $$
   select fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active from Patient;
@@ -453,7 +444,7 @@ $$
 
 create or replace function get_newpatient_id(in par_id int, out text, out text, out text, out int, out text, out int, out int, out int, out boolean) returns setof record as
 $$
-  select fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active from Patient where par_id = id;
+  select fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active from Patient where id = par_id;
 $$
   language 'sql';
 
@@ -461,15 +452,17 @@ $$
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 
-create or replace function newpersonal_info(par_height text, par_weight float, par_date_of_birth date, par_civil_status text, par_name_of_guardian text, par_home_address text, is_active boolean) returns text as
+create or replace function newpersonal_info(par_height text, par_weight float, par_date_of_birth date, par_civil_status text, par_name_of_guardian text, par_home_address text, par_is_active boolean) returns text as
 $$
   declare
       loc_id text;
       loc_res text;
   begin
         insert into Personal_info(height, weight, date_of_birth, civil_status, name_of_guardian, home_address, is_active) values 
-                                  (par_height , par_weight , par_date_of_birth , par_civil_status, par_name_of_guardian , par_home_address , is_active );                            
+                                  (par_height , par_weight , par_date_of_birth , par_civil_status, par_name_of_guardian , par_home_address , par_is_active );                            
         loc_res = 'Ok';
+
+      return loc_res;
      
   end;
 $$
@@ -483,6 +476,7 @@ $$
 $$
   language 'sql';
 
+--select * from get_newpersonal_info();
 
 create or replace function get_newpersonal_info_id(in par_id int, out text, out float, out date, out text, out text, out text, out boolean) returns setof record as
 $$  
@@ -490,22 +484,45 @@ $$
 $$
   language 'sql';
 
-
+--select * from get_newpersonal_info_id(1);
 ------------------------------------------------------------------------------------------------------------------------------------------
 -- NOTIFICATIONS
 
 -- TRIGGER (notification) - if new assessment is created, automatically create new notification
 create or replace function notify() RETURNS trigger AS '
+
   BEGIN
+
     IF tg_op = ''INSERT'' THEN
       INSERT INTO Notification (assessment_id, doctor_id)
           VALUES (new.id, new.attendingphysician);
+    RETURN new;
     END IF;
+
   END
   ' LANGUAGE plpgsql;
 
-CREATE TRIGGER notify_trigger AFTER INSERT ON Assessment FOR each ROW
+create TRIGGER notify_trigger AFTER INSERT ON Assessment FOR each ROW
 EXECUTE PROCEDURE notify();
+
+create or replace function createnotify(par_assessment_id int, par_doctor_id int) returns text as
+$$
+  declare
+      loc_response text;
+      loc_id int;
+  begin
+        select into loc_id assessment_id from Notification where assessment_id = par_assessment_id;
+        if loc_id isnull then
+          insert into Notification(assessment_id, doctor_id) values (par_assessment_id, par_doctor_id);                            
+          loc_response = 'Ok';
+
+        else
+          loc_response = 'ID EXISTED';
+        end if;
+        return loc_response;
+  end;
+$$
+  language 'plpgsql';
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 -- FINAL DIAGNOSIS
