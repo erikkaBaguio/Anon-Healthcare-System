@@ -589,3 +589,10 @@ $$
   language 'sql';
 
 ------------------------------------------------------------------------------------------------------------------
+--[GET] Retrieve the type of patient.
+--select getpatienttypeID(1);
+create or replace function getpatienttypeID(in par_id int, out text) returns text as
+$$
+  select type from Patient_type where id = par_id;
+$$
+  language 'sql';
