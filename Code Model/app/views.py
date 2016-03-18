@@ -150,6 +150,21 @@ def get_departmet(department_id):
                     "department_name": str(r[0]),
                     "college_name": str(r[1])})
 
+@app.route('/anoncare.api/vital_signs/<int:vital_signID>', methods = ['GET'])
+def get_vital_signs(vital_signID):
+    res = spcall('getvitalsignsID', str(vital_signID))
+
+    if 'Error' in str(res[0][0]):
+        return jsonify({'status': 'error', 'message': res[0][0]})
+
+    r = res[0]
+    return jsonify({"vital_signID": str(vital_signID),
+                    "temperature (C)": str(r[0]),
+                    "pulse_rate": str(r[1]),
+                    "respiration_rate": str(r[2]),
+                    "blood_pressure": str(r[3]),
+                    "weight": str(r[4])})
+
 @app.after_request
 def add_cors(resp):
     resp.headers['Access-Control-Allow-Origin'] = flask.request.headers.get('Origin', '*')

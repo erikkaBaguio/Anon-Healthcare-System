@@ -148,6 +148,7 @@ insert into Patient_type values (2,'Faculty');
 insert into Patient_type values (3,'Staff');
 insert into Patient_type values (4,'Outpatient Department');
 
+insert into Department values (1,'Computer Science',1);
 
 create table Final_diagnosis(
   id serial8 primary key,
