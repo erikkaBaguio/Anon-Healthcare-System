@@ -23,7 +23,30 @@ function register(){
 	});
 }
 
-jQuery(document).ready(function ($) {
+function login(){
+
+    var valueUserName = $("#email").val();
+    var valuePassword = $("#password").val();
+    console.log(valueUserName)
+    var user_info = {username: valueUserName, password: valuePassword}
+
+    $.ajax({
+        type: "POST",
+        url: "/login",
+        data: user_info,
+        dataType: "json",
+        success: function(resp){
+            console.log(resp.status);
+
+                $("#results").html('<p>OK!</p>');
+        },
+        error: function(error){
+            console.log(error);
+        },
+    });
+}
+
+jQuery(document).ready(function () {
     $('#loginform').submit(function (event) {
         event.preventDefault();
 		var valueUsername = $('input[name="username"]').val()
@@ -44,24 +67,3 @@ jQuery(document).ready(function ($) {
         });
     });
 });
-
-//Login a new user
-function login(name, password) {
-    var userData = {
-        name: name,
-        password: password
-    };
-
-    $.ajax({
-        url: "http://localhost:4730/login",
-        type: "POST",
-        dataType: "json",
-        data: userData,
-        error: function (xhr, status) {
-            console.log("Sorry, there was a problem!");
-        },
-        complete: function (xhr, status) {
-            console.log(xhr);
-        }
-    });
-}
