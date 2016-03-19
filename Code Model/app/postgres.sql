@@ -1,14 +1,19 @@
-CREATE EXTENSION pgcrypto;
+create table Role (
+    id serial8 primary key,
+    rolename text
+);
 
-create table userinfo (
-  	id serial8 primary key,
-  	fname text,
-  	mname text,
-  	lname text,
-  	email text,
-  	username text,
-  	password text,
-  	is_active boolean
+
+create table Userinfo (
+    id serial8 primary key,
+    fname text,
+    mname text,
+    lname text,
+    email text,
+    username text unique,
+    password text,
+    role_id int references Role(id),
+    is_active boolean
   );
 
 create table College(
@@ -49,17 +54,6 @@ create table Patient_type(
     type text
 );
 
-create table Personal_info(
-    id serial8 primary key,
-    height text,
-    weight float,
-    date_of_birth date,
-    civil_status text,
-    name_of_guardian text,
-    home_address text,
-    is_active BOOLEAN default True
-);
-
 create table Patient(
     id serial8 primary key,
     fname text,
@@ -72,6 +66,17 @@ create table Patient(
     Personal_info_id int references Personal_info(id),
     is_active BOOLEAN default True
 
+);
+
+create table Personal_info(
+    id serial8 primary key,
+    height text,
+    weight float,
+    date_of_birth date,
+    civil_status text,
+    name_of_guardian text,
+    home_address text,
+    is_active BOOLEAN default True
 );
 
 create table Pulmonary(
@@ -133,8 +138,8 @@ create table Assessment(
   medicationstaken text,
   diagnosis text,
   reccomendation text,
-  attendingphysician int references userinfo(id),
-  is_done boolean default False
+  is_done boolean default False,
+  attendingphysician int references Userinfo(id)
 );
 
 insert into College values (1,'SCS');
@@ -156,66 +161,103 @@ insert into Department values (1,'Computer Science',1);
 create table Final_diagnosis(
   id serial8 primary key,
   assessment_id int references Assessment(id),
-  doctor_id int references userinfo(id),
+  doctor_id int references Userinfo(id),
   description text
 );
 
 create table Notification(
   id serial8 primary key,
   assessment_id int references Assessment(id),
-  doctor_id int references userinfo(id),
+  doctor_id int references Userinfo(id),
   is_read boolean default FALSE
 );
 -----------------------------------------------------------------------------------------------------------
 -----STORED PROCEDURE FUNCTIONS-----
 -----------------------------------------------------------------------------------------------------------
+
 --select login('fname.lname', 'pass');
-create or replace function checkauth(par_username text,par_password text) returns text as
+create or replace function checkauth(par_email text,par_password text) returns text as
 $$
   declare
-    loc_username text;
-    loc_password text;
-    loc_res text;
+    loc_account text;
+    loc_response text;
   begin
-    select into loc_username username from userinfo where username = par_username and password = par_password;
-       if loc_username isnull then
-        loc_res = 'Invalid username or password';
+    select into loc_account email from Userinfo where email = par_email and password = par_password;
+       if loc_account isnull then
+        loc_response = 'Invalid Username or Password';
       else
-        loc_res = 'OK';
+        loc_response = 'OK';
       end if;
-      return loc_res;
+      return loc_response;
   end;
 $$
   language 'plpgsql';
 
---select newuser('Jobee','Mcdo', 'Chowking', 'j@e.com', 'password');
+
+create or replace function newrole(par_rolename  text) returns text as
+$$
+  declare
+    loc_name text;
+    loc_res text;
+  begin
+
+    select into loc_name rolename from Role where rolename = par_rolename;
+
+    if loc_name isnull then
+      insert into Role(rolename) values (par_rolename);
+      loc_res = 'OK';
+
+    else
+      loc_res = 'EXISTED';
+
+    end if;
+      return loc_res;
+  end;
+$$
+ language 'plpgsql';
+
+ select newrole('doctor');
+ select newrole('nurse');
+ select newrole('system administrator');
+
+create table Userinfo (
+    id serial8 primary key,
+    fname text,
+    mname text,
+    lname text,
+    email text,
+    username text unique,
+    password text,
+    role_id int references Role(id),
+    is_active boolean
+  );
+
 create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
-                                par_email text)
+                                par_email text, par_username text, par_password text, par_active boolean)
                                  returns text as
 $$
 
     declare
         loc_res text;
-        random_password text;
-        username text;
 
     begin
 
-        username := par_fname || '.' || par_lname;
-        random_password := generate_password();
+--        username := par_fname || '.' || par_lname;
+--        random_password := generate_password();
 
-       insert into userinfo (fname, mname, lname, email, username, password)
-                values (par_fname, par_mname, par_lname, par_email, username, random_password);
+       insert into Userinfo (fname, mname, lname, email, username, password, is_active)
+       values (par_fname, par_mname, par_lname, par_email, par_username, par_password, par_active);
 
 
        loc_res = 'OK';
-       return random_password;
+       return loc_res;
   end;
 $$
+
  language 'plpgsql';
 
 
-  create or replace function generate_password() returns text as
+ create or replace function generate_password() returns text as
  $$
     declare
         characters text;
@@ -243,52 +285,29 @@ $$
 LANGUAGE 'plpgsql';
 
 
+select newuserinfo('Josiah', 'Timonera', 'Regencia', 'jetregencia@gmail.com', 'josiah.regencia', 'k6bkW9nUoO8^&C+~', 1, true);
 
---select newuserinfo('Mary Grace', 'Pasco', 'Cabolbol', 'marygracecabolbol@gmail.com', 'password', 1, true);
---select newuserinfo('Ma.Erikka', 'P' , 'Baguio', 'ma.erikkabaguio@gmail.com', 'password' , 1, true);
 
-create or replace function getuserinfo(out text, out text, out text, out text, out boolean)
+
+create or replace function getuserinfo(out text, out text, out text, out text, out text)
                                               returns setof record as
 $$
-    select fname, mname, lname, email, is_active from UserInfo;
+    select fname, mname, lname, email, username from Userinfo;
 $$
   language 'sql';
 
---select * from getuserinfo();
+--select * from getUserinfo();
 
 create or replace function getuserinfoid(in par_id int, out text, out text, out text, out text,
-                                                 out int, out boolean) returns setof record as
+                                                 out text) returns setof record as
 $$
-    select fname, mname, lname, email, role, is_active from UserInfo where par_id = id;
+    select fname, mname, lname, email, username from Userinfo where par_id = id;
 $$
   language 'sql';
 
---select * from getuserinfoid(1);
-----------------------------------------------------------------------------------------------------
-create or replace function newrole(par_rolename  text) returns text as
-$$
-  declare
-    loc_name text;
-    loc_res text;
-  begin
-
-    select into loc_name role_name from roles where role_name = par_rolename;
-
-    if loc_name isnull then
-      insert into roles(role_name) values (par_rolename);
-      loc_res = 'OK';
-
-    else
-      loc_res = 'EXISTED';
-
-    end if;
-      return loc_res;
-  end;
-$$
- language 'plpgsql';
+--select * from getUserinfoid(1);
 
 ----------------------------------------------------------------------------------------------------
-
 create or replace function newpersonal_history(par_smoking text, par_allergies text, par_alcohol text,
                                                par_medication_taken text, par_drugs text, par_done boolean) returns text as
 $$
@@ -360,9 +379,9 @@ $$
 --select getallcolleges();
 create or replace function getallcolleges(out bigint, out text) returns setof record as
 $$
-	select id, name from College;
+    select id, name from College;
 $$
-	language 'sql';
+    language 'sql';
 
 --[GET] Retrieve specific college
 --select getcollegeID(1);
@@ -376,9 +395,9 @@ $$
 --select getalldepartments();
 create or replace function getalldepartments(out bigint, out text) returns setof record as
 $$
-	select id, name from Department;
+    select id, name from Department;
 $$
-	language 'sql';
+    language 'sql';
 
 --[GET] Retrieve specific department
 --select getdepartmentID(1);
@@ -407,7 +426,7 @@ $$
       SELECT INTO loc_fname fname from Patient where fname = par_fname AND mname = par_mname AND lname = par_lname;
       if loc_fname isnull THEN
          insert into Patient(fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active) values 
-          (par_fname, par_mname, par_lname, par_age, par_sex, par_department_id, par_patient_type_id, par_personal_info_id par_is_active);
+          (par_fname, par_mname, par_lname, par_age, par_sex, par_department_id, par_patient_type_id, par_personal_info_id, par_is_active);
 
          loc_res = 'OK';
       else
@@ -419,6 +438,7 @@ $$
   language 'plpgsql';
 
 --select newpatient('Mary Grace', 'Pasco', 'Cabolbol', '19', 'female', '1' , '1', '1', 'true');
+
 create or replace function get_newpatient(out text, out text, out text, out int, out text, out int, out int, out int, out boolean) returns setof record as
 $$
   select fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active from Patient;
@@ -429,7 +449,7 @@ $$
 
 create or replace function get_newpatient_id(in par_id int, out text, out text, out text, out int, out text, out int, out int, out int, out boolean) returns setof record as
 $$
-  select fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active from Patient where par_id = id;
+  select fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active from Patient where id = par_id;
 $$
   language 'sql';
 
@@ -437,15 +457,17 @@ $$
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 
-create or replace function newpersonal_info(par_height text, par_weight float, par_date_of_birth date, par_civil_status text, par_name_of_guardian text, par_home_address text, is_active boolean) returns text as
+create or replace function newpersonal_info(par_height text, par_weight float, par_date_of_birth date, par_civil_status text, par_name_of_guardian text, par_home_address text, par_is_active boolean) returns text as
 $$
   declare
       loc_id text;
       loc_res text;
   begin
         insert into Personal_info(height, weight, date_of_birth, civil_status, name_of_guardian, home_address, is_active) values 
-                                  (par_height , par_weight , par_date_of_birth , par_civil_status, par_name_of_guardian , par_home_address , is_active );                            
+                                  (par_height , par_weight , par_date_of_birth , par_civil_status, par_name_of_guardian , par_home_address , par_is_active );                            
         loc_res = 'Ok';
+
+      return loc_res;
      
   end;
 $$
@@ -459,6 +481,7 @@ $$
 $$
   language 'sql';
 
+--select * from get_newpersonal_info();
 
 create or replace function get_newpersonal_info_id(in par_id int, out text, out float, out date, out text, out text, out text, out boolean) returns setof record as
 $$  
@@ -466,22 +489,51 @@ $$
 $$
   language 'sql';
 
-
+--select * from get_newpersonal_info_id(1);
 ------------------------------------------------------------------------------------------------------------------------------------------
 -- NOTIFICATIONS
 
 -- TRIGGER (notification) - if new assessment is created, automatically create new notification
 create or replace function notify() RETURNS trigger AS '
+
   BEGIN
+
     IF tg_op = ''INSERT'' THEN
       INSERT INTO Notification (assessment_id, doctor_id)
           VALUES (new.id, new.attendingphysician);
+    RETURN new;
     END IF;
+
   END
   ' LANGUAGE plpgsql;
 
-CREATE TRIGGER notify_trigger AFTER INSERT ON Assessment FOR each ROW
+create TRIGGER notify_trigger AFTER INSERT ON Assessment FOR each ROW
 EXECUTE PROCEDURE notify();
+
+create or replace function createnotify(par_assessment_id int, par_doctor_id int) returns text as
+$$
+  declare
+      loc_response text;
+      loc_id int;
+  begin
+        select into loc_id assessment_id from Notification where assessment_id = par_assessment_id;
+        if loc_id isnull then
+          insert into Notification(assessment_id, doctor_id) values (par_assessment_id, par_doctor_id);                            
+          loc_response = 'Ok';
+
+        else
+          loc_response = 'ID EXISTED';
+        end if;
+        return loc_response;
+  end;
+$$
+  language 'plpgsql';
+
+create or replace function getnotify(in par_assessment_id int, in par_doctor_id int, out par_doctor_id int, out par_is_read boolean) returns setof record as
+$$  
+  select doctor_id, is_read from Notification where assessment_id=par_assessment_id and doctor_id=par_doctor_id;
+$$
+  language 'sql';
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 -- FINAL DIAGNOSIS

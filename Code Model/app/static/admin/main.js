@@ -1,5 +1,5 @@
 $(document).ready(function(){
-
+	console.log("hello")
 	$("#role-registration-form").hide()
 
 	$.ajax({
@@ -17,6 +17,31 @@ $(document).ready(function(){
 	});
 
 });
+
+function login(){
+
+    var valueUserName = $("#email").val();
+    var valuePassword = $("#password").val();
+    var user_info = {username: valueUserName, password: valuePassword}
+    console.log(user_info)
+    var datas = JSON.stringify(user_info);
+    console.log("stringify" + datas);
+
+    $.ajax({
+        type: "POST",
+        url: "/login",
+        dataType: "json",
+        data: datas,
+        success: function(resp){
+            console.log(resp.status);
+
+                $("#results").html('<p>OK!</p>');
+        },
+        error: function(error){
+            console.log(error);
+        },
+    });
+}
 
 function showRoleForm(){ $("#role-registration-form").show() }
 function addRole(){
