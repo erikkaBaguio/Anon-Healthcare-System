@@ -2,7 +2,8 @@
 #!flask/bin/python
 import os
 from os import sys
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, session, redirect
+from functools import wraps
 # from flask.ext.httpauth import HTTPBasicAuth
 from models import DBconn
 import json, flask
@@ -32,9 +33,64 @@ def page_not_found(e):
 def internal_server_error(e):
     return '(Error 500) Sorry, there was an internal server error.'
 
-@app.route('/admin', methods=['GET'])
+
+#############################################AUTHENTICATION#########################################
+def check_auth(email, password):
+    #this function will check the username and password is valid.
+
+    user = spcall('checkauth',(email, password) )
+    print user
+
+    if 'Invalid Username or Password' in str(user[0][0]):
+        return jsonify( { 'status': 'error', 'message':user[0][0]} )
+
+    # user_records = []
+
+    # for r in user:
+    #     user_records.append({'fname':r[2], 'mname':r[3], 'lname':r[4],
+    #                          'email':r[5], 'is_active':r[9]
+    #                         })
+    return jsonify({"user": user})
+    session['logged_in'] = True
+    # return jsonify({'status': 'user is logged in', 'entries':user_records})
+    return redirect('/admin')
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        data = request.json
+        json_data = json.dumps(data)
+        print "json data "+json_data
+        return check_auth(json_data[0], json_data[1])
+        
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    return jsonify({'status':'ok'})
+
+#create a wrapper: this wrapper is for athenticating users
+def anoncare_login_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if session.get('logged_in'):
+            if session['logged_in']:
+                pass
+
+        else:
+            return login()
+
+        return f(*args, **kwargs)
+
+    return decorated
+
+####################################################################################################
+
+@app.route('/admin', methods=['GET', 'POST'])
+@anoncare_login_required
 def admin_home():
-    return render_template('/admin/index.html')
+    return render_template('index.html')
 
 @app.route('/api.anoncare/question', methods=['GET'])
 def get_all_questions():
@@ -52,7 +108,6 @@ def get_all_diseases_data():
         recs.append({"question": r[0], "user_id": r[1], "category_id": r[2], "is_active": str([3])})
 
     return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
-
 
 
 @app.route('/api.anoncare/question', methods =['POST'])
@@ -96,18 +151,18 @@ def get_question(question_id):
     r = res[0]
     return jsonify({"id": r[0], "question": r[1], "user_id": r[2], "category_id": r[3], "is_active": str[4]})
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    error = None
-    form = LoginForm()
-    if request.method == 'POST':
-        user = db.session.query(User).filter(User.email == request.form['email']).one()
-        if request.form['password'] == user.password:
-            login_user(user, remember=True)
-            return redirect(url_for('home'))
-        else:
-            error = 'Invalid credentials. Try again.'
-    return render_template('login.html', title='Sign In', form=form, error=error)
+# @app.route('/login', methods=['GET', 'POST'])
+# def login():
+#     error = None
+#     form = LoginForm()
+#     if request.method == 'POST':
+#         user = db.session.query(User).filter(User.email == request.form['email']).one()
+#         if request.form['password'] == user.password:
+#             login_user(user, remember=True)
+#             return redirect(url_for('home'))
+#         else:
+#             error = 'Invalid credentials. Try again.'
+#     return render_template('login.html', title='Sign In', form=form, error=error)
 
 @app.route('/anoncare.api/colleges/<int:college_id>/', methods = ['GET'])
 def get_college(college_id):
@@ -176,6 +231,18 @@ def notify(assessment_id, doctor_id):
 @app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['GET'])
 def getnotify(assessment_id, doctor_id):
     notification = spcall("getnotify", (assessment_id, doctor_id))
+
+    if 'Error' in str(notification[0][0]):
+        return jsonify({'status': 'error', 'message': notification[0][0]})
+
+    records = []
+    for r in notification:
+        records.append({ "doctor_id": str(r[0]), "is_read": str(r[1]) })
+    return jsonify({'status': 'Ok','entries': records, 'count': len(records) })
+
+@app.route('/anoncare.api/refer/<int:assessment_id>/<int:doctor_id>', methods=['GET'])
+def doctor_referral(assessment_id, doctor_id):
+    notification = spcall("referDoctor", (assessment_id, doctor_id))
 
     if 'Error' in str(notification[0][0]):
         return jsonify({'status': 'error', 'message': notification[0][0]})
