@@ -206,9 +206,7 @@ def insertuser():
 
 
 
-        res = spcall("newuserinfo", (valueName, valueMName, valueLName, valueEmail, valueUsername, valuePass, True, 3), True)
-
-        print res
+        res = spcall("newuserinfo", (valueName, valueMName, valueLName, valueEmail, valueUsername, valuePass, True), True)
 
 
         return jsonify({'status': 'ok'})
