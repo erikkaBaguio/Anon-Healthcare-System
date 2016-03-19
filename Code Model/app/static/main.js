@@ -1,3 +1,27 @@
+function login(){
+
+    var valueUserName = $("#username").val();
+    var valuePassword = $("#password").val();
+
+	var user_info = {username: valueUserName, password: valuePassword}
+    console.log(valuePassword);
+	console.log(valueUserName);
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:5000/anoncare.api/login",
+        data: JSON.stringify(user_info),
+        dataType: "json",
+        success: function(resp){
+            if (resp.status  == 'ok') {
+				    $("#results").html('<p>SUCCESSFULL!</p>');
+			}
+        },
+        error: function(error){
+            console.log('EROOOOOOOOOOOOOOOR!');
+        },
+    });
+}
+
 function register(){
 
 	var valueName = $("#fname").val()
@@ -23,45 +47,4 @@ function register(){
 	});
 }
 
-jQuery(document).ready(function ($) {
-    $('#loginform').submit(function (event) {
-        event.preventDefault();
-		var valueUsername = $('input[name="username"]').val()
-		var valuePassword = $('input[name="password"]').val()
-
-        $.ajax({
-			type: 'POST',
-            url: '/login/',
-            data: {username:valueUsername, password:valuePassword},
-            timeout: 1000,
-
-        }).success(function(data, textStatus, jqXHR) {
-            var preLoginInfo = JSON.parse($.cookie('dashboard.pre.login.request'));
-            window.location = preLoginInfo.url;
-
-        }).fail(function(jqXHR, textStatus, errorThrown) {
-            alert('Booh! Wrong credentials, try again!');
-        });
-    });
-});
-
 //Login a new user
-function login(name, password) {
-    var userData = {
-        name: name,
-        password: password
-    };
-
-    $.ajax({
-        url: "http://localhost:4730/login",
-        type: "POST",
-        dataType: "json",
-        data: userData,
-        error: function (xhr, status) {
-            console.log("Sorry, there was a problem!");
-        },
-        complete: function (xhr, status) {
-            console.log(xhr);
-        }
-    });
-}

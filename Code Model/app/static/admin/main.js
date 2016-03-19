@@ -37,3 +37,28 @@ function addRole(){
 	});
 
 }
+
+//Login a new user
+function login(){
+
+    var valueUserName = $("#username").val();
+    var valuePassword = $("#password").val();
+
+	var user_info = {username: valueUsername, password: valuePassword}
+    console.log(valuePassword);
+	console.log(valueUserName);
+    $.ajax({
+        type: "POST",
+        url: "/login",
+        data: JSON.stringify(user_info),
+        dataType: "json",
+        success: function(resp){
+            console.log(resp.status);
+
+                $("#results").html('<p>OK!</p>');
+        },
+        error: function(error){
+            console.log(error);
+        },
+    });
+}

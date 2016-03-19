@@ -2,11 +2,12 @@
 #!flask/bin/python
 import os
 from os import sys
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, session
 # from flask.ext.httpauth import HTTPBasicAuth
 from models import DBconn
 import json, flask
 from app import app
+import requests
 
 #auth = HTTPBasicAuth()
 
@@ -91,19 +92,6 @@ def get_question(question_id):
 
     r = res[0]
     return jsonify({"id": r[0], "question": r[1], "user_id": r[2], "category_id": r[3], "is_active": str[4]})
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    error = None
-    form = LoginForm()
-    if request.method == 'POST':
-        user = db.session.query(User).filter(User.email == request.form['email']).one()
-        if request.form['password'] == user.password:
-            login_user(user, remember=True)
-            return redirect(url_for('home'))
-        else:
-            error = 'Invalid credentials. Try again.'
-    return render_template('login.html', title='Sign In', form=form, error=error)
 
 @app.route('/anoncare.api/colleges/<college_id>/', methods = ['GET'])
 def get_college(college_id):

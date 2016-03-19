@@ -17,3 +17,4 @@ Feature: Assessment
           When the nurse retrieve vital signs with an id '1'
           Then the nurse should get a '200' response
           And the nurse can see the vital signs of the patient.
+

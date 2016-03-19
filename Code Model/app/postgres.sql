@@ -1,9 +1,12 @@
+CREATE EXTENSION pgcrypto;
+
 create table userinfo (
   	id serial8 primary key,
   	fname text,
   	mname text,
   	lname text,
   	email text,
+  	username text,
   	password text,
   	is_active boolean
   );
@@ -166,19 +169,17 @@ create table Notification(
 -----------------------------------------------------------------------------------------------------------
 -----STORED PROCEDURE FUNCTIONS-----
 -----------------------------------------------------------------------------------------------------------
-
-create or replace function checkauth(par_email text,par_password text) returns text as
+--select login('fname.lname', 'pass');
+create or replace function checkauth(par_username text,par_password text) returns text as
 $$
   declare
-    loc_email text;
+    loc_username text;
     loc_password text;
     loc_res text;
   begin
-    select into loc_email email from userinfo where email = par_email and password = par_password;
-       if loc_email isnull then
-        loc_res = 'email';
-       elseif loc_password isnull then
-        loc_res = 'password!';
+    select into loc_username username from userinfo where username = par_username and password = par_password;
+       if loc_username isnull then
+        loc_res = 'Invalid username or password';
       else
         loc_res = 'OK';
       end if;
@@ -606,3 +607,29 @@ $$
   from Patient, Assessment
   where
 $$
+
+------------------------------------------------------------------------------------------------------------------
+create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
+                                par_email text)
+                                 returns text as
+$$
+
+    declare
+        loc_res text;
+        random_password text;
+        username text;
+
+    begin
+
+        username := par_fname || '.' || par_lname;
+        random_password := generate_password();
+
+       insert into userinfo (fname, mname, lname, email, username, password)
+                values (par_fname, par_mname, par_lname, par_email, username, random_password);
+
+
+       loc_res = 'OK';
+       return random_password;
+  end;
+$$
+ language 'plpgsql';

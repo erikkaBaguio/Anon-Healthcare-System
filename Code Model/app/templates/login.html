@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login| admin</title>
+	<!--<link href="{{ url_for('static', filename="/admin/bootstrap/css/bootstrap.min.css") }}" rel="stylesheet">-->
+    <!--&lt;!&ndash; styles &ndash;&gt;-->
+    <!--<link href="{{ url_for('static', filename="admin/css/styles.css") }}" rel="stylesheet">-->
+</head>
+<body>
+
+	<h1>Please log in to continue</h1>
+
+	<div class="container">
+		<form method="POST" onsubmit="return false">
+		<label>username: </label>
+		<input class="form-control" id="username" name="username"></input>
+		<br><label>password: </label>
+		<input type="password" id="password" name="password" class="form-control"></input>
+
+		<br>
+		<button type="submit" onclick="login() ;">Log in</button>
+	</form>
+	</div>
+
+    <div  id="results">
+
+    </div>
+
+	<script src="{{ url_for('static', filename="admin/jquery-1.11.0.min.js") }}"></script>
+    <script src="{{ url_for('static', filename="admin/bootstrap.min.js") }}"></script>
+    <script src="{{ url_for('static', filename="main.js") }}"></script>
+</body>
+</html>
