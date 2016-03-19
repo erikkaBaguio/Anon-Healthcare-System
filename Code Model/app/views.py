@@ -134,41 +134,73 @@ def get_user_with_id(id):
     return jsonify({"fname": str(r[0]), "mname": str(r[1]), "lname": str(r[2]),
                     "email": str(r[3]), "username": str(r[4])})
 
-# @app.route('/user/', methods=['POST', 'GET'])
-# def insertuser():
-#     if request.method == 'POST':
-#         user_info = request.json
-#
-#         print "user_info is "
-#         print user_info
-#
-#
-#         valueName = user_info['fname']
-#         valueMName = user_info['mname']
-#         valueLName = user_info['lname']
-#         valueEmail = user_info['email']
-#
-#         res = spcall("newuserinfo", (valueName, valueMName, valueLName, valueEmail, True, 3), True)
-#
-#
-#         return jsonify({'status': 'ok'})
-#     return render_template('index2.html')
-
-
 @app.route('/user/', methods=['POST', 'GET'])
 def insertuser():
     if request.method == 'POST':
-        valueName = request.form.get('fname')
-        valueMName = request.form.get('mname')
-        valueLName = request.form.get('lname')
-        valueEmail = request.form.get('email')
+        user_info = request.get_json(force=True)
 
-        res = spcall("newuserinfo", (valueName, valueMName, valueLName, valueEmail), True)
+        print "user_info is "
+        print user_info
+
+        valueName = user_info['fname']
+        valueMName = user_info['mname']
+        valueLName = user_info['lname']
+        valueEmail = user_info['email']
+        valueUsername = user_info['username']
+        valuePass = user_info['password']
+
+        firstname = 'Josiah'
+        middlename = 'Timonera'
+        lastname = 'Regencia'
+        email = 'jetregencia@gmail.com'
+        username = 'josiah.regencia'
+        password = 'jetregencia'
+
+
+        # valueName = valueName.replace(\"\",)
+        # valueMName = user_info['mname']
+        # valueLName = user_info['lname']
+        # valueEmail = user_info['email']
+        # valueUsername = user_info['username']
+        # valuePass = user_info['password']
+
+
+        # valueName = str(json_data[0])
+        # valueMName = str(json_data[1])
+        # valueLName = str(json_data[2])
+        # valueEmail = str(json_data[3])
+        # valueUsername = str(json_data[4])
+        # valuePass = str(json_data[5])
+
+        print valueName
+        print valueMName
+        print valueLName
+        print valueEmail
+
+        res = spcall("newuserinfo", (firstname, middlename, lastname, email, username, password, True, 3), True)
+        # res = spcall("newuserinfo", (valueName, valueMName, valueLName, valueEmail, valueUsername, valuePass, True, 3), True)
+
+        print res
+
+
         return jsonify({'status': 'ok'})
     return render_template('index2.html')
 
-    if 'Error' in res[0][0]:
-		return jsonify({'status': 'error', 'message': res[0][0]})
+
+# @app.route('/user/', methods=['POST', 'GET'])
+# def insertuser():
+#     if request.method == 'POST':
+#         valueName = request.form.get('fname')
+#         valueMName = request.form.get('mname')
+#         valueLName = request.form.get('lname')
+#         valueEmail = request.form.get('email')
+#
+#         res = spcall("newuserinfo", (valueName, valueMName, valueLName, valueEmail), True)
+#         return jsonify({'status': 'ok'})
+#     return render_template('index2.html')
+#
+#     if 'Error' in res[0][0]:
+# 		return jsonify({'status': 'error', 'message': res[0][0]})
 
 
 @app.route('/anoncare.api/departments/<int:department_id>/', methods = ['GET'])
