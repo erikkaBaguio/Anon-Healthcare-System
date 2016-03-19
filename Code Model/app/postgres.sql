@@ -180,19 +180,16 @@ create table Notification(
 create or replace function checkauth(par_email text,par_password text) returns text as
 $$
   declare
-    loc_email text;
-    loc_password text;
-    loc_res text;
+    loc_account text;
+    loc_response text;
   begin
-    select into loc_email email from Userinfo where email = par_email and password = par_password;
-       if loc_email isnull then
-        loc_res = 'email';
-       elseif loc_password isnull then
-        loc_res = 'password!';
+    select into loc_account email from Userinfo where email = par_email and password = par_password;
+       if loc_account isnull then
+        loc_response = 'Invalid Username or Password';
       else
-        loc_res = 'OK';
+        loc_response = 'OK';
       end if;
-      return loc_res;
+      return loc_response;
   end;
 $$
   language 'plpgsql';
