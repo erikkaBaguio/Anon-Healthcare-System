@@ -223,7 +223,7 @@ $$
 
 
 create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
-                                par_email text, par_role int, par_active boolean)
+                                par_email text, par_username text, par_password text, par_role int, par_active boolean)
                                  returns text as
 $$
 
@@ -234,17 +234,18 @@ $$
 
     begin
 
-        username := par_fname || '.' || par_lname;
-        random_password := generate_password();
+--        username := par_fname || '.' || par_lname;
+--        random_password := generate_password();
 
        insert into Userinfo (fname, mname, lname, email, username, password, role_id, is_active)
-       values (par_fname, par_mname, par_lname, par_email, username, random_password, par_role, par_active);
+       values (par_fname, par_mname, par_lname, par_email, par_username, par_password, par_role, par_active);
 
 
        loc_res = 'OK';
        return random_password;
   end;
 $$
+
  language 'plpgsql';
 
 
@@ -276,7 +277,7 @@ $$
 LANGUAGE 'plpgsql';
 
 
-select newuserinfo('Josiah', 'Timonera', 'Regencia', 'jetregencia@gmail.com', 1, true);
+select newuserinfo('Josiah', 'Timonera', 'Regencia', 'jetregencia@gmail.com', 'josiah.regencia', 'k6bkW9nUoO8^&C+~', 1, true);
 
 
 
