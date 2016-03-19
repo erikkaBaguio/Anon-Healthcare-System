@@ -149,36 +149,9 @@ def insertuser():
         valueUsername = user_info['username']
         valuePass = user_info['password']
 
-        firstname = 'Josiah'
-        middlename = 'Timonera'
-        lastname = 'Regencia'
-        email = 'jetregencia@gmail.com'
-        username = 'josiah.regencia'
-        password = 'jetregencia'
 
 
-        # valueName = valueName.replace(\"\",)
-        # valueMName = user_info['mname']
-        # valueLName = user_info['lname']
-        # valueEmail = user_info['email']
-        # valueUsername = user_info['username']
-        # valuePass = user_info['password']
-
-
-        # valueName = str(json_data[0])
-        # valueMName = str(json_data[1])
-        # valueLName = str(json_data[2])
-        # valueEmail = str(json_data[3])
-        # valueUsername = str(json_data[4])
-        # valuePass = str(json_data[5])
-
-        print valueName
-        print valueMName
-        print valueLName
-        print valueEmail
-
-        res = spcall("newuserinfo", (firstname, middlename, lastname, email, username, password, True, 3), True)
-        # res = spcall("newuserinfo", (valueName, valueMName, valueLName, valueEmail, valueUsername, valuePass, True, 3), True)
+        res = spcall("newuserinfo", (valueName, valueMName, valueLName, valueEmail, valueUsername, valuePass, True, 3), True)
 
         print res
 
