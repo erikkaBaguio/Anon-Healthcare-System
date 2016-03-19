@@ -153,6 +153,24 @@ def get_vital_signs(vital_signID):
                     "blood_pressure": str(r[3]),
                     "weight": str(r[4])})
 
+def checkauth(username, password):
+    res = spcall('checkauth', (username, password))
+    print res
+    if 'Invalid username' in str(res[0][0]):
+        return jsonify({'status': 'error', 'message': res[0][0], "username": username, "pass" : password})
+
+    session['logged_in'] = True
+    return jsonify({'status': 'ok'}), 201
+
+@app.route('/anoncare.api/login', methods=['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        json_data = request.get_json(force=True)
+        username = json_data['username']
+        password = json_data['password']
+        return checkauth(username, password)
+    return render_template('login.html')
+
 @app.after_request
 def add_cors(resp):
     resp.headers['Access-Control-Allow-Origin'] = flask.request.headers.get('Origin', '*')
