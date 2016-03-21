@@ -166,7 +166,7 @@ def doctor_referral(assessment_id, doctor_id):
 
 @app.route('/anoncare.api/assessments/<int:assessment_id>/', methods=['GET'])
 def view_assessment(assessment_id):
-    assessment = spcall("getassessmentID", (assessment_id, ))
+    assessment = spcall("getassessmentID", str(assessment_id))
 
     if 'Error' in str(assessment[0][0]):
         return jsonify({'status': 'error', 'message': notification[0][0]})
