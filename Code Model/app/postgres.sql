@@ -55,6 +55,16 @@ create table Patient_type(
     type text
 );
 
+create table Personal_info(
+    id serial8 primary key,
+    height text,
+    weight float,
+    date_of_birth date,
+    civil_status text,
+    name_of_guardian text,
+    home_address text,
+    is_active BOOLEAN default True
+);
 
 
 create table Patient(
@@ -71,16 +81,6 @@ create table Patient(
 
 );
 
-create table Personal_info(
-    id serial8 primary key,
-    height text,
-    weight float,
-    date_of_birth date,
-    civil_status text,
-    name_of_guardian text,
-    home_address text,
-    is_active BOOLEAN default True
-);
 
 create table Pulmonary(
     cough text,
@@ -444,18 +444,32 @@ $$
 
 create or replace function get_newpatient_id(in par_id int, out text, out text, out text, out int, out text, out int, out int, out int, out boolean) returns setof record as
 $$
-  select fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active from Patient where id = par_id;
+  select fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active from Patient where par_id = id;
 $$
   language 'sql';
 
---select * from get_newpatient_id(1);
+--select * from get_newpatient_id(2);
+
+--GET patient file and personal info
+create or replace function get_patientId(in par_id int, out text, out text, out text, out int, out text,     
+                                              out text, out float, out date, out text,out text,
+                                              out text) returns setof record as
+$$
+  select Patient.fname, Patient.mname, Patient.lname, Patient.age, Patient.sex,
+         Personal_info.height, Personal_info.weight,Personal_info.date_of_birth, Personal_info.civil_status, Personal_info.name_of_guardian, 
+         Personal_info.home_address
+  from Patient, Personal_info
+  where Patient.id = par_id AND Personal_info.id = Patient.personal_info_id ;     
+$$
+  language 'sql';
+
+--select * from get_patientId(2);
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 
 create or replace function newpersonal_info(par_height text, par_weight float, par_date_of_birth date, par_civil_status text, par_name_of_guardian text, par_home_address text, par_is_active boolean) returns text as
 $$
   declare
-      loc_id text;
       loc_res text;
   begin
         insert into Personal_info(height, weight, date_of_birth, civil_status, name_of_guardian, home_address, is_active) values 
@@ -472,7 +486,7 @@ $$
 
 create or replace function get_newpersonal_info(out text, out float, out date, out text, out text, out text, out boolean) returns setof record as
 $$
-  select height, weight, date_of_birth, civil_status, name_of_guardian, home_address, is_active from Personal_info; 
+  select  from Personal_info; 
 $$
   language 'sql';
 
@@ -485,6 +499,7 @@ $$
   language 'sql';
 
 --select * from get_newpersonal_info_id(1);
+
 ------------------------------------------------------------------------------------------------------------------------------------------
 -- NOTIFICATIONS
 

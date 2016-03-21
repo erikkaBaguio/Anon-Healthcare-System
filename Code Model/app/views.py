@@ -4,7 +4,7 @@ import os
 from os import sys
 from flask import Flask, jsonify, render_template, request
 # from flask.ext.httpauth import HTTPBasicAuth
-from models import DBconn
+from .models import DBconn
 import json, flask
 from app import app
 
@@ -65,24 +65,51 @@ def new_question():
 
         recs.append({"id": r[0], "name": r[1], "done": str(r[2])})
 
-    return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
+    return jsonify({'status': 'OK', 'entries': recs, 'count': len(recs)})
 
-@app.route('/anoncare.api/diseases/<int:disease_id>/', methods = ['GET'])
-def get_disease_data(disease_id):
-    res = spcall('get_disease_data', str(disease_id))
+@app.route('/anoncare.api/patient_file/personal_info/', methods =['POST'])
+def newpersonal_info():
+    
+    height = request.form[inputHeight]
+    weight = request.form[inputWeight]
+    date_of_birth = request.form[inputDateOfBirth]
+    civil_status =request.form[inputCivilStatus]
+    name_of_guardian = request.form[inputNameOFGuardian]
+    home_address = request.form[inputHomeAddress]
+    is_active = False
 
-    if 'Error' in str(res[0][0]):
+    res = spcall('newpersonal_info', (height,weight, date_of_birth, civil_status, name_of_guardian,
+                                      home_address, is_active), True)
 
+    if 'Error' in res[0][0]:
         return jsonify({'status': 'error', 'message': res[0][0]})
 
-    r = res[0]
-    return jsonify({"id": str(disease_id), "name": str(r[0]), "done": str(r[1])})
+    return jsonify({'status': 'OK', 'message': res[0][0]})
 
-@app.route('/anoncare.api/symptoms', methods = ['GET'])
-def get_symptoms():
-    listOfSymptoms = spcall('get_all_symptom',())
 
-@app.route('/question/<category_id>/', methods = ['GET'])
+    jsn = json.loads(request.data)
+    height = jsn['height']
+    weight = jsn['weight']
+    date_of_birth = jsn['date_of_birth']
+    civil_status = jsn['civil_status']
+    name_of_guardian = jsn['name_of_guardian']
+    home_address = jsn['home_address']
+    is_active = jsn['is_active']
+
+    response = spcall('newpersonal_info', (
+        height, 
+        weight, 
+        date_of_birth, 
+        civil_status,
+        name_of_guardian,
+        home_address,
+        is_active), True)
+   
+
+    if 'Error' in response[0][0]:
+        return  jsonify({'status': 'error', 'message': response[0][0]})
+    return jsonify({'status': 'OK', 'message': response[0][0]}), 201
+
 def get_question(question_id):
     res= spcall('get_newquestion_id', (category_id))
 
@@ -160,6 +187,26 @@ def notify(assessment_id, doctor_id):
 
     # , 'assessment_id': notification[1], 'doctor_id': notification[2], 'is_read': notification[3]
     return jsonify({'status': response[0][0]})
+
+@app.route('/anoncare.api/patient/<id>/', methods = ['GET'])
+def getpatient_file(id):
+    response = spcall('get_newpatient_id', id)
+    entries = []
+    if len(response) == 0:
+        return jsonify({"status":"ok", "message": "No patient file found", "entries":[], "count": "0"})
+    else:
+        row = response[0]
+        entries.append({"id": id,
+                        "fname": row[0],
+                        "mname": row[1],
+                        "lname": row[2],
+                        "age": row[3],
+                        "sex": row[4],
+                        "department_id": row[5],
+                        "patient_type_id": row[6],
+                        "personal_info_id": row[7],
+                        "is_active": row[8]})
+        return jsonify({"status": "ok", "message": "ok", "entries": entries, "count":len(entries)})
 
 @app.after_request
 def add_cors(resp):
