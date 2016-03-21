@@ -67,7 +67,7 @@ function register(){
     var valueUsername = create_username(valueName, valueLName);
     var valuePass = generate_password();
 
-    valueName = valueName.mystring.replace(/"/g,"'");
+    valueName = valueName.mystring.replace(/"/g,x"'");
     valueMName = valueMName.mystring.replace(/"/g,"'");
     valueLName = valueLName.mystring.replace(/"/g,"'");
     valueEmail = valueEmail.mystring.replace(/"/g,"'");

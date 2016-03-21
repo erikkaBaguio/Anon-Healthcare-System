@@ -553,9 +553,9 @@ $$
 $$
   language 'plpgsql';
 
-create or replace function getnotify(in par_assessment_id int, in par_doctor_id int, out par_doctor_id int, out par_is_read boolean) returns setof record as
+create or replace function getnotify(in par_assessment_id int, in par_doctor_id int, out par_assessment_id int, out par_doctor_id int, out par_is_read boolean) returns setof record as
 $$  
-  select doctor_id, is_read from Notification where assessment_id=par_assessment_id and doctor_id=par_doctor_id;
+  select doctor_id, assessment_id, is_read from Notification where assessment_id=par_assessment_id and doctor_id=par_doctor_id;
 $$
   language 'sql';
 

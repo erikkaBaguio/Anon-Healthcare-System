@@ -257,17 +257,17 @@ def getnotify(assessment_id, doctor_id):
 
     records = []
     for r in notification:
-        records.append({ "doctor_id": str(r[0]), "is_read": str(r[1]) })
+        records.append({ "doctor_id": str(r[0]), "assessment_id": str(r[1]), "is_read": str(r[2]) })
     return jsonify({'status': 'Ok','entries': records, 'count': len(records) })
 
-@app.route('/anoncare.api/referral/<int:assessment_id>/<int:doctor_id>')
+@app.route('/anoncare.api/referral/<int:assessment_id>/<int:doctor_id>', methods=['POST'])
 def doctor_referral(assessment_id, doctor_id):
-    update_assessment('update_assessment', (assessment_id, doctor_id), True)
+    update_assessment = spcall("update_assessment", (assessment_id, doctor_id), True)
 
-    if 'Error' in str(update_assessment[0][0]):
+    if 'Unable to find assessment' in str(update_assessment[0][0]):
         return jsonify({'status':'error', 'message':update_assessment[0][0]})
 
-    return jsonify({'status':update_assessment[0][0]})
+    return jsonify({'status':str(update_assessment[0][0])})
 
 @app.after_request
 def add_cors(resp):
