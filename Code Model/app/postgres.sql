@@ -18,13 +18,13 @@ create table Userinfo (
 
 create table College(
   id serial8 primary key,
-  name text not null,
+  college_name text not null,
   is_active boolean default True
 );
 
 create table Department(
   id serial8 primary key,
-  name text not null,
+  department_name text not null,
   college_id int references College(id),
   is_active boolean default True
 );
@@ -176,7 +176,7 @@ create table Notification(
 -----------------------------------------------------------------------------------------------------------
 
 --select login('fname.lname', 'pass');
-create or replace function checkauth(par_email text,par_password text) returns text as
+create or replace function checkauth(par_email text,par_password text) returns setof record as
 $$
   declare
     loc_account text;

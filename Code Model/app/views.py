@@ -36,36 +36,6 @@ def internal_server_error(e):
 
 
 #############################################AUTHENTICATION#########################################
-def check_auth(email, password):
-    #this function will check the username and password is valid.
-
-    user = spcall('checkauth',(email, password) )
-    print user
-
-    if 'Invalid Username or Password' in str(user[0][0]):
-        return jsonify( { 'status': 'error', 'message':user[0][0]} )
-
-    # user_records = []
-
-    # for r in user:
-    #     user_records.append({'fname':r[2], 'mname':r[3], 'lname':r[4],
-    #                          'email':r[5], 'is_active':r[9]
-    #                         })
-    return jsonify({"user": user})
-    session['logged_in'] = True
-    # return jsonify({'status': 'user is logged in', 'entries':user_records})
-    return redirect('/admin')
-
-@app.route('/login', methods=['POST', 'GET'])
-def login():
-    if request.method == 'POST':
-        data = request.json
-        json_data = json.dumps(data)
-        print "json data "+json_data
-        return check_auth(json_data[0], json_data[1])
-        
-    return render_template('login.html')
-
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
@@ -292,6 +262,24 @@ def doctor_referral(assessment_id, doctor_id):
     for r in notification:
         records.append({ "doctor_id": str(r[0]), "is_read": str(r[1]) })
     return jsonify({'status': 'Ok','entries': records, 'count': len(records) })
+
+@app.route('/anoncare.api/assessments/<int:assessment_id>/', methods=['GET'])
+def view_assessment(assessment_id):
+    assessment = spcall("getassessmentID", (assessment_id, ))
+
+    if 'Error' in str(assessment[0][0]):
+        return jsonify({'status': 'error', 'message': notification[0][0]})
+
+    records = []
+    for r in assessment:
+        records.append({"Date": str(r[0]), "Patient": str(r[1]),
+                        "Age": str(r[2]), "Department": str(r[3]),
+                        "Vital Signs": str(r[4]), "Chief Complaint": str(r[5]),
+                        "History of patient illness": str(r[6]), "Medications taken": str(r[7]),
+                        "Diagnosis": str(r[8]), "Recommendation": str(r[9]),
+                        "Attending Physician": str(r[10])})
+
+    return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
 
 @app.after_request
 def add_cors(resp):
