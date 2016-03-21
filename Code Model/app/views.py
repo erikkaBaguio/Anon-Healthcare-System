@@ -63,76 +63,6 @@ def anoncare_login_required(f):
 def admin_home():
     return render_template('index.html')
 
-@app.route('/api.anoncare/question', methods=['GET'])
-def get_all_questions():
-    res = spcall('get_newquestion',())
-    print res
-
-@app.route('/anoncare.api/diseases')
-def get_all_diseases_data():
-    res = spcall('get_all_diseases_data',())
-    if 'Error' in str(res[0][0]):
-        return jsonify({'status': 'error', 'message': res[0][0]})
-
-    recs = []
-    for r in res:
-        recs.append({"question": r[0], "user_id": r[1], "category_id": r[2], "is_active": str([3])})
-
-    return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
-
-
-@app.route('/api.anoncare/question', methods =['POST'])
-def new_question():
-    id = request.form['inputID']
-    question = request.form['inputquestion']
-    user_id = request.form['inputUserID']
-    category_id = request.form['inputCategoryID']
-    is_active = False
-    
-    res = spcall('newquestion', (id, question, category_id, is_active), True)
-
-    if 'Error' in res[0][0]:
-
-        recs.append({"id": r[0], "name": r[1], "done": str(r[2])})
-
-    return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
-
-@app.route('/anoncare.api/diseases/<int:disease_id>/', methods = ['GET'])
-def get_disease_data(disease_id):
-    res = spcall('get_disease_data', str(disease_id))
-
-    if 'Error' in str(res[0][0]):
-
-        return jsonify({'status': 'error', 'message': res[0][0]})
-
-    r = res[0]
-    return jsonify({"id": str(disease_id), "name": str(r[0]), "done": str(r[1])})
-
-@app.route('/anoncare.api/symptoms', methods = ['GET'])
-def get_symptoms():
-    listOfSymptoms = spcall('get_all_symptom',())
-
-@app.route('/question/<category_id>/', methods = ['GET'])
-def get_question(question_id):
-    res= spcall('get_newquestion_id', (category_id))
-
-    if 'Error' in res[0][0]:
-        return jsonify({'status': 'error', 'message': res[0][0]})
-
-    r = res[0]
-    return jsonify({"id": r[0], "question": r[1], "user_id": r[2], "category_id": r[3], "is_active": str[4]})
-
-@app.route('/anoncare.api/colleges/<college_id>/', methods = ['GET'])
-def get_college(college_id):
-    res = spcall('getcollegeID', str(college_id))
-
-    if 'Error' in str(res[0][0]):
-        return jsonify({'status': 'error', 'message': res[0][0]})
-
-    r = res[0]
-    return jsonify({"college_id": str(college_id), "college_name": str(r[0])})
-
-
 @app.route('/anoncare.api/users/<int:id>/', methods=['GET'])
 def get_user_with_id(id):
     res = spcall('getuserinfoid', str(id))
@@ -167,35 +97,6 @@ def insertuser():
 
         return jsonify({'status': 'ok'})
     return render_template('index2.html')
-
-
-# @app.route('/user/', methods=['POST', 'GET'])
-# def insertuser():
-#     if request.method == 'POST':
-#         valueName = request.form.get('fname')
-#         valueMName = request.form.get('mname')
-#         valueLName = request.form.get('lname')
-#         valueEmail = request.form.get('email')
-#
-#         res = spcall("newuserinfo", (valueName, valueMName, valueLName, valueEmail), True)
-#         return jsonify({'status': 'ok'})
-#     return render_template('index2.html')
-#
-#     if 'Error' in res[0][0]:
-# 		return jsonify({'status': 'error', 'message': res[0][0]})
-
-
-@app.route('/anoncare.api/departments/<int:department_id>/', methods = ['GET'])
-def get_departmet(department_id):
-    res = spcall('getdepartmentID', str(department_id))
-
-    if 'Error' in str(res[0][0]):
-        return jsonify({'status': 'error', 'message': res[0][0]})
-
-    r = res[0]
-    return jsonify({"department_id": str(department_id),
-                    "department_name": str(r[0]),
-                    "college_name": str(r[1])})
 
 @app.route('/anoncare.api/vital_signs/<int:vital_signID>', methods = ['GET'])
 def get_vital_signs(vital_signID):
