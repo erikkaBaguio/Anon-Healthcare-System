@@ -5,7 +5,7 @@ from os import sys
 from flask import Flask, jsonify, render_template, request, session, redirect
 from functools import wraps
 # from flask.ext.httpauth import HTTPBasicAuth
-from models import DBconn
+from .models import DBconn
 import json, flask
 from app import app
 
@@ -124,24 +124,51 @@ def new_question():
 
         recs.append({"id": r[0], "name": r[1], "done": str(r[2])})
 
-    return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
+    return jsonify({'status': 'OK', 'entries': recs, 'count': len(recs)})
 
-@app.route('/anoncare.api/diseases/<int:disease_id>/', methods = ['GET'])
-def get_disease_data(disease_id):
-    res = spcall('get_disease_data', str(disease_id))
+@app.route('/anoncare.api/patient_file/personal_info/', methods =['POST'])
+def newpersonal_info():
+    
+    height = request.form[inputHeight]
+    weight = request.form[inputWeight]
+    date_of_birth = request.form[inputDateOfBirth]
+    civil_status =request.form[inputCivilStatus]
+    name_of_guardian = request.form[inputNameOFGuardian]
+    home_address = request.form[inputHomeAddress]
+    is_active = False
 
-    if 'Error' in str(res[0][0]):
+    res = spcall('newpersonal_info', (height,weight, date_of_birth, civil_status, name_of_guardian,
+                                      home_address, is_active), True)
 
+    if 'Error' in res[0][0]:
         return jsonify({'status': 'error', 'message': res[0][0]})
 
-    r = res[0]
-    return jsonify({"id": str(disease_id), "name": str(r[0]), "done": str(r[1])})
+    return jsonify({'status': 'OK', 'message': res[0][0]})
 
-@app.route('/anoncare.api/symptoms', methods = ['GET'])
-def get_symptoms():
-    listOfSymptoms = spcall('get_all_symptom',())
 
-@app.route('/question/<category_id>/', methods = ['GET'])
+    jsn = json.loads(request.data)
+    height = jsn['height']
+    weight = jsn['weight']
+    date_of_birth = jsn['date_of_birth']
+    civil_status = jsn['civil_status']
+    name_of_guardian = jsn['name_of_guardian']
+    home_address = jsn['home_address']
+    is_active = jsn['is_active']
+
+    response = spcall('newpersonal_info', (
+        height, 
+        weight, 
+        date_of_birth, 
+        civil_status,
+        name_of_guardian,
+        home_address,
+        is_active), True)
+   
+
+    if 'Error' in response[0][0]:
+        return  jsonify({'status': 'error', 'message': response[0][0]})
+    return jsonify({'status': 'OK', 'message': response[0][0]}), 201
+
 def get_question(question_id):
     res= spcall('get_newquestion_id', (category_id))
 
@@ -151,20 +178,7 @@ def get_question(question_id):
     r = res[0]
     return jsonify({"id": r[0], "question": r[1], "user_id": r[2], "category_id": r[3], "is_active": str[4]})
 
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     error = None
-#     form = LoginForm()
-#     if request.method == 'POST':
-#         user = db.session.query(User).filter(User.email == request.form['email']).one()
-#         if request.form['password'] == user.password:
-#             login_user(user, remember=True)
-#             return redirect(url_for('home'))
-#         else:
-#             error = 'Invalid credentials. Try again.'
-#     return render_template('login.html', title='Sign In', form=form, error=error)
-
-@app.route('/anoncare.api/colleges/<int:college_id>/', methods = ['GET'])
+@app.route('/anoncare.api/colleges/<college_id>/', methods = ['GET'])
 def get_college(college_id):
     res = spcall('getcollegeID', str(college_id))
 
@@ -173,9 +187,7 @@ def get_college(college_id):
 
     r = res[0]
     return jsonify({"college_id": str(college_id), "college_name": str(r[0])})
-    # return jsonify({"fname": r[0], "mname": r[1], "lname": r[2], "email": r[3], "role": r[4],
-    #                 "username": r[5]})
-    # return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
+
 
 @app.route('/anoncare.api/users/<int:id>/', methods=['GET'])
 def get_user_with_id(id):
@@ -237,7 +249,42 @@ def get_departmet(department_id):
         return jsonify({'status': 'error', 'message': res[0][0]})
 
     r = res[0]
-    return jsonify({"department_id": str(department_id), "department_name": str(r[0])})
+    return jsonify({"department_id": str(department_id),
+                    "department_name": str(r[0]),
+                    "college_name": str(r[1])})
+
+@app.route('/anoncare.api/vital_signs/<int:vital_signID>', methods = ['GET'])
+def get_vital_signs(vital_signID):
+    res = spcall('getvitalsignsID', str(vital_signID))
+
+    if 'Error' in str(res[0][0]):
+        return jsonify({'status': 'error', 'message': res[0][0]})
+
+    r = res[0]
+    return jsonify({"vital_signID": str(vital_signID),
+                    "temperature (C)": str(r[0]),
+                    "pulse_rate": str(r[1]),
+                    "respiration_rate": str(r[2]),
+                    "blood_pressure": str(r[3]),
+                    "weight": str(r[4])})
+
+def checkauth(username, password):
+    res = spcall('checkauth', (username, password))
+    print res
+    if 'Invalid username' in str(res[0][0]):
+        return jsonify({'status': 'error', 'message': res[0][0], "username": username, "pass" : password})
+
+    session['logged_in'] = True
+    return jsonify({'status': 'ok'}), 201
+
+@app.route('/anoncare.api/login', methods=['POST', 'GET'])
+def login_index():
+    if request.method == 'POST':
+        json_data = request.get_json(force=True)
+        username = json_data['username']
+        password = json_data['password']
+        return checkauth(username, password)
+    return render_template('login.html')
 
 @app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['POST'])
 def notify(assessment_id, doctor_id):
@@ -247,6 +294,26 @@ def notify(assessment_id, doctor_id):
         return jsonify({'status': 'error', 'message': response[0][0]})
 
     return jsonify({'status': response[0][0]})
+
+@app.route('/anoncare.api/patient/<id>/', methods = ['GET'])
+def getpatient_file(id):
+    response = spcall('get_newpatient_id', id)
+    entries = []
+    if len(response) == 0:
+        return jsonify({"status":"ok", "message": "No patient file found", "entries":[], "count": "0"})
+    else:
+        row = response[0]
+        entries.append({"id": id,
+                        "fname": row[0],
+                        "mname": row[1],
+                        "lname": row[2],
+                        "age": row[3],
+                        "sex": row[4],
+                        "department_id": row[5],
+                        "patient_type_id": row[6],
+                        "personal_info_id": row[7],
+                        "is_active": row[8]})
+        return jsonify({"status": "ok", "message": "ok", "entries": entries, "count":len(entries)})
 
 @app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['GET'])
 def getnotify(assessment_id, doctor_id):
