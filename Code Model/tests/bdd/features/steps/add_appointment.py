@@ -3,7 +3,11 @@
 # from lettuce import step, world, before
 # from nose.tools import assert_equals
 
+<<<<<<< HEAD
 # from app import app
+=======
+from app import app
+>>>>>>> 95f95cff34ceb6f2d5552b843875554c6eccb666
 # import app.views import APPOINTMENTS
 
 

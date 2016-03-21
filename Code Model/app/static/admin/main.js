@@ -1,5 +1,5 @@
 $(document).ready(function(){
-
+	console.log("hello")
 	$("#role-registration-form").hide()
 
 	$.ajax({
@@ -17,6 +17,31 @@ $(document).ready(function(){
 	});
 
 });
+
+function login(){
+
+    var valueUserName = $("#email").val();
+    var valuePassword = $("#password").val();
+    var user_info = {username: valueUserName, password: valuePassword}
+    console.log(user_info)
+    var datas = JSON.stringify(user_info);
+    console.log("stringify" + datas);
+
+    $.ajax({
+        type: "POST",
+        url: "/login",
+        dataType: "json",
+        data: datas,
+        success: function(resp){
+            console.log(resp.status);
+
+                $("#results").html('<p>OK!</p>');
+        },
+        error: function(error){
+            console.log(error);
+        },
+    });
+}
 
 function showRoleForm(){ $("#role-registration-form").show() }
 function addRole(){
@@ -36,4 +61,29 @@ function addRole(){
 		},
 	});
 
+}
+
+//Login a new user
+function login(){
+
+    var valueUserName = $("#username").val();
+    var valuePassword = $("#password").val();
+
+	var user_info = {username: valueUsername, password: valuePassword}
+    console.log(valuePassword);
+	console.log(valueUserName);
+    $.ajax({
+        type: "POST",
+        url: "/login",
+        data: JSON.stringify(user_info),
+        dataType: "json",
+        success: function(resp){
+            console.log(resp.status);
+
+                $("#results").html('<p>OK!</p>');
+        },
+        error: function(error){
+            console.log(error);
+        },
+    });
 }
