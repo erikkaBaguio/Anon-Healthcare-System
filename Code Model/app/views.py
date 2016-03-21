@@ -260,17 +260,14 @@ def getnotify(assessment_id, doctor_id):
         records.append({ "doctor_id": str(r[0]), "is_read": str(r[1]) })
     return jsonify({'status': 'Ok','entries': records, 'count': len(records) })
 
-@app.route('/anoncare.api/refer/<int:assessment_id>/<int:doctor_id>', methods=['GET'])
+@app.route('/anoncare.api/referral/<int:assessment_id>/<int:doctor_id>')
 def doctor_referral(assessment_id, doctor_id):
-    notification = spcall("referDoctor", (assessment_id, doctor_id))
+    update_assessment('update_assessment', (assessment_id, doctor_id), True)
 
-    if 'Error' in str(notification[0][0]):
-        return jsonify({'status': 'error', 'message': notification[0][0]})
+    if 'Error' in str(update_assessment[0][0]):
+        return jsonify({'status':'error', 'message':update_assessment[0][0]})
 
-    records = []
-    for r in notification:
-        records.append({ "doctor_id": str(r[0]), "is_read": str(r[1]) })
-    return jsonify({'status': 'Ok','entries': records, 'count': len(records) })
+    return jsonify({'status':update_assessment[0][0]})
 
 @app.after_request
 def add_cors(resp):
