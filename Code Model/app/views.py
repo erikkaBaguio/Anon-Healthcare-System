@@ -115,7 +115,7 @@ def get_vital_signs(vital_signID):
 
 def checkauth(username, password):
     res = spcall('checkauth', (username, password))
-    print res
+    
     if 'Invalid username' in str(res[0][0]):
         return jsonify({'status': 'error', 'message': res[0][0], "username": username, "pass" : password})
 
@@ -129,6 +129,8 @@ def login():
         username = json_data['username']
         password = json_data['password']
         return checkauth(username, password)
+        print password
+        print username
     return render_template('login.html')
 
 @app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['POST'])
@@ -166,21 +168,32 @@ def doctor_referral(assessment_id, doctor_id):
 
 @app.route('/anoncare.api/assessments/<int:assessment_id>/', methods=['GET'])
 def view_assessment(assessment_id):
-    assessment = spcall("getassessmentID", str(assessment_id))
-
-    if 'Error' in str(assessment[0][0]):
-        return jsonify({'status': 'error', 'message': notification[0][0]})
-
+    assessments = spcall("getassessmentID", (assessment_id, ))
     records = []
-    for r in assessment:
-        records.append({"Date": str(r[0]), "Patient": str(r[1]),
-                        "Age": str(r[2]), "Department": str(r[3]),
-                        "Vital Signs": str(r[4]), "Chief Complaint": str(r[5]),
-                        "History of patient illness": str(r[6]), "Medications taken": str(r[7]),
-                        "Diagnosis": str(r[8]), "Recommendation": str(r[9]),
-                        "Attending Physician": str(r[10])})
 
-    return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
+    if len(assessments) == 0:
+        return jsonify({"status": "OK", "message": "No entries found", "entries": [], "count": "0"})
+
+    elif 'Error' in str(response[0][0]):
+        return jsonify({'status': 'error', 'message': assessments[0][0]})
+
+    else:
+        r = assessments[0]
+        records.append({"Date": r[0],
+                        "Patient": r[1],
+                        "Age": r[2],
+                        "Department": r[3],
+                        "Vital Signs": r[4],
+                        "Chief Complaint": r[5],
+                        "History of patient illness": r[6],
+                        "Medications taken": r[7],
+                        "Diagnosis": r[8],
+                        "Recommendation": r[9],
+                        "Attending Physician": r[10]})
+
+        return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
+
+
 
 @app.after_request
 def add_cors(resp):

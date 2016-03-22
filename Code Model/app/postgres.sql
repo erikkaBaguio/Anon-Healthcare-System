@@ -600,7 +600,7 @@ $$
 -- [GET] Retrieve all patients' assessment
 --select getallassessment();
 create or replace function getallassessment(out bigint,out timestamp, out int,out int,out int,out int, out text,
-out text,out text,out text,out text,out int) returns setof record as
+out text,out text,out text,out text,out boolean, out int) returns setof record as
 $$
   select * from Assessment;
 $$
