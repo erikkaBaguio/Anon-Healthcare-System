@@ -521,7 +521,12 @@ create or replace function notify() RETURNS trigger AS '
     IF tg_op = ''INSERT'' THEN
       INSERT INTO Notification (assessment_id, doctor_id)
           VALUES (new.id, new.attendingphysician);
+
+    IF tg_op = ''UPDATE'' THEN
+      INSERT INTO Notification (assessment_id, doctor_id)
+          VALUES (new.id, new.attendingphysician);
     RETURN new;
+
     END IF;
 
   END
@@ -529,6 +534,23 @@ create or replace function notify() RETURNS trigger AS '
 
 create TRIGGER notify_trigger AFTER INSERT ON Assessment FOR each ROW
 EXECUTE PROCEDURE notify();
+
+create or replace function notify_update() RETURNS trigger AS '
+
+  BEGIN
+
+    IF tg_op = ''UPDATE'' THEN
+      INSERT INTO Notification (assessment_id, doctor_id)
+          VALUES (old.id, new.attendingphysician);
+    RETURN new;
+
+    END IF;
+
+  END
+  ' LANGUAGE plpgsql;
+
+create TRIGGER notify_update_trigger AFTER UPDATE ON Assessment FOR each ROW
+EXECUTE PROCEDURE notify_update();
 
 create or replace function createnotify(par_assessment_id int, par_doctor_id int) returns text as
 $$
@@ -549,11 +571,30 @@ $$
 $$
   language 'plpgsql';
 
-create or replace function getnotify(in par_assessment_id int, in par_doctor_id int, out par_doctor_id int, out par_is_read boolean) returns setof record as
+create or replace function getnotify(in par_assessment_id int, in par_doctor_id int, out par_assessment_id int, out par_doctor_id int, out par_is_read boolean) returns setof record as
 $$  
-  select doctor_id, is_read from Notification where assessment_id=par_assessment_id and doctor_id=par_doctor_id;
+  select doctor_id, assessment_id, is_read from Notification where assessment_id=par_assessment_id and doctor_id=par_doctor_id;
 $$
   language 'sql';
+
+create or replace function update_assessment(par_assessment_id int, par_doctor_id int) returns text as
+$$
+  declare
+      loc_response text;
+      loc_id int;
+  begin
+        select into loc_id id from Assessment where id = par_assessment_id;
+        if loc_id isnull then
+          loc_response = 'Unable to find assessment';
+
+        else
+          update Assessment set attendingphysician=par_doctor_id where id=par_assessment_id;
+          loc_response = 'Updated';
+        end if;
+        return loc_response;
+  end;
+$$
+  language 'plpgsql';
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 -- FINAL DIAGNOSIS

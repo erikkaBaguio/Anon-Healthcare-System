@@ -8,7 +8,10 @@ from functools import wraps
 from .models import DBconn
 import json, flask
 from app import app
+<<<<<<< HEAD
 #import requests
+=======
+>>>>>>> bb5a1133fdd9958e1cdc81890a54fc35ed35658a
 
 #auth = HTTPBasicAuth()
 
@@ -287,6 +290,17 @@ def checkauth(username, password):
     session['logged_in'] = True
     return jsonify({'status': 'ok'}), 201
 
+<<<<<<< HEAD
+=======
+@app.route('/anoncare.api/login', methods=['POST', 'GET'])
+def login_index():
+    if request.method == 'POST':
+        json_data = request.get_json(force=True)
+        username = json_data['username']
+        password = json_data['password']
+        return checkauth(username, password)
+    return render_template('login.html')
+>>>>>>> bb5a1133fdd9958e1cdc81890a54fc35ed35658a
 
 @app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['POST'])
 def notify(assessment_id, doctor_id):
@@ -297,7 +311,10 @@ def notify(assessment_id, doctor_id):
 
     return jsonify({'status': response[0][0]})
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> bb5a1133fdd9958e1cdc81890a54fc35ed35658a
 @app.route('/anoncare.api/patient/<id>/', methods = ['GET'])
 def getpatient_file(id):
     response = spcall('get_newpatient_id', id)
@@ -327,20 +344,24 @@ def getnotify(assessment_id, doctor_id):
 
     records = []
     for r in notification:
-        records.append({ "doctor_id": str(r[0]), "is_read": str(r[1]) })
+        records.append({ "doctor_id": str(r[0]), "assessment_id": str(r[1]), "is_read": str(r[2]) })
     return jsonify({'status': 'Ok','entries': records, 'count': len(records) })
 
-@app.route('/anoncare.api/refer/<int:assessment_id>/<int:doctor_id>', methods=['GET'])
+@app.route('/anoncare.api/referral/<int:assessment_id>/<int:doctor_id>', methods=['POST'])
 def doctor_referral(assessment_id, doctor_id):
-    notification = spcall("referDoctor", (assessment_id, doctor_id))
+    update_assessment = spcall("update_assessment", (assessment_id, doctor_id), True)
 
-    if 'Error' in str(notification[0][0]):
-        return jsonify({'status': 'error', 'message': notification[0][0]})
+    if 'Unable to find assessment' in str(update_assessment[0][0]):
+        return jsonify({'status':'error', 'message':update_assessment[0][0]})
 
+<<<<<<< HEAD
     records = []
     for r in notification:
         records.append({ "doctor_id": str(r[0]), "is_read": str(r[1]) })
 
+=======
+    return jsonify({'status':str(update_assessment[0][0])})
+>>>>>>> bb5a1133fdd9958e1cdc81890a54fc35ed35658a
 
 @app.after_request
 def add_cors(resp):
