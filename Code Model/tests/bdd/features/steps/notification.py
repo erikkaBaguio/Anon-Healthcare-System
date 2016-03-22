@@ -40,7 +40,7 @@ def then_i_should_get_a_group1_response(step, expected_status_code):
     assert_equals(world.response.status_code, expected_status_code)
 
 @step(u'And the following details are returned:')
-def and_the_following_disease_details_are_returned(step):
+def notification_details(step):
 	world.notification = world.app.get('/anoncare.api/notify/6/1')
 	world.resp = json.loads(world.notification.data)[u'entries']
 	world.notification_returned = step.hashes[0]

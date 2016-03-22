@@ -6,5 +6,5 @@ Feature: doctor referral
             When the doctor refers the appointment to another doctor with id 2.
             Then the doctor with id 2 receives the appointment request.
             And the following details are returned:
-              | assessment_id  | doctor_id | is_read |
-              | 1    		   | 2		   | False   |
+              | doctor_id  |assessment_id| is_read |
+              | 2    	   | 6           | False   |

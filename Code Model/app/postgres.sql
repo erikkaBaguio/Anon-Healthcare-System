@@ -18,13 +18,13 @@ create table Userinfo (
 
 create table College(
   id serial8 primary key,
-  name text not null,
+  college_name text not null,
   is_active boolean default True
 );
 
 create table Department(
   id serial8 primary key,
-  name text not null,
+  department_name text not null,
   college_id int references College(id),
   is_active boolean default True
 );
@@ -178,7 +178,7 @@ create table Notification(
 -----------------------------------------------------------------------------------------------------------
 
 --select login('fname.lname', 'pass');
-create or replace function checkauth(par_email text,par_password text) returns text as
+create or replace function checkauth(par_email text,par_password text) returns setof record as
 $$
   declare
     loc_account text;
@@ -507,7 +507,12 @@ create or replace function notify() RETURNS trigger AS '
     IF tg_op = ''INSERT'' THEN
       INSERT INTO Notification (assessment_id, doctor_id)
           VALUES (new.id, new.attendingphysician);
+
+    IF tg_op = ''UPDATE'' THEN
+      INSERT INTO Notification (assessment_id, doctor_id)
+          VALUES (new.id, new.attendingphysician);
     RETURN new;
+
     END IF;
 
   END
@@ -515,6 +520,23 @@ create or replace function notify() RETURNS trigger AS '
 
 create TRIGGER notify_trigger AFTER INSERT ON Assessment FOR each ROW
 EXECUTE PROCEDURE notify();
+
+create or replace function notify_update() RETURNS trigger AS '
+
+  BEGIN
+
+    IF tg_op = ''UPDATE'' THEN
+      INSERT INTO Notification (assessment_id, doctor_id)
+          VALUES (old.id, new.attendingphysician);
+    RETURN new;
+
+    END IF;
+
+  END
+  ' LANGUAGE plpgsql;
+
+create TRIGGER notify_update_trigger AFTER UPDATE ON Assessment FOR each ROW
+EXECUTE PROCEDURE notify_update();
 
 create or replace function createnotify(par_assessment_id int, par_doctor_id int) returns text as
 $$
@@ -535,11 +557,30 @@ $$
 $$
   language 'plpgsql';
 
-create or replace function getnotify(in par_assessment_id int, in par_doctor_id int, out par_doctor_id int, out par_is_read boolean) returns setof record as
+create or replace function getnotify(in par_assessment_id int, in par_doctor_id int, out par_assessment_id int, out par_doctor_id int, out par_is_read boolean) returns setof record as
 $$  
-  select doctor_id, is_read from Notification where assessment_id=par_assessment_id and doctor_id=par_doctor_id;
+  select doctor_id, assessment_id, is_read from Notification where assessment_id=par_assessment_id and doctor_id=par_doctor_id;
 $$
   language 'sql';
+
+create or replace function update_assessment(par_assessment_id int, par_doctor_id int) returns text as
+$$
+  declare
+      loc_response text;
+      loc_id int;
+  begin
+        select into loc_id id from Assessment where id = par_assessment_id;
+        if loc_id isnull then
+          loc_response = 'Unable to find assessment';
+
+        else
+          update Assessment set attendingphysician=par_doctor_id where id=par_assessment_id;
+          loc_response = 'Updated';
+        end if;
+        return loc_response;
+  end;
+$$
+  language 'plpgsql';
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 -- FINAL DIAGNOSIS
@@ -568,22 +609,35 @@ $$
 
 -- [POST] Create new assessment
 -- select new_assessment(1,18,1,1,'doc','history','medication','diagnosis', 'recccomendation', 1);
-create or replace function new_assessment(par_nameofpatient int, par_age int, par_department int, par_vital_signs int,
+--select new_assessment('Josiah','Timonera','Regencia', 19, 1, 37.1, 80, '19 breaths/minute', '90/70', 48, 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
+create or replace function new_assessment(par_fname text, par_mname text, par_lname text, par_age int, par_department int,
+par_temperature float,par_pulse_rate float,par_respiration_rate text,par_blood_pressure text, par_weight float,
 par_chiefcomplaint text, par_historyofpresentillness text, par_medicationstaken text,
 par_diagnosis text, par_reccomendation text, par_attendingphysician int) returns text as
  $$
   declare
     loc_id int;
     loc_res text;
+    vital_signID int;
+    loc_patientID int;
+    vitalSigns int;
   begin
     select into loc_id id from Assessment;
     if loc_id isnull then
+      perform loc_patientID id from Patient where lower(fname) = lower(par_fname) and lower(mname) = lower(par_mname) and lower(lname) = lower(par_lname);
+      perform addvitalsigns(par_temperature,par_pulse_rate,par_respiration_rate,par_blood_pressure , par_weight);
+
+      select into vitalSigns count(id) from Vital_signs;
+      vital_signID := vitalSigns + 1;
+
       insert into Assessment ( nameofpatient, age, department,vital_signs ,chiefcomplaint ,
       historyofpresentillness ,medicationstaken ,diagnosis ,reccomendation ,attendingphysician )
-      values ( par_nameofpatient, par_age, par_department, par_vital_signs,
+      values ( loc_patientID, par_age, par_department, vital_signID,
       par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken, par_diagnosis,
       par_reccomendation, par_attendingphysician);
+
       loc_res = 'OK';
+
     else
       loc_res = 'ID EXISTED';
     end if;
@@ -606,7 +660,7 @@ $$
 -- [GET] Retrieve all patients' assessment
 --select getallassessment();
 create or replace function getallassessment(out bigint,out timestamp, out int,out int,out int,out int, out text,
-out text,out text,out text,out text,out int) returns setof record as
+out text,out text,out text,out text,out boolean, out int) returns setof record as
 $$
   select * from Assessment;
 $$
@@ -644,6 +698,12 @@ $$
 create or replace function getvitalsignsID(in par_id int, out float, out float, out text ,out text ,out float) returns setof record as
 $$
   select temperature,pulse_rate,respiration_rate,blood_pressure,weight from Vital_signs where id = par_id;
+$$
+  language 'sql';
+
+create or replace function getallvitalsigns(out par_id bigint, out float, out float, out text ,out text ,out float) returns setof record as
+$$
+  select * from Vital_signs;
 $$
   language 'sql';
 
