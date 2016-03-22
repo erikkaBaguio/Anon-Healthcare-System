@@ -426,18 +426,20 @@ $$
       loc_lname text;
       loc_res text;
 
-  begin
+  begin 
       SELECT INTO loc_fname fname from Patient where fname = par_fname AND mname = par_mname AND lname = par_lname;
-      if loc_fname isnull THEN
-         insert into Patient(fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active) values 
-          (par_fname, par_mname, par_lname, par_age, par_sex, par_department_id, par_patient_type_id, par_personal_info_id, par_is_active);
-
-         loc_res = 'OK';
+      if par_fname isnull or par_mname isnull or par_lname isnull or par_age isnull or par_sex isnull or par_department_id isnull or 
+         par_patient_type_id isnull or par_personal_info_id isnull or par_is_active isnull then
+         loc_res = 'Please fill up the required data';
+      elsif loc_fname isnull then
+          insert into Patient(fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active) values 
+              (par_fname, par_mname, par_lname, par_age, par_sex, par_department_id, par_patient_type_id, par_personal_info_id, par_is_active);
+              loc_res = 'OK'; 
       else
-        loc_res = 'Patient already EXISTED';
+          loc_res = 'Patient already EXISTED';
       end if;
       return loc_res;
-    end;
+  end;
 $$
   language 'plpgsql';
 

@@ -8,12 +8,9 @@ from functools import wraps
 from .models import DBconn
 import json, flask
 from app import app
-<<<<<<< HEAD
+
 
 #import requests
-=======
->>>>>>> 4f350f3c3d4ae4f178814d8c1ebf03c75a5de9bf
-
 #auth = HTTPBasicAuth()
 
 def spcall(qry, param, commit=False):
@@ -109,86 +106,7 @@ def get_all_questions():
     res = spcall('get_newquestion',())
     print res
 
-@app.route('/anoncare.api/diseases')
-def get_all_diseases_data():
-    res = spcall('get_all_diseases_data',())
-    if 'Error' in str(res[0][0]):
-        return jsonify({'status': 'error', 'message': res[0][0]})
 
-    recs = []
-    for r in res:
-        recs.append({"question": r[0], "user_id": r[1], "category_id": r[2], "is_active": str([3])})
-
-    return jsonify({'status': 'ok', 'entries': recs, 'count': len(recs)})
-
-
-@app.route('/api.anoncare/question', methods =['POST'])
-def new_question():
-    id = request.form['inputID']
-    question = request.form['inputquestion']
-    user_id = request.form['inputUserID']
-    category_id = request.form['inputCategoryID']
-    is_active = False
-    
-    res = spcall('newquestion', (id, question, category_id, is_active), True)
-
-    if 'Error' in res[0][0]:
-
-        recs.append({"id": r[0], "name": r[1], "done": str(r[2])})
-
-    return jsonify({'status': 'OK', 'entries': recs, 'count': len(recs)})
-
-@app.route('/anoncare.api/patient_file/personal_info/', methods =['POST'])
-def newpersonal_info():
-    
-    height = request.form[inputHeight]
-    weight = request.form[inputWeight]
-    date_of_birth = request.form[inputDateOfBirth]
-    civil_status =request.form[inputCivilStatus]
-    name_of_guardian = request.form[inputNameOFGuardian]
-    home_address = request.form[inputHomeAddress]
-    is_active = False
-
-    res = spcall('newpersonal_info', (height,weight, date_of_birth, civil_status, name_of_guardian,
-                                      home_address, is_active), True)
-
-    if 'Error' in res[0][0]:
-        return jsonify({'status': 'error', 'message': res[0][0]})
-
-    return jsonify({'status': 'OK', 'message': res[0][0]})
-
-
-    jsn = json.loads(request.data)
-    height = jsn['height']
-    weight = jsn['weight']
-    date_of_birth = jsn['date_of_birth']
-    civil_status = jsn['civil_status']
-    name_of_guardian = jsn['name_of_guardian']
-    home_address = jsn['home_address']
-    is_active = jsn['is_active']
-
-    response = spcall('newpersonal_info', (
-        height, 
-        weight, 
-        date_of_birth, 
-        civil_status,
-        name_of_guardian,
-        home_address,
-        is_active), True)
-   
-
-    if 'Error' in response[0][0]:
-        return  jsonify({'status': 'error', 'message': response[0][0]})
-    return jsonify({'status': 'OK', 'message': response[0][0]}), 201
-
-def get_question(question_id):
-    res= spcall('get_newquestion_id', (category_id))
-
-    if 'Error' in res[0][0]:
-        return jsonify({'status': 'error', 'message': res[0][0]})
-
-    r = res[0]
-    return jsonify({"id": r[0], "question": r[1], "user_id": r[2], "category_id": r[3], "is_active": str[4]})
 
 @app.route('/anoncare.api/colleges/<college_id>/', methods = ['GET'])
 def get_college(college_id):
@@ -281,7 +199,6 @@ def notify(assessment_id, doctor_id):
     return jsonify({'status': response[0][0]})
 
 
-<<<<<<< HEAD
 @app.route('/anoncare.api/patient/', methods =['POST'])
 def newpatient():
     data = json.loads(request.data)
@@ -301,10 +218,7 @@ def newpatient():
 
     return jsonify({'status': 'OK', 'message': response[0][0]}), 200 
 
-   
-=======
 
->>>>>>> 4f350f3c3d4ae4f178814d8c1ebf03c75a5de9bf
 @app.route('/anoncare.api/patient/<id>/', methods = ['GET'])
 def getpatient_file(id):
     response = spcall('get_newpatient_id', id)
@@ -372,10 +286,9 @@ def doctor_referral(assessment_id, doctor_id):
     for r in notification:
         records.append({ "doctor_id": str(r[0]), "is_read": str(r[1]) })
 
-<<<<<<< HEAD
     return jsonify({'status':str(update_assessment[0][0])})
 
-=======
+
 
 @app.route('/anoncare.api/assessments/<int:assessment_id>/', methods=['GET'])
 def view_assessment(assessment_id):
@@ -433,7 +346,7 @@ def new_assessment():
         return jsonify({'status': 'error', 'message': res[0][0]})
 
     return jsonify({'status': 'ok', 'message': res[0][0]})
->>>>>>> 4f350f3c3d4ae4f178814d8c1ebf03c75a5de9bf
+
 
 @app.after_request
 def add_cors(resp):
