@@ -5,53 +5,8 @@ Feature: Register User
   Scenario: Add a new user to the system - all requirements put
     Given admin inputs:
         |fname|  |mname|    |lname|    |email|
-        |Josiah| |Timonera| |Regencia| |jetregencia@gmail.com|
-    When the admin clicks the 'submit' button
-    Then I should get a '200' response
-    And  I will see a message 'ok'
+        |Josiah| |Regencia| |Eleazar| |jawshaeleazar@gmail.com|
 
+    When admin clicks the register button
 
-  Scenario: Add a new user to the system - no input 'fname'
-    Given admin inputs:
-        |fname| |mname|    |lname|    |email|
-        |     | |Timonera| |Regencia| |jetregencia@gmail.com|
-    When the admin clicks the 'submit' button
-    Then I should get a '400' response
-    And I will see a message 'fname is a required field'
-
-
-  Scenario: Add a new user to the system - no input 'mname'
-    Given admin inputs:
-        |fname|  |mname|    |lname|    |email|
-        |Josiah| |      |   |Regencia| |jetregencia@gmail.com|
-    When the admin clicks the 'submit' button
-    Then I should get a '400' response
-    And I will see a message 'mname is a required field'
-
-
-  Scenario: Add a new user to the system - no input 'lname'
-    Given admin inputs:
-        |fname| |mname|    |lname|    |email|
-        |     | |Timonera| |Regencia| |jetregencia@gmail.com|
-    When the admin clicks the 'submit' button
-    Then I should get a '400' response
-    And I will see a message 'fname is a required field
-
-
-  Scenario: Add a new user to the system - no input 'fname'
-    Given admin inputs:
-        |fname|  |mname|    |lname|   |email|
-        |Josiah| |Timonera| |     |   |jetregencia@gmail.com|
-    When the admin clicks the 'submit' button
-    Then I should get a '400' response
-    And I will see a message 'lname is a required field'
-
-
-
-    Scenario: Add a new user to the system - no input 'email'
-    Given admin inputs:
-        |fname|  |mname|    |lname|    |email|
-        |Josiah| |Timonera| |Regencia| |     |
-    When the admin clicks the 'submit' button
-    Then I should get a '400' response
-    And I will see a message 'email is a required field'
+    Then Then the user is added to the system

@@ -1,11 +1,21 @@
 # Created by josiah at 3/18/16
 Feature: Retrieve User
-  As a system administrator, I want to be able to view the details of a specific user in s
+  As a system administrator, I want to be able to view the details of a specific user
+
+  @wip
   Scenario: Retrieve a user's details
     Given user already exists with data:
           |fname|  |mname|    |lname|    |email|                 |username|
           |Josiah| |Timonera| |Regencia| |jetregencia@gmail.com| |Josiah.Regencia|
 
     When the System Administrator chooses id '1'
-    Then I should get a '200' response
+    Then I would get a '200' response
     And  the system administrator can retrieve the user.
+
+
+  Scenario: User's details does not exist
+    Given I retrieve a user with resource url '/anoncare.api/users/2'
+    When I retrieve the JSON result
+    Then I would get a '200' response
+    And I should get a status ok
+    And I should get a message No user file found
