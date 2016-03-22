@@ -54,12 +54,12 @@ create table Patient_type(
     type text
 );
 
-<<<<<<< HEAD
+
 create table Personal_info(
     id serial8 primary key,
     height text,
     weight float,
-    date_of_birth date,
+    date_of_birth text,
     civil_status text,
     name_of_guardian text,
     home_address text,
@@ -67,8 +67,7 @@ create table Personal_info(
 );
 
 
-=======
->>>>>>> 95f95cff34ceb6f2d5552b843875554c6eccb666
+
 create table Patient(
     id serial8 primary key,
     fname text,
@@ -462,7 +461,7 @@ $$
 
 --GET patient file and personal info
 create or replace function get_patientId(in par_id int, out text, out text, out text, out int, out text,     
-                                              out text, out float, out date, out text,out text,
+                                              out text, out float, out text, out text,out text,
                                               out text) returns setof record as
 $$
   select Patient.fname, Patient.mname, Patient.lname, Patient.age, Patient.sex,

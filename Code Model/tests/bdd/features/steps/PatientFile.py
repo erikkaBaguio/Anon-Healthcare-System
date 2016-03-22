@@ -11,7 +11,7 @@ def before_all():
     world.app = app.test_client()
 
 #---------------------------------------------------------------------------------------------------------
-
+#Scenario1:
 
 @step(u'Given the following patient file already exists')
 def given_the_following_patient_file_already_exists(step):
@@ -32,17 +32,21 @@ def and_i_can_retrieve_the_patient_file(step):
 
 
 #---------------------------------------------------------------------------------------------------------
+#Scenario2
+# Rainy Case
 
-@step(u'Given I retrieve a patient file with resource url \'([^\']*)\'')
-def given_i_retrieve_a_patient_file_7(step, url):
-	world.patient_uri = url
-
-@step(u'When I retrieve the JSON result')
-def when_i_retrieve_the_json_result(step):
-    world.response = world.app.get(world.patient_uri)
+@step(u'Given a patient file with id \'([^\']*)\'')
+def given_a_patient_file_with_id_group1(step, id):
+	world.patient = world.app.get('/anoncare.api/patient/{}/'.format(id))
+	world.resp = json.loads(world.patient.data)
+	assert_equals(world.resp['status'], 'OK')
+    
+@step(u'When I retrieve the patient id \'([^\']*)\'')
+def when_i_retrieve_the_patient_id_1(step, id):
+    world.response = world.app.get('/anoncare.api/patient/{}/'.format(id))
 
 @step(u'Then I should get a \'([^\']*)\' response')
-def and_i_should_get_a_status_group1(step, expected_status_code):
+def and_i_should_get_a_status(step, expected_status_code):
     assert_equals(world.response.status_code, int(expected_status_code))
 
 @step(u'And I should get a status OK')
@@ -55,7 +59,8 @@ def and_i_should_get_a_message_ok(step):
     world.resp = json.loads(world.response.data)
     assert_equals(world.resp['message'], 'No patient file found')
 
-
+#-----------------------------------------------------------------------------------------------
+#Scenario3
 @step(u'Given the following patient info')
 def given_the_following_patient_info(step):
     world.patient = step.hashes[0]
@@ -65,25 +70,12 @@ def when_i_post_the_patient_file_resource_ur(step):
     world.patient_uri = '/anoncare.api/patient/'
     world.patient_response = world.app.post(world.patient_uri, data = json.dumps(world.patient))
     
-# @step(u'Then I should get a \'([^\']*)\' response')
-# def then_I_should_get_a_201_response(step, expected_status_code):
-#     assert_equals(world.patient_response.status_code, int(expected_status_code))
-
-
-# @step(u'And I should get a status ok')
-# def and_i_should_get_a_status_ok(step):
-#     world.patient_response_json = json.loads(world.patient_response.data)
-#     assert_equals(world.patient_response_json['status'], 'ok')
-
 @step(u'And I should get a message OK')
 def and_i_should_get_a_message_OK(step):
     world.patient_response_json = json.loads(world.patient_response.data)
     assert_equals(world.patient_response_json['message'], 'OK')
 
-
-
-
-
+#-----------------------------------------------------------------------------------------------------
 
 
 

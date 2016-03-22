@@ -325,7 +325,7 @@ def newpatient():
     if 'Error' in str(response[0][0]):
         return jsonify({'status': 'error', 'message': response[0][0]})
 
-    return jsonify({'status': 'ok', 'message': response[0][0]}), 200 
+    return jsonify({'status': 'OK', 'message': response[0][0]}), 200 
 
    
 @app.route('/anoncare.api/patient/<id>/', methods = ['GET'])
@@ -347,6 +347,30 @@ def getpatient_file(id):
                         "personal_info_id": row[7],
                         "is_active": row[8]})
         return jsonify({"status": "OK", "message": "OK", "entries": entries, "count":len(entries)})
+
+
+@app.route('/anoncare.api/patient/personal/<id>/', methods =['GET'])
+def get_allpatient(id):
+    response = spcall('get_patientID', id)
+    entries = []
+    if len(response) == 0:
+        return jsonify({"status":"OK", "message": "No patient file found", "entries":[], "count": "0"})
+    else:
+        row = response[0]
+        entries.append({"id": id,
+                        "fname": row[0],
+                        "mname": row[1],
+                        "lname": row[2],
+                        "age": row[3],
+                        "sex": row[4],
+                        "height": row[5],
+                        "weight": row[6],
+                        "date_of_birth": row[7],
+                        "civil_status": row[8],
+                        "name_of_guardian": row[9],
+                        "home_address": row[10]
+                        })
+        return jsonify({"status":"OK", "message":"OK", "entries": entries, "count": len(entries)})
 
 @app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['GET'])
 def getnotify(assessment_id, doctor_id):
