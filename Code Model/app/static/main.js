@@ -1,7 +1,7 @@
 function login(){
 
-    var valueUserName = $("#username").val();
-    var valuePassword = $("#password").val();
+    valueUserName = $("#username").val()
+    var valuePassword = $("#password").val()
 
 	var user_info = {username: valueUserName, password: valuePassword}
     console.log(valuePassword);
