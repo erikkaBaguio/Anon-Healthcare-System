@@ -1,5 +1,5 @@
 # import json
-<<<<<<< HEAD
+
 
 # from lettuce import step, world, before
 # from nose.tools import assert_equals
@@ -24,7 +24,7 @@
 # def then_i_should_get_a_group1_response(step, expected_status_code):
 #     assert_equals(world.response.status_code, int(expected_status_code))
 
-=======
+
 #
 # from lettuce import step, world, before
 # from nose.tools import assert_equals
@@ -48,8 +48,7 @@
 # @step(u'Then I should get a \'([^\']*)\' response')
 # def then_i_should_get_a_group1_response(step, expected_status_code):
 #     assert_equals(world.response.status_code, int(expected_status_code))
-#
->>>>>>> 95f95cff34ceb6f2d5552b843875554c6eccb666
+
 # @step(u'And the following symptom details are returned:')
 # def and_the_following_symptom_details_are_returned(step):
 #     assert_equals(step.hashes, [json.loads(world.response.data)])
