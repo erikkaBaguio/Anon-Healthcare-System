@@ -174,7 +174,7 @@ def view_assessment(assessment_id):
     if len(assessments) == 0:
         return jsonify({"status": "OK", "message": "No entries found", "entries": [], "count": "0"})
 
-    elif 'Error' in str(response[0][0]):
+    elif 'Error' in str(assessments[0][0]):
         return jsonify({'status': 'error', 'message': assessments[0][0]})
 
     else:
@@ -192,6 +192,48 @@ def view_assessment(assessment_id):
                         "Attending Physician": r[10]})
 
         return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
+
+@app.route('/anoncare.api/assessments/', methods = ['GET', 'POST'])
+def new_assessment():
+    fname = request.form['fname']
+    mname = request.form['mname']
+    lname = request.form['lname']
+    temperature = request.form['temperature']
+    pulse_rate = request.form['pulse_rate']
+    respiration_rate = request.form['respiration_rate']
+    blood_pressure = request.form['blood_pressure']
+    weight = request.form['weight']
+    age = request.form['age']
+    department = request.form['department']
+    chiefcomplaint = request.form['chiefcomplaint']
+    historyofpresentillness = request.form['historyofpresentillness']
+    medicationstaken = request.form['medicationstaken']
+    diagnosis = request.form['diagnosis']
+    reccomendation = request.form['reccomendation']
+    attendingphysician = request.form['attendingphysician']
+
+    res = spcall('')
+
+    if 'Error' in response[0][0]:
+        return jsonify({'status': 'error', 'message': response[0][0]})
+
+    return jsonify({'status': 'ok', 'message': response[0][0]}), 201
+
+    # json_data = json.loads(request.data)
+    # temperature = json_data['temperature']
+    # pulse_rate = json_data['pulse_rate']
+    # respiration_rate = json_data['respiration_rate']
+    # blood_pressure = json_data['blood_pressure']
+    # weight = json_data['weight']
+    # nameofpatient = json_data['nameofpatient']
+    # age = json_data['age']
+    # department = json_data['department']
+    # chiefcomplaint = json_data['chiefcomplaint']
+    # historyofpresentillness = json_data['historyofpresentillness']
+    # medicationstaken = json_data['medicationstaken']
+    # diagnosis = json_data['diagnosis']
+    # reccomendation = json_data['reccomendation']
+    # attendingphysician = json_data['attendingphysician']
 
 
 

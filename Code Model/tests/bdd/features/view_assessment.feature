@@ -14,9 +14,9 @@ Feature: View Assessment
   #  Rainy Case
   Scenario: View Assessment of Patient that doesn't exist
     Given   the doctor access the url '/anoncare.api/assessments/2/'
-    When    the results are retrieve
-    Then	the doctor gets a '200' response
-    And     it should have a field "status" containing "ok"
-    And     it should have a field "message" containing "No entries found"
+    When    the doctor retrieves the JSON results
+    Then	the doctor should get a '200' response
+    And     it should have a field "status" containing "OK"
+    And     it should have a field message containing "No entries found"
     And     it should have a field "count" containing 0
     And     it should have an empty field "entries"
