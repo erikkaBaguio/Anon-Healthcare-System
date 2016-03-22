@@ -26,15 +26,15 @@ def and_the_system_administrator_can_retrieve_the_user(step):
     assert_equals(world.resp['status'], 'ok')
 
 
-@step(u'Given I retrieve a user with resource url \'([^\']*)\'')
-def given_i_retrieve_a_user_with_resource_url_group1(step, url):
-    world.user_uri = url
+@step(u'Given User with id \'([^\']*)\'')
+def given_user_with_id_group1(step, id):
+    world.response = world.app.get('/anoncare.api/users/{}/'.format(id))
 
 
-@step(u'When I retrieve the JSON result')
-def when_i_retrieve_the_json_result(step):
+@step(u'When I retrieve the user\'s details')
+def when_i_retrieve_the_user_s_details(step):
     world.response = world.app.get('/anoncare.api/users/2/')
-    # world.response = world.app.get(world.user_uri)
+
 
 
 @step(u'Then I would get a \'([^\']*)\' response')

@@ -13,8 +13,9 @@ Feature: Retrieve User
 
 
   Scenario: User's details does not exist
-    Given I retrieve a user with resource url '/anoncare.api/users/2'
-    When I retrieve the JSON result
+    Given User with id '2'
+    When I retrieve the user's details
     Then I would get a '200' response
     And I should get a status ok
     And I should get a message No User Found
+
