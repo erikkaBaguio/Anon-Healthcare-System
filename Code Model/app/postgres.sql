@@ -67,7 +67,6 @@ create table Personal_info(
 );
 
 
-
 create table Patient(
     id serial8 primary key,
     fname text,
@@ -224,17 +223,6 @@ $$
  select newrole('nurse');
  select newrole('system administrator');
 
-create table Userinfo (
-    id serial8 primary key,
-    fname text,
-    mname text,
-    lname text,
-    email text,
-    username text unique,
-    password text,
-    role_id int references Role(id),
-    is_active boolean
-  );
 
 create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
                                 par_email text, par_username text, par_password text, par_active boolean)
@@ -289,7 +277,7 @@ $$
 LANGUAGE 'plpgsql';
 
 
-select newuserinfo('Josiah', 'Timonera', 'Regencia', 'jetregencia@gmail.com', 'josiah.regencia', 'k6bkW9nUoO8^&C+~', 1, true);
+select newuserinfo('Josiah', 'Timonera', 'Regencia', 'jetregencia@gmail.com', 'josiah.regencia', 'k6bkW9nUoO8^&C+~', true);
 
 
 

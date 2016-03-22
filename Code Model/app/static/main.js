@@ -22,31 +22,6 @@ function login(){
     });
 }
 
-//function register(){
-//
-//	var valueName = $("#fname").val()
-//	var valueMName = $("#mname").val()
-//	var valueLName = $("#lname").val()
-//	var valueEmail = $("#email").val()
-//
-//	var user_info = {fname: valueName, mname: valueMName, lname: valueLName, email: valueEmail}
-//
-//	$.ajax({
-//		type: "POST",
-//		url: "/user/",
-//		data: JSON.stringify(user_info),
-//		dataType: "json",
-//		success: function(resp){
-//			console.log(resp.status);
-//
-//				$("#results").html('<p>OK!</p>');
-//		},
-//		error: function(error){
-//			console.log(error);
-//		},
-//	});
-//}
-
 function create_username(fname, lname) {
     var username = fname + '.' + lname;
     username = username.replace(/\s/g, '').toLocaleLowerCase();
@@ -76,8 +51,6 @@ function generate_password() {
     }
 
 
-
-    //return char_length;
     return random_password;
 }
 
@@ -89,13 +62,6 @@ function register(){
 	var valueEmail = $('input[name="email"]').val();
     var valueUsername = create_username(valueName, valueLName);
     var valuePass = generate_password();
-
-    valueName = valueName.mystring.replace(/"/g,x"'");
-    valueMName = valueMName.mystring.replace(/"/g,"'");
-    valueLName = valueLName.mystring.replace(/"/g,"'");
-    valueEmail = valueEmail.mystring.replace(/"/g,"'");
-    valueUsername = valueUsername.mystring.replace(/"/g,"'");
-    valuePass = valuePass.mystring.replace(/"/g,"'");
 
 
     var user_data = {fname: valueName, mname: valueMName, lname: valueLName,

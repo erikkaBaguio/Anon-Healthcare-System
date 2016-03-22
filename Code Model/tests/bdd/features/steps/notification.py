@@ -37,7 +37,7 @@ def request_appointment(step):
 
 @step(u'Then I should get a \'([^\']*)\' response')
 def then_i_should_get_a_group1_response(step, expected_status_code):
-    assert_equals(world.response.status_code, 200)
+    assert_equals(world.response.status_code, expected_status_code)
 
 @step(u'And the following details are returned:')
 def notification_details(step):
