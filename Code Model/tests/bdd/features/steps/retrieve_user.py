@@ -3,7 +3,14 @@
 # from app import app
 # from app.views import USERS
 # import json
-#
+
+
+# @before.all
+# def before_all():
+#     world.app = app.test_client()
+
+
+
 #
 # @before.all
 # def before_all():
@@ -23,6 +30,11 @@
 #                     "username": "Neiel.Paradiang"
 #                 }})
 #     # assert False, 'This step must be implemented'
+
+# USERS = {}
+
+
+
 #
 #
 # USERS = {}
@@ -32,14 +44,23 @@
 # def when_i_retrieve_the_user_with_id_group3(step, group3):
 #     world.response = world.app.get('/user/{}'.format(group3))
 #     # assert False, 'This step must be implemented'
+
+
+
+
 #
 #
 # @step(u'Then I should get a \'([^\']*)\' response')
 # def then_i_should_get_a_group3_response(step, group3):
 #     assert_equals(world.response.status_code, int(group3))
 #     # assert False, 'This step must be implemented'
+
+
+
+
 #
 #
+
 # @step(u'And the following user details are returned:')
 # def and_the_following_user_details_are_returned(step):
 #     assert_equals(step.hashes, [json.loads(world.response.data)])

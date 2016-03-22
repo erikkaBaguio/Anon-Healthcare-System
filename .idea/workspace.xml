@@ -2,11 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a1c1c313-8e09-41d6-a6aa-2c3de3070024" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/PatientFile.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/app/__init__.py" afterPath="$PROJECT_DIR$/Code Model/app/__init__.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/app/postgres.sql" afterPath="$PROJECT_DIR$/Code Model/app/postgres.sql" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/app/static/main.js" afterPath="$PROJECT_DIR$/Code Model/app/static/main.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/app/views.py" afterPath="$PROJECT_DIR$/Code Model/app/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/tests/bdd/features/Assessment.feature" afterPath="$PROJECT_DIR$/Code Model/tests/bdd/features/Assessment.feature" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/Assessment_steps.py" afterPath="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/Assessment_steps.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/tests/bdd/features/PatientFile.feature" afterPath="$PROJECT_DIR$/Code Model/tests/bdd/features/PatientFile.feature" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/tests/bdd/features/doctor_referral.feature" afterPath="$PROJECT_DIR$/Code Model/tests/bdd/features/doctor_referral.feature" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/tests/bdd/features/notification.feature" afterPath="$PROJECT_DIR$/Code Model/tests/bdd/features/notification.feature" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/DiseaseRecordsMaintenance.py" afterPath="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/DiseaseRecordsMaintenance.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/SymptomRecordsMaintenance.py" afterPath="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/SymptomRecordsMaintenance.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/add_appointment.py" afterPath="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/add_appointment.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/doctor_referral.py" afterPath="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/doctor_referral.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/notification.py" afterPath="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/notification.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/retrieve_user.py" afterPath="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/retrieve_user.py" />
       <change type="MODIFICATION" beforePath="$USER_HOME$/erikka/rest/app.py" afterPath="$USER_HOME$/erikka/rest/app.py" />
       <change type="MODIFICATION" beforePath="$USER_HOME$/erikka/rest/model.py" afterPath="$USER_HOME$/erikka/rest/model.py" />
       <change type="MODIFICATION" beforePath="$USER_HOME$/erikka/rest/progress.sql" afterPath="$USER_HOME$/erikka/rest/progress.sql" />
@@ -107,11 +116,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Code Model/app/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="223" column="58" selection-start-line="223" selection-start-column="58" selection-end-line="223" selection-end-column="58" />
+            <state vertical-scroll-proportion="0.7182609">
+              <caret line="394" column="0" selection-start-line="394" selection-start-column="0" selection-end-line="394" selection-end-column="0" />
               <folding>
                 <element signature="e#20#29#0" expanded="true" />
               </folding>
@@ -123,16 +132,16 @@
         <entry file="file://$PROJECT_DIR$/Code Model/app/postgres.sql">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="652" column="70" selection-start-line="652" selection-start-column="9" selection-end-line="652" selection-end-column="70" />
+              <caret line="713" column="70" selection-start-line="713" selection-start-column="9" selection-end-line="713" selection-end-column="70" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Assessment.feature" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Assessment.feature" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/Assessment.feature">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5386534">
+            <state vertical-scroll-proportion="0.0">
               <caret line="12" column="61" selection-start-line="12" selection-start-column="61" selection-end-line="12" selection-end-column="61" />
               <folding />
             </state>
@@ -228,9 +237,9 @@
         <option value="$PROJECT_DIR$/Code Model/tests/bdd/features/view_assessment.feature" />
         <option value="$PROJECT_DIR$/Code Model/tests/bdd/features/view_assessment.py" />
         <option value="$PROJECT_DIR$/Code Model/app/postgres.sql" />
-        <option value="$PROJECT_DIR$/Code Model/app/views.py" />
         <option value="$PROJECT_DIR$/Code Model/tests/bdd/features/steps/Assessment_steps.py" />
         <option value="$PROJECT_DIR$/Code Model/tests/bdd/features/Assessment.feature" />
+        <option value="$PROJECT_DIR$/Code Model/app/views.py" />
       </list>
     </option>
   </component>
@@ -697,7 +706,7 @@
     <frame x="33" y="-4" width="1333" height="772" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33384854" sideWeight="0.86713284" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.064914994" sideWeight="0.86713284" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32941177" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1090,20 +1099,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Code Model/app/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="223" column="58" selection-start-line="223" selection-start-column="58" selection-end-line="223" selection-end-column="58" />
-          <folding>
-            <element signature="e#20#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Code Model/app/postgres.sql">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="652" column="70" selection-start-line="652" selection-start-column="9" selection-end-line="652" selection-end-column="70" />
+          <caret line="713" column="70" selection-start-line="713" selection-start-column="9" selection-end-line="713" selection-end-column="70" />
           <folding />
         </state>
       </provider>
@@ -1120,9 +1119,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Code Model/tests/bdd/features/Assessment.feature">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5386534">
+        <state vertical-scroll-proportion="0.0">
           <caret line="12" column="61" selection-start-line="12" selection-start-column="61" selection-end-line="12" selection-end-column="61" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code Model/app/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7182609">
+          <caret line="394" column="0" selection-start-line="394" selection-start-column="0" selection-end-line="394" selection-end-column="0" />
+          <folding>
+            <element signature="e#20#29#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

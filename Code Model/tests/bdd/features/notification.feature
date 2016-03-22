@@ -7,5 +7,5 @@ Feature: notification
             When the nurse request an appointment to the doctor with id 1
             Then I should get a '200' response
             And the following details are returned:
-              | doctor_id  | is_read |
-              | 1    	   | False   |
+              | doctor_id  |assessment_id| is_read |
+              | 1    	   | 6           | False   |
