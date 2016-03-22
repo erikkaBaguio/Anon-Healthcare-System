@@ -2,7 +2,6 @@
 Feature: Retrieve User
   As a system administrator, I want to be able to view the details of a specific user
 
-  @wip
   Scenario: Retrieve a user's details
     Given user already exists with data:
           |fname|  |mname|    |lname|    |email|                 |username|
@@ -18,4 +17,4 @@ Feature: Retrieve User
     When I retrieve the JSON result
     Then I would get a '200' response
     And I should get a status ok
-    And I should get a message No user file found
+    And I should get a message No User Found

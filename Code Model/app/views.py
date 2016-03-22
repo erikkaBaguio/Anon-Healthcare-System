@@ -193,11 +193,11 @@ def get_user_with_id(id):
     else:
         row = res[0]
         entries.append({
-                        "fname":row[0],
-                        "mname":row[1],
-                        "lname":row[2],
-                        "email":row[3],
-                        "username":row[4]})
+                        "fname":  row[0],
+                        "mname": row[1],
+                        "lname": row[2],
+                        "email": row[3],
+                        "username": row[4]})
 
         return jsonify({"status": "ok", "message": "ok", "entries": entries})
 

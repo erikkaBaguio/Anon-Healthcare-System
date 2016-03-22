@@ -49,8 +49,8 @@ def and_i_should_get_a_status_not_ok(step):
     assert_equals(world.resp['status'], 'ok')
 
 
-@step(u'And I should get a message No user file found')
-def and_i_should_get_a_message_no_user_file_found(step):
+
+@step(u'And I should get a message No User Found')
+def and_i_should_get_a_message_no_user_found(step):
     world.resp = json.loads(world.response.data)
     assert_equals(world.resp['message'], 'No User Found')
-
