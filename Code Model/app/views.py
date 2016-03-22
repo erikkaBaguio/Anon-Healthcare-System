@@ -8,10 +8,8 @@ from functools import wraps
 from .models import DBconn
 import json, flask
 from app import app
-<<<<<<< HEAD
+
 #import requests
-=======
->>>>>>> bb5a1133fdd9958e1cdc81890a54fc35ed35658a
 
 #auth = HTTPBasicAuth()
 
@@ -290,8 +288,7 @@ def checkauth(username, password):
     session['logged_in'] = True
     return jsonify({'status': 'ok'}), 201
 
-<<<<<<< HEAD
-=======
+
 @app.route('/anoncare.api/login', methods=['POST', 'GET'])
 def login_index():
     if request.method == 'POST':
@@ -300,7 +297,6 @@ def login_index():
         password = json_data['password']
         return checkauth(username, password)
     return render_template('login.html')
->>>>>>> bb5a1133fdd9958e1cdc81890a54fc35ed35658a
 
 @app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['POST'])
 def notify(assessment_id, doctor_id):
@@ -311,16 +307,33 @@ def notify(assessment_id, doctor_id):
 
     return jsonify({'status': response[0][0]})
 
-<<<<<<< HEAD
 
-=======
->>>>>>> bb5a1133fdd9958e1cdc81890a54fc35ed35658a
+@app.route('/anoncare.api/patient/', methods =['POST'])
+def newpatient():
+    data = json.loads(request.data)
+    response = spcall('newpatient', (
+        data['fname'],
+        data['mname'],
+        data['lname'],
+        data['age'],
+        data['sex'],
+        data['department_id'],
+        data['patient_type_id'],
+        data['personal_info_id'],
+        data['is_active'],),True)
+
+    if 'Error' in str(response[0][0]):
+        return jsonify({'status': 'error', 'message': response[0][0]})
+
+    return jsonify({'status': 'ok', 'message': response[0][0]}), 200 
+
+   
 @app.route('/anoncare.api/patient/<id>/', methods = ['GET'])
 def getpatient_file(id):
     response = spcall('get_newpatient_id', id)
     entries = []
     if len(response) == 0:
-        return jsonify({"status":"ok", "message": "No patient file found", "entries":[], "count": "0"})
+        return jsonify({"status":"OK", "message": "No patient file found", "entries":[], "count": "0"})
     else:
         row = response[0]
         entries.append({"id": id,
@@ -333,7 +346,7 @@ def getpatient_file(id):
                         "patient_type_id": row[6],
                         "personal_info_id": row[7],
                         "is_active": row[8]})
-        return jsonify({"status": "ok", "message": "ok", "entries": entries, "count":len(entries)})
+        return jsonify({"status": "OK", "message": "OK", "entries": entries, "count":len(entries)})
 
 @app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['GET'])
 def getnotify(assessment_id, doctor_id):
@@ -354,14 +367,12 @@ def doctor_referral(assessment_id, doctor_id):
     if 'Unable to find assessment' in str(update_assessment[0][0]):
         return jsonify({'status':'error', 'message':update_assessment[0][0]})
 
-<<<<<<< HEAD
     records = []
     for r in notification:
         records.append({ "doctor_id": str(r[0]), "is_read": str(r[1]) })
 
-=======
     return jsonify({'status':str(update_assessment[0][0])})
->>>>>>> bb5a1133fdd9958e1cdc81890a54fc35ed35658a
+
 
 @app.after_request
 def add_cors(resp):

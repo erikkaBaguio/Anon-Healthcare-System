@@ -2,16 +2,6 @@
 Feature: Patient File
 
 
-Scenario: Create patient file
-    Given the following patient info
-    |fname  |mname   |lname     |age|sex   |department_id|patient_type_id|personal_info_id|is_active|
-    |Kristel|Daligdig|Pabillaran|19 |female| 1           | 1             |  2             | True    |
-    When I POST the patient file resource_url '/anoncare.api/patient/'
-    Then I should get a '200' response
-    And I should get a status ok
-    And I should get a message ok
-
-
 Scenario: Get the patient file
     Given the following patient file already exists:
     |id| fname    | mname | lname  |age| sex  | department_id|patient_type_id| personal_info_id| is_active|
@@ -24,5 +14,20 @@ Scenario: Get patient file that doesn't exists
     Given I retrieve a patient file with resource url '/anoncare.api/patient/6/'
     When I retrieve the JSON result
     Then I should get a '200' response
-    And I should get a status ok
+    And I should get a status OK
     And I should get a message No patient file found
+
+
+
+
+Scenario: Create patient file
+    Given the following patient info
+    |fname  |mname   |lname     |age|sex   |department_id|patient_type_id|personal_info_id|is_active|
+    |Kristel|Daligdig|Pabillaran|19 |female| 1           | 1             |  2             | True    | 
+    When I POST the patient file resource_url '/anoncare.api/patient/'
+    Then I should get a '200' response
+    And I should get a status OK
+    And I should get a message OK
+
+
+
