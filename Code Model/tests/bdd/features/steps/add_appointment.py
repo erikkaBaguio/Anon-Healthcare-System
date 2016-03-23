@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # # import json
 #
 # # from lettuce import step, world, before
@@ -33,7 +33,7 @@
 # #     assert_equals(step.hashes, [json.loads(world.response.data)])
 #
 # # # =====================================================================================
-=======
+
 # import json
 
 # from lettuce import step, world, before
@@ -66,4 +66,4 @@
 #     assert_equals(step.hashes, [json.loads(world.response.data)])
 
 # # =====================================================================================
->>>>>>> 4f350f3c3d4ae4f178814d8c1ebf03c75a5de9bf
+

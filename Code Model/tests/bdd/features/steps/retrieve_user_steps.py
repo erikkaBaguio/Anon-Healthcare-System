@@ -23,7 +23,7 @@ def when_the_system_administrator_chooses_id_group1(step, id):
 @step(u'And  the system administrator can retrieve the user.')
 def and_the_system_administrator_can_retrieve_the_user(step):
     world.resp = json.loads(world.response.data)
-    assert_equals(world.resp['status'], 'ok')
+    assert_equals(world.resp['status'], 'OK')
 
 
 @step(u'Given User with id \'([^\']*)\'')
@@ -46,7 +46,7 @@ def then_i_would_get_a_group1_response(step, expected_status_code):
 @step(u'And I should get a status ok')
 def and_i_should_get_a_status_not_ok(step):
     world.resp = json.loads(world.response.data)
-    assert_equals(world.resp['status'], 'ok')
+    assert_equals(world.resp['status'], 'OK')
 
 
 

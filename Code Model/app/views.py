@@ -8,14 +8,7 @@ from functools import wraps
 from .models import DBconn
 import json, flask
 from app import app
-<<<<<<< HEAD
 
-
-#import requests
-=======
-
-#import reque
->>>>>>> 148226192cc1b16a94b822829bade0ab87ecd206
 #auth = HTTPBasicAuth()
 
 def spcall(qry, param, commit=False):
