@@ -32,7 +32,7 @@ def already_assess(step, appointment_id):
 
 @step(u'When the doctor refers the appointment to another doctor with id 2')
 def refer_doctor(step):
-    world.response = world.browser.post('/anoncare.api/referral/6/2')
+    world.response = world.browser.post('/anoncare.api/referral/6/2/1')
     world.response.charset = 'utf8'
     assert_equals(json.loads(world.response.text), {"status": "Updated"})
 

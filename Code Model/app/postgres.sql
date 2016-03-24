@@ -562,6 +562,27 @@ $$
 $$
   language 'sql';
 
+
+create or replace function update_notification(par_assessment_id int, par_doctor_id int) returns text as
+$$
+  declare
+      loc_response text;
+      loc_id int;
+  begin
+        select into loc_id id from Notification where assessment_id = par_assessment_id and doctor_id = par_doctor_id;
+        if loc_id isnull then
+          loc_response = 'Unable to find notification';
+
+        else
+          update Notification set is_read = TRUE where id=loc_id;
+          loc_response = 'Updated';
+        end if;
+        return loc_response;
+  end;
+$$
+  language 'plpgsql';
+
+
 create or replace function update_assessment(par_assessment_id int, par_doctor_id int) returns text as
 $$
   declare

@@ -284,8 +284,9 @@ def getnotify(assessment_id, doctor_id):
         records.append({ "doctor_id": str(r[0]), "assessment_id": str(r[1]), "is_read": str(r[2]) })
     return jsonify({'status': 'Ok','entries': records, 'count': len(records) })
 
-@app.route('/anoncare.api/referral/<int:assessment_id>/<int:doctor_id>', methods=['POST'])
-def doctor_referral(assessment_id, doctor_id):
+@app.route('/anoncare.api/referral/<int:assessment_id>/<int:doctor_id>/<int:prev_doctor>', methods=['POST'])
+def doctor_referral(assessment_id, doctor_id, prev_doctor):
+    update_notification = spcall("update_notification", (assessment_id, prev_doctor), True)
     update_assessment = spcall("update_assessment", (assessment_id, doctor_id), True)
 
     if 'Unable to find assessment' in str(update_assessment[0][0]):
