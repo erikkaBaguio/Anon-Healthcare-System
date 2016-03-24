@@ -42,7 +42,7 @@ def then_i_should_get_a_group1_response(step):
     world.response.charset = 'utf8'
     world.notification = world.app.get('/anoncare.api/notify/6/2')
 
-@step(u'And the following details are returned:')
+@step(u'And following details are returned:')
 def referral_details(step):
 	world.notification = world.app.get('/anoncare.api/notify/6/2')
 	world.resp = json.loads(world.notification.data)[u'entries']
