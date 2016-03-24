@@ -510,10 +510,6 @@ create or replace function notify() RETURNS trigger AS '
     IF tg_op = ''INSERT'' THEN
       INSERT INTO Notification (assessment_id, doctor_id)
           VALUES (new.id, new.attendingphysician);
-
-    IF tg_op = ''UPDATE'' THEN
-      INSERT INTO Notification (assessment_id, doctor_id)
-          VALUES (new.id, new.attendingphysician);
     RETURN new;
 
     END IF;
