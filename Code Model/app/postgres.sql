@@ -6,14 +6,14 @@ create table Role (
 
 create table Userinfo (
     id serial8 primary key,
-    fname text,
-    mname text,
-    lname text,
-    email text,
-    username text unique,
-    password text,
-    role_id int references Role(id),
-    is_active boolean
+    fname text not null,
+    mname text not null,
+    lname text not null,
+    email text not null,
+    username text unique not null,
+    password text not null,
+    role_id int references Role(id) not null,
+    is_active boolean not null
   );
 
 create table College(
@@ -225,7 +225,7 @@ $$
 
 
 create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
-                                par_email text, par_username text, par_password text, par_active boolean)
+                                par_email text, par_username text, par_password text)
                                  returns text as
 $$
 
@@ -237,8 +237,8 @@ $$
 --        username := par_fname || '.' || par_lname;
 --        random_password := generate_password();
 
-       insert into Userinfo (fname, mname, lname, email, username, password, is_active)
-       values (par_fname, par_mname, par_lname, par_email, par_username, par_password, par_active);
+       insert into Userinfo (fname, mname, lname, email, username, password)
+       values (par_fname, par_mname, par_lname, par_email, par_username, par_password);
 
 
        loc_res = 'OK';
@@ -277,7 +277,7 @@ $$
 LANGUAGE 'plpgsql';
 
 
-select newuserinfo('Josiah', 'Timonera', 'Regencia', 'jetregencia@gmail.com', 'josiah.regencia', 'k6bkW9nUoO8^&C+~', true);
+select newuserinfo('Josiah', 'Timonera', 'Regencia', 'jetregencia@gmail.com', 'josiah.regencia', 'k6bkW9nUoO8^&C+~');
 
 
 
