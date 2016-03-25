@@ -5,7 +5,7 @@ from os import sys
 from flask import Flask, jsonify, render_template, request, session, redirect
 from functools import wraps
 # from flask.ext.httpauth import HTTPBasicAuth
-from .models import DBconn
+from models import DBconn
 import json, flask
 from app import app
 
