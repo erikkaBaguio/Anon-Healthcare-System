@@ -4,8 +4,8 @@ Feature: Register User
 
   Scenario: Add a new user to the system - all requirements put
     Given admin inputs:
-        |fname |  |mname  |  |lname   |  |email                 | |username      | |password             |
-        |Eleazar| |Regencia| |Josiah| |jawshaeleazar@gmail.com| |eleazar.josiah| |josiaheleazarregencia|
+        |fname | |mname  |  |lname   |  |email                 | |username       | |password             |
+        |Josiah| |Regencia| |Timonera| |jawshaeleazar@gmail.com| |josiah.timonera| |josiaheleazarregencia|
 
     When admin clicks the register button
 
