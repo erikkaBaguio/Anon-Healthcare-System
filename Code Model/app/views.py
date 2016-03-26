@@ -155,7 +155,7 @@ def insertuser():
     password = user['password']
 
     response = spcall("newuserinfo", (fname, mname, lname, email, username, password), True)
-
+    print response
 
     if 'Error' in str(response[0][0]):
         return jsonify({'status': 'error', 'message': response[0][0]})
@@ -324,7 +324,7 @@ def view_assessment(assessment_id):
                         "Recommendation": r[9],
                         "Attending Physician": r[10]})
 
-        return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
+        return jsonify({'status': 'OK', 'entries': records, 'count': len(records), 'message': assessments[0][0]})
 
 # select new_assessment(1,'Josiah','Timonera','Regencia', 19, 1, 37.1, 80, '19 breaths/minute', '90/70', 48,
 # 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
@@ -333,6 +333,7 @@ def view_assessment(assessment_id):
 def new_assessment():
 
     json_data = json.loads(request.data)
+
     id = json_data['id']
     fname = json_data['fname']
     mname = json_data['mname']
@@ -350,14 +351,35 @@ def new_assessment():
     diagnosis = json_data['diagnosis']
     recommendation = json_data['reccomendation']
     attendingphysician = json_data['attendingphysician']
+    #
+    # print id
+    # print "\n", fname
+    # print "\n", mname
+    # print "\n",lname
+    # print "\n",age
+    # print "\n",department
+    # print "\n",temperature
+    # print "\n", pulse_rate
+    # print "\n", respiration_rate
+    # print "\n", blood_pressure
+    # print "\n", weight
+    # print "\n", chiefcomplaint
+    # print "\n", historyofpresentillness
+    # print "\n", medicationstaken
+    # print "\n", diagnosis
+    # print "\n", recommendation
+    # print "\nAP", attendingphysician
 
-    res = ('new_assessment', (id, fname, mname, lname, age, department, temperature, pulse_rate, respiration_rate, blood_pressure, weight,
+    response = ("new_assessment", (id, fname, mname, lname, age, department, temperature, pulse_rate, respiration_rate, blood_pressure, weight,
                                chiefcomplaint, historyofpresentillness, medicationstaken, diagnosis, recommendation,attendingphysician), True)
 
-    if 'Error' in res[0][0]:
-        return jsonify({'status': 'error', 'message': res[0][0]})
 
-    return jsonify({'status': 'OK', 'message': res[0][0]})
+    if 'Error' in str(response[0][0]):
+        return jsonify({'status': 'error', 'message': response[0][0]})
+    print "MESSAGE: \n", response
+    return jsonify({'status': 'OK', 'message': response[0][0]}), 201
+
+
 
 
 @app.after_request

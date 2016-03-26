@@ -640,7 +640,7 @@ $$
 create or replace function new_assessment(par_id int, par_fname text, par_mname text, par_lname text, par_age int, par_department int,
 par_temperature float,par_pulse_rate float,par_respiration_rate text,par_blood_pressure text, par_weight float,
 par_chiefcomplaint text, par_historyofpresentillness text, par_medicationstaken text,
-par_diagnosis text, par_reccomendation text, par_attendingphysician int) returns text as
+par_diagnosis text, par_recommendation text, par_attendingphysician int) returns text as
  $$
   declare
     loc_id int;
@@ -657,7 +657,7 @@ par_diagnosis text, par_reccomendation text, par_attendingphysician int) returns
       historyofpresentillness ,medicationstaken ,diagnosis ,reccomendation ,attendingphysician )
       values ( par_id, loc_patientID, par_age, par_department, par_id,
       par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken, par_diagnosis,
-      par_reccomendation, par_attendingphysician);
+      par_recommendation, par_attendingphysician);
 
       loc_res = 'OK';
 
