@@ -142,7 +142,8 @@ create table Assessment(
   diagnosis text,
   reccomendation text,
   is_done boolean default False,
-  attendingphysician int references Userinfo(id)
+  attendingphysician int references Userinfo(id),
+  is_accepted boolean default FALSE
 );
 
 insert into College values (1,'SCS');

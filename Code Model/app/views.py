@@ -99,7 +99,7 @@ def anoncare_login_required(f):
 @app.route('/admin', methods=['GET', 'POST'])
 @anoncare_login_required
 def admin_home():
-    return render_template('index.html')
+    return render_template('admin/index.html')
 
 @app.route('/api.anoncare/question', methods=['GET'])
 def get_all_questions():
