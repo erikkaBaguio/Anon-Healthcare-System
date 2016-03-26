@@ -30,7 +30,7 @@ create table Department(
 );
 
 create table Vital_signs  (
-  id serial8 primary key,
+  id int primary key,
   temperature float,
   pulse_rate float,
   respiration_rate text,
@@ -130,9 +130,9 @@ create table Neurologic(
 );
 
 create table Assessment(
-  id serial8 primary key,
+  id int primary key,
   assessment_date timestamp default 'now',
-  nameofpatient int references Patient(id),
+  nameofpatient bigint references Patient(id),
   age int,
   department int references Department(id),
   vital_signs int references Vital_signs(id),
@@ -158,6 +158,7 @@ insert into Patient_type values (1,'Student');
 insert into Patient_type values (2,'Faculty');
 insert into Patient_type values (3,'Staff');
 insert into Patient_type values (4,'Outpatient Department');
+
 
 insert into Department values (1,'Computer Science',1);
 
@@ -626,11 +627,17 @@ $$
 $$
   language 'sql';
 -----------------------------------------------------------------------------------------------------------------------------
+--[GET] Retrieve the id number of a patient
+--select getPatientID('Josiah', 'Timonera', 'Eleazar');
+create or replace function getPatientID(in par_fname text, in par_mname text, in par_lname text, out int) return int as
+$$
+  select id from Patient where lower(fname) = lower(par_fname) and lower(mname) = lower(par_mname) and lower(lname) = lower(par_lname);
+$$
+  language 'sql';
 
 -- [POST] Create new assessment
--- select new_assessment(1,18,1,1,'doc','history','medication','diagnosis', 'recccomendation', 1);
---select new_assessment('Josiah','Timonera','Regencia', 19, 1, 37.1, 80, '19 breaths/minute', '90/70', 48, 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
-create or replace function new_assessment(par_fname text, par_mname text, par_lname text, par_age int, par_department int,
+--select new_assessment(1,'Josiah','Timonera','Regencia', 19, 1, 37.1, 80, '19 breaths/minute', '90/70', 48, 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
+create or replace function new_assessment(par_id int, par_fname text, par_mname text, par_lname text, par_age int, par_department int,
 par_temperature float,par_pulse_rate float,par_respiration_rate text,par_blood_pressure text, par_weight float,
 par_chiefcomplaint text, par_historyofpresentillness text, par_medicationstaken text,
 par_diagnosis text, par_reccomendation text, par_attendingphysician int) returns text as
@@ -638,21 +645,17 @@ par_diagnosis text, par_reccomendation text, par_attendingphysician int) returns
   declare
     loc_id int;
     loc_res text;
-    vital_signID int;
-    loc_patientID int;
-    vitalSigns int;
+    loc_patientID bigint;
   begin
     select into loc_id id from Assessment;
     if loc_id isnull then
-      perform loc_patientID id from Patient where lower(fname) = lower(par_fname) and lower(mname) = lower(par_mname) and lower(lname) = lower(par_lname);
-      perform addvitalsigns(par_temperature,par_pulse_rate,par_respiration_rate,par_blood_pressure , par_weight);
+      perform addvitalsigns(par_id, par_temperature,par_pulse_rate,par_respiration_rate,par_blood_pressure , par_weight);
 
-      select into vitalSigns count(id) from Vital_signs;
-      vital_signID := vitalSigns + 1;
+      loc_patientID := getPatientID(par_fname, par_mname, par_lname);
 
-      insert into Assessment ( nameofpatient, age, department,vital_signs ,chiefcomplaint ,
+      insert into Assessment ( id, nameofpatient, age, department,vital_signs ,chiefcomplaint ,
       historyofpresentillness ,medicationstaken ,diagnosis ,reccomendation ,attendingphysician )
-      values ( loc_patientID, par_age, par_department, vital_signID,
+      values ( par_id, loc_patientID, par_age, par_department, par_id,
       par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken, par_diagnosis,
       par_reccomendation, par_attendingphysician);
 
@@ -669,7 +672,7 @@ par_diagnosis text, par_reccomendation text, par_attendingphysician int) returns
 
 --[GET] Retrieve specific Patient's assessment
 --select getassessmentID(1);
-create or replace function getassessmentID(in par_id int, out timestamp, out int,out int,out int,out int, out text,
+create or replace function getassessmentID(in par_id int, out timestamp, out bigint,out int,out int,out int, out text,
 out text,out text,out text,out text,out int) returns setof record as
 $$
   select assessment_date, nameofpatient, age, department,vital_signs ,chiefcomplaint ,
@@ -689,7 +692,7 @@ $$
 -----------------------------------------------------------------------------------------------------------------
 --[POST] Add new patient's vital signs
 --select addvitalsigns(10.1,20.1,'rr','50/50',45.5);
-create or replace function addvitalsigns(par_temperature float,par_pulse_rate float,par_respiration_rate text,
+create or replace function addvitalsigns(par_id int, par_temperature float,par_pulse_rate float,par_respiration_rate text,
 par_blood_pressure text, par_weight float) returns text as
 $$
   declare
@@ -700,8 +703,8 @@ $$
     select into loc_id id from Vital_signs;
 
       if loc_id isnull then
-        insert into Vital_signs(temperature,pulse_rate,respiration_rate,blood_pressure,weight)
-        values (par_temperature,par_pulse_rate,par_respiration_rate,par_blood_pressure , par_weight );
+        insert into Vital_signs(id, temperature,pulse_rate,respiration_rate,blood_pressure,weight)
+        values (par_id, par_temperature,par_pulse_rate,par_respiration_rate,par_blood_pressure , par_weight );
 
         loc_res = 'OK';
       else

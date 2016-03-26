@@ -325,22 +325,25 @@ def view_assessment(assessment_id):
                         "Attending Physician": r[10]})
 
         return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
-# "3";"2016-03-21 00:00:00";1;18;1;1;"fever";"cough";"medications";"diagnosis";"reccomendation";TRUE;1
-# "1";37.2;80;"16 breaths/minute";"110/70";45
+
+# select new_assessment(1,'Josiah','Timonera','Regencia', 19, 1, 37.1, 80, '19 breaths/minute', '90/70', 48,
+# 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
+
 @app.route('/anoncare.api/assessments/', methods = ['POST'])
 def new_assessment():
 
-    json_data = json.load(request.data)
+    json_data = json.loads(request.data)
+    id = json_data['id']
     fname = json_data['fname']
     mname = json_data['mname']
     lname = json_data['lname']
+    age = json_data['age']
+    department = json_data['department']
     temperature = json_data['temperature']
     pulse_rate = json_data['pulse_rate']
     respiration_rate = json_data['respiration_rate']
     blood_pressure = json_data['blood_pressure']
     weight = json_data['weight']
-    age = json_data['age']
-    department = json_data['department']
     chiefcomplaint = json_data['chiefcomplaint']
     historyofpresentillness = json_data['historyofpresentillness']
     medicationstaken = json_data['medicationstaken']
@@ -348,13 +351,13 @@ def new_assessment():
     recommendation = json_data['reccomendation']
     attendingphysician = json_data['attendingphysician']
 
-    res = ('new_assessment', (fname, mname, lname, age, department, temperature, pulse_rate, respiration_rate, blood_pressure, weight,
-                               chiefcomplaint, historyofpresentillness, medicationstaken, diagnosis, recommendation,attendingphysician))
+    res = ('new_assessment', (id, fname, mname, lname, age, department, temperature, pulse_rate, respiration_rate, blood_pressure, weight,
+                               chiefcomplaint, historyofpresentillness, medicationstaken, diagnosis, recommendation,attendingphysician), True)
 
     if 'Error' in res[0][0]:
         return jsonify({'status': 'error', 'message': res[0][0]})
 
-    return jsonify({'status': 'ok', 'message': res[0][0]})
+    return jsonify({'status': 'OK', 'message': res[0][0]})
 
 
 @app.after_request
