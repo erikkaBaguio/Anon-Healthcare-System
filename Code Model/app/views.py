@@ -5,11 +5,12 @@ from os import sys
 from flask import Flask, jsonify, render_template, request, session, redirect
 from functools import wraps
 # from flask.ext.httpauth import HTTPBasicAuth
-from .models import DBconn
+from models import DBconn
 import json, flask
 from app import app
 
 #auth = HTTPBasicAuth()
+
 
 def spcall(qry, param, commit=False):
     try:
@@ -139,27 +140,28 @@ def get_user_with_id(id):
         return jsonify({"status": "ok", "message": "ok", "entries": entries})
 
 
-@app.route('/user/', methods=['POST', 'GET'])
+@app.route('/anoncare.api/user/', methods=['POST', 'GET'])
 def insertuser():
-    if request.method == 'POST':
-        user_info = request.get_json(force=True)
 
-        print "user_info is "
-        print user_info
+    user = json.loads(request.data)
 
-        valueName = user_info['fname']
-        valueMName = user_info['mname']
-        valueLName = user_info['lname']
-        valueEmail = user_info['email']
-        valueUsername = user_info['username']
-        valuePass = user_info['password']
+    print "user is ", user
 
+    fname = user['fname']
+    mname = user['mname']
+    lname = user['lname']
+    email = user['email']
+    username = user['username']
+    password = user['password']
 
-
-        res = spcall("newuserinfo", (valueName, valueMName, valueLName, valueEmail, valueUsername, valuePass, True), True)
+    response = spcall("newuserinfo", (fname, mname, lname, email, username, password), True)
 
 
-        return jsonify({'status': 'ok'})
+    if 'Error' in str(response[0][0]):
+        return jsonify({'status': 'error', 'message': response[0][0]})
+
+    return jsonify({'status': 'OK', 'message': response[0][0]}), 200
+
 
 @app.route('/anoncare.api/vital_signs/<int:vital_signID>', methods = ['GET'])
 def get_vital_signs(vital_signID):
