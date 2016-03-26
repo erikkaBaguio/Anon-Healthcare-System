@@ -649,7 +649,6 @@ par_diagnosis text, par_reccomendation text, par_attendingphysician int) returns
   begin
     select into loc_id id from Assessment;
     if loc_id isnull then
-      --perform loc_patientID id from Patient where lower(fname) = lower(par_fname) and lower(mname) = lower(par_mname) and lower(lname) = lower(par_lname);
       perform addvitalsigns(par_id, par_temperature,par_pulse_rate,par_respiration_rate,par_blood_pressure , par_weight);
 
       loc_patientID := getPatientID(par_fname, par_mname, par_lname);
