@@ -4,10 +4,10 @@ Feature: Register User
 
   Scenario: Add a new user to the system - all requirements put
     Given admin inputs:
-        |fname   | |mname   |  |lname   | |email                  | |username        | |password             |
-        |Marpell| |Timonera|  |Regencia| |jawshaeleazar@gmail.com| |marpell.regencia| |josiaheleazarregencia|
+        | fname   | mname     | lname     | email                   | username          | password               |
+        | Josiah  | Timonera  | Regencia  | jawshaeleazar@gmail.com | josiah.regencia   | josiaheleazareregencia |
 
-    And the username 'marpell.regencia' does not yet exist
+    And the username 'josiah.regencia' does not yet exist
 
     When admin clicks the register button
 
@@ -20,8 +20,8 @@ Feature: Register User
 
   Scenario: Add a new user to the system - username already exists
     Given admin inputs:
-        |fname | |mname   |  |lname   | |email                  | |username       | |password             |
-        |Josiah| |Timonera|  |Regencia| |jawshaeleazar@gmail.com| |josiah.regencia| |josiaheleazarregencia|
+        | fname    | mname    | lname     | email                   | username          | password               |
+        | Josiah  | Timonera  | Regencia  | jawshaeleazar@gmail.com | josiah.regencia   | josiaheleazareregencia |
 
     And the username 'josiah.regencia' exists
 

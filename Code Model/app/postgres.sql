@@ -11,9 +11,9 @@ create table Userinfo (
     lname text not null,
     email text not null,
     username text unique not null,
-    password text not null,
-    role_id int references Role(id),
-    is_active boolean
+    password text not null--,
+    --role_id int references Role(id),
+    --is_active boolean
   );
 
 create table College(
