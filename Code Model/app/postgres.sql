@@ -290,9 +290,9 @@ $$
   language 'sql';
 
 
-create or replace function getusernames() returns setof record as
+create or replace function getusernames(out text, out text) returns setof record as
   $$
-    select username from Userinfo;
+    select fname, username from Userinfo;
   $$
   language 'sql';
 

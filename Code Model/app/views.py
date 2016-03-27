@@ -119,14 +119,22 @@ def get_college(college_id):
     return jsonify({"college_id": str(college_id), "college_name": str(r[0])})
 
 
-@app.route('/anoncare.api/userexists/', methods=['GET'])
-def user_exists():
-    users = spcall('getusernames', ())
+@app.route('/anoncare.api/userexists/<string:username>/', methods=['GET'])
+def user_exists(username):
+    users = spcall('getuserinfo', ())
     index = 0
+    count = 0
 
-    print users
-    return users
+    for user in users:
+        if username == users[index][4]:
+            count += 1
 
+        index += 1
+
+    if count == 0:
+        return jsonify({"exists": False})
+    elif count == 1:
+        return jsonify({"exists": True})
 
 
 @app.route('/anoncare.api/users/<int:id>/', methods=['GET'])
@@ -149,6 +157,9 @@ def get_user_with_id(id):
 
         print "username is ", res[0][4]
 
+        print "user exists", str(user_exists('josiah.eleazar')) == '<Response 21 bytes [200 OK]>'
+        # print "user exists", str(user_exists('josiah.eleazar')) == '<Response 20 bytes [200 OK]>'
+
         return jsonify({"status": "ok", "message": "ok", "entries": entries})
 
 
@@ -166,16 +177,20 @@ def insertuser():
     username = user['username']
     password = user['password']
 
-    print "user_exists is ", user_exists
+    exists = user_exists(username)
+
+    if str(exists) == '<Response 21 bytes [200 OK]>':
+        response = spcall("newuserinfo", (fname, mname, lname, email, username, password), True)
+        return jsonify({'status': 'OK'}), 200
+
+    elif str(exists) == '<Response 20 bytes [200 OK]>':
+        return jsonify({'status': 'error'})
 
 
-    response = spcall("newuserinfo", (fname, mname, lname, email, username, password), True)
+    # if 'Error' in str(response[0][0]):
+    #     return jsonify({'status': 'error', 'message': response[0][0]})
 
-
-    if 'Error' in str(response[0][0]):
-        return jsonify({'status': 'error', 'message': response[0][0]})
-
-    return jsonify({'status': 'OK', 'message': response[0][0]}), 200
+    # return jsonify({'status': 'OK', 'message': response[0][0]}), 200
 
 
 @app.route('/anoncare.api/vital_signs/<int:vital_signID>', methods = ['GET'])

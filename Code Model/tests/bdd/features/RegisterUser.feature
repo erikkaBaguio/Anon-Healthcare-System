@@ -4,16 +4,16 @@ Feature: Register User
 
   Scenario: Add a new user to the system - all requirements put
     Given admin inputs:
-        |fname | |mname  |  |lname   |  |email                 | |username       | |password             |
-        |Josiah| |Regencia| |Timonera| |jawshaeleazar@gmail.com| |josiah.timonera| |josiaheleazarregencia|
+        |fname | |mname   |  |lname|   |email                  | |username    | |password             |
+        |Mike  | |Timonera|  |Dingo| |jawshaeleazar@gmail.com| |mike.dingo| |josiaheleazarregencia|
 
     When admin clicks the register button
+
+    And the username 'mike.dingo' does not yet exist
 
     Then admin should get a '200' response
 
     And admin should get a status OK
-
-    And admin should get a message OK
 
 
 #  Scenario: Add a new user - username already exists

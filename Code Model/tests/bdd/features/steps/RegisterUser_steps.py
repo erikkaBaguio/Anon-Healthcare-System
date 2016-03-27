@@ -19,6 +19,13 @@ def when_admin_clicks_the_register_button(step):
     world.response = world.app.post('/anoncare.api/user/', data=json.dumps(world.user))
 
 
+@step(u'And the username \'([^\']*)\' does not yet exist')
+def and_the_username_group1_does_not_yet_exist(step, username):
+    world.user_exists_response = world.app.get('/anoncare.api/userexists/{}/'.format(username))
+    world.user_exists_res = json.loads(world.user_exists_response.data)
+    assert_equals(world.user_exists_res['exists'], True)
+
+
 @step(u'Then admin should get a \'([^\']*)\' response')
 def then_admin_should_get_a_group1_response(step, expected_status_code):
     assert_equals(world.response.status_code, int(expected_status_code))
@@ -29,10 +36,6 @@ def and_admin_should_get_a_status_ok(step):
     world.res = json.loads(world.response.data)
     assert_equals(world.res['status'], 'OK')
 
-
-@step(u'And admin should get a message OK')
-def and_admin_should_get_a_message_ok(step):
-    assert_equals(world.res['message'], 'OK')
 
 
 
