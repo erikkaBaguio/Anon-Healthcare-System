@@ -638,9 +638,7 @@ par_diagnosis text, par_reccomendation text, par_attendingphysician int) returns
       values ( loc_patientID, par_age, par_department, vital_signID,
       par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken, par_diagnosis,
       par_reccomendation, par_attendingphysician);
-
       loc_res = 'OK';
-
     else
       loc_res = 'ID EXISTED';
     end if;
