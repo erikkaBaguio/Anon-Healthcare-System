@@ -5,11 +5,12 @@ from os import sys
 from flask import Flask, jsonify, render_template, request, session, redirect
 from functools import wraps
 # from flask.ext.httpauth import HTTPBasicAuth
-from .models import DBconn
+from models import DBconn
 import json, flask
 from app import app
 
 #auth = HTTPBasicAuth()
+
 
 def spcall(qry, param, commit=False):
     try:
@@ -107,7 +108,6 @@ def get_all_questions():
     print res
 
 
-
 @app.route('/anoncare.api/colleges/<college_id>/', methods = ['GET'])
 def get_college(college_id):
     res = spcall('getcollegeID', str(college_id))
@@ -117,6 +117,25 @@ def get_college(college_id):
 
     r = res[0]
     return jsonify({"college_id": str(college_id), "college_name": str(r[0])})
+
+
+@app.route('/anoncare.api/userexists/<string:username>/', methods=['GET'])
+def user_exists(username):
+    users = spcall('getuserinfo', ())
+    index = 0
+    count = 0
+
+    for user in users:
+        if username == users[index][4]:
+            count += 1
+
+        index += 1
+
+    if count == 0:
+        return jsonify({"exists": False})
+    elif count == 1:
+        return jsonify({"exists": True})
+
 
 @app.route('/anoncare.api/users/<int:id>/', methods=['GET'])
 def get_user_with_id(id):
@@ -136,30 +155,43 @@ def get_user_with_id(id):
                         "email": row[3],
                         "username": row[4]})
 
+        print "username is ", res[0][4]
+
+        print "user exists", str(user_exists('josiah.eleazar')) == '<Response 21 bytes [200 OK]>'
+        # print "user exists", str(user_exists('josiah.eleazar')) == '<Response 20 bytes [200 OK]>'
+
         return jsonify({"status": "ok", "message": "ok", "entries": entries})
 
 
-@app.route('/user/', methods=['POST', 'GET'])
+@app.route('/anoncare.api/user/', methods=['POST', 'GET'])
 def insertuser():
-    if request.method == 'POST':
-        user_info = request.get_json(force=True)
 
-        print "user_info is "
-        print user_info
+    user = json.loads(request.data)
 
-        valueName = user_info['fname']
-        valueMName = user_info['mname']
-        valueLName = user_info['lname']
-        valueEmail = user_info['email']
-        valueUsername = user_info['username']
-        valuePass = user_info['password']
+    print "user is ", user
+
+    fname = user['fname']
+    mname = user['mname']
+    lname = user['lname']
+    email = user['email']
+    username = user['username']
+    password = user['password']
+
+    exists = user_exists(username)
+
+    if str(exists) == '<Response 21 bytes [200 OK]>':
+        response = spcall("newuserinfo", (fname, mname, lname, email, username, password), True)
+        return jsonify({'status': 'OK'}), 200
+
+    elif str(exists) == '<Response 20 bytes [200 OK]>':
+        return jsonify({'status': 'error'})
 
 
+    # if 'Error' in str(response[0][0]):
+    #     return jsonify({'status': 'error', 'message': response[0][0]})
 
-        res = spcall("newuserinfo", (valueName, valueMName, valueLName, valueEmail, valueUsername, valuePass, True), True)
+    # return jsonify({'status': 'OK', 'message': response[0][0]}), 200
 
-
-        return jsonify({'status': 'ok'})
 
 @app.route('/anoncare.api/vital_signs/<int:vital_signID>', methods = ['GET'])
 def get_vital_signs(vital_signID):
@@ -323,22 +355,25 @@ def view_assessment(assessment_id):
                         "Attending Physician": r[10]})
 
         return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
-# "3";"2016-03-21 00:00:00";1;18;1;1;"fever";"cough";"medications";"diagnosis";"reccomendation";TRUE;1
-# "1";37.2;80;"16 breaths/minute";"110/70";45
+
+# select new_assessment(1,'Josiah','Timonera','Regencia', 19, 1, 37.1, 80, '19 breaths/minute', '90/70', 48,
+# 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
+
 @app.route('/anoncare.api/assessments/', methods = ['POST'])
 def new_assessment():
 
-    json_data = json.load(request.data)
+    json_data = json.loads(request.data)
+    id = json_data['id']
     fname = json_data['fname']
     mname = json_data['mname']
     lname = json_data['lname']
+    age = json_data['age']
+    department = json_data['department']
     temperature = json_data['temperature']
     pulse_rate = json_data['pulse_rate']
     respiration_rate = json_data['respiration_rate']
     blood_pressure = json_data['blood_pressure']
     weight = json_data['weight']
-    age = json_data['age']
-    department = json_data['department']
     chiefcomplaint = json_data['chiefcomplaint']
     historyofpresentillness = json_data['historyofpresentillness']
     medicationstaken = json_data['medicationstaken']
@@ -346,13 +381,13 @@ def new_assessment():
     recommendation = json_data['reccomendation']
     attendingphysician = json_data['attendingphysician']
 
-    res = ('new_assessment', (fname, mname, lname, age, department, temperature, pulse_rate, respiration_rate, blood_pressure, weight,
-                               chiefcomplaint, historyofpresentillness, medicationstaken, diagnosis, recommendation,attendingphysician))
+    res = ('new_assessment', (id, fname, mname, lname, age, department, temperature, pulse_rate, respiration_rate, blood_pressure, weight,
+                               chiefcomplaint, historyofpresentillness, medicationstaken, diagnosis, recommendation,attendingphysician), True)
 
     if 'Error' in res[0][0]:
         return jsonify({'status': 'error', 'message': res[0][0]})
 
-    return jsonify({'status': 'ok', 'message': res[0][0]})
+    return jsonify({'status': 'OK', 'message': res[0][0]})
 
 
 @app.after_request

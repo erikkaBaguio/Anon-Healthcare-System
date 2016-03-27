@@ -7,3 +7,4 @@ venv/
 /app/*.pyc
 /app/models.py
 *.idea/ 
+*.pyc

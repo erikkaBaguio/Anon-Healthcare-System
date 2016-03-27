@@ -38,56 +38,56 @@ function get_random_int() {
 }
 
 
-function generate_password() {
-    var characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~!@#$%^&*()_+';
-    var char_length = characters.length;
-    var random_password = '';
-    var pass_length = random_password.length;
-
-    for(var i = 0; i < 16; i++) {
-        var random_int = get_random_int();
-
-        random_password = random_password + characters[random_int];
-    }
-
-
-    return random_password;
-}
-
-function register(){
-
-	var valueName = $('input[name="fname"]').val();
-	var valueMName = $('input[name="mname"]').val();
-	var valueLName = $('input[name="lname"]').val();
-	var valueEmail = $('input[name="email"]').val();
-    var valueUsername = create_username(valueName, valueLName);
-    var valuePass = generate_password();
-
-
-    var user_data = {fname: valueName, mname: valueMName, lname: valueLName,
-                        email: valueEmail, username: valueUsername, password: valuePass};
-
-
-
-    var json_data = JSON.stringify(user_data);
-
-
-    console.log(json_data);
-
-	$.ajax({
-		type: "POST",
-		url: "/user/",
-        dataType: "json",
-		data: json_data,
-		success: function(resp){
-			console.log(resp.status);
-
-				$("#results").html('<p>successfully register ' + valueName + '</p>');
-
-				// $("input").val("")
-		},
-		error: function(error){
-			console.log(error);
-		},
-	});
-}
+//function generate_password() {
+//    var characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~!@#$%^&*()_+';
+//    var char_length = characters.length;
+//    var random_password = '';
+//    var pass_length = random_password.length;
+//
+//    for(var i = 0; i < 16; i++) {
+//        var random_int = get_random_int();
+//
+//        random_password = random_password + characters[random_int];
+//    }
+//
+//
+//    return random_password;
+//}
+//
+//function register(){
+//
+//	var valueName = $('input[name="fname"]').val();
+//	var valueMName = $('input[name="mname"]').val();
+//	var valueLName = $('input[name="lname"]').val();
+//	var valueEmail = $('input[name="email"]').val();
+//    var valueUsername = create_username(valueName, valueLName);
+//    var valuePass = generate_password();
+//
+//
+//    var user_data = {fname: valueName, mname: valueMName, lname: valueLName,
+//                        email: valueEmail, username: valueUsername, password: valuePass};
+//
+//
+//
+//    var json_data = JSON.stringify(user_data);
+//
+//
+//    console.log(json_data);
+//
+//	$.ajax({
+//		type: "POST",
+//		url: "/user/",
+//        dataType: "json",
+//		data: json_data,
+//		success: function(resp){
+//			console.log(resp.status);
+//
+//				$("#results").html('<p>successfully register ' + valueName + '</p>');
+//
+//				// $("input").val("")
+//		},
+//		error: function(error){
+//			console.log(error);
+//		},
+//	});
+//}
