@@ -258,6 +258,23 @@ def newpatient():
 
     return jsonify({'status': 'OK', 'message': response[0][0]}), 200
 
+@app.route('/anoncare.api/patient/personal/', methods = ['POST'])
+def newpersonal():
+    data = json.loads(request.data)
+    response = spcall('newpersonal_info', (
+        data['height'],
+        data['weight'],
+        data['date_of_birth'],
+        data['civil_status'],
+        data['name_of_guardian'],
+        data['home_address'],
+        data['is_active'],),True)
+    
+    if 'Error' in str(response[0][0]):
+        return jsonify({'status': 'error', 'message': response[0][0]})
+
+    return jsonify({'status': 'OK', 'message': response[0][0]}), 200
+
 
 @app.route('/anoncare.api/patient/<id>/', methods = ['GET'])
 def getpatient_file(id):
