@@ -108,7 +108,6 @@ def get_all_questions():
     print res
 
 
-
 @app.route('/anoncare.api/colleges/<college_id>/', methods = ['GET'])
 def get_college(college_id):
     res = spcall('getcollegeID', str(college_id))
@@ -118,6 +117,17 @@ def get_college(college_id):
 
     r = res[0]
     return jsonify({"college_id": str(college_id), "college_name": str(r[0])})
+
+
+@app.route('/anoncare.api/userexists/', methods=['GET'])
+def user_exists():
+    users = spcall('getusernames', ())
+    index = 0
+
+    print users
+    return users
+
+
 
 @app.route('/anoncare.api/users/<int:id>/', methods=['GET'])
 def get_user_with_id(id):
@@ -137,6 +147,8 @@ def get_user_with_id(id):
                         "email": row[3],
                         "username": row[4]})
 
+        print "username is ", res[0][4]
+
         return jsonify({"status": "ok", "message": "ok", "entries": entries})
 
 
@@ -153,6 +165,9 @@ def insertuser():
     email = user['email']
     username = user['username']
     password = user['password']
+
+    print "user_exists is ", user_exists
+
 
     response = spcall("newuserinfo", (fname, mname, lname, email, username, password), True)
 

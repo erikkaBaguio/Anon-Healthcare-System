@@ -289,7 +289,29 @@ $$
 $$
   language 'sql';
 
---select * from getUserinfo();
+
+create or replace function getusernames() returns setof record as
+  $$
+    select username from Userinfo;
+  $$
+  language 'sql';
+
+
+-- create or replace function checkuserexists() returns setof record as
+--   $$
+--     declare
+--       saved_users text[];
+--
+--     begin
+--       for user in getusernames loop
+--
+--         end loop;
+--
+--       return saved_users;
+--     end;
+--   $$
+--   language 'plpgsql';
+
 
 create or replace function getuserinfoid(in par_id int, out text, out text, out text, out text,
                                                  out text) returns setof record as
@@ -299,6 +321,7 @@ $$
   language 'sql';
 
 --select * from getUserinfoid(1);
+
 
 ----------------------------------------------------------------------------------------------------
 create or replace function newpersonal_history(par_smoking text, par_allergies text, par_alcohol text,
