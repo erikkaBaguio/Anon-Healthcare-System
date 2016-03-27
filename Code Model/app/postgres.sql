@@ -279,11 +279,11 @@ $$
 LANGUAGE 'plpgsql';
 
 
-<<<<<<< HEAD
-select newuserinfo('Josiah', 'Timonera', 'Regencia', 'jetregencia@gmail.com', 'josiah.regencia', 'k6bkW9nUoO8^&C+~', true);
-=======
+
+--select newuserinfo('Josiah', 'Timonera', 'Regencia', 'jetregencia@gmail.com', 'josiah.regencia', 'k6bkW9nUoO8^&C+~', true);
+
 -- select newuserinfo('Josiah', 'Timonera', 'Regencia', 'jetregencia@gmail.com', 'josiah.regencia', 'k6bkW9nUoO8^&C+~');
->>>>>>> 5bf0f59ff6d272338bd47c47fd1d14212f83e535
+
 
 
 
@@ -294,10 +294,8 @@ $$
 $$
   language 'sql';
 
-<<<<<<< HEAD
---select * from getUserinfo();
-=======
 
+--select * from getUserinfo();
 -- create or replace function checkuserexists() returns setof record as
 --   $$
 --     declare
@@ -526,6 +524,28 @@ $$
   language 'sql';
 
 --select * from get_newpersonal_info_id(1);
+
+
+create or replace function newpulmonary(par_cough text, par_dyspnea text, par_hemoptysis text, par_tb_exposure)returns text as
+$$
+  declare 
+       loc_res text;
+  begin
+       if par_cough isnull or par_dyspnea isnull or par_hemoptysis isnull or par_tb_exposure isnull THEN
+       loc_res = 'Please fill up the required data';
+       else 
+       insert into Pulmonary(cough, dyspnea, hemoptysis, tb_exposure) values (par_cough, par_dyspnea, par_hemoptysis, par_tb_exposure);
+       loc_res = 'OK';
+       end if;
+       return loc_res;
+  end;
+$$
+  language 'plpgsql';
+
+
+  
+
+
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 -- NOTIFICATIONS
