@@ -278,7 +278,7 @@ $$
 LANGUAGE 'plpgsql';
 
 
-select newuserinfo('Josiah', 'Timonera', 'Regencia', 'jetregencia@gmail.com', 'josiah.regencia', 'k6bkW9nUoO8^&C+~');
+-- select newuserinfo('Josiah', 'Timonera', 'Regencia', 'jetregencia@gmail.com', 'josiah.regencia', 'k6bkW9nUoO8^&C+~');
 
 
 
@@ -287,13 +287,6 @@ create or replace function getuserinfo(out text, out text, out text, out text, o
 $$
     select fname, mname, lname, email, username from Userinfo;
 $$
-  language 'sql';
-
-
-create or replace function getusernames(out text, out text) returns setof record as
-  $$
-    select fname, username from Userinfo;
-  $$
   language 'sql';
 
 
