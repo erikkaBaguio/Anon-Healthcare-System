@@ -591,6 +591,28 @@ $$
 $$
   language 'plpgsql';
 
+
+create or replace function accept_assessment(par_assessment_id int, par_doctor_id int) returns text as
+  $$
+    declare 
+    loc_id int;
+    loc_response text;
+
+    begin
+      select into loc_id id from Assessment where id = par_assessment_id and attendingphysician = par_doctor_id;
+      if loc_id isnull then
+        loc_response = 'Error';
+
+      else
+        update Assessment set is_accepted = TRUE where id = par_assessment_id;
+          loc_response = 'Ok';
+
+      end if;
+      return loc_response;
+    end;
+  $$
+    language 'plpgsql';
+
 ------------------------------------------------------------------------------------------------------------------------------------------
 -- FINAL DIAGNOSIS
 
@@ -660,11 +682,11 @@ par_diagnosis text, par_reccomendation text, par_attendingphysician int) returns
 
 --[GET] Retrieve specific Patient's assessment
 --select getassessmentID(1);
-create or replace function getassessmentID(in par_id int, out timestamp, out bigint,out int,out int,out int, out text,
-out text,out text,out text,out text,out int) returns setof record as
+create or replace function getassessmentID(in par_id int, out timestamp, out int,out int,out int,out int, out text,
+out text,out text,out text,out text,out int, out boolean, out int8) returns setof record as
 $$
   select assessment_date, nameofpatient, age, department,vital_signs ,chiefcomplaint ,
-      historyofpresentillness ,medicationstaken ,diagnosis ,reccomendation ,attendingphysician from Assessment where id = par_id;
+      historyofpresentillness ,medicationstaken ,diagnosis ,reccomendation ,attendingphysician, is_accepted, id from Assessment where id = par_id;
 $$
   language 'sql';
 
