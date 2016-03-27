@@ -86,6 +86,18 @@ def when_i_post_the_patient_file_resource_url_group1(step):
     world.personal_uri = '/anoncare.api/patient/personal/'
     world.personal_response = world.app.post(world.personal_uri, data = json.dumps(world.personal))
 
+#--------------------------------------------------------------------------------------------------------
+#Scenario5
+@step(u'Given the following pulmonary info')
+def given_the_following_pulmonary_info(step):
+    world.pulmonary = step.hashes[0]    
+
+@step("I POST the patient file resource_url '/anoncare.api/patient/pulmonary/'")
+def when_i_post_the_patient_file_resource_url_group1(step):
+    world.pulmonary_uri = '/anoncare.api/patient/pulmonary/'
+    world.pulmonary_response = world.app.post(world.pulmonary_uri, data =json.dumps(world.pulmonary))
+
+#---------------------------------------------------------------------------------------------------------
 
 
 

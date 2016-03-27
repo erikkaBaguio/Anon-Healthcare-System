@@ -91,6 +91,7 @@ create table Pulmonary(
 );
 
 create table Gut(
+    id serial8 primary key, 
     frequency text,
     flank_plan text,
     discharge text,
@@ -278,7 +279,11 @@ $$
 LANGUAGE 'plpgsql';
 
 
+<<<<<<< HEAD
 select newuserinfo('Josiah', 'Timonera', 'Regencia', 'jetregencia@gmail.com', 'josiah.regencia', 'k6bkW9nUoO8^&C+~', true);
+=======
+-- select newuserinfo('Josiah', 'Timonera', 'Regencia', 'jetregencia@gmail.com', 'josiah.regencia', 'k6bkW9nUoO8^&C+~');
+>>>>>>> 5bf0f59ff6d272338bd47c47fd1d14212f83e535
 
 
 
@@ -289,7 +294,26 @@ $$
 $$
   language 'sql';
 
+<<<<<<< HEAD
 --select * from getUserinfo();
+=======
+
+-- create or replace function checkuserexists() returns setof record as
+--   $$
+--     declare
+--       saved_users text[];
+--
+--     begin
+--       for user in getusernames loop
+--
+--         end loop;
+--
+--       return saved_users;
+--     end;
+--   $$
+--   language 'plpgsql';
+
+>>>>>>> 5bf0f59ff6d272338bd47c47fd1d14212f83e535
 
 create or replace function getuserinfoid(in par_id int, out text, out text, out text, out text,
                                                  out text) returns setof record as
@@ -308,7 +332,7 @@ $$
    loc_id text;
    loc_res text;
  BEGIN
-   #SELECT into loc_id id from Personal_history;
+   SELECT into loc_id id from Personal_history;
    if loc_id isnull THEN
 
        INSERT into Personal_history(smoking, allergies, alcohol, medication_taken, drugs, done) VALUES (par_smoking, par_allergies,

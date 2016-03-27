@@ -131,10 +131,11 @@ def user_exists(username):
 
         index += 1
 
-    if count == 0:
-        return jsonify({"exists": False})
-    elif count == 1:
+    if count == 1:
         return jsonify({"exists": True})
+
+    else:
+        return jsonify({"exists": False})
 
 
 @app.route('/anoncare.api/users/<int:id>/', methods=['GET'])
@@ -178,13 +179,14 @@ def insertuser():
     password = user['password']
 
     exists = user_exists(username)
+    print "\nexists ", exists
 
-    if str(exists) == '<Response 21 bytes [200 OK]>':
-        response = spcall("newuserinfo", (fname, mname, lname, email, username, password), True)
-        return jsonify({'status': 'OK'}), 200
-
-    elif str(exists) == '<Response 20 bytes [200 OK]>':
+    if str(exists) == '<Response 20 bytes [200 OK]>':
         return jsonify({'status': 'error'})
+
+    else:
+        response = spcall("newuserinfo", (fname, mname, lname, email, username, password), True)
+        return jsonify({'status': 'OK'})
 
 
     # if 'Error' in str(response[0][0]):
