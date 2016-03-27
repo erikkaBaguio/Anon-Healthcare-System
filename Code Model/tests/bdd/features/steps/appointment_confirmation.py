@@ -35,19 +35,18 @@ def received_appointment(step):
 
 @step(u'When the doctor with id 2 accept the appointment')
 def accept_appointment(step):
-    world.response = world.browser.post('/anoncare.api/notify/6/1')
+    world.response = world.browser.post('/anoncare.api/accept/6/2')
     world.response.charset = 'utf8'
-    assert_equals(json.loads(world.response.text), {"status": "Ok"})
+    assert_equals(json.loads(world.response.text)[u'status'], 'ok')
 
 @step(u'Then The doctor can finalize the diagnosis')
-def finalize_diagnosis(step, expected_status_code):
-    assert_equals(world.response.status_code, expected_status_code)
+def finalize_diagnosis(step):
+    world.entries = json.loads(world.response.text)[u'entries']
+    assert_equals(world.entries[0][u'is_accepted'], 'True')
 
 @step(u'And The following appointment confirmation details are returned:')
 def appointment_confirmation_details(step):
-	world.notification = world.app.get('/anoncare.api/notify/6/1')
-	world.resp = json.loads(world.notification.data)[u'entries']
 	world.notification_returned = step.hashes[0]
-	assert_equals(world.notification_returned, world.resp[0])
+	assert_equals(world.notification_returned, world.entries[0])
 
 # =====================================================================================

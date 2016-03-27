@@ -6,5 +6,5 @@ Feature: Appointment Confirmation
             When the doctor with id 2 accept the appointment
             Then The doctor can finalize the diagnosis.
             And The following appointment confirmation details are returned:
-              | assessment_id  | doctor_id | is_accepted 			   |
-              | 6    		   | 1		   | "TRUE"   |
+              | assessment_id  | attendingphysician | is_accepted 			   |
+              | 6    		   | 2		            | True   |

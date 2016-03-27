@@ -339,7 +339,7 @@ def accept_assessment(assessment_id, doctor_id):
     records = []
 
     for r in assessment:
-        records.append({'assessment_id':r[12], 'attendingphysician':r[10], 'is_accepted':r[11]})
+        records.append({'assessment_id':str(r[12]), 'attendingphysician':str(r[10]), 'is_accepted':str(r[11])})
 
     return jsonify({'status':'ok', 'entries':records})
 
