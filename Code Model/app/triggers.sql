@@ -31,3 +31,6 @@ create or replace function notify_update() RETURNS trigger AS '
 
   END
   ' LANGUAGE plpgsql;
+
+create TRIGGER notify_update_trigger AFTER UPDATE ON Assessment FOR each ROW
+EXECUTE PROCEDURE notify_update();
