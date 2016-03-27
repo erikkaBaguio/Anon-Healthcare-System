@@ -142,7 +142,8 @@ create table Assessment(
   diagnosis text,
   reccomendation text,
   is_done boolean default False,
-  attendingphysician int references Userinfo(id)
+  attendingphysician int references Userinfo(id),
+  is_accepted boolean default FALSE
 );
 
 insert into College values (1,'SCS');
@@ -324,7 +325,7 @@ $$
    loc_id text;
    loc_res text;
  BEGIN
-   #SELECT into loc_id id from Personal_history;
+   SELECT into loc_id id from Personal_history;
    if loc_id isnull THEN
 
        INSERT into Personal_history(smoking, allergies, alcohol, medication_taken, drugs, done) VALUES (par_smoking, par_allergies,
@@ -517,42 +518,6 @@ $$
 --select * from get_newpersonal_info_id(1);
 
 ------------------------------------------------------------------------------------------------------------------------------------------
--- NOTIFICATIONS
-
--- TRIGGER (notification) - if new assessment is created, automatically create new notification
-create or replace function notify() RETURNS trigger AS '
-
-  BEGIN
-
-    IF tg_op = ''INSERT'' THEN
-      INSERT INTO Notification (assessment_id, doctor_id)
-          VALUES (new.id, new.attendingphysician);
-    RETURN new;
-
-    END IF;
-
-  END
-  ' LANGUAGE plpgsql;
-
-create TRIGGER notify_trigger AFTER INSERT ON Assessment FOR each ROW
-EXECUTE PROCEDURE notify();
-
-create or replace function notify_update() RETURNS trigger AS '
-
-  BEGIN
-
-    IF tg_op = ''UPDATE'' THEN
-      INSERT INTO Notification (assessment_id, doctor_id)
-          VALUES (old.id, new.attendingphysician);
-    RETURN new;
-
-    END IF;
-
-  END
-  ' LANGUAGE plpgsql;
-
-create TRIGGER notify_update_trigger AFTER UPDATE ON Assessment FOR each ROW
-EXECUTE PROCEDURE notify_update();
 
 create or replace function createnotify(par_assessment_id int, par_doctor_id int) returns text as
 $$
@@ -674,9 +639,7 @@ par_diagnosis text, par_reccomendation text, par_attendingphysician int) returns
       values ( par_id, loc_patientID, par_age, par_department, par_id,
       par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken, par_diagnosis,
       par_reccomendation, par_attendingphysician);
-
       loc_res = 'OK';
-
     else
       loc_res = 'ID EXISTED';
     end if;

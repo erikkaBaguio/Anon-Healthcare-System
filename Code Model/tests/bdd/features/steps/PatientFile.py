@@ -76,6 +76,15 @@ def and_i_should_get_a_message_OK(step):
     assert_equals(world.patient_response_json['message'], 'OK')
 
 #-----------------------------------------------------------------------------------------------------
+#Scenario4
+@step(u'Given the following personal info')
+def given_the_following_personal_info(step):
+    world.personal = step.hashes[0]
+
+@step("I POST the patient file resource_url '/anoncare.api/patient/personal/'")
+def when_i_post_the_patient_file_resource_url_group1(step, group1):
+    world.personal_uri = '/anoncare.api/patient/personal/'
+    world.personal_response = world.app.post(world.personal_uri, data = json.dumps(world.personal))
 
 
 
