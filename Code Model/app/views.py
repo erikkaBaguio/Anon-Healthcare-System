@@ -380,7 +380,6 @@ def new_assessment():
         json_data['reccomendation'],
         json_data['attendingphysician'],),True)
 
-<<<<<<< HEAD
     if 'Error' in str(response[0][0]):
         return jsonify({'status': 'error', 'message': response[0][0]})
 
@@ -413,7 +412,7 @@ def new_assessment():
     #     return jsonify({'status': 'error', 'message': res[0][0]})
 
     # return jsonify({'status': 'ok', 'message': res[0][0]})
-=======
+
     json_data = json.loads(request.data)
     id = json_data['id']
     fname = json_data['fname']
@@ -440,7 +439,7 @@ def new_assessment():
         return jsonify({'status': 'error', 'message': res[0][0]})
 
     return jsonify({'status': 'OK', 'message': res[0][0]})
->>>>>>> 285ad2b3020c45c33d0322eed5a65ed2452bfbba
+
 
 
 @app.after_request

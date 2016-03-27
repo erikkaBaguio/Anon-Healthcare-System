@@ -9,10 +9,6 @@ Feature: Assessment
 
           When  the nurse POST to the product resource url '/anoncare.api/assessments/'
           Then  the nurse should get a '200' response
-<<<<<<< HEAD
           And the nurse get a field status containing OK
           And the nurse get a field message containing OK
-=======
-          And   the nurse get a field status containing "OK"
-          And   the nurse get a field message containing "OK"
->>>>>>> 285ad2b3020c45c33d0322eed5a65ed2452bfbba
+         
