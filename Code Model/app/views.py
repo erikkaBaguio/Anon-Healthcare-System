@@ -299,7 +299,6 @@ def doctor_referral(assessment_id, doctor_id, prev_doctor):
     return jsonify({'status':str(update_assessment[0][0])})
 
 
-
 @app.route('/anoncare.api/assessments/<int:assessment_id>/', methods=['GET'])
 def view_assessment(assessment_id):
     assessments = spcall("getassessmentID", (assessment_id, ))
@@ -327,6 +326,35 @@ def view_assessment(assessment_id):
 
         return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
 
+@app.route('/anoncare.api/assessments/', methods=['GET'])
+def view_all_ssessment():
+    assessments = spcall("getallassessment", ())
+    records = []
+
+    if len(assessments) == 0:
+        return jsonify({"status": "OK", "message": "No entries found", "entries": [], "count": "0"})
+
+    elif 'Error' in str(assessments[0][0]):
+        return jsonify({'status': 'error', 'message': assessments[0][0]})
+
+    else:
+        for r in assessments:
+            records.append({"ID":r[0],
+                        "Date": r[1],
+                        "Patient": r[2],
+                        "Age": r[3],
+                        "Department": r[4],
+                        "Vital Signs": r[5],
+                        "Chief Complaint": r[6],
+                        "History of patient illness": r[7],
+                        "Medications taken": r[8],
+                        "Diagnosis": r[9],
+                        "Recommendation": r[10],
+                        "Attending Physician": r[11]})
+
+        return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
+
+
 # select new_assessment(1,'Josiah','Timonera','Regencia', 19, 1, 37.1, 80, '19 breaths/minute', '90/70', 48,
 # 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
 
@@ -336,12 +364,12 @@ def new_assessment():
 
     response = ('new_assessment', (
         data['id'],
-        # data['patientID'],
-        # data['fname'],
-        # data['mname'],
-        # data['lname'],
+        data['patientID'],
+        data['fname'],
+        data['mname'],
+        data['lname'],
         data['age'],
-        # data['department'],
+        data['department'],
         data['temperature'],
         data['pulse_rate'],
         data['respiration_rate'],
@@ -352,16 +380,16 @@ def new_assessment():
         data['medicationstaken'],
         data['diagnosis'],
         data['reccomendation'],
-        # data['attendingphysician'],
+        data['attendingphysician'],
     ), True)
 
     # response = ("new_assessment", (id, fname, mname, lname, age, department, temperature, pulse_rate, respiration_rate, blood_pressure, weight,
     #                            chiefcomplaint, historyofpresentillness, medicationstaken, diagnosis, recommendation,attendingphysician), True)
 
 
-    # if 'Error' in response[0][0]:
-    #     return jsonify({'status': 'error', 'message': response[0][0]})
-    # # print "MESSAGE: \n", response[0][0]
+    if 'Error' in response[0][0]:
+        return jsonify({'status': 'error', 'message': response[0][0]})
+    # print "MESSAGE: \n", response[0][0]
     return jsonify({'status': 'OK', 'message': response[0][0]}),200
 
 

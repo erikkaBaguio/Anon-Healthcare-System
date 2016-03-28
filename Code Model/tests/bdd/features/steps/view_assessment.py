@@ -15,7 +15,7 @@ def before_all():
 
 @step(u'Given   the patient assessment with an id \'([^\']*)\' exists')
 def given_the_patient_assessment_with_an_id_group1_exists(step, assessment_id):
-    world.assessments = world.app.get('/anoncare.api/assessments/{}/'.format(assessment_id))
+    world.assessments = world.app.gvet('/anoncare.api/assessments/{}/'.format(assessment_id))
     world.resp = json.loads(world.assessments.data)
     assert_equals(world.resp['status'], 'OK')
 
