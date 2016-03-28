@@ -6,7 +6,7 @@ Feature: Login
     Scenario: admin/nurse/doctor logins successfully.
             Given an account that is already stored in the system
                  |username       |password |
-                 |Josiah.Timonera|pass     |
+                 |Josiah.Regencia|pass     |
             When the admin/nurse/doctor enters username 'Josiah.Timonera'
             And the admin/nurse/doctor enters password 'pass'
             Then the admin/nurse/doctor should get a 201
