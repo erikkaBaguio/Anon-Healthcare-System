@@ -1,6 +1,42 @@
 # Created by josiah at 3/18/16
 Feature: User Accounts Maintenance
-  As a system administrator, I want to be able to view the details of a specific user
+  As a system administrator, I want to be able to add, view the details of a specific user
+
+  #Adding a user
+
+  Scenario: Add a new user to the system - all requirements put
+    Given admin inputs:
+        | fname   | mname     | lname     | email                   | username          | password               |
+        | Thomas  | Timonera  | Regencia  | jawshaeleazar@gmail.com | thomas.regencia   | josiaheleazareregencia |
+
+    And the username 'thomas.regencia' does not yet exist
+
+    When admin clicks the register button
+
+    Then admin should get an exists False
+
+    And admin should get a '200' response
+
+    And admin should get a status OK
+
+
+  Scenario: Add a new user to the system - username already exists
+    Given admin inputs:
+        | fname    | mname    | lname     | email                   | username          | password               |
+        | Josiah  | Timonera  | Regencia  | jawshaeleazar@gmail.com | josiah.regencia   | josiaheleazareregencia |
+
+    And the username 'josiah.regencia' exists
+
+    When admin clicks the register button
+
+    Then admin should get an exists True
+
+    And admin should get a '200' response
+
+    And admin should get a status error
+
+  ################################################################
+
 
   Scenario: Retrieve a user's details
     Given user already exists with data:
