@@ -675,6 +675,8 @@ $$
 --  $$
 --   language 'plpgsql';
 --====================================================================================================
+-- select new_assessment(1, 19, 37.1, 80, '19 breaths/minute', '90/70', 48, 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1');
+
 create or replace function new_assessment(in par_id int, in par_age int,
 in par_temperature float, in par_pulse_rate float, in par_respiration_rate text, in par_blood_pressure text, in par_weight float,
 in par_chiefcomplaint text, in par_historyofpresentillness text, in par_medicationstaken text,
