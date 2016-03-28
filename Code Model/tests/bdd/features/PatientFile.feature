@@ -28,3 +28,20 @@ Scenario: Create patient file
     And I should get a status OK
     And I should get a message OK
 
+Scenario: Create personal info
+    Given the following personal info
+    |height|weight|date_of_birth|civil_status|name_of_guardian |home_address          |is_active|
+    |5 ft  | 50   | May 10 1996 | single     | Corazon Martinez| dalipuga, Iligan City| True    |  
+    When I POST the patient file resource_url '/anoncare.api/patient/personal/'
+    Then I should get a '200' response
+    And I should get a status OK
+    And I should get a message OK
+
+Scenario: Create pulmonary info
+    Given the following pulmonary info
+    |cough | dyspnea| hemoptysis | tb_exposure |
+    | mild |  none    | none     | none        |
+    When I POST the patient file resource_url '/anoncare.api/patient/pulmonary/'
+    Then I should get a '200' response
+    And I should get a status OK
+    And I should get a message OK

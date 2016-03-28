@@ -46,7 +46,7 @@ def then_i_would_get_a_group1_response(step, expected_status_code):
 @step(u'And I should get a status ok')
 def and_i_should_get_a_status_not_ok(step):
     world.resp = json.loads(world.response.data)
-    assert_equals(world.resp['status'], 'ok')
+    assert_equals(world.resp['status'], 'OK')
 
 
 

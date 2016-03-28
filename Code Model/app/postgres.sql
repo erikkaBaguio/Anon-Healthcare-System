@@ -11,9 +11,9 @@ create table Userinfo (
     lname text not null,
     email text not null,
     username text unique not null,
-    password text not null,
-    role_id int references Role(id) not null,
-    is_active boolean not null
+    password text not null--,
+    --role_id int references Role(id),
+    --is_active boolean
   );
 
 create table College(
@@ -30,7 +30,7 @@ create table Department(
 );
 
 create table Vital_signs  (
-  id int primary key,
+  id serial8 primary key,
   temperature float,
   pulse_rate float,
   respiration_rate text,
@@ -83,6 +83,7 @@ create table Patient(
 
 
 create table Pulmonary(
+    id serial8 primary key,
     cough text,
     dyspnea text,
     hemoptysis text,
@@ -90,6 +91,7 @@ create table Pulmonary(
 );
 
 create table Gut(
+    id serial8 primary key, 
     frequency text,
     flank_plan text,
     discharge text,
@@ -130,9 +132,9 @@ create table Neurologic(
 );
 
 create table Assessment(
-  id int primary key,
+  id serial8 primary key,
   assessment_date timestamp default 'now',
-  nameofpatient bigint references Patient(id),
+  nameofpatient int references Patient(id),
   age int,
   department int references Department(id),
   vital_signs int references Vital_signs(id),
@@ -158,7 +160,6 @@ insert into Patient_type values (1,'Student');
 insert into Patient_type values (2,'Faculty');
 insert into Patient_type values (3,'Staff');
 insert into Patient_type values (4,'Outpatient Department');
-
 
 insert into Department values (1,'Computer Science',1);
 
@@ -226,7 +227,7 @@ $$
 
 
 create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
-                                par_email text, par_username text, par_password text)
+                                par_email text, par_username text, par_password text, par_active boolean)
                                  returns text as
 $$
 
@@ -238,8 +239,8 @@ $$
 --        username := par_fname || '.' || par_lname;
 --        random_password := generate_password();
 
-       insert into Userinfo (fname, mname, lname, email, username, password)
-       values (par_fname, par_mname, par_lname, par_email, par_username, par_password);
+       insert into Userinfo (fname, mname, lname, email, username, password, is_active)
+       values (par_fname, par_mname, par_lname, par_email, par_username, par_password, par_active);
 
 
        loc_res = 'OK';
@@ -278,7 +279,11 @@ $$
 LANGUAGE 'plpgsql';
 
 
-select newuserinfo('Josiah', 'Timonera', 'Regencia', 'jetregencia@gmail.com', 'josiah.regencia', 'k6bkW9nUoO8^&C+~');
+
+--select newuserinfo('Josiah', 'Timonera', 'Regencia', 'jetregencia@gmail.com', 'josiah.regencia', 'k6bkW9nUoO8^&C+~', true);
+
+-- select newuserinfo('Josiah', 'Timonera', 'Regencia', 'jetregencia@gmail.com', 'josiah.regencia', 'k6bkW9nUoO8^&C+~');
+
 
 
 
@@ -289,7 +294,22 @@ $$
 $$
   language 'sql';
 
+
 --select * from getUserinfo();
+-- create or replace function checkuserexists() returns setof record as
+--   $$
+--     declare
+--       saved_users text[];
+--
+--     begin
+--       for user in getusernames loop
+--
+--         end loop;
+--
+--       return saved_users;
+--     end;
+--   $$
+--   language 'plpgsql';
 
 create or replace function getuserinfoid(in par_id int, out text, out text, out text, out text,
                                                  out text) returns setof record as
@@ -308,7 +328,7 @@ $$
    loc_id text;
    loc_res text;
  BEGIN
-   #SELECT into loc_id id from Personal_history;
+   SELECT into loc_id id from Personal_history;
    if loc_id isnull THEN
 
        INSERT into Personal_history(smoking, allergies, alcohol, medication_taken, drugs, done) VALUES (par_smoking, par_allergies,
@@ -472,11 +492,14 @@ $$
   declare
       loc_res text;
   begin
+        if par_height isnull or par_weight isnull or par_date_of_birth isnull or par_civil_status isnull  or par_name_of_guardian isnull or par_home_address isnull or par_is_active isnull then
+        loc_res = 'Please fill up the required data';
+        else 
         insert into Personal_info(height, weight, date_of_birth, civil_status, name_of_guardian, home_address, is_active) values 
                                   (par_height , par_weight , par_date_of_birth , par_civil_status, par_name_of_guardian , par_home_address , par_is_active );                            
         loc_res = 'Ok';
-
-      return loc_res;
+        END IF;
+        return loc_res;
      
   end;
 $$
@@ -500,6 +523,28 @@ $$
 
 --select * from get_newpersonal_info_id(1);
 
+
+create or replace function newpulmonary(par_cough text, par_dyspnea text, par_hemoptysis text, par_tb_exposure)returns text as
+$$
+  declare 
+       loc_res text;
+  begin
+       if par_cough isnull or par_dyspnea isnull or par_hemoptysis isnull or par_tb_exposure isnull THEN
+       loc_res = 'Please fill up the required data';
+       else 
+       insert into Pulmonary(cough, dyspnea, hemoptysis, tb_exposure) values (par_cough, par_dyspnea, par_hemoptysis, par_tb_exposure);
+       loc_res = 'OK';
+       end if;
+       return loc_res;
+  end;
+$$
+  language 'plpgsql';
+
+
+  
+
+
+
 ------------------------------------------------------------------------------------------------------------------------------------------
 -- NOTIFICATIONS
 
@@ -509,6 +554,10 @@ create or replace function notify() RETURNS trigger AS '
   BEGIN
 
     IF tg_op = ''INSERT'' THEN
+      INSERT INTO Notification (assessment_id, doctor_id)
+          VALUES (new.id, new.attendingphysician);
+
+    IF tg_op = ''UPDATE'' THEN
       INSERT INTO Notification (assessment_id, doctor_id)
           VALUES (new.id, new.attendingphysician);
     RETURN new;
@@ -563,27 +612,6 @@ $$
 $$
   language 'sql';
 
-
-create or replace function update_notification(par_assessment_id int, par_doctor_id int) returns text as
-$$
-  declare
-      loc_response text;
-      loc_id int;
-  begin
-        select into loc_id id from Notification where assessment_id = par_assessment_id and doctor_id = par_doctor_id;
-        if loc_id isnull then
-          loc_response = 'Unable to find notification';
-
-        else
-          update Notification set is_read = TRUE where id=loc_id;
-          loc_response = 'Updated';
-        end if;
-        return loc_response;
-  end;
-$$
-  language 'plpgsql';
-
-
 create or replace function update_assessment(par_assessment_id int, par_doctor_id int) returns text as
 $$
   declare
@@ -602,6 +630,28 @@ $$
   end;
 $$
   language 'plpgsql';
+
+
+create or replace function accept_assessment(par_assessment_id int, par_doctor_id int) returns text as
+  $$
+    declare 
+    loc_id int;
+    loc_response text;
+
+    begin
+      select into loc_id id from Assessment where id = par_assessment_id and attendingphysician = par_doctor_id;
+      if loc_id isnull then
+        loc_response = 'Error';
+
+      else
+        update Assessment set is_accepted = TRUE where id = par_assessment_id;
+          loc_response = 'Ok';
+
+      end if;
+      return loc_response;
+    end;
+  $$
+    language 'plpgsql';
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 -- FINAL DIAGNOSIS
@@ -627,17 +677,11 @@ $$
 $$
   language 'sql';
 -----------------------------------------------------------------------------------------------------------------------------
---[GET] Retrieve the id number of a patient
---select getPatientID('Josiah', 'Timonera', 'Eleazar');
-create or replace function getPatientID(in par_fname text, in par_mname text, in par_lname text, out int) return int as
-$$
-  select id from Patient where lower(fname) = lower(par_fname) and lower(mname) = lower(par_mname) and lower(lname) = lower(par_lname);
-$$
-  language 'sql';
 
 -- [POST] Create new assessment
---select new_assessment(1,'Josiah','Timonera','Regencia', 19, 1, 37.1, 80, '19 breaths/minute', '90/70', 48, 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
-create or replace function new_assessment(par_id int, par_fname text, par_mname text, par_lname text, par_age int, par_department int,
+-- select new_assessment(1,18,1,1,'doc','history','medication','diagnosis', 'recccomendation', 1);
+--select new_assessment('Josiah','Timonera','Regencia', 19, 1, 37.1, 80, '19 breaths/minute', '90/70', 48, 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
+create or replace function new_assessment(par_fname text, par_mname text, par_lname text, par_age int, par_department int,
 par_temperature float,par_pulse_rate float,par_respiration_rate text,par_blood_pressure text, par_weight float,
 par_chiefcomplaint text, par_historyofpresentillness text, par_medicationstaken text,
 par_diagnosis text, par_recommendation text, par_attendingphysician int) returns text as
@@ -645,22 +689,25 @@ par_diagnosis text, par_recommendation text, par_attendingphysician int) returns
   declare
     loc_id int;
     loc_res text;
-    loc_patientID bigint;
+    vital_signID int;
+    loc_patientID int;
+    vitalSigns int;
   begin
     select into loc_id id from Assessment;
     if loc_id isnull then
-      perform addvitalsigns(par_id, par_temperature,par_pulse_rate,par_respiration_rate,par_blood_pressure , par_weight);
+      perform loc_patientID id from Patient where lower(fname) = lower(par_fname) and lower(mname) = lower(par_mname) and lower(lname) = lower(par_lname);
+      perform addvitalsigns(par_temperature,par_pulse_rate,par_respiration_rate,par_blood_pressure , par_weight);
 
-      loc_patientID := getPatientID(par_fname, par_mname, par_lname);
+      select into vitalSigns count(id) from Vital_signs;
+      vital_signID := vitalSigns + 1;
 
-      insert into Assessment ( id, nameofpatient, age, department,vital_signs ,chiefcomplaint ,
+      insert into Assessment ( nameofpatient, age, department,vital_signs ,chiefcomplaint ,
       historyofpresentillness ,medicationstaken ,diagnosis ,reccomendation ,attendingphysician )
-      values ( par_id, loc_patientID, par_age, par_department, par_id,
+      values ( loc_patientID, par_age, par_department, vital_signID,
       par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken, par_diagnosis,
       par_recommendation, par_attendingphysician);
 
       loc_res = 'OK';
-
     else
       loc_res = 'ID EXISTED';
     end if;
@@ -672,11 +719,12 @@ par_diagnosis text, par_recommendation text, par_attendingphysician int) returns
 
 --[GET] Retrieve specific Patient's assessment
 --select getassessmentID(1);
-create or replace function getassessmentID(in par_id int, out timestamp, out bigint,out int,out int,out int, out text,
-out text,out text,out text,out text,out int) returns setof record as
+create or replace function getassessmentID(in par_id int, out timestamp, out int,out int,out int,out int, out text,
+out text,out text,out text,out text,out int, out boolean, out int8) returns setof record as
+
 $$
   select assessment_date, nameofpatient, age, department,vital_signs ,chiefcomplaint ,
-      historyofpresentillness ,medicationstaken ,diagnosis ,reccomendation ,attendingphysician from Assessment where id = par_id;
+      historyofpresentillness ,medicationstaken ,diagnosis ,reccomendation ,attendingphysician, is_accepted, id from Assessment where id = par_id;
 $$
   language 'sql';
 
@@ -692,7 +740,7 @@ $$
 -----------------------------------------------------------------------------------------------------------------
 --[POST] Add new patient's vital signs
 --select addvitalsigns(10.1,20.1,'rr','50/50',45.5);
-create or replace function addvitalsigns(par_id int, par_temperature float,par_pulse_rate float,par_respiration_rate text,
+create or replace function addvitalsigns(par_temperature float,par_pulse_rate float,par_respiration_rate text,
 par_blood_pressure text, par_weight float) returns text as
 $$
   declare
@@ -703,8 +751,8 @@ $$
     select into loc_id id from Vital_signs;
 
       if loc_id isnull then
-        insert into Vital_signs(id, temperature,pulse_rate,respiration_rate,blood_pressure,weight)
-        values (par_id, par_temperature,par_pulse_rate,par_respiration_rate,par_blood_pressure , par_weight );
+        insert into Vital_signs(temperature,pulse_rate,respiration_rate,blood_pressure,weight)
+        values (par_temperature,par_pulse_rate,par_respiration_rate,par_blood_pressure , par_weight );
 
         loc_res = 'OK';
       else
