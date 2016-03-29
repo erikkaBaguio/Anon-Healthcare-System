@@ -161,7 +161,7 @@ def get_user_with_id(id):
         print "user exists", str(user_exists('josiah.eleazar')) == '<Response 21 bytes [200 OK]>'
         # print "user exists", str(user_exists('josiah.eleazar')) == '<Response 20 bytes [200 OK]>'
 
-        return jsonify({"status": "ok", "entries": entries})
+        return jsonify({"status": "ok", "message": "ok", "entries": entries})
 
 
 @app.route('/anoncare.api/user/', methods=['POST', 'GET'])
