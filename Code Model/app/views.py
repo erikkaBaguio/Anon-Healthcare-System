@@ -186,7 +186,7 @@ def insertuser():
         return jsonify({'status': 'error'})
 
     else:
-        response = spcall("newuserinfo", (fname, mname, lname, email, username, password), True)
+        spcall("newuserinfo", (fname, mname, lname, email, username, password), True)
         return jsonify({'status': 'OK'})
 
 

@@ -62,6 +62,8 @@ def and_admin_should_get_a_status_ok(step):
 
 ####End of Adding a user#######
 
+#========================================================================================================#
+
 ###retrieving a user with id __
 
 @step(u'Given user already exists with data:')
@@ -100,7 +102,7 @@ def then_i_would_get_a_group1_response(step, expected_status_code):
 @step(u'And I should get a status ok')
 def and_i_should_get_a_status_not_ok(step):
     world.resp = json.loads(world.response.data)
-    assert_equals(world.resp['status'], 'OK')
+    assert_equals(world.resp['status'], 'ok')
 
 
 @step(u'And I should get a message No User Found')

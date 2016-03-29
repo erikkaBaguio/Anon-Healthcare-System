@@ -227,7 +227,7 @@ $$
 
 
 create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
-                                par_email text, par_username text, par_password text, par_active boolean)
+                                par_email text, par_username text, par_password text)
                                  returns text as
 $$
 
@@ -239,8 +239,8 @@ $$
 --        username := par_fname || '.' || par_lname;
 --        random_password := generate_password();
 
-       insert into Userinfo (fname, mname, lname, email, username, password, is_active)
-       values (par_fname, par_mname, par_lname, par_email, par_username, par_password, par_active);
+       insert into Userinfo (fname, mname, lname, email, username, password)
+       values (par_fname, par_mname, par_lname, par_email, par_username, par_password);
 
 
        loc_res = 'OK';
@@ -294,22 +294,6 @@ $$
 $$
   language 'sql';
 
-
---select * from getUserinfo();
--- create or replace function checkuserexists() returns setof record as
---   $$
---     declare
---       saved_users text[];
---
---     begin
---       for user in getusernames loop
---
---         end loop;
---
---       return saved_users;
---     end;
---   $$
---   language 'plpgsql';
 
 create or replace function getuserinfoid(in par_id int, out text, out text, out text, out text,
                                                  out text) returns setof record as
