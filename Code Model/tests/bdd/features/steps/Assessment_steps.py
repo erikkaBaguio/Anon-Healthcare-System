@@ -28,3 +28,12 @@ def and_the_nurse_get_a_field_status_containing_ok(step):
 @step(u'And   the nurse get a field message containing OK')
 def and_the_nurse_get_a_field_message_containing_ok(step):
     assert_equals(world.resp['message'], 'OK')
+
+
+""" Rainy Case """
+
+""" Scenario: Duplicate assessment id """
+
+@step(u'And   the nurse get a field message containing ID EXISTS')
+def and_the_nurse_get_a_field_message_containing_ok(step):
+    assert_equals(world.resp['message'], 'ID EXISTS')

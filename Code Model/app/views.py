@@ -355,13 +355,9 @@ def view_all_ssessment():
         return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
 
 
-# select new_assessment(1,'Josiah','Timonera','Regencia', 19, 1, 37.1, 80, '19 breaths/minute', '90/70', 48,
-# 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
-
 @app.route('/anoncare.api/assessments/', methods = ['POST'])
 def new_assessment():
     data = json.loads(request.data)
-    print "\ndata : \n" , data
 
     id = data['id']
     fname = data['fname']
@@ -387,8 +383,7 @@ def new_assessment():
     if 'Error' in response[0][0]:
         return jsonify({'status': 'error', 'message': response[0][0]})
     print "MESSAGE: \n", response
-    return jsonify({'status': 'OK', 'message': response[0][0]
-                    })
+    return jsonify({'status': 'OK', 'message': response[0][0] })
 
 
 

@@ -21,4 +21,5 @@ Feature: Assessment
           When  the nurse POST to the product resource url /anoncare.api/assessments/
           Then  the nurse should get a '200' response
           And   the nurse get a field status containing OK
-          And   the nurse get a field message containing ID exists
+          And   the nurse get a field message containing ID EXISTS.
+
