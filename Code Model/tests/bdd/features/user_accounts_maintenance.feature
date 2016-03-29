@@ -7,9 +7,9 @@ Feature: User Accounts Maintenance
   Scenario: Add a new user to the system - all requirements put
     Given admin inputs:
         | fname   | mname     | lname     | email                   | username          | password               |  role_id|
-        | Josiah  | Timonera  | Regencia  | jawshaeleazar@gmail.com | josiah.regencia   | josiaheleazareregencia |  1      |
+        | Wichelle| Timonera  | Regencia  | jawshaeleazar@gmail.com | wichelle.regencia | josiaheleazareregencia |  1      |
 
-    And the username 'josiah.regencia' does not yet exist
+    And the username 'wichelle.regencia' does not yet exist
 
     When admin clicks the register button
 
@@ -49,9 +49,8 @@ Feature: User Accounts Maintenance
 
 
   Scenario: User's details does not exist
-    Given User with id '2'
+    Given User with id '22'
     When I retrieve the user's details
     Then I would get a '200' response
-    And I should get a status ok
     And I should get a message No User Found
 
