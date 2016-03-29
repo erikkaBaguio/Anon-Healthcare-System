@@ -129,6 +129,23 @@ create table Neurologic(
   done BOOLEAN
 );
 
+create table Assessment(
+  id int primary key,
+  assessment_date timestamp default 'now',
+  nameofpatient bigint references Patient(id),
+  age int,
+  department int references Department(id),
+  vital_signs int references Vital_signs(id),
+  chiefcomplaint text,
+  historyofpresentillness text,
+  medicationstaken text,
+  diagnosis text,
+  reccomendation text,
+  is_done boolean default False,
+  attendingphysician int references Userinfo(id)
+);
+
+
 
 insert into College values (1,'SCS');
 insert into College values (2,'COE');
@@ -613,10 +630,12 @@ $$
   language 'sql';
 -----------------------------------------------------------------------------------------------------------------------------
 --[GET] Retrieve the id number of a patient
---select getPatientID('Josiah', 'Timonera', 'Eleazar');
-create or replace function getPatientID(in par_fname text, in par_mname text, in par_lname text, out bigint) returns bigint as
+--select retrievePatientID('Josiah', 'Timonera', 'Eleazar');
+create or replace function retrievePatientID(in par_fname text, in par_mname text, in par_lname text, out bigint) returns bigint as
 $$
-  select id from Patient where lower(fname) = lower(par_fname) and lower(mname) = lower(par_mname) and lower(lname) = lower(par_lname);
+  begin
+    select loc_id id from Patient where lower(fname) = lower(par_fname) and lower(mname) = lower(par_mname) and lower(lname) = lower(par_lname);
+  end;
 $$
   language 'sql';
 
@@ -634,9 +653,11 @@ in par_diagnosis text, in par_recommendation text, in par_attendingphysician int
   begin
     select into loc_id id from Assessment;
     if loc_id isnull then
-      perform addvitalsigns(par_id, par_temperature,par_pulse_rate,par_respiration_rate,par_blood_pressure , par_weight);
+      perform addvitalsigns(par_id, par_temperature, par_pulse_rate,par_respiration_rate, par_blood_pressure , par_weight);
 
-      loc_patientID := getPatientID(par_fname, par_mname, par_lname);
+      perform loc_patientID id
+      from Patient
+      where lower(fname) = lower(par_fname) and lower(mname) = lower(par_mname) and lower(lname) = lower(par_lname);
 
       insert into Assessment ( id, nameofpatient, age, department,vital_signs ,chiefcomplaint ,
       historyofpresentillness ,medicationstaken ,diagnosis ,reccomendation ,attendingphysician )
@@ -653,36 +674,6 @@ in par_diagnosis text, in par_recommendation text, in par_attendingphysician int
   end;
  $$
   language 'plpgsql';
---====================================================================================================
--- select new_assessment(1, 19, 37.1, 80, '19 breaths/minute', '90/70', 48, 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1');
---
--- create or replace function new_assessment(in par_id int, in par_age int,
--- in par_temperature float, in par_pulse_rate float, in par_respiration_rate text, in par_blood_pressure text, in par_weight float,
--- in par_chiefcomplaint text, in par_historyofpresentillness text, in par_medicationstaken text,
--- in par_diagnosis text, in par_recommendation text) returns text as
---  $$
---   declare
---     loc_id int;
---     loc_res text;
---   begin
---     select into loc_id id from Assessment;
---     if loc_id isnull then
---
---       insert into Assessment ( id, age, temperature,pulse_rate,respiration_rate,blood_pressure,weight,chiefcomplaint ,
---       historyofpresentillness ,medicationstaken ,diagnosis ,reccomendation )
---       values ( par_id, par_age, par_temperature,par_pulse_rate,par_respiration_rate,par_blood_pressure , par_weight,
---       par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken, par_diagnosis,
---       par_recommendation);
---
---       loc_res = 'OK';
---
---     else
---       loc_res = 'ID EXISTED';
---     end if;
---     return loc_res;
---   end;
---  $$
---   language 'plpgsql';
 
 
 
@@ -704,6 +695,7 @@ $$
   select * from Assessment;
 $$
   language 'sql';
+
 
 -----------------------------------------------------------------------------------------------------------------
 --[POST] Add new patient's vital signs

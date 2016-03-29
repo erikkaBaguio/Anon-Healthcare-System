@@ -361,37 +361,34 @@ def view_all_ssessment():
 @app.route('/anoncare.api/assessments/', methods = ['POST'])
 def new_assessment():
     data = json.loads(request.data)
+    print "\ndata : \n" , data
 
-    response = ('new_assessment', (
-        data['id'],
-        data['patientID'],
-        data['fname'],
-        data['mname'],
-        data['lname'],
-        data['age'],
-        data['department'],
-        data['temperature'],
-        data['pulse_rate'],
-        data['respiration_rate'],
-        data['blood_pressure'],
-        data['weight'],
-        data['chiefcomplaint'],
-        data['historyofpresentillness'],
-        data['medicationstaken'],
-        data['diagnosis'],
-        data['reccomendation'],
-        data['attendingphysician'],
-    ), True)
+    id = data['id']
+    fname = data['fname']
+    mname = data['mname']
+    lname = data['lname']
+    age = data['age']
+    department = data['department']
+    temperature =  data['temperature']
+    pulse_rate = data['pulse_rate']
+    respiration_rate = data['respiration_rate']
+    blood_pressure = data['blood_pressure']
+    weight = data['weight']
+    chiefcomplaint = data['chiefcomplaint']
+    historyofpresentillness = data['historyofpresentillness']
+    medicationstaken = data['medicationstaken']
+    diagnosis = data['diagnosis']
+    recommendation = data['reccomendation']
+    attendingphysician = data['attendingphysician']
 
-    # response = ("new_assessment", (id, fname, mname, lname, age, department, temperature, pulse_rate, respiration_rate, blood_pressure, weight,
-    #                            chiefcomplaint, historyofpresentillness, medicationstaken, diagnosis, recommendation,attendingphysician), True)
-
+    response = spcall("new_assessment", (id, fname, mname, lname, age, department, temperature, pulse_rate, respiration_rate, blood_pressure, weight,
+    chiefcomplaint, historyofpresentillness, medicationstaken, diagnosis, recommendation, attendingphysician, ), True)
 
     if 'Error' in response[0][0]:
         return jsonify({'status': 'error', 'message': response[0][0]})
-    # print "MESSAGE: \n", response[0][0]
-    return jsonify({'status': 'OK', 'message': response[0][0]}),200
-
+    print "MESSAGE: \n", response
+    return jsonify({'status': 'OK', 'message': response[0][0]
+                    })
 
 
 
