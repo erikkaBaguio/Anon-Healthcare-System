@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="3031907796">
+  <component name="DataSourceManagerImpl" format="xml" hash="3904856485">
     <data-source source="LOCAL" name="PostgreSQL - acdb@localhost" uuid="cc9e23eb-f8a5-49a0-ad82-9ac26fdeb858">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/acdb</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="PostgreSQL - acdb@localhost [2]" uuid="9fb88d7e-26af-4a56-adf4-26445f55a41a">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
