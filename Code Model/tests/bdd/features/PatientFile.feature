@@ -21,8 +21,9 @@ Scenario: Get the patient file
 
 #Rainy Case    
 Scenario: Get patient file that doesn't exists
-    Given a patient file with id '10'
-    When I retrieve the patient id '10'
+    Given a patient file with id '3'
+    When I retrieve the patient id '3'
     Then I get a '200' response
     And I should get a status OK
     And I should get a message No patient file found
+

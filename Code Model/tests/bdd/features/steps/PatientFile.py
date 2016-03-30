@@ -52,6 +52,21 @@ def and_i_can_retrieve_the_patient_file(step):
     world.resp = json.loads(world.response.data)
     assert_equals(world.resp['status'], 'OK')
 
+#Rainy Case- GET
+@step(u'Given a patient file with id \'([^\']*)\'')
+def given_a_patient_file_with_id_group1(step, id):
+    world.patient = world.app.get('/anoncare.api/patient/{}/'.format(id))
+    world.resp = json.loads(world.patient.data)
+    assert_equals(world.resp['status'], 'OK')
+    
+@step(u'When I retrieve the patient id \'([^\']*)\'')
+def when_i_retrieve_the_patient_id_10(step, id):
+    world.response = world.app.get('/anoncare.api/patient/{}/'.format(id))
+
+@step(u'And I should get a message No patient file found')
+def and_i_should_get_a_message_ok(step):
+    world.resp = json.loads(world.response.data)
+    assert_equals(world.resp['message'], 'No patient file found')
 
 
 
