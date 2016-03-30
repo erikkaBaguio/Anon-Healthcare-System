@@ -461,24 +461,6 @@ $$
   language 'plpgsql';
 
 
-
-
-create or replace function get_newpatient(out text, out text, out text, out int, out text, out int, out int, out int, out boolean) returns setof record as
-$$
-  select fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active from Patient;
-$$
-  language 'sql';
-
---select * from get_newpatient();
-
-create or replace function get_newpatient_id(in par_id int, out text, out text, out text, out int, out text, out int, out int, out int, out boolean) returns setof record as
-$$
-  select fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active from Patient where par_id = id;
-$$
-  language 'sql';
-
---select * from get_newpatient_id(2);
-
 --GET patient file and personal info
 create or replace function get_patientId(in par_id int, out text, out text, out text, out int, out text,     
                                               out text, out float, out text, out text,out text,
