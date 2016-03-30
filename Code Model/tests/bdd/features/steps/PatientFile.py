@@ -68,6 +68,15 @@ def and_i_should_get_a_message_ok(step):
     world.resp = json.loads(world.response.data)
     assert_equals(world.resp['message'], 'No patient file found')
 
+#Rainy Case - POST
+@step(u'Given I input the following patient file:')
+def given_i_input_the_following_patient_file(step):
+    world.patient = step.hashes[0]
+
+@step(u'Then I should get a message Patient already EXISTED')
+def then_i_should_get_a_message_patient_already_existed(step):
+    world.resp = json.loads(world.response.data)
+    assert_equals(world.resp['message'], 'Patient already EXISTED')
 
 
 

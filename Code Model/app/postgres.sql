@@ -434,20 +434,33 @@ $$
   language 'plpgsql';
 
 
---GET patient file and personal info
-create or replace function get_patientId(in par_id int, out text, out text, out text, out int, out text,     
-                                              out text, out float, out text, out text,out text,
-                                              out text) returns setof record as
+--GET patient file
+create or replace function get_patientfileId(in par_id int, out text, out text, out text, out int, out text,     
+                                         out text, out float, out text, out text, out text, 
+                                         out text, out text, out text, out text, out text,
+                                         out text, out text, out text, out text, out text,
+                                         out text, out text, out text, out text, out text,
+                                         out text, out text, out text, out text, out text,
+                                         out text, out text, out text, out text, out text,
+                                         out text, out text) returns setof record as
 $$
-  select Patient.fname, Patient.mname, Patient.lname, Patient.age, Patient.sex,
-         Personal_info.height, Personal_info.weight,Personal_info.date_of_birth, Personal_info.civil_status, Personal_info.name_of_guardian, 
-         Personal_info.home_address
-  from Patient, Personal_info
-  where Patient.id = par_id AND Personal_info.id = Patient.personal_info_id ;     
+  select Patient.fname, Patient.mname, Patient.lname, Patient.age, Patient.sex, 
+         Personal_info.height, Personal_info.weight, Personal_info.date_of_birth, Personal_info.civil_status, Personal_info.name_of_guardian, 
+         Personal_info.home_address, Pulmonary.cough, Pulmonary.dyspnea, Pulmonary.hemoptysis, Pulmonary.tb_exposure,
+         Gut.frequency, Gut.flank_plan, Gut.discharge, Gut.dysuria, Gut.nocturia,
+         Gut.dec_urine_amount, Illness.asthma, Illness.ptb, Illness.heart_problem, Illness.hepatitis_a_b,
+         Illness.chicken_pox, Illness.mumps, Illness.typhoid_fever,Cardiac.chest_pain, Cardiac.palpitations,
+         Cardiac.pedal_edema, Cardiac.orthopnea, Cardiac.nocturnal_dyspnea, Neurologic.headache, Neurologic.seizure,
+         Neurologic.dizziness, Neurologic.loss_of_consciousness
+  from Patient, Personal_info, Pulmonary, Gut, Illness, Cardiac, Neurologic 
+  where Patient.id = par_id AND Personal_info.id = Patient.personal_info_id AND Pulmonary.id = Patient.pulmonary_id AND 
+        Gut.id = Patient.gut_id AND Illness.id = Patient.illness_id AND Cardiac.id = Patient.cardiac_id AND Neurologic.id = Patient.neurologic_id;     
 $$
   language 'sql';
 
---select * from get_patientId(2);
+
+--select * from get_patientfileId(1);
+
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 
