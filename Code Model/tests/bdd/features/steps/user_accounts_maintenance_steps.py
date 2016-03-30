@@ -87,9 +87,10 @@ def given_user_with_id_group1(step, id):
     world.get_response = world.app.get('/anoncare.api/users/{}/'.format(id))
 
 
-@step(u'When I retrieve the user\'s details')
-def when_i_retrieve_the_user_s_details(step):
-    world.get_response = world.app.get('/anoncare.api/users/22/')
+@step(u'When I retrieve the user with id \'([^\']*)\'')
+def when_i_retrieve_the_user_with_id_group1(step, id):
+    world.get_response = world.app.get('/anoncare.api/users/{}/'.format(id))
+    # assert_equals(world.get_response, 'ok')
 
 
 
@@ -98,10 +99,10 @@ def then_i_would_get_a_group1_response(step, expected_status_code):
     assert_equals(world.get_response.status_code, int(expected_status_code))
 
 
-# @step(u'And I should get a message No User Found')
-# def and_i_should_get_a_message_no_user_found(step):
-#     world.get_resp = json.loads(world.get_response.data)
-#     print "world.resp is ", world.get_resp
-#     assert_equals(world.get_resp['message'], 'No User Found')
+@step(u'And I should get a message No User Found')
+def and_i_should_get_a_message_no_user_found(step):
+    world.get_resp = json.loads(world.get_response.data)
+    print "world.resp is ", world.get_resp
+    assert_equals(world.get_resp['message'], 'No User Found')
 
 ###End of retrieving a user with id __

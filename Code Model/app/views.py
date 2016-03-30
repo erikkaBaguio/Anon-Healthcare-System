@@ -140,14 +140,12 @@ def user_exists(username):
 
 @app.route('/anoncare.api/users/<int:id>/', methods=['GET'])
 def get_user_with_id(id):
-    res = spcall('getuserinfoid', str(id))
+    res = spcall("getuserinfoid", (id,), True)
     entries = []
 
     print "res is ", len(res)
 
-    if len(res) == 0:
-        return jsonify({"status": "ok", "message": "No User Found"}),
-    else:
+    if len(res) != 0:
         row = res[0]
         entries.append({
                         "fname":  row[0],
@@ -158,10 +156,10 @@ def get_user_with_id(id):
 
         print "username is ", res[0][4]
 
-        print "user exists", str(user_exists('josiah.eleazar')) == '<Response 21 bytes [200 OK]>'
-        # print "user exists", str(user_exists('josiah.eleazar')) == '<Response 20 bytes [200 OK]>'
-
         return jsonify({"status": "ok", "message": "ok", "entries": entries})
+
+    else:
+        return jsonify({"status": "ok", "message": "No User Found"})
 
 
 @app.route('/anoncare.api/user/', methods=['POST', 'GET'])
