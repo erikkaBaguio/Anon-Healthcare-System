@@ -242,24 +242,6 @@ def notify(assessment_id, doctor_id):
     return jsonify({'status': response[0][0]})
 
 
-@app.route('/anoncare.api/patient/', methods =['POST'])
-def newpatient():
-    data = json.loads(request.data)
-    response = spcall('newpatient', (
-        data['fname'],
-        data['mname'],
-        data['lname'],
-        data['age'],
-        data['sex'],
-        data['department_id'],
-        data['patient_type_id'],
-        data['personal_info_id'],
-        data['is_active'],),True)
-
-    if 'Error' in str(response[0][0]):
-        return jsonify({'status': 'error', 'message': response[0][0]})
-
-    return jsonify({'status': 'OK', 'message': response[0][0]}), 200
 
 
 
