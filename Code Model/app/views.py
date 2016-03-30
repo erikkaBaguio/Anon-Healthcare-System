@@ -241,8 +241,56 @@ def notify(assessment_id, doctor_id):
 
     return jsonify({'status': response[0][0]})
 
+@app.route('/anoncare.api/patient/', methods =['POST'])
+def newpatient():
+    data = json.loads(request.data)
+    response = spcall('newpatient', (
+        data['id'],
+        data['fname'],
+        data['mname'],
+        data['lname'],
+        data['age'],
+        data['sex'],
+        data['department_id'],
+        data['patient_type_id'],
+        data['height'],
+        data['weight'],
+        data['date_of_birth'],
+        data['civil_status'],
+        data['name_of_guardian'],
+        data['home_address'],
+        data['cough'],
+        data['dyspnea'],
+        data['hemoptysis'],
+        data['tb_exposure'],
+        data['frequency'],
+        data['flank_plan'],
+        data['discharge'],
+        data['dysuria'],
+        data['nocturia'],
+        data['dec_urine_amount'],
+        data['asthma'],
+        data['ptb'],
+        data['heart_problem'],
+        data['hepatitis_a_b'],
+        data['chicken_pox'],
+        data['mumps'],
+        data['typhoid_fever'],
+        data['chest_pain'],
+        data['palpitations'],
+        data['pedal_edema'],
+        data['orthopnea'],
+        data['nocturnal_dyspnea'],
+        data['headache'],
+        data['seizure'],
+        data['dizziness'],
+        data['loss_of_consciousness'],
+        data['is_active']))
+    
+    if 'Error' in str(response[0][0]):
+        return jsonify({'status': 'error', 'message': response[0][0]})
 
-
+    return jsonify({'status': 'OK', 'message': response[0][0]}), 200
 
 
 @app.route('/anoncare.api/patient/<id>/', methods = ['GET'])
