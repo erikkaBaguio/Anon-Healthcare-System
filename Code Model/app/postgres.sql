@@ -11,9 +11,9 @@ create table Userinfo (
     lname text not null,
     email text not null,
     username text unique not null,
-    password text not null--,
-    --role_id int references Role(id),
-    --is_active boolean
+    password text not null,
+    role_id int references Role(id)--,
+--     is_active boolean
   );
 
 create table College(
@@ -63,24 +63,7 @@ create table Personal_info(
     civil_status text,
     name_of_guardian text,
     home_address text,
-    is_active BOOLEAN default True
 );
-
-
-create table Patient(
-    id serial8 primary key,
-    fname text,
-    mname text,
-    lname text,
-    age int,
-    sex text,
-    department_id int references Department(id),
-    patient_type_id int references Patient_type(id),
-    Personal_info_id int references Personal_info(id),
-    is_active BOOLEAN default True
-
-);
-
 
 create table Pulmonary(
     id serial8 primary key,
@@ -109,7 +92,6 @@ create table Illness(
   chicken_pox text,
   mumps text,
   typhoid_fever text,
-  done BOOLEAN
 );
 
 create table Cardiac(
@@ -119,7 +101,6 @@ create table Cardiac(
   pedal_edema text,
   orthopnea text,
   nocturnal_dyspnea text,
-  done BOOLEAN
 );
 
 create table Neurologic(
@@ -128,8 +109,27 @@ create table Neurologic(
   seizure text,
   dizziness text,
   loss_of_consciousness text,
-  done BOOLEAN
 );
+create table Patient(
+    id serial8 primary key,
+    fname text,
+    mname text,
+    lname text,
+    age int,
+    sex text,
+    department_id int references Department(id),
+    patient_type_id int references Patient_type(id),
+    personal_info_id int references Personal_info(id),
+    pulmonary_id int references Pulmonary(id),
+    gut_id int references Gut(id),
+    illness_id int references Illness(id),
+    cardiac_id int references Cardiac(id),
+    neurologic_id int references Neurologic(id),
+    is_active BOOLEAN default True
+);
+
+
+
 
 create table Assessment(
   id serial8 primary key,
@@ -229,7 +229,7 @@ $$
 
 
 create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
-                                par_email text, par_username text, par_password text, par_active boolean)
+                                par_email text, par_username text, par_password text, par_role int)
                                  returns text as
 $$
 
@@ -241,8 +241,8 @@ $$
 --        username := par_fname || '.' || par_lname;
 --        random_password := generate_password();
 
-       insert into Userinfo (fname, mname, lname, email, username, password, is_active)
-       values (par_fname, par_mname, par_lname, par_email, par_username, par_password, par_active);
+       insert into Userinfo (fname, mname, lname, email, username, password, role_id)
+       values (par_fname, par_mname, par_lname, par_email, par_username, par_password, par_role);
 
 
        loc_res = 'OK';
@@ -296,22 +296,6 @@ $$
 $$
   language 'sql';
 
-
---select * from getUserinfo();
--- create or replace function checkuserexists() returns setof record as
---   $$
---     declare
---       saved_users text[];
---
---     begin
---       for user in getusernames loop
---
---         end loop;
---
---       return saved_users;
---     end;
---   $$
---   language 'plpgsql';
 
 create or replace function getuserinfoid(in par_id int, out text, out text, out text, out text,
                                                  out text) returns setof record as
@@ -426,26 +410,50 @@ $$
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
 create or replace function newpatient(par_fname text, par_mname text, par_lname text, par_age int, par_sex text, 
-                                      par_department_id int, par_patient_type_id int, par_personal_info_id int, par_is_active boolean) returns text as
+                                      par_department_id int, par_patient_type_id int, par_height text, par_weight float, par_date_of_birth text, 
+                                      par_civil_status text, par_name_of_guardian text, par_home_address text, par_cough text, par_dyspnea text, 
+                                      par_hemoptysis text, par_tb_exposure text, par_frequency text, par_flank_plan text, par_discharge text, 
+                                      par_dysuria text, par_nocturia text, par_dec_urine_amount text, par_asthma text, par_ptb text, 
+                                      par_heart_problem text, par_hepatitis_a_b text, par_chicken_pox text,par_mumps text, par_typhoid_fever text, 
+                                      par_chest_pain text, par_palpitations text, par_pedal_edema text, par_orthopnea text, par_nocturnal_dyspnea text, 
+                                      par_headache text, par_seizure text, par_dizziness text, par_loss_of_consciousness text, par_is_active boolean) returns text as
 $$
   declare
       loc_fname text;
       loc_mname text;
       loc_lname text;
       loc_res text;
+      loc_id int;
 
   begin 
       SELECT INTO loc_fname fname from Patient where fname = par_fname AND mname = par_mname AND lname = par_lname;
       if par_fname isnull or par_mname isnull or par_lname isnull or par_age isnull or par_sex isnull or par_department_id isnull or 
-         par_patient_type_id isnull or par_personal_info_id isnull or par_is_active isnull then
+         par_patient_type_id isnull or par_is_active isnull then
          loc_res = 'Please fill up the required data';
-      elsif loc_fname isnull then
-          insert into Patient(fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active) values 
-              (par_fname, par_mname, par_lname, par_age, par_sex, par_department_id, par_patient_type_id, par_personal_info_id, par_is_active);
-              loc_res = 'OK'; 
+      elsif loc_fname isnull  or loc_id isnull then
+          perform newpersonal_info(par_height, par_weight, par_date_of_birth, par_civil_status, par_name_of_guardian, par_home_address);
+          perform newpulmonary(par_cough, par_dyspnea, par_hemoptysis, par_tb_exposure);
+          perform newgut(par_frequency, par_flank_plan, par_discharge, par_dysuria, par_nocturia, par_dec_urine_amount);
+          perform newillness(par_asthma, par_ptb, par_heart_problem, par_hepatitis_a_b, par_chicken_pox, par_mumps, par_typhoid_fever);
+          perform newcardiac(par_chest_pain, par_palpitations, par_pedal_edema, par_orthopnea, par_nocturnal_dyspnea);
+          perform newneurologic(par_headache, par_seizure, par_dizziness, par_loss_of_consciousness);
+          
+          insert into Personal_info(height, weight, date_of_birth, civil_status, name_of_guardian, home_address)
+              values (par_height, par_weight, par_date_of_birth, par_civil_status, par_name_of_guardian, par_home_address);
+          insert into Pulmonary(cough, dyspnea, hemoptysis, tb_exposure)
+              values (par_cough, par_dyspnea, par_hemoptysis, par_tb_exposure);
+          insert into Gut(frequency, flank_plan, discharge, dysuria, nocturia, dec_urine_amount)
+              values (par_frequency, par_flank_plan, par_discharge, par_dysuria, par_nocturia, par_dec_urine_amount);
+          insert into Illness (asthma, ptb, heart_problem, hepatitis_a_b, chicken_pox, mumps, typhoid_fever)
+              values (par_asthma, par_ptb, par_heart_problem, par_hepatitis_a_b, par_chicken_pox, par_mumps, par_typhoid_fever);
+          insert into Cardiac(chest_pain, palpitations, pedal_edema, orthopnea, nocturnal_dyspnea)
+              values (par_chest_pain, par_palpitations, par_pedal_edema, par_orthopnea, par_nocturnal_dyspnea);
+          insert into Neurologic(headache, seizure, dizziness, loss_of_consciousness)
+              values (par_headache, par_seizure, par_dizziness, par_loss_of_consciousness);    
+          insert into Patient(fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, pulmonary_id, gut_id, illness_id, cardiac_id, neurologic_id, is_active) 
+              values (par_fname, par_mname, par_lname, par_age, par_sex, par_department_id, par_patient_type_id, Personal_info.id, Pulmonary.id, Gut.id, Illness.id, Cardiac.id, Neurologic.id, par_is_active);
+          loc_res = 'OK'; 
       else
           loc_res = 'Patient already EXISTED';
       end if;
@@ -454,23 +462,6 @@ $$
 $$
   language 'plpgsql';
 
---select newpatient('Mary Grace', 'Pasco', 'Cabolbol', '19', 'female', '1' , '1', '1', 'true');
-
-create or replace function get_newpatient(out text, out text, out text, out int, out text, out int, out int, out int, out boolean) returns setof record as
-$$
-  select fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active from Patient;
-$$
-  language 'sql';
-
---select * from get_newpatient();
-
-create or replace function get_newpatient_id(in par_id int, out text, out text, out text, out int, out text, out int, out int, out int, out boolean) returns setof record as
-$$
-  select fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active from Patient where par_id = id;
-$$
-  language 'sql';
-
---select * from get_newpatient_id(2);
 
 --GET patient file and personal info
 create or replace function get_patientId(in par_id int, out text, out text, out text, out int, out text,     
