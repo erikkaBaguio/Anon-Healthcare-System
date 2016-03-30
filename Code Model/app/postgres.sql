@@ -506,7 +506,26 @@ $$
 $$
  language 'plpgsql';
 
+create or replace function newillness(par_asthma text, par_ptb text, par_heart_problem text, par_hepatitis_a_b text, par_chicken_pox text, par_mumps text, par_typhoid_fever text) returns text as 
+$$
+  declare
+    DECLARE
+    loc_id text;
+    loc_res text;
+  BEGIN
+    SELECT INTO  loc_id id from Illness;
+    if loc_id isnull THEN
+        Insert into Illness(asthma, ptb, heart_problem, hepatitis_a_b, chicken_pox, mumps, typhoid_fever) values (par_asthma, par_ptb, par_heart_problem, par_hepatitis_a_b, par_chicken_pox, par_mumps, par_typhoid_fever);
+        loc_res = 'OK';
+    ELSE
+      loc_res = 'ID EXISTED';
+    END if;
+    return loc_res;
+  END ;
+$$
+ LANGUAGE 'plpgsql';
  
+
 CREATE  or replace function newcardiac(par_chest_pain text, par_palpitations text, par_pedal_edema text, par_orthopnea text, par_nocturnal_dyspnea text, par_done boolean) returns text as
 $$
   DECLARE
