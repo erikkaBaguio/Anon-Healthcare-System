@@ -365,7 +365,7 @@ $$
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
-create or replace function newpatient(par_fname text, par_mname text, par_lname text, par_age int, par_sex text, 
+create or replace function newpatient(par_id int, par_fname text, par_mname text, par_lname text, par_age int, par_sex text, 
                                       par_department_id int, par_patient_type_id int, par_height text, par_weight float, par_date_of_birth text, 
                                       par_civil_status text, par_name_of_guardian text, par_home_address text, par_cough text, par_dyspnea text, 
                                       par_hemoptysis text, par_tb_exposure text, par_frequency text, par_flank_plan text, par_discharge text, 
@@ -379,35 +379,49 @@ $$
       loc_mname text;
       loc_lname text;
       loc_res text;
-      loc_id int;
+      loc_id1 int;
+      loc_id2 int;
+      loc_id3 int;
+      loc_id4 int;
+      loc_id5 int;
+      loc_id6 int;
+      loc_id7 int;
 
   begin 
+      
+      select into loc_id1 id from Personal_info where id = par_id;
+      select into loc_id2 id from Pulmonary where id = par_id;
+      select into loc_id3 id from Gut where id = par_id;
+      select into loc_id4 id from Illness where id = par_id;
+      select into loc_id5 id from Cardiac where id = par_id;
+      select into loc_id6 id from Neurologic where id = par_id;
+      select into loc_id7 id from Patient where id = par_id;
       SELECT INTO loc_fname fname from Patient where fname = par_fname AND mname = par_mname AND lname = par_lname;
-      if par_fname isnull or par_mname isnull or par_lname isnull or par_age isnull or par_sex isnull or par_department_id isnull or 
-         par_patient_type_id isnull or par_is_active isnull then
+      if par_fname isnull or par_lname isnull or par_age isnull or par_sex isnull or par_department_id isnull or 
+         par_patient_type_id isnull or par_height isnull or par_weight isnull or par_date_of_birth isnull or par_civil_status isnull or
+         par_name_of_guardian isnull or par_home_address isnull or par_cough isnull or par_dyspnea isnull or par_hemoptysis isnull or 
+         par_tb_exposure isnull or par_frequency isnull or par_flank_plan isnull or par_discharge isnull or par_dysuria isnull or
+         par_nocturia isnull or par_dec_urine_amount isnull or par_asthma isnull or par_ptb isnull or par_heart_problem isnull or
+         par_hepatitis_a_b isnull or par_chicken_pox isnull or par_mumps isnull or par_typhoid_fever isnull or par_chest_pain isnull or
+         par_palpitations isnull or par_pedal_edema isnull or par_orthopnea isnull or par_nocturnal_dyspnea isnull or par_headache isnull or
+         par_seizure isnull or par_dizziness isnull or par_loss_of_consciousness isnull or par_is_active isnull then
          loc_res = 'Please fill up the required data';
-      elsif loc_fname isnull  or loc_id isnull then
-          perform newpersonal_info(par_height, par_weight, par_date_of_birth, par_civil_status, par_name_of_guardian, par_home_address);
-          perform newpulmonary(par_cough, par_dyspnea, par_hemoptysis, par_tb_exposure);
-          perform newgut(par_frequency, par_flank_plan, par_discharge, par_dysuria, par_nocturia, par_dec_urine_amount);
-          perform newillness(par_asthma, par_ptb, par_heart_problem, par_hepatitis_a_b, par_chicken_pox, par_mumps, par_typhoid_fever);
-          perform newcardiac(par_chest_pain, par_palpitations, par_pedal_edema, par_orthopnea, par_nocturnal_dyspnea);
-          perform newneurologic(par_headache, par_seizure, par_dizziness, par_loss_of_consciousness);
-          
-          insert into Personal_info(height, weight, date_of_birth, civil_status, name_of_guardian, home_address)
-              values (par_height, par_weight, par_date_of_birth, par_civil_status, par_name_of_guardian, par_home_address);
-          insert into Pulmonary(cough, dyspnea, hemoptysis, tb_exposure)
-              values (par_cough, par_dyspnea, par_hemoptysis, par_tb_exposure);
-          insert into Gut(frequency, flank_plan, discharge, dysuria, nocturia, dec_urine_amount)
-              values (par_frequency, par_flank_plan, par_discharge, par_dysuria, par_nocturia, par_dec_urine_amount);
-          insert into Illness (asthma, ptb, heart_problem, hepatitis_a_b, chicken_pox, mumps, typhoid_fever)
-              values (par_asthma, par_ptb, par_heart_problem, par_hepatitis_a_b, par_chicken_pox, par_mumps, par_typhoid_fever);
-          insert into Cardiac(chest_pain, palpitations, pedal_edema, orthopnea, nocturnal_dyspnea)
-              values (par_chest_pain, par_palpitations, par_pedal_edema, par_orthopnea, par_nocturnal_dyspnea);
-          insert into Neurologic(headache, seizure, dizziness, loss_of_consciousness)
-              values (par_headache, par_seizure, par_dizziness, par_loss_of_consciousness);    
-          insert into Patient(fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, pulmonary_id, gut_id, illness_id, cardiac_id, neurologic_id, is_active) 
-              values (par_fname, par_mname, par_lname, par_age, par_sex, par_department_id, par_patient_type_id, Personal_info.id, Pulmonary.id, Gut.id, Illness.id, Cardiac.id, Neurologic.id, par_is_active);
+      elsif loc_fname isnull and loc_id1 isnull and loc_id2 isnull and loc_id3 isnull and loc_id4 isnull and loc_id5 isnull and loc_id6 isnull and loc_id7 isnull then
+          insert into Personal_info(id, height, weight, date_of_birth, civil_status, name_of_guardian, home_address)
+              values (par_id, par_height, par_weight, par_date_of_birth, par_civil_status, par_name_of_guardian, par_home_address);
+          insert into Pulmonary(id, cough, dyspnea, hemoptysis, tb_exposure)
+              values (par_id, par_cough, par_dyspnea, par_hemoptysis, par_tb_exposure);
+          insert into Gut(id, frequency, flank_plan, discharge, dysuria, nocturia, dec_urine_amount)
+              values (par_id, par_frequency, par_flank_plan, par_discharge, par_dysuria, par_nocturia, par_dec_urine_amount);
+          insert into Illness(id, asthma, ptb, heart_problem, hepatitis_a_b, chicken_pox, mumps, typhoid_fever)
+              values (par_id, par_asthma, par_ptb, par_heart_problem, par_hepatitis_a_b, par_chicken_pox, par_mumps, par_typhoid_fever);
+          insert into Cardiac(id, chest_pain, palpitations, pedal_edema, orthopnea, nocturnal_dyspnea)
+              values (par_id, par_chest_pain, par_palpitations, par_pedal_edema, par_orthopnea, par_nocturnal_dyspnea);
+          insert into Neurologic(id, headache, seizure, dizziness, loss_of_consciousness)
+              values (par_id, par_headache, par_seizure, par_dizziness, par_loss_of_consciousness);
+          insert into Patient(id, fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, pulmonary_id, gut_id, illness_id, cardiac_id, neurologic_id, is_active) 
+              values (par_id, par_fname, par_mname, par_lname, par_age, par_sex, par_department_id, par_patient_type_id, par_id, par_id, par_id, par_id, par_id, par_id, par_is_active);
+            
           loc_res = 'OK'; 
       else
           loc_res = 'Patient already EXISTED';
@@ -524,7 +538,7 @@ $$
   END ;
 $$
  LANGUAGE 'plpgsql';
- 
+
 
 CREATE  or replace function newcardiac(par_chest_pain text, par_palpitations text, par_pedal_edema text, par_orthopnea text, par_nocturnal_dyspnea text, par_done boolean) returns text as
 $$
@@ -568,11 +582,7 @@ $$
 $$
  LANGUAGE  'plpgsql';
 
------------------------------------------------------------------------------------------------------------------
   
-
-
-
 ------------------------------------------------------------------------------------------------------------------------------------------
 -- NOTIFICATIONS
 
