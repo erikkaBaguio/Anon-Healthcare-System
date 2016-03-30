@@ -292,6 +292,54 @@ def newpatient():
 
     return jsonify({'status': 'OK', 'message': response[0][0]}), 200
 
+@app.route('/anoncare.api/patient/<id>/', methods = ['GET'])
+def getpatient_file(id):
+    response = spcall('get_patientfileId', id)
+    entries = []
+    if len(response) == 0:
+        return jsonify({"status":"OK", "message": "No patient file found", "entries":[], "count": "0"})
+    else:
+        row = response[0]
+        entries.append({"id": id,
+                        "fname": row[0],
+                        "mname": row[1],
+                        "lname": row[2],
+                        "age": row[3],
+                        "sex": row[4],
+                        "height": row[5],
+                        "weight": row[6],
+                        "date_of_birth": row[7],
+                        "civil_status": row[8],
+                        "name_of_guardian": row[9],
+                        "home_address": row[10],
+                        "cough": row[11],
+                        "dyspnea": row[12],
+                        "hemoptysis": row[13],
+                        "tb_exposure": row[14],
+                        "frequency": row[15],
+                        "flank_plan": row[16],
+                        "discharge": row[17],
+                        "dysuria": row[18],
+                        "nocturia": row[19],
+                        "dec_urine_amount": row[20],
+                        "asthma": row[21],
+                        "ptb": row[22],
+                        "heart_problem": row[23],
+                        "hepatitis_a_b": row[24],
+                        "chicken_pox": row[25],
+                        "mumps": row[26],
+                        "typhoid_fever": row[27],
+                        "chest_pain": row[28],
+                        "palpitations": row[29],
+                        "pedal_edema": row[30],
+                        "orthopnea": row[31],
+                        "nocturnal_dyspnea": row[32],
+                        "headache": row[33],
+                        "seizure": row[34],
+                        "dizziness": row[35],
+                        "loss_of_consciousness": row[36]
+                        })                
+        return jsonify({"status": "OK", "message": "OK", "entries": entries, "count":len(entries)})
 
 
 @app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['GET'])
