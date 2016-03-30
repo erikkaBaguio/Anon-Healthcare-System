@@ -24,11 +24,11 @@ Feature: View Assessment
     And     it should have an empty field "entries"
 
 #  Sunny case
-  Scenario: View All Assessment of Patient
-    Given   the patient assessment with an <assessment_id> exists
-    When    the doctor press view assessment with an id <assessment_id>
-    Then	the doctor should get a '200' response
-    And     it should have a field "status" containing "OK"
-    And     it should have following assessment details will be returned
+#  Scenario: View All Assessment of Patient
+#    Given   the patient assessment with an <assessment_id> exists
+#    When    the doctor press view assessment with an id <assessment_id>
+#    Then	the doctor should get a '200' response
+#    And     it should have a field "status" containing "OK"
+#    And     it should have following assessment details will be returned
 #            |id |assessment_date|nameofpatient|age|department|chiefcomplaint|historyofpresentillness|medicationstaken|diagnosis|reccomendation|attendingphysician|
 #            |1  |2016-03-21     |1            |18 |1         |fever         |cough                  |medications     |diagnosis|reccomendation|1                 |

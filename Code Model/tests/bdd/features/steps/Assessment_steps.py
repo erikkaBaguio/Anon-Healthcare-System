@@ -30,7 +30,7 @@ def and_the_nurse_get_a_field_message_containing_ok(step):
     assert_equals(world.resp['message'], 'OK')
 
 
-""" Rainy Case """
+"""Rainy Case"""
 
 """ Scenario: Duplicate assessment id """
 

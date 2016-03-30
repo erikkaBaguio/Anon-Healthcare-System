@@ -310,7 +310,7 @@ $$
    loc_id text;
    loc_res text;
  BEGIN
-   #SELECT into loc_id id from Personal_history;
+   SELECT into loc_id id from Personal_history;
    if loc_id isnull THEN
 
        INSERT into Personal_history(smoking, allergies, alcohol, medication_taken, drugs, done) VALUES (par_smoking, par_allergies,
@@ -631,32 +631,37 @@ $$
 -----------------------------------------------------------------------------------------------------------------------------
 --[GET] Retrieve the id number of a patient
 --select retrievePatientID('Josiah', 'Timonera', 'Eleazar');
-create or replace function retrievePatientID(in par_fname text, in par_mname text, in par_lname text, out bigint) returns bigint as
+create or replace function retrievePatientID(in par_fname text, in par_mname text, in par_lname text) returns bigint as
 $$
+  declare
+      loc_id bigint;
   begin
-    select loc_id id from Patient where lower(fname) = lower(par_fname) and lower(mname) = lower(par_mname) and lower(lname) = lower(par_lname);
+      select into loc_id id from Patient where lower(fname) = lower(par_fname) and lower(mname) = lower(par_mname) and lower(lname) = lower(par_lname);
+      return loc_id;
   end;
 $$
-  language 'sql';
+  language 'plpgsql';
 
 -- [POST] Create new assessment
--- select new_assessment(1,'Josiah','Timonera','Regencia', 19, 1, 37.1, 80, '19 breaths/minute', '90/70', 48, 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);create or replace function new_assessment(in par_id int, in par_fname text, in par_mname text, in par_lname text, in par_age int, in par_department int,
+-- select new_assessment(1,'Josiah','Timonera','Regencia', 19, 1, 37.1, 80, '19 breaths/minute', '90/70', 48, 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
+create or replace function new_assessment(in par_id int, in par_fname text, in par_mname text, in par_lname text, in par_age int, in par_department int,
 in par_temperature float, in par_pulse_rate float, in par_respiration_rate text, in par_blood_pressure text, in par_weight float,
 in par_chiefcomplaint text, in par_historyofpresentillness text, in par_medicationstaken text,
 in par_diagnosis text, in par_recommendation text, in par_attendingphysician int) returns text as
  $$
   declare
-    loc_id int;
+    loc_id1 int;
+    loc_id2 int;
     loc_res text;
     loc_patientID bigint;
   begin
-    select into loc_id id from Assessment where id = par_id;
-    if loc_id isnull then
-      perform addvitalsigns(par_id, par_temperature, par_pulse_rate,par_respiration_rate, par_blood_pressure , par_weight);
+    select into loc_id1 id from Vital_signs where id = par_id;
+    select into loc_id2 id from Assessment where id = par_id;
+    if loc_id1 isnull and loc_id2 isnull then
+      insert into Vital_signs(id, temperature,pulse_rate,respiration_rate,blood_pressure,weight)
+        values (par_id, par_temperature,par_pulse_rate,par_respiration_rate,par_blood_pressure , par_weight );
 
-      perform loc_patientID id
-      from Patient
-      where lower(fname) = lower(par_fname) and lower(mname) = lower(par_mname) and lower(lname) = lower(par_lname);
+      loc_patientID := retrievepatientID(par_fname,par_mname,par_lname);
 
       insert into Assessment ( id, nameofpatient, age, department,vital_signs ,chiefcomplaint ,
       historyofpresentillness ,medicationstaken ,diagnosis ,reccomendation ,attendingphysician )
@@ -673,7 +678,6 @@ in par_diagnosis text, in par_recommendation text, in par_attendingphysician int
   end;
  $$
   language 'plpgsql';
-
 
 
 
@@ -732,7 +736,7 @@ $$
 $$
   language 'sql';
 
-create or replace function getallvitalsigns(out par_id bigint, out float, out float, out text ,out text ,out float) returns setof record as
+create or replace function getallvitalsigns(out par_id int, out float, out float, out text ,out text ,out float) returns setof record as
 $$
   select * from Vital_signs;
 $$
@@ -749,13 +753,13 @@ $$
 
 ------------------------------------------------------------------------------------------------------------------
 --[GET] Retrieve assessment of specific patient.
-create or replace function getpatientID(in par_id int, out timestamp, ) returns setof record as
-$$
-  select Assessment.assessment_date, Assessment.nameofpatient, Assessment.age, Assessment.department.name,
-
-  from Patient, Assessment
-  where
-$$
+-- create or replace function getpatientID(in par_id int, out timestamp ) returns setof record as
+-- $$
+--   select Assessment.assessment_date, Assessment.nameofpatient, Assessment.age, Assessment.department.name,
+--
+--   from Patient, Assessment
+--   where
+-- $$
 
 ------------------------------------------------------------------------------------------------------------------
 create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
