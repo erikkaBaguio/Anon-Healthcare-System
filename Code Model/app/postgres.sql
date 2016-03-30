@@ -331,49 +331,6 @@ $$
 
 ---------------------------------------------------------------------------------------------------------------
 
-CREATE  or replace function newcardiac(par_chest_pain text, par_palpitations text, par_pedal_edema text, par_orthopnea text, par_nocturnal_dyspnea text, par_done boolean) returns text as
-$$
-  DECLARE
-    loc_id text;
-    loc_res text;
-  BEGIN
-    SELECT INTO  loc_id id from Cardiac;
-    if loc_id isnull THEN
-
-      INSERT into Cardiac(chest_pain, palpitations, pedal_edema, orthopnea, nocturnal_dyspnea, done) VALUES (par_chest_pain, par_palpitations, par_pedal_edema, par_orthopnea, par_nocturnal_dyspnea, par_done);
-      loc_res = 'OK';
-
-    ELSE
-      loc_res = 'ID EXISTED';
-    END if;
-    return loc_res;
-  END ;
-$$
- LANGUAGE 'plpgsql';
-
-----------------------------------------------------------------------------------------------------------------
-
-create or replace function newneurologic(par_headache text, par_seizure text, par_dizziness text, par_loss_of_consciousness text, par_done boolean) returns text as
-$$
- DECLARE
-   loc_id text;
-   loc_res text;
- BEGIN
-   SELECT into loc_id id from Neurologic;
-   if loc_id isnull THEN
-
-     INSERT INTO Neurologic(headache, seizure, dizziness, loss_of_consciousness, done) values (par_headache, par_seizure, par_dizziness, par_loss_of_consciousness, par_done);
-     loc_res = 'OK';
-
-   ELSE
-     loc_res = 'ID EXISTED';
-   END if;
-   return loc_res;
- END;
-$$
- LANGUAGE  'plpgsql';
-
------------------------------------------------------------------------------------------------------------------
 --[GET] Retrieve list of colleges
 --select getallcolleges();
 create or replace function getallcolleges(out bigint, out text) returns setof record as
@@ -533,7 +490,87 @@ $$
 $$
   language 'plpgsql';
 
+create or replace function newgut(par_frequency text, par_flank_plan text, par_discharge text, par_dysuria text, par_nocturia text, par_dec_urine_amount text) returns text as
+$$
+  declare
+    loc_id text;
+    loc_res text;
+  BEGIN
+    SELECT INTO  loc_id id from Gut;
+    if loc_id isnull THEN
+        insert into Gut(frequency, flank_plan, discharge, dysuria, nocturia, dec_urine_amount) values (par_frequency, par_flank_plan, par_discharge, par_dysuria, par_nocturia, par_dec_urine_amount);
+        loc_res = 'OK';
+    else
+        loc_res = 'ID EXISTED';
+    end if;
+    return loc_res;
+  END;
+$$
+ language 'plpgsql';
 
+create or replace function newillness(par_asthma text, par_ptb text, par_heart_problem text, par_hepatitis_a_b text, par_chicken_pox text, par_mumps text, par_typhoid_fever text) returns text as 
+$$
+  declare
+    DECLARE
+    loc_id text;
+    loc_res text;
+  BEGIN
+    SELECT INTO  loc_id id from Illness;
+    if loc_id isnull THEN
+        Insert into Illness(asthma, ptb, heart_problem, hepatitis_a_b, chicken_pox, mumps, typhoid_fever) values (par_asthma, par_ptb, par_heart_problem, par_hepatitis_a_b, par_chicken_pox, par_mumps, par_typhoid_fever);
+        loc_res = 'OK';
+    ELSE
+      loc_res = 'ID EXISTED';
+    END if;
+    return loc_res;
+  END ;
+$$
+ LANGUAGE 'plpgsql';
+ 
+
+CREATE  or replace function newcardiac(par_chest_pain text, par_palpitations text, par_pedal_edema text, par_orthopnea text, par_nocturnal_dyspnea text, par_done boolean) returns text as
+$$
+  DECLARE
+    loc_id text;
+    loc_res text;
+  BEGIN
+    SELECT INTO  loc_id id from Cardiac;
+    if loc_id isnull THEN
+
+      INSERT into Cardiac(chest_pain, palpitations, pedal_edema, orthopnea, nocturnal_dyspnea, done) VALUES (par_chest_pain, par_palpitations, par_pedal_edema, par_orthopnea, par_nocturnal_dyspnea, par_done);
+      loc_res = 'OK';
+
+    ELSE
+      loc_res = 'ID EXISTED';
+    END if;
+    return loc_res;
+  END ;
+$$
+ LANGUAGE 'plpgsql';
+
+----------------------------------------------------------------------------------------------------------------
+
+create or replace function newneurologic(par_headache text, par_seizure text, par_dizziness text, par_loss_of_consciousness text, par_done boolean) returns text as
+$$
+ DECLARE
+   loc_id text;
+   loc_res text;
+ BEGIN
+   SELECT into loc_id id from Neurologic;
+   if loc_id isnull THEN
+
+     INSERT INTO Neurologic(headache, seizure, dizziness, loss_of_consciousness, done) values (par_headache, par_seizure, par_dizziness, par_loss_of_consciousness, par_done);
+     loc_res = 'OK';
+
+   ELSE
+     loc_res = 'ID EXISTED';
+   END if;
+   return loc_res;
+ END;
+$$
+ LANGUAGE  'plpgsql';
+
+-----------------------------------------------------------------------------------------------------------------
   
 
 
