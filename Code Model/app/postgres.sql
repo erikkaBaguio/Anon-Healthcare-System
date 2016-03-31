@@ -748,7 +748,10 @@ in par_diagnosis text, in par_recommendation text, in par_attendingphysician int
     elsif par_lname = '' then
       loc_res = 'ERROR';
 
-    elsif par_temperature is null then
+    elsif par_chiefcomplaint = '' then
+      loc_res = 'ERROR';
+
+    elsif par_medicationstaken = '' then
       loc_res = 'ERROR';
 
     elsif loc_id1 isnull and loc_id2 isnull then
