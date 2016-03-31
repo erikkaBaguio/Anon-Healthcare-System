@@ -754,6 +754,9 @@ in par_diagnosis text, in par_recommendation text, in par_attendingphysician int
     elsif par_medicationstaken = '' then
       loc_res = 'ERROR';
 
+    elsif par_diagnosis = '' then
+      loc_res = 'ERROR';
+
     elsif loc_id1 isnull and loc_id2 isnull then
         insert into Vital_signs(id, temperature,pulse_rate,respiration_rate,blood_pressure,weight)
           values (par_id, par_temperature,par_pulse_rate,par_respiration_rate,par_blood_pressure , par_weight );
