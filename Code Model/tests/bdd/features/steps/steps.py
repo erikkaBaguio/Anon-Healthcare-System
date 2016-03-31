@@ -10,7 +10,7 @@ def before_all():
 
 
 # ===========================================================================================================================
-""" Common steps in returning jsonify. """
+""" Common steps for jsonify response """
 
 @step(u'Then  it should get a \'([^\']*)\' response')
 def then_it_should_get_a_group1_response(step, expected_status_code):
@@ -52,6 +52,15 @@ def when_the_nurse_post_to_the_product_resource_url_anoncare_api_assessments(ste
     world.response = world.app.post('/anoncare.api/assessments/', data=json.dumps(world.assessment))
 
 """ Rainy Case """
+
+""" Scenario: First name field is null """
+@step(u'Given the nurse have the following assessment details with a null first name:')
+def given_the_nurse_have_the_following_assessment_details_with_a_null_first_name(step):
+    world.assessment = step.hashes[0]
+
+@step(u'And   it should get a field message containing ERROR.')
+def and_it_should_get_a_field_message_containing_error(step):
+    assert_equals(world.resp['message'], 'ERROR')
 
 """ Scenario: Duplicate assessment id """
 

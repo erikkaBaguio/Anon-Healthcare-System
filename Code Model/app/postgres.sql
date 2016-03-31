@@ -738,24 +738,30 @@ in par_diagnosis text, in par_recommendation text, in par_attendingphysician int
   begin
     select into loc_id1 id from Vital_signs where id = par_id;
     select into loc_id2 id from Assessment where id = par_id;
-    if loc_id1 isnull and loc_id2 isnull then
-      insert into Vital_signs(id, temperature,pulse_rate,respiration_rate,blood_pressure,weight)
-        values (par_id, par_temperature,par_pulse_rate,par_respiration_rate,par_blood_pressure , par_weight );
 
-      loc_patientID := retrievepatientID(par_fname,par_mname,par_lname);
+    if par_fname = '' then
+      loc_res = 'ERROR';
 
-      insert into Assessment ( id, nameofpatient, age, department,vital_signs ,chiefcomplaint ,
-      historyofpresentillness ,medicationstaken ,diagnosis ,recommendation,attendingphysician )
-      values ( par_id, loc_patientID, par_age, par_department, par_id,
-      par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken, par_diagnosis,
-      par_recommendation, par_attendingphysician);
+    elsif loc_id1 isnull and loc_id2 isnull then
+        insert into Vital_signs(id, temperature,pulse_rate,respiration_rate,blood_pressure,weight)
+          values (par_id, par_temperature,par_pulse_rate,par_respiration_rate,par_blood_pressure , par_weight );
 
-      loc_res = 'OK';
+        loc_patientID := retrievepatientID(par_fname,par_mname,par_lname);
+
+        insert into Assessment ( id, nameofpatient, age, department,vital_signs ,chiefcomplaint ,
+        historyofpresentillness ,medicationstaken ,diagnosis ,recommendation,attendingphysician )
+        values ( par_id, loc_patientID, par_age, par_department, par_id,
+        par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken, par_diagnosis,
+        par_recommendation, par_attendingphysician);
+
+        loc_res = 'OK';
 
     else
       loc_res = 'ID EXISTS';
+
     end if;
     return loc_res;
+
   end;
  $$
   language 'plpgsql';
