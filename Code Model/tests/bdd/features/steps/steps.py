@@ -29,9 +29,14 @@ def and_it_should_get_a_field_message_containing_ok(step):
 def and_it_should_have_a_field_message_containing_group1(step, expected_message):
     assert_equals(world.resp['message'], expected_message)
 
-""" Rainy Case """
+""" Rainy Cases """
 
-""" Scenario: Duplicate assessment id """
+""" Scenario: A field is empty """
+@step(u'And   it should get a field message containing ERROR.')
+def and_it_should_get_a_field_message_containing_error(step):
+    assert_equals(world.resp['message'], 'ERROR')
+
+""" Scenario: ID Duplication """
 
 @step(u'And   it should get a field message containing ID EXISTS')
 def and_it_should_get_a_field_message_containing_ok(step):
@@ -58,9 +63,16 @@ def when_the_nurse_post_to_the_product_resource_url_anoncare_api_assessments(ste
 def given_the_nurse_have_the_following_assessment_details_with_a_null_first_name(step):
     world.assessment = step.hashes[0]
 
-@step(u'And   it should get a field message containing ERROR.')
-def and_it_should_get_a_field_message_containing_error(step):
-    assert_equals(world.resp['message'], 'ERROR')
+""" Scenario: Middle name field is null """
+@step(u'Given the nurse have the following assessment details with a null middle name:')
+def given_the_nurse_have_the_following_assessment_details_with_a_null_middle_name(step):
+    world.assessment = step.hashes[0]
+
+""" Scenario: Last name field is null """
+@step(u'Given the nurse have the following assessment details with a null last name:')
+def given_the_nurse_have_the_following_assessment_details_with_a_null_last_name(step):
+    world.assessment = step.hashes[0]
+
 
 """ Scenario: Duplicate assessment id """
 
@@ -98,7 +110,7 @@ def step_impl(step):
 
 """Rainy Case"""
 
-""" Scenario: User's details does not exist """
+""" Scenario: Patient's assessment details does not exist """
 
 @step(u'Given the patient assessment with an id \'([^\']*)\' that does not exists')
 def given_the_patient_assessment_with_an_id_group1_that_does_not_exists(step, assessment_id):
