@@ -56,7 +56,7 @@ def given_the_nurse_have_the_following_assessment_details(step):
 def when_the_nurse_post_to_the_product_resource_url_anoncare_api_assessments(step):
     world.response = world.app.post('/anoncare.api/assessments/', data=json.dumps(world.assessment))
 
-""" Rainy Case """
+""" Rainy Cases """
 
 """ Scenario: First name field is null """
 @step(u'Given the nurse have the following assessment details with a null first name:')
