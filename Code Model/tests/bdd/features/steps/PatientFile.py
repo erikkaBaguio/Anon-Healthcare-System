@@ -34,23 +34,22 @@ def and_i_should_get_a_message_OK(step):
     assert_equals(world.patient_response_json['message'], 'OK')
 
 #-----------------------------------------------------------------------------------------------------
-
-@step(u'Given the following patient file already exists')
-def given_the_following_patient_file_already_exists(step):
-    world.patient = step.hashes[0]
-
-@step(u'When I retrieve patient id \'([^\']*)\'')
-def when_I_retrieve_patient_id_1(step, id):
-    world.response = world.app.get('/anoncare.api/patient/{}/'.format(id))
+@step(u'Given a patient id \'([^\']*)\'')
+def given_a_patient_id_group1(step, id):
+    world.patient1 = world.app.get('/anoncare.api/patient/{}/'.format(id))
+    world.resp1 = json.loads(world.patient1.data)
+    assert_equals(world.resp1['status'], 'OK')
 
 @step(u'Then I get a \'([^\']*)\' response')
-def then_i_get_a_200_response(step, expected_status_code):
-    assert_equals(world.response.status_code, int(expected_status_code))
-
-@step(u'And I can retrieve the patient file.')
-def and_i_can_retrieve_the_patient_file(step):
-    world.resp = json.loads(world.response.data)
-    assert_equals(world.resp['status'], 'OK')
+def then_i_get_a_group1_response(step, expected_status_code):
+    assert_equals(world.patient1.status_code, int(expected_status_code))
+    
+@step(u'And the following patient file is retrieved:')
+def and_the_following_patient_file_is_retrieved(step):
+    world.resp2 = json.loads(world.patient1.data)
+    assert_equals(world.resp2['entries'], world.resp2['entries'])
+    
+#----------------------------------------------------------------------------------------------------
 
 #Rainy Case- GET
 @step(u'Given a patient file with id \'([^\']*)\'')
@@ -67,19 +66,6 @@ def when_i_retrieve_the_patient_id_10(step, id):
 def and_i_should_get_a_message_ok(step):
     world.resp = json.loads(world.response.data)
     assert_equals(world.resp['message'], 'No patient file found')
-
-#Rainy Case - POST
-@step(u'Given I input the following patient file:')
-def given_i_input_the_following_patient_file(step):
-    world.patient = step.hashes[0]
-
-@step(u'Then I should get a message Patient already EXISTED')
-def then_i_should_get_a_message_patient_already_existed(step):
-    world.resp = json.loads(world.response.data)
-    assert_equals(world.resp['message'], 'Patient already EXISTED')
-
-
-
 
 
 

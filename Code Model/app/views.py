@@ -294,7 +294,7 @@ def newpatient():
 
 @app.route('/anoncare.api/patient/<id>/', methods = ['GET'])
 def getpatient_file(id):
-    response = spcall('get_patientfileId', id)
+    response = spcall('get_patientfileId', [id])
     entries = []
     if len(response) == 0:
         return jsonify({"status":"OK", "message": "No patient file found", "entries":[], "count": "0"})
@@ -339,7 +339,7 @@ def getpatient_file(id):
                         "dizziness": row[35],
                         "loss_of_consciousness": row[36]
                         })                
-        return jsonify({"status": "OK", "message": "OK", "entries": entries, "count":len(entries)})
+        return jsonify({'status': 'OK', 'message': 'OK', 'entries': entries, 'count':len(entries)})
 
 
 @app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['GET'])
