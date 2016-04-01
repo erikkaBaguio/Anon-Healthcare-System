@@ -63,17 +63,21 @@ def check_auth(email, password):
 #         json_data = json.dumps(data)
 #         print "json data "+json_data
 #         return check_auth(json_data[0], json_data[1])
-        
+
 #     return render_template('login.html')
     
-@app.route('/anoncare.api/login', methods=['POST', 'GET'])
+@app.route('/anoncare.api/login', methods=['POST'])
 def login():
-    if request.method == 'POST':
-        json_data = request.get_json(force=True)
-        username = json_data['username']
-        password = json_data['password']
-        return checkauth(username, password)
-    return render_template('login.html')
+    data = json.loads(request.data)
+    username = data['username']
+    password = data['password']
+
+    user = spcall('checkauth', (username,password, ), True)
+
+    if 'Invalid Username or Password' in str(user[0][0]):
+        return jsonify({'status': 'error', 'message': user[0][0]})
+    else:
+        return jsonify({'status':'User is logged in', 'message': user[0][0]})
 
 
 @app.route('/logout')

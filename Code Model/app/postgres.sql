@@ -62,7 +62,7 @@ create table Personal_info(
     date_of_birth text,
     civil_status text,
     name_of_guardian text,
-    home_address text,
+    home_address text
 );
 
 create table Pulmonary(
@@ -91,7 +91,7 @@ create table Illness(
   hepatitis_a_b text,
   chicken_pox text,
   mumps text,
-  typhoid_fever text,
+  typhoid_fever text
 );
 
 create table Cardiac(
@@ -100,7 +100,7 @@ create table Cardiac(
   palpitations text,
   pedal_edema text,
   orthopnea text,
-  nocturnal_dyspnea text,
+  nocturnal_dyspnea text
 );
 
 create table Neurologic(
@@ -108,7 +108,7 @@ create table Neurologic(
   headache text,
   seizure text,
   dizziness text,
-  loss_of_consciousness text,
+  loss_of_consciousness text
 );
 create table Patient(
     id serial8 primary key,
@@ -132,7 +132,7 @@ create table Patient(
 
 
 create table Assessment(
-  id serial8 primary key,
+  id int8 primary key,
   assessment_date timestamp default 'now',
   nameofpatient int references Patient(id),
   age int,
@@ -142,7 +142,7 @@ create table Assessment(
   historyofpresentillness text,
   medicationstaken text,
   diagnosis text,
-  reccomendation text,
+  recommendation text,
   is_done boolean default False,
   attendingphysician int references Userinfo(id)
 );
@@ -602,7 +602,8 @@ $$
 -- NOTIFICATIONS
 
 -- TRIGGER (notification) - if new assessment is created, automatically create new notification
-create or replace function notify() RETURNS trigger AS '
+create or replace function notify() RETURNS trigger AS
+  $$
 
   BEGIN
 
@@ -618,13 +619,14 @@ create or replace function notify() RETURNS trigger AS '
     END IF;
 
   END
-  ' LANGUAGE plpgsql;
+  $$
+   LANGUAGE 'plpgsql';
 
 create TRIGGER notify_trigger AFTER INSERT ON Assessment FOR each ROW
 EXECUTE PROCEDURE notify();
 
-create or replace function notify_update() RETURNS trigger AS '
-
+create or replace function notify_update() RETURNS trigger AS
+  $$
   BEGIN
 
     IF tg_op = ''UPDATE'' THEN
@@ -635,7 +637,8 @@ create or replace function notify_update() RETURNS trigger AS '
     END IF;
 
   END
-  ' LANGUAGE plpgsql;
+  $$
+   LANGUAGE 'plpgsql';
 
 create TRIGGER notify_update_trigger AFTER UPDATE ON Assessment FOR each ROW
 EXECUTE PROCEDURE notify_update();
@@ -731,7 +734,7 @@ $$
   language 'sql';
 -----------------------------------------------------------------------------------------------------------------------------
 --[GET] Retrieve the id number of a patient
---select retrievePatientID('Josiah', 'Timonera', 'Eleazar');
+--select retrievePatientID('Josiah','Timonera','Regencia');
 create or replace function retrievePatientID(in par_fname text, in par_mname text, in par_lname text) returns bigint as
 $$
   declare
@@ -758,24 +761,45 @@ in par_diagnosis text, in par_recommendation text, in par_attendingphysician int
   begin
     select into loc_id1 id from Vital_signs where id = par_id;
     select into loc_id2 id from Assessment where id = par_id;
-    if loc_id1 isnull and loc_id2 isnull then
-      insert into Vital_signs(id, temperature,pulse_rate,respiration_rate,blood_pressure,weight)
-        values (par_id, par_temperature,par_pulse_rate,par_respiration_rate,par_blood_pressure , par_weight );
 
-      loc_patientID := retrievepatientID(par_fname,par_mname,par_lname);
+    if par_fname = '' then
+      loc_res = 'ERROR';
 
-      insert into Assessment ( id, nameofpatient, age, department,vital_signs ,chiefcomplaint ,
-      historyofpresentillness ,medicationstaken ,diagnosis ,reccomendation ,attendingphysician )
-      values ( par_id, loc_patientID, par_age, par_department, par_id,
-      par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken, par_diagnosis,
-      par_recommendation, par_attendingphysician);
+    elsif par_mname = '' then
+      loc_res = 'ERROR';
 
-      loc_res = 'OK';
+    elsif par_lname = '' then
+      loc_res = 'ERROR';
+
+    elsif par_chiefcomplaint = '' then
+      loc_res = 'ERROR';
+
+    elsif par_medicationstaken = '' then
+      loc_res = 'ERROR';
+
+    elsif par_diagnosis = '' then
+      loc_res = 'ERROR';
+
+    elsif loc_id1 isnull and loc_id2 isnull then
+        insert into Vital_signs(id, temperature,pulse_rate,respiration_rate,blood_pressure,weight)
+          values (par_id, par_temperature,par_pulse_rate,par_respiration_rate,par_blood_pressure , par_weight );
+
+        loc_patientID := retrievepatientID(par_fname,par_mname,par_lname);
+
+        insert into Assessment ( id, nameofpatient, age, department,vital_signs ,chiefcomplaint ,
+        historyofpresentillness ,medicationstaken ,diagnosis ,recommendation,attendingphysician )
+        values ( par_id, loc_patientID, par_age, par_department, par_id,
+        par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken, par_diagnosis,
+        par_recommendation, par_attendingphysician);
+
+        loc_res = 'OK';
 
     else
       loc_res = 'ID EXISTS';
+
     end if;
     return loc_res;
+
   end;
  $$
   language 'plpgsql';
@@ -784,17 +808,17 @@ in par_diagnosis text, in par_recommendation text, in par_attendingphysician int
 
 --[GET] Retrieve specific Patient's assessment
 --select getassessmentID(1);
-create or replace function getassessmentID(in par_id int, out timestamp, out bigint,out int,out int,out int, out text,
+create or replace function getassessmentID(in par_id int, out timestamp, out int,out int,out int,out int, out text,
 out text,out text,out text,out text,out int) returns setof record as
 $$
   select assessment_date, nameofpatient, age, department,vital_signs ,chiefcomplaint ,
-      historyofpresentillness ,medicationstaken ,diagnosis ,reccomendation ,attendingphysician from Assessment where id = par_id;
+      historyofpresentillness ,medicationstaken ,diagnosis ,recommendation ,attendingphysician from Assessment where id = par_id;
 $$
   language 'sql';
 
 -- [GET] Retrieve all patients' assessment
 --select getallassessment();
-create or replace function getallassessment(out int,out timestamp, out bigint,out int,out int,out int, out text,
+create or replace function getallassessment(out bigint,out timestamp, out int,out int,out int,out int, out text,
 out text,out text,out text,out text,out boolean, out int) returns setof record as
 $$
   select * from Assessment;
@@ -804,32 +828,6 @@ $$
 
 
 -----------------------------------------------------------------------------------------------------------------
---[POST] Add new patient's vital signs
---select addvitalsigns(10.1,20.1,'rr','50/50',45.5);
-create or replace function addvitalsigns(par_temperature float,par_pulse_rate float,par_respiration_rate text,
-par_blood_pressure text, par_weight float) returns text as
-$$
-  declare
-    loc_id text;
-    loc_res text;
-
-  begin
-    select into loc_id id from Vital_signs;
-
-      if loc_id isnull then
-        insert into Vital_signs(temperature,pulse_rate,respiration_rate,blood_pressure,weight)
-        values (par_temperature,par_pulse_rate,par_respiration_rate,par_blood_pressure , par_weight );
-
-        loc_res = 'OK';
-      else
-        loc_res = 'ID EXISTED';
-      end if;
-      return loc_res;
-  end;
-
-$$
-  language 'plpgsql';
-
 --[GET] Retrieve patient's vital signs.
 -- select getvitalsignsID(1);
 create or replace function getvitalsignsID(in par_id int, out float, out float, out text ,out text ,out float) returns setof record as
