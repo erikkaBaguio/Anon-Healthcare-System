@@ -62,25 +62,8 @@ create table Personal_info(
     date_of_birth text,
     civil_status text,
     name_of_guardian text,
-    home_address text,
-    is_active BOOLEAN default True
+    home_address text
 );
-
-
-create table Patient(
-    id serial8 primary key,
-    fname text,
-    mname text,
-    lname text,
-    age int,
-    sex text,
-    department_id int references Department(id),
-    patient_type_id int references Patient_type(id),
-    Personal_info_id int references Personal_info(id),
-    is_active BOOLEAN default True
-
-);
-
 
 create table Pulmonary(
     id serial8 primary key,
@@ -108,8 +91,7 @@ create table Illness(
   hepatitis_a_b text,
   chicken_pox text,
   mumps text,
-  typhoid_fever text,
-  done BOOLEAN
+  typhoid_fever text
 );
 
 create table Cardiac(
@@ -118,8 +100,7 @@ create table Cardiac(
   palpitations text,
   pedal_edema text,
   orthopnea text,
-  nocturnal_dyspnea text,
-  done BOOLEAN
+  nocturnal_dyspnea text
 );
 
 create table Neurologic(
@@ -127,12 +108,31 @@ create table Neurologic(
   headache text,
   seizure text,
   dizziness text,
-  loss_of_consciousness text,
-  done BOOLEAN
+  loss_of_consciousness text
+);
+create table Patient(
+    id serial8 primary key,
+    fname text,
+    mname text,
+    lname text,
+    age int,
+    sex text,
+    department_id int references Department(id),
+    patient_type_id int references Patient_type(id),
+    personal_info_id int references Personal_info(id),
+    pulmonary_id int references Pulmonary(id),
+    gut_id int references Gut(id),
+    illness_id int references Illness(id),
+    cardiac_id int references Cardiac(id),
+    neurologic_id int references Neurologic(id),
+    is_active BOOLEAN default True
 );
 
+
+
+
 create table Assessment(
-  id serial8 primary key,
+  id int8 primary key,
   assessment_date timestamp default 'now',
   nameofpatient int references Patient(id),
   age int,
@@ -142,10 +142,12 @@ create table Assessment(
   historyofpresentillness text,
   medicationstaken text,
   diagnosis text,
-  reccomendation text,
+  recommendation text,
   is_done boolean default False,
   attendingphysician int references Userinfo(id)
 );
+
+
 
 insert into College values (1,'SCS');
 insert into College values (2,'COE');
@@ -329,49 +331,6 @@ $$
 
 ---------------------------------------------------------------------------------------------------------------
 
-CREATE  or replace function newcardiac(par_chest_pain text, par_palpitations text, par_pedal_edema text, par_orthopnea text, par_nocturnal_dyspnea text, par_done boolean) returns text as
-$$
-  DECLARE
-    loc_id text;
-    loc_res text;
-  BEGIN
-    SELECT INTO  loc_id id from Cardiac;
-    if loc_id isnull THEN
-
-      INSERT into Cardiac(chest_pain, palpitations, pedal_edema, orthopnea, nocturnal_dyspnea, done) VALUES (par_chest_pain, par_palpitations, par_pedal_edema, par_orthopnea, par_nocturnal_dyspnea, par_done);
-      loc_res = 'OK';
-
-    ELSE
-      loc_res = 'ID EXISTED';
-    END if;
-    return loc_res;
-  END ;
-$$
- LANGUAGE 'plpgsql';
-
-----------------------------------------------------------------------------------------------------------------
-
-create or replace function newneurologic(par_headache text, par_seizure text, par_dizziness text, par_loss_of_consciousness text, par_done boolean) returns text as
-$$
- DECLARE
-   loc_id text;
-   loc_res text;
- BEGIN
-   SELECT into loc_id id from Neurologic;
-   if loc_id isnull THEN
-
-     INSERT INTO Neurologic(headache, seizure, dizziness, loss_of_consciousness, done) values (par_headache, par_seizure, par_dizziness, par_loss_of_consciousness, par_done);
-     loc_res = 'OK';
-
-   ELSE
-     loc_res = 'ID EXISTED';
-   END if;
-   return loc_res;
- END;
-$$
- LANGUAGE  'plpgsql';
-
------------------------------------------------------------------------------------------------------------------
 --[GET] Retrieve list of colleges
 --select getallcolleges();
 create or replace function getallcolleges(out bigint, out text) returns setof record as
@@ -408,26 +367,64 @@ $$
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-create or replace function newpatient(par_fname text, par_mname text, par_lname text, par_age int, par_sex text, 
-                                      par_department_id int, par_patient_type_id int, par_personal_info_id int, par_is_active boolean) returns text as
+create or replace function newpatient(par_id int, par_fname text, par_mname text, par_lname text, par_age int, par_sex text, 
+                                      par_department_id int, par_patient_type_id int, par_height text, par_weight float, par_date_of_birth text, 
+                                      par_civil_status text, par_name_of_guardian text, par_home_address text, par_cough text, par_dyspnea text, 
+                                      par_hemoptysis text, par_tb_exposure text, par_frequency text, par_flank_plan text, par_discharge text, 
+                                      par_dysuria text, par_nocturia text, par_dec_urine_amount text, par_asthma text, par_ptb text, 
+                                      par_heart_problem text, par_hepatitis_a_b text, par_chicken_pox text,par_mumps text, par_typhoid_fever text, 
+                                      par_chest_pain text, par_palpitations text, par_pedal_edema text, par_orthopnea text, par_nocturnal_dyspnea text, 
+                                      par_headache text, par_seizure text, par_dizziness text, par_loss_of_consciousness text, par_is_active boolean) returns text as
 $$
   declare
       loc_fname text;
       loc_mname text;
       loc_lname text;
       loc_res text;
+      loc_id1 int;
+      loc_id2 int;
+      loc_id3 int;
+      loc_id4 int;
+      loc_id5 int;
+      loc_id6 int;
+      loc_id7 int;
 
   begin 
+      
+      select into loc_id1 id from Personal_info where id = par_id;
+      select into loc_id2 id from Pulmonary where id = par_id;
+      select into loc_id3 id from Gut where id = par_id;
+      select into loc_id4 id from Illness where id = par_id;
+      select into loc_id5 id from Cardiac where id = par_id;
+      select into loc_id6 id from Neurologic where id = par_id;
+      select into loc_id7 id from Patient where id = par_id;
       SELECT INTO loc_fname fname from Patient where fname = par_fname AND mname = par_mname AND lname = par_lname;
-      if par_fname isnull or par_mname isnull or par_lname isnull or par_age isnull or par_sex isnull or par_department_id isnull or 
-         par_patient_type_id isnull or par_personal_info_id isnull or par_is_active isnull then
+      if par_fname = '' or par_lname = '' or par_age isnull or par_sex = '' or par_department_id isnull or 
+         par_patient_type_id isnull or par_height isnull or par_weight isnull or par_date_of_birth = '' or par_civil_status = '' or
+         par_name_of_guardian = '' or par_home_address = '' or par_cough = '' or par_dyspnea = '' or par_hemoptysis = '' or 
+         par_tb_exposure = '' or par_frequency = '' or par_flank_plan = '' or par_discharge = '' or par_dysuria = '' or
+         par_nocturia = '' or par_dec_urine_amount = '' or par_asthma = '' or par_ptb = ' ' or par_heart_problem = '' or
+         par_hepatitis_a_b = '' or par_chicken_pox = '' or par_mumps = '' or par_typhoid_fever = '' or par_chest_pain = '' or
+         par_palpitations = '' or par_pedal_edema = '' or par_orthopnea = '' or par_nocturnal_dyspnea = '' or par_headache = '' or
+         par_seizure = '' or par_dizziness = '' or par_loss_of_consciousness = ''  then
          loc_res = 'Please fill up the required data';
-      elsif loc_fname isnull then
-          insert into Patient(fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active) values 
-              (par_fname, par_mname, par_lname, par_age, par_sex, par_department_id, par_patient_type_id, par_personal_info_id, par_is_active);
-              loc_res = 'OK'; 
+      elsif par_mname = '' or loc_fname isnull and loc_id1 isnull and loc_id2 isnull and loc_id3 isnull and loc_id4 isnull and loc_id5 isnull and loc_id6 isnull and loc_id7 isnull then
+          insert into Personal_info(id, height, weight, date_of_birth, civil_status, name_of_guardian, home_address)
+              values (par_id, par_height, par_weight, par_date_of_birth, par_civil_status, par_name_of_guardian, par_home_address);
+          insert into Pulmonary(id, cough, dyspnea, hemoptysis, tb_exposure)
+              values (par_id, par_cough, par_dyspnea, par_hemoptysis, par_tb_exposure);
+          insert into Gut(id, frequency, flank_plan, discharge, dysuria, nocturia, dec_urine_amount)
+              values (par_id, par_frequency, par_flank_plan, par_discharge, par_dysuria, par_nocturia, par_dec_urine_amount);
+          insert into Illness(id, asthma, ptb, heart_problem, hepatitis_a_b, chicken_pox, mumps, typhoid_fever)
+              values (par_id, par_asthma, par_ptb, par_heart_problem, par_hepatitis_a_b, par_chicken_pox, par_mumps, par_typhoid_fever);
+          insert into Cardiac(id, chest_pain, palpitations, pedal_edema, orthopnea, nocturnal_dyspnea)
+              values (par_id, par_chest_pain, par_palpitations, par_pedal_edema, par_orthopnea, par_nocturnal_dyspnea);
+          insert into Neurologic(id, headache, seizure, dizziness, loss_of_consciousness)
+              values (par_id, par_headache, par_seizure, par_dizziness, par_loss_of_consciousness);
+          insert into Patient(id, fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, pulmonary_id, gut_id, illness_id, cardiac_id, neurologic_id, is_active) 
+              values (par_id, par_fname, par_mname, par_lname, par_age, par_sex, par_department_id, par_patient_type_id, par_id, par_id, par_id, par_id, par_id, par_id, par_is_active);
+            
+          loc_res = 'OK'; 
       else
           loc_res = 'Patient already EXISTED';
       end if;
@@ -436,38 +433,34 @@ $$
 $$
   language 'plpgsql';
 
---select newpatient('Mary Grace', 'Pasco', 'Cabolbol', '19', 'female', '1' , '1', '1', 'true');
 
-create or replace function get_newpatient(out text, out text, out text, out int, out text, out int, out int, out int, out boolean) returns setof record as
+--GET patient file
+create or replace function get_patientfileId(in par_id int, out text, out text, out text, out int, out text,     
+                                         out text, out float, out text, out text, out text, 
+                                         out text, out text, out text, out text, out text,
+                                         out text, out text, out text, out text, out text,
+                                         out text, out text, out text, out text, out text,
+                                         out text, out text, out text, out text, out text,
+                                         out text, out text, out text, out text, out text,
+                                         out text, out text) returns setof record as
 $$
-  select fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active from Patient;
-$$
-  language 'sql';
-
---select * from get_newpatient();
-
-create or replace function get_newpatient_id(in par_id int, out text, out text, out text, out int, out text, out int, out int, out int, out boolean) returns setof record as
-$$
-  select fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, is_active from Patient where par_id = id;
-$$
-  language 'sql';
-
---select * from get_newpatient_id(2);
-
---GET patient file and personal info
-create or replace function get_patientId(in par_id int, out text, out text, out text, out int, out text,     
-                                              out text, out float, out text, out text,out text,
-                                              out text) returns setof record as
-$$
-  select Patient.fname, Patient.mname, Patient.lname, Patient.age, Patient.sex,
-         Personal_info.height, Personal_info.weight,Personal_info.date_of_birth, Personal_info.civil_status, Personal_info.name_of_guardian, 
-         Personal_info.home_address
-  from Patient, Personal_info
-  where Patient.id = par_id AND Personal_info.id = Patient.personal_info_id ;     
+  select Patient.fname, Patient.mname, Patient.lname, Patient.age, Patient.sex, 
+         Personal_info.height, Personal_info.weight, Personal_info.date_of_birth, Personal_info.civil_status, Personal_info.name_of_guardian, 
+         Personal_info.home_address, Pulmonary.cough, Pulmonary.dyspnea, Pulmonary.hemoptysis, Pulmonary.tb_exposure,
+         Gut.frequency, Gut.flank_plan, Gut.discharge, Gut.dysuria, Gut.nocturia,
+         Gut.dec_urine_amount, Illness.asthma, Illness.ptb, Illness.heart_problem, Illness.hepatitis_a_b,
+         Illness.chicken_pox, Illness.mumps, Illness.typhoid_fever,Cardiac.chest_pain, Cardiac.palpitations,
+         Cardiac.pedal_edema, Cardiac.orthopnea, Cardiac.nocturnal_dyspnea, Neurologic.headache, Neurologic.seizure,
+         Neurologic.dizziness, Neurologic.loss_of_consciousness
+  from Patient, Personal_info, Pulmonary, Gut, Illness, Cardiac, Neurologic 
+  where Patient.id = par_id AND Personal_info.id = Patient.personal_info_id AND Pulmonary.id = Patient.pulmonary_id AND 
+        Gut.id = Patient.gut_id AND Illness.id = Patient.illness_id AND Cardiac.id = Patient.cardiac_id AND Neurologic.id = Patient.neurologic_id;     
 $$
   language 'sql';
 
---select * from get_patientId(2);
+
+--select * from get_patientfileId(1);
+
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -524,16 +517,93 @@ $$
 $$
   language 'plpgsql';
 
+create or replace function newgut(par_frequency text, par_flank_plan text, par_discharge text, par_dysuria text, par_nocturia text, par_dec_urine_amount text) returns text as
+$$
+  declare
+    loc_id text;
+    loc_res text;
+  BEGIN
+    SELECT INTO  loc_id id from Gut;
+    if loc_id isnull THEN
+        insert into Gut(frequency, flank_plan, discharge, dysuria, nocturia, dec_urine_amount) values (par_frequency, par_flank_plan, par_discharge, par_dysuria, par_nocturia, par_dec_urine_amount);
+        loc_res = 'OK';
+    else
+        loc_res = 'ID EXISTED';
+    end if;
+    return loc_res;
+  END;
+$$
+ language 'plpgsql';
+
+create or replace function newillness(par_asthma text, par_ptb text, par_heart_problem text, par_hepatitis_a_b text, par_chicken_pox text, par_mumps text, par_typhoid_fever text) returns text as 
+$$
+  declare
+    DECLARE
+    loc_id text;
+    loc_res text;
+  BEGIN
+    SELECT INTO  loc_id id from Illness;
+    if loc_id isnull THEN
+        Insert into Illness(asthma, ptb, heart_problem, hepatitis_a_b, chicken_pox, mumps, typhoid_fever) values (par_asthma, par_ptb, par_heart_problem, par_hepatitis_a_b, par_chicken_pox, par_mumps, par_typhoid_fever);
+        loc_res = 'OK';
+    ELSE
+      loc_res = 'ID EXISTED';
+    END if;
+    return loc_res;
+  END ;
+$$
+ LANGUAGE 'plpgsql';
+
+
+CREATE  or replace function newcardiac(par_chest_pain text, par_palpitations text, par_pedal_edema text, par_orthopnea text, par_nocturnal_dyspnea text, par_done boolean) returns text as
+$$
+  DECLARE
+    loc_id text;
+    loc_res text;
+  BEGIN
+    SELECT INTO  loc_id id from Cardiac;
+    if loc_id isnull THEN
+
+      INSERT into Cardiac(chest_pain, palpitations, pedal_edema, orthopnea, nocturnal_dyspnea, done) VALUES (par_chest_pain, par_palpitations, par_pedal_edema, par_orthopnea, par_nocturnal_dyspnea, par_done);
+      loc_res = 'OK';
+
+    ELSE
+      loc_res = 'ID EXISTED';
+    END if;
+    return loc_res;
+  END ;
+$$
+ LANGUAGE 'plpgsql';
+
+----------------------------------------------------------------------------------------------------------------
+
+create or replace function newneurologic(par_headache text, par_seizure text, par_dizziness text, par_loss_of_consciousness text, par_done boolean) returns text as
+$$
+ DECLARE
+   loc_id text;
+   loc_res text;
+ BEGIN
+   SELECT into loc_id id from Neurologic;
+   if loc_id isnull THEN
+
+     INSERT INTO Neurologic(headache, seizure, dizziness, loss_of_consciousness, done) values (par_headache, par_seizure, par_dizziness, par_loss_of_consciousness, par_done);
+     loc_res = 'OK';
+
+   ELSE
+     loc_res = 'ID EXISTED';
+   END if;
+   return loc_res;
+ END;
+$$
+ LANGUAGE  'plpgsql';
 
   
-
-
-
 ------------------------------------------------------------------------------------------------------------------------------------------
 -- NOTIFICATIONS
 
 -- TRIGGER (notification) - if new assessment is created, automatically create new notification
-create or replace function notify() RETURNS trigger AS '
+create or replace function notify() RETURNS trigger AS
+  $$
 
   BEGIN
 
@@ -549,13 +619,14 @@ create or replace function notify() RETURNS trigger AS '
     END IF;
 
   END
-  ' LANGUAGE plpgsql;
+  $$
+   LANGUAGE 'plpgsql';
 
 create TRIGGER notify_trigger AFTER INSERT ON Assessment FOR each ROW
 EXECUTE PROCEDURE notify();
 
-create or replace function notify_update() RETURNS trigger AS '
-
+create or replace function notify_update() RETURNS trigger AS
+  $$
   BEGIN
 
     IF tg_op = ''UPDATE'' THEN
@@ -566,7 +637,8 @@ create or replace function notify_update() RETURNS trigger AS '
     END IF;
 
   END
-  ' LANGUAGE plpgsql;
+  $$
+   LANGUAGE 'plpgsql';
 
 create TRIGGER notify_update_trigger AFTER UPDATE ON Assessment FOR each ROW
 EXECUTE PROCEDURE notify_update();
@@ -661,54 +733,86 @@ $$
 $$
   language 'sql';
 -----------------------------------------------------------------------------------------------------------------------------
+--[GET] Retrieve the id number of a patient
+--select retrievePatientID('Josiah','Timonera','Regencia');
+create or replace function retrievePatientID(in par_fname text, in par_mname text, in par_lname text) returns bigint as
+$$
+  declare
+      loc_id bigint;
+  begin
+      select into loc_id id from Patient where lower(fname) = lower(par_fname) and lower(mname) = lower(par_mname) and lower(lname) = lower(par_lname);
+      return loc_id;
+  end;
+$$
+  language 'plpgsql';
 
 -- [POST] Create new assessment
--- select new_assessment(1,18,1,1,'doc','history','medication','diagnosis', 'recccomendation', 1);
---select new_assessment('Josiah','Timonera','Regencia', 19, 1, 37.1, 80, '19 breaths/minute', '90/70', 48, 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
-create or replace function new_assessment(par_fname text, par_mname text, par_lname text, par_age int, par_department int,
-par_temperature float,par_pulse_rate float,par_respiration_rate text,par_blood_pressure text, par_weight float,
-par_chiefcomplaint text, par_historyofpresentillness text, par_medicationstaken text,
-par_diagnosis text, par_recommendation text, par_attendingphysician int) returns text as
+-- select new_assessment(1,'Josiah','Timonera','Regencia', 19, 1, 37.1, 80, '19 breaths/minute', '90/70', 48, 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
+create or replace function new_assessment(in par_id int, in par_fname text, in par_mname text, in par_lname text, in par_age int, in par_department int,
+in par_temperature float, in par_pulse_rate float, in par_respiration_rate text, in par_blood_pressure text, in par_weight float,
+in par_chiefcomplaint text, in par_historyofpresentillness text, in par_medicationstaken text,
+in par_diagnosis text, in par_recommendation text, in par_attendingphysician int) returns text as
  $$
   declare
-    loc_id int;
+    loc_id1 int;
+    loc_id2 int;
     loc_res text;
-    vital_signID int;
-    loc_patientID int;
-    vitalSigns int;
+    loc_patientID bigint;
   begin
-    select into loc_id id from Assessment;
-    if loc_id isnull then
-      perform loc_patientID id from Patient where lower(fname) = lower(par_fname) and lower(mname) = lower(par_mname) and lower(lname) = lower(par_lname);
-      perform addvitalsigns(par_temperature,par_pulse_rate,par_respiration_rate,par_blood_pressure , par_weight);
+    select into loc_id1 id from Vital_signs where id = par_id;
+    select into loc_id2 id from Assessment where id = par_id;
 
-      select into vitalSigns count(id) from Vital_signs;
-      vital_signID := vitalSigns + 1;
+    if par_fname = '' then
+      loc_res = 'ERROR';
 
-      insert into Assessment ( nameofpatient, age, department,vital_signs ,chiefcomplaint ,
-      historyofpresentillness ,medicationstaken ,diagnosis ,reccomendation ,attendingphysician )
-      values ( loc_patientID, par_age, par_department, vital_signID,
-      par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken, par_diagnosis,
-      par_recommendation, par_attendingphysician);
+    elsif par_mname = '' then
+      loc_res = 'ERROR';
 
-      loc_res = 'OK';
+    elsif par_lname = '' then
+      loc_res = 'ERROR';
+
+    elsif par_chiefcomplaint = '' then
+      loc_res = 'ERROR';
+
+    elsif par_medicationstaken = '' then
+      loc_res = 'ERROR';
+
+    elsif par_diagnosis = '' then
+      loc_res = 'ERROR';
+
+    elsif loc_id1 isnull and loc_id2 isnull then
+        insert into Vital_signs(id, temperature,pulse_rate,respiration_rate,blood_pressure,weight)
+          values (par_id, par_temperature,par_pulse_rate,par_respiration_rate,par_blood_pressure , par_weight );
+
+        loc_patientID := retrievepatientID(par_fname,par_mname,par_lname);
+
+        insert into Assessment ( id, nameofpatient, age, department,vital_signs ,chiefcomplaint ,
+        historyofpresentillness ,medicationstaken ,diagnosis ,recommendation,attendingphysician )
+        values ( par_id, loc_patientID, par_age, par_department, par_id,
+        par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken, par_diagnosis,
+        par_recommendation, par_attendingphysician);
+
+        loc_res = 'OK';
+
     else
-      loc_res = 'ID EXISTED';
+      loc_res = 'ID EXISTS';
+
     end if;
     return loc_res;
+
   end;
  $$
   language 'plpgsql';
 
 
+
 --[GET] Retrieve specific Patient's assessment
 --select getassessmentID(1);
 create or replace function getassessmentID(in par_id int, out timestamp, out int,out int,out int,out int, out text,
-out text,out text,out text,out text,out int, out boolean, out int8) returns setof record as
-
+out text,out text,out text,out text,out int) returns setof record as
 $$
   select assessment_date, nameofpatient, age, department,vital_signs ,chiefcomplaint ,
-      historyofpresentillness ,medicationstaken ,diagnosis ,reccomendation ,attendingphysician, is_accepted, id from Assessment where id = par_id;
+      historyofpresentillness ,medicationstaken ,diagnosis ,recommendation ,attendingphysician from Assessment where id = par_id;
 $$
   language 'sql';
 
@@ -721,33 +825,9 @@ $$
 $$
   language 'sql';
 
+
+
 -----------------------------------------------------------------------------------------------------------------
---[POST] Add new patient's vital signs
---select addvitalsigns(10.1,20.1,'rr','50/50',45.5);
-create or replace function addvitalsigns(par_temperature float,par_pulse_rate float,par_respiration_rate text,
-par_blood_pressure text, par_weight float) returns text as
-$$
-  declare
-    loc_id text;
-    loc_res text;
-
-  begin
-    select into loc_id id from Vital_signs;
-
-      if loc_id isnull then
-        insert into Vital_signs(temperature,pulse_rate,respiration_rate,blood_pressure,weight)
-        values (par_temperature,par_pulse_rate,par_respiration_rate,par_blood_pressure , par_weight );
-
-        loc_res = 'OK';
-      else
-        loc_res = 'ID EXISTED';
-      end if;
-      return loc_res;
-  end;
-
-$$
-  language 'plpgsql';
-
 --[GET] Retrieve patient's vital signs.
 -- select getvitalsignsID(1);
 create or replace function getvitalsignsID(in par_id int, out float, out float, out text ,out text ,out float) returns setof record as
@@ -756,7 +836,7 @@ $$
 $$
   language 'sql';
 
-create or replace function getallvitalsigns(out par_id bigint, out float, out float, out text ,out text ,out float) returns setof record as
+create or replace function getallvitalsigns(out par_id int, out float, out float, out text ,out text ,out float) returns setof record as
 $$
   select * from Vital_signs;
 $$
@@ -773,13 +853,13 @@ $$
 
 ------------------------------------------------------------------------------------------------------------------
 --[GET] Retrieve assessment of specific patient.
-create or replace function getpatientID(in par_id int, out timestamp, ) returns setof record as
-$$
-  select Assessment.assessment_date, Assessment.nameofpatient, Assessment.age, Assessment.department.name,
-
-  from Patient, Assessment
-  where
-$$
+-- create or replace function getpatientID(in par_id int, out timestamp ) returns setof record as
+-- $$
+--   select Assessment.assessment_date, Assessment.nameofpatient, Assessment.age, Assessment.department.name,
+--
+--   from Patient, Assessment
+--   where
+-- $$
 
 ------------------------------------------------------------------------------------------------------------------
 create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,

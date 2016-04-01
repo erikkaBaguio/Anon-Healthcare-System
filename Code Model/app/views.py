@@ -5,6 +5,7 @@ from os import sys
 from flask import Flask, jsonify, render_template, request, session, redirect
 from functools import wraps
 # from flask.ext.httpauth import HTTPBasicAuth
+from os import sys
 from models import DBconn
 import json, flask
 from app import app
@@ -62,17 +63,21 @@ def check_auth(email, password):
 #         json_data = json.dumps(data)
 #         print "json data "+json_data
 #         return check_auth(json_data[0], json_data[1])
-        
+
 #     return render_template('login.html')
     
-@app.route('/anoncare.api/login', methods=['POST', 'GET'])
+@app.route('/anoncare.api/login', methods=['POST'])
 def login():
-    if request.method == 'POST':
-        json_data = request.get_json(force=True)
-        username = json_data['username']
-        password = json_data['password']
-        return checkauth(username, password)
-    return render_template('login.html')
+    data = json.loads(request.data)
+    username = data['username']
+    password = data['password']
+
+    user = spcall('checkauth', (username,password, ), True)
+
+    if 'Invalid Username or Password' in str(user[0][0]):
+        return jsonify({'status': 'error', 'message': user[0][0]})
+    else:
+        return jsonify({'status':'User is logged in', 'message': user[0][0]})
 
 
 @app.route('/logout')
@@ -208,7 +213,7 @@ def get_vital_signs(vital_signID):
                     "pulse_rate": str(r[1]),
                     "respiration_rate": str(r[2]),
                     "blood_pressure": str(r[3]),
-                    "weight": str(r[4])})
+                    "weight": str(r[4]), "message" : str(r[0][0])})
 
 def checkauth(username, password):
     res = spcall('checkauth', (username, password))
@@ -240,11 +245,11 @@ def notify(assessment_id, doctor_id):
 
     return jsonify({'status': response[0][0]})
 
-
 @app.route('/anoncare.api/patient/', methods =['POST'])
 def newpatient():
     data = json.loads(request.data)
     response = spcall('newpatient', (
+        data['id'],
         data['fname'],
         data['mname'],
         data['lname'],
@@ -252,40 +257,40 @@ def newpatient():
         data['sex'],
         data['department_id'],
         data['patient_type_id'],
-        data['personal_info_id'],
-        data['is_active'],),True)
-
-    if 'Error' in str(response[0][0]):
-        return jsonify({'status': 'error', 'message': response[0][0]})
-
-    return jsonify({'status': 'OK', 'message': response[0][0]}), 200
-
-@app.route('/anoncare.api/patient/personal/', methods = ['POST'])
-def newpersonal():
-    data = json.loads(request.data)
-    response = spcall('newpersonal_info', (
         data['height'],
         data['weight'],
         data['date_of_birth'],
         data['civil_status'],
         data['name_of_guardian'],
         data['home_address'],
-        data['is_active'],),True)
-    
-    if 'Error' in str(response[0][0]):
-        return jsonify({'status': 'error', 'message': response[0][0]})
-
-    return jsonify({'status': 'OK', 'message': response[0][0]}), 200
-
-@app.route('/anoncare.api/patient/pulmonary/', methods = ['POST'])
-def newpulmonary():
-    data = json.loads(request.data)
-    response = ('newpulmonary', (
         data['cough'],
         data['dyspnea'],
         data['hemoptysis'],
-        data['tb_exposure'],),True)
-
+        data['tb_exposure'],
+        data['frequency'],
+        data['flank_plan'],
+        data['discharge'],
+        data['dysuria'],
+        data['nocturia'],
+        data['dec_urine_amount'],
+        data['asthma'],
+        data['ptb'],
+        data['heart_problem'],
+        data['hepatitis_a_b'],
+        data['chicken_pox'],
+        data['mumps'],
+        data['typhoid_fever'],
+        data['chest_pain'],
+        data['palpitations'],
+        data['pedal_edema'],
+        data['orthopnea'],
+        data['nocturnal_dyspnea'],
+        data['headache'],
+        data['seizure'],
+        data['dizziness'],
+        data['loss_of_consciousness'],
+        data['is_active']))
+    
     if 'Error' in str(response[0][0]):
         return jsonify({'status': 'error', 'message': response[0][0]})
 
@@ -293,28 +298,7 @@ def newpulmonary():
 
 @app.route('/anoncare.api/patient/<id>/', methods = ['GET'])
 def getpatient_file(id):
-    response = spcall('get_newpatient_id', id)
-    entries = []
-    if len(response) == 0:
-        return jsonify({"status":"OK", "message": "No patient file found", "entries":[], "count": "0"})
-    else:
-        row = response[0]
-        entries.append({"id": id,
-                        "fname": row[0],
-                        "mname": row[1],
-                        "lname": row[2],
-                        "age": row[3],
-                        "sex": row[4],
-                        "department_id": row[5],
-                        "patient_type_id": row[6],
-                        "personal_info_id": row[7],
-                        "is_active": row[8]})
-        return jsonify({"status": "OK", "message": "OK", "entries": entries, "count":len(entries)})
-
-
-@app.route('/anoncare.api/patient/personal/<id>/', methods =['GET'])
-def get_allpatient(id):
-    response = spcall('get_patientID', id)
+    response = spcall('get_patientfileId', [id])
     entries = []
     if len(response) == 0:
         return jsonify({"status":"OK", "message": "No patient file found", "entries":[], "count": "0"})
@@ -331,9 +315,35 @@ def get_allpatient(id):
                         "date_of_birth": row[7],
                         "civil_status": row[8],
                         "name_of_guardian": row[9],
-                        "home_address": row[10]
-                        })
-        return jsonify({"status":"OK", "message":"OK", "entries": entries, "count": len(entries)})
+                        "home_address": row[10],
+                        "cough": row[11],
+                        "dyspnea": row[12],
+                        "hemoptysis": row[13],
+                        "tb_exposure": row[14],
+                        "frequency": row[15],
+                        "flank_plan": row[16],
+                        "discharge": row[17],
+                        "dysuria": row[18],
+                        "nocturia": row[19],
+                        "dec_urine_amount": row[20],
+                        "asthma": row[21],
+                        "ptb": row[22],
+                        "heart_problem": row[23],
+                        "hepatitis_a_b": row[24],
+                        "chicken_pox": row[25],
+                        "mumps": row[26],
+                        "typhoid_fever": row[27],
+                        "chest_pain": row[28],
+                        "palpitations": row[29],
+                        "pedal_edema": row[30],
+                        "orthopnea": row[31],
+                        "nocturnal_dyspnea": row[32],
+                        "headache": row[33],
+                        "seizure": row[34],
+                        "dizziness": row[35],
+                        "loss_of_consciousness": row[36]
+                        })                
+        return jsonify({'status': 'OK', 'message': 'OK', 'entries': entries, 'count':len(entries)})
 
 
 @app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['GET'])
@@ -362,7 +372,7 @@ def doctor_referral(assessment_id, doctor_id, prev_doctor):
 
 @app.route('/anoncare.api/accept/<int:assessment_id>/<int:doctor_id>', methods=['POST'])
 def accept_assessment(assessment_id, doctor_id):
-    assessment_accept = spcall("accept_assessment", (assessment_id, doctor_id), True)
+    assessment_accept = spcall("accept_assessment", (assessment_id, doctor_id, ), True)
     assessment = spcall("getassessmentID", (assessment_id, ))
 
     if 'Error' in str(assessment[0][0]):
@@ -399,118 +409,68 @@ def view_assessment(assessment_id):
                         "Medications taken": r[7],
                         "Diagnosis": r[8],
                         "Recommendation": r[9],
-                        "Attending Physician": r[10],
-                        "is_accepted":r[11],
-                        "id":r[12]})
+                        "Attending Physician": r[10]})
 
-        return jsonify({'status': 'OK', 'entries': records, 'count': len(records), 'message': assessments[0][0]})
+        return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
 
-# select new_assessment(1,'Josiah','Timonera','Regencia', 19, 1, 37.1, 80, '19 breaths/minute', '90/70', 48,
-# 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
+@app.route('/anoncare.api/assessments/', methods=['GET'])
+def view_all_ssessment():
+    assessments = spcall("getallassessment", ())
+    records = []
+
+    if len(assessments) == 0:
+        return jsonify({"status": "OK", "message": "No entries found", "entries": [], "count": "0"})
+
+    elif 'Error' in str(assessments[0][0]):
+        return jsonify({'status': 'error', 'message': assessments[0][0]})
+
+    else:
+        for r in assessments:
+            records.append({"ID":r[0],
+                        "Date": r[1],
+                        "Patient": r[2],
+                        "Age": r[3],
+                        "Department": r[4],
+                        "Vital Signs": r[5],
+                        "Chief Complaint": r[6],
+                        "History of patient illness": r[7],
+                        "Medications taken": r[8],
+                        "Diagnosis": r[9],
+                        "Recommendation": r[10],
+                        "Attending Physician": r[11]})
+
+        return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
+
 
 @app.route('/anoncare.api/assessments/', methods = ['POST'])
 def new_assessment():
-    json_data = json.loads(request.data)
-    response = spcall('new_assessment',(
-        json_data['fname'],
-        json_data['mname'],
-        json_data['lname'],
-        json_data['temperature'],
-        json_data['pulse_rate'],
-        json_data['respiration_rate'],
-        json_data['blood_pressure'],
-        json_data['weight'],
-        json_data['age'],
-        json_data['department'],
-        json_data['chiefcomplaint'],
-        json_data['historyofpresentillness'],
-        json_data['medicationstaken'],
-        json_data['diagnosis'],
-        json_data['reccomendation'],
-        json_data['attendingphysician'],),True)
+    data = json.loads(request.data)
 
-    if 'Error' in str(response[0][0]):
-        return jsonify({'status': 'error', 'message': response[0][0]})
+    id = data['id']
+    fname = data['fname']
+    mname = data['mname']
+    lname = data['lname']
+    age = data['age']
+    department = data['department']
+    temperature =  data['temperature']
+    pulse_rate = data['pulse_rate']
+    respiration_rate = data['respiration_rate']
+    blood_pressure = data['blood_pressure']
+    weight = data['weight']
+    chiefcomplaint = data['chiefcomplaint']
+    historyofpresentillness = data['historyofpresentillness']
+    medicationstaken = data['medicationstaken']
+    diagnosis = data['diagnosis']
+    recommendation = data['reccomendation']
+    attendingphysician = data['attendingphysician']
 
-    return jsonify({'status': 'OK', 'message': response[0][0]}), 200
+    response = spcall("new_assessment", (id, fname, mname, lname, age, department, temperature, pulse_rate, respiration_rate, blood_pressure, weight,
+    chiefcomplaint, historyofpresentillness, medicationstaken, diagnosis, recommendation, attendingphysician, ), True)
 
-
-    # fname = json_data['fname']
-    # mname = json_data['mname']
-    # lname = json_data['lname']
-    # temperature = json_data['temperature']
-    # pulse_rate = json_data['pulse_rate']
-    # respiration_rate = json_data['respiration_rate'],
-
-    # blood_pressure = json_data['blood_pressure']
-    # weight = json_data['weight'],
-
-    # age = json_data['age']
-    # department = json_data['department']
-    # chiefcomplaint = json_data['chiefcomplaint']
-    # historyofpresentillness = json_data['historyofpresentillness']
-    # medicationstaken = json_data['medicationstaken']
-    # diagnosis = json_data['diagnosis']
-    # recommendation = json_data['reccomendation']
-    # attendingphysician = json_data['attendingphysician']
-
-    # res = ('new_assessment', (fname, mname, lname, age, department, temperature, pulse_rate, respiration_rate, blood_pressure, weight,
-    #                            chiefcomplaint, historyofpresentillness, medicationstaken, diagnosis, recommendation,attendingphysician))
-
-    # if 'Error' in res[0][0]:
-    #     return jsonify({'status': 'error', 'message': res[0][0]})
-
-    # return jsonify({'status': 'ok', 'message': res[0][0]})
-
-    json_data = json.loads(request.data)
-
-    id = json_data['id']
-    fname = json_data['fname']
-    mname = json_data['mname']
-    lname = json_data['lname']
-    age = json_data['age']
-    department = json_data['department']
-    temperature = json_data['temperature']
-    pulse_rate = json_data['pulse_rate']
-    respiration_rate = json_data['respiration_rate']
-    blood_pressure = json_data['blood_pressure']
-    weight = json_data['weight']
-    chiefcomplaint = json_data['chiefcomplaint']
-    historyofpresentillness = json_data['historyofpresentillness']
-    medicationstaken = json_data['medicationstaken']
-    diagnosis = json_data['diagnosis']
-    recommendation = json_data['reccomendation']
-    attendingphysician = json_data['attendingphysician']
-    #
-    # print id
-    # print "\n", fname
-    # print "\n", mname
-    # print "\n",lname
-    # print "\n",age
-    # print "\n",department
-    # print "\n",temperature
-    # print "\n", pulse_rate
-    # print "\n", respiration_rate
-    # print "\n", blood_pressure
-    # print "\n", weight
-    # print "\n", chiefcomplaint
-    # print "\n", historyofpresentillness
-    # print "\n", medicationstaken
-    # print "\n", diagnosis
-    # print "\n", recommendation
-    # print "\nAP", attendingphysician
-
-    response = ("new_assessment", (id, fname, mname, lname, age, department, temperature, pulse_rate, respiration_rate, blood_pressure, weight,
-                               chiefcomplaint, historyofpresentillness, medicationstaken, diagnosis, recommendation,attendingphysician), True)
-
-
-    if 'Error' in str(response[0][0]):
+    if 'Error' in response[0][0]:
         return jsonify({'status': 'error', 'message': response[0][0]})
     print "MESSAGE: \n", response
-    return jsonify({'status': 'OK', 'message': response[0][0]}), 201
-
-
-
+    return jsonify({'status': 'OK', 'message': response[0][0]})
 
 
 @app.after_request
