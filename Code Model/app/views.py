@@ -245,11 +245,11 @@ def notify(assessment_id, doctor_id):
 
     return jsonify({'status': response[0][0]})
 
-
 @app.route('/anoncare.api/patient/', methods =['POST'])
 def newpatient():
     data = json.loads(request.data)
     response = spcall('newpatient', (
+        data['id'],
         data['fname'],
         data['mname'],
         data['lname'],
@@ -257,19 +257,48 @@ def newpatient():
         data['sex'],
         data['department_id'],
         data['patient_type_id'],
-        data['personal_info_id'],
-        data['is_active'],),True)
-
+        data['height'],
+        data['weight'],
+        data['date_of_birth'],
+        data['civil_status'],
+        data['name_of_guardian'],
+        data['home_address'],
+        data['cough'],
+        data['dyspnea'],
+        data['hemoptysis'],
+        data['tb_exposure'],
+        data['frequency'],
+        data['flank_plan'],
+        data['discharge'],
+        data['dysuria'],
+        data['nocturia'],
+        data['dec_urine_amount'],
+        data['asthma'],
+        data['ptb'],
+        data['heart_problem'],
+        data['hepatitis_a_b'],
+        data['chicken_pox'],
+        data['mumps'],
+        data['typhoid_fever'],
+        data['chest_pain'],
+        data['palpitations'],
+        data['pedal_edema'],
+        data['orthopnea'],
+        data['nocturnal_dyspnea'],
+        data['headache'],
+        data['seizure'],
+        data['dizziness'],
+        data['loss_of_consciousness'],
+        data['is_active']))
+    
     if 'Error' in str(response[0][0]):
         return jsonify({'status': 'error', 'message': response[0][0]})
 
     return jsonify({'status': 'OK', 'message': response[0][0]}), 200
 
-
-
 @app.route('/anoncare.api/patient/<id>/', methods = ['GET'])
 def getpatient_file(id):
-    response = spcall('get_newpatient_id', id)
+    response = spcall('get_patientfileId', [id])
     entries = []
     if len(response) == 0:
         return jsonify({"status":"OK", "message": "No patient file found", "entries":[], "count": "0"})
@@ -281,12 +310,41 @@ def getpatient_file(id):
                         "lname": row[2],
                         "age": row[3],
                         "sex": row[4],
-                        "department_id": row[5],
-                        "patient_type_id": row[6],
-                        "personal_info_id": row[7],
-                        "is_active": row[8]})
-        return jsonify({"status": "OK", "message": "OK", "entries": entries, "count":len(entries)})
-        
+                        "height": row[5],
+                        "weight": row[6],
+                        "date_of_birth": row[7],
+                        "civil_status": row[8],
+                        "name_of_guardian": row[9],
+                        "home_address": row[10],
+                        "cough": row[11],
+                        "dyspnea": row[12],
+                        "hemoptysis": row[13],
+                        "tb_exposure": row[14],
+                        "frequency": row[15],
+                        "flank_plan": row[16],
+                        "discharge": row[17],
+                        "dysuria": row[18],
+                        "nocturia": row[19],
+                        "dec_urine_amount": row[20],
+                        "asthma": row[21],
+                        "ptb": row[22],
+                        "heart_problem": row[23],
+                        "hepatitis_a_b": row[24],
+                        "chicken_pox": row[25],
+                        "mumps": row[26],
+                        "typhoid_fever": row[27],
+                        "chest_pain": row[28],
+                        "palpitations": row[29],
+                        "pedal_edema": row[30],
+                        "orthopnea": row[31],
+                        "nocturnal_dyspnea": row[32],
+                        "headache": row[33],
+                        "seizure": row[34],
+                        "dizziness": row[35],
+                        "loss_of_consciousness": row[36]
+                        })                
+        return jsonify({'status': 'OK', 'message': 'OK', 'entries': entries, 'count':len(entries)})
+
 
 @app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['GET'])
 def getnotify(assessment_id, doctor_id):
