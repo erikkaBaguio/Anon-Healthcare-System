@@ -110,7 +110,13 @@ Scenario: Adding patient file
     Then I should get a message Please fill up the required data
 
 
-
+#Rainy Case
+Scenario: Adding patient file
+    Given the following patient info without home_address:
+    |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
+    |18 |    fname9   | mname9     |  lname9   |  20 |    female  |    1         |     1          | 5 ft  | 45     | July 30 1995         |      single     |    Sandara Park    |         | mild | none   | none      | none       | none     | none      |  none     | none   | none    | none            | none  |none|  none         |    none      |  none      | none |    none      |   none    |   none      |    none    |  none    |     none         |   none  |  none  |   none   |   none              | true      |    
+    When I click the add button
+    Then I should get a message Please fill up the required data
 
 
 
