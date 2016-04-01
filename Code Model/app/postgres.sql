@@ -399,14 +399,14 @@ $$
       select into loc_id6 id from Neurologic where id = par_id;
       select into loc_id7 id from Patient where id = par_id;
       SELECT INTO loc_fname fname from Patient where fname = par_fname AND mname = par_mname AND lname = par_lname;
-      if par_fname isnull or par_lname isnull or par_age isnull or par_sex isnull or par_department_id isnull or 
-         par_patient_type_id isnull or par_height isnull or par_weight isnull or par_date_of_birth isnull or par_civil_status isnull or
-         par_name_of_guardian isnull or par_home_address isnull or par_cough isnull or par_dyspnea isnull or par_hemoptysis isnull or 
-         par_tb_exposure isnull or par_frequency isnull or par_flank_plan isnull or par_discharge isnull or par_dysuria isnull or
-         par_nocturia isnull or par_dec_urine_amount isnull or par_asthma isnull or par_ptb isnull or par_heart_problem isnull or
-         par_hepatitis_a_b isnull or par_chicken_pox isnull or par_mumps isnull or par_typhoid_fever isnull or par_chest_pain isnull or
-         par_palpitations isnull or par_pedal_edema isnull or par_orthopnea isnull or par_nocturnal_dyspnea isnull or par_headache isnull or
-         par_seizure isnull or par_dizziness isnull or par_loss_of_consciousness isnull or par_is_active isnull then
+      if par_fname = '' or par_lname = '' or par_age isnull or par_sex = '' or par_department_id isnull or 
+         par_patient_type_id isnull or par_height isnull or par_weight isnull or par_date_of_birth = '' or par_civil_status = '' or
+         par_name_of_guardian = '' or par_home_address = '' or par_cough = '' or par_dyspnea = '' or par_hemoptysis = '' or 
+         par_tb_exposure = '' or par_frequency = '' or par_flank_plan = '' or par_discharge = '' or par_dysuria = '' or
+         par_nocturia = '' or par_dec_urine_amount = '' or par_asthma = '' or par_ptb = ' ' or par_heart_problem = '' or
+         par_hepatitis_a_b = '' or par_chicken_pox = '' or par_mumps = '' or par_typhoid_fever = '' or par_chest_pain = '' or
+         par_palpitations = '' or par_pedal_edema = '' or par_orthopnea = '' or par_nocturnal_dyspnea = '' or par_headache = '' or
+         par_seizure = '' or par_dizziness = '' or par_loss_of_consciousness = ''  then
          loc_res = 'Please fill up the required data';
       elsif loc_fname isnull and loc_id1 isnull and loc_id2 isnull and loc_id3 isnull and loc_id4 isnull and loc_id5 isnull and loc_id6 isnull and loc_id7 isnull then
           insert into Personal_info(id, height, weight, date_of_birth, civil_status, name_of_guardian, home_address)
