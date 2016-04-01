@@ -7,9 +7,9 @@ Feature: User Accounts Maintenance
   Scenario: Add a new user to the system - all requirements put
     Given admin inputs:
         | fname   | mname     | lname     | email                   | username          | password               |  role_id|
-        | Bhelle  | Timonera  | Regencia  | jawshaeleazar@gmail.com | bhelle.regencia | josiaheleazareregencia    |  1      |
+        | Josiah  | Timonera  | Regencia  | jawshaeleazar@gmail.com | josiah.regencia   | josiaheleazareregencia |  1      |
 
-    And the username 'bhelle.regencia' does not yet exist
+    And the username 'heather.regencia' does not yet exist
 
     When admin clicks the register button
 
@@ -39,10 +39,7 @@ Feature: User Accounts Maintenance
 
 
   Scenario: Retrieve a user's details
-    Given user already exists with data:
-          |fname|  |mname|    |lname|    |email|                 |username|
-          |Josiah| |Timonera| |Regencia| |jetregencia@gmail.com| |Josiah.Regencia|
-
+    Given user with id '1'
     When the System Administrator chooses id '1'
     Then I would get a '200' response
     And  the system administrator can retrieve the user.
