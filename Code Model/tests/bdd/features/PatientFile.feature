@@ -29,12 +29,19 @@ Scenario: Get patient file that doesn't exists
 
 #Rainy Case
 Scenario: Adding patient file 
-    Given the following patient file already existed:
+    Given the following patient file with id 1 already existed:
     |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
     |1|Mary Grace     |Pasco |Cabolbol |19 |female  |    1         |     1          | 5 ft  | 45     | August 20 1996 | single           | Corazon Aquino | Dalipuga Iligan City| mild | none   | none      | none       | none     | none      |  none     | none   | none    | none            | none  |none|  none         |    none      |  none      | none |    none      |   none    |   none      |    none    |  none    |     none         |   none  |  none  |   none   |   none              | true      |
     When I enter the existing patient file 
     Then I get a message Patient already EXISTED
 
+#Rainy Case
+Scenario: Adding patient file
+    Given the following patient file with fname, mname and lname already existed:
+    |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
+    |15|Mary Grace     |Pasco |Cabolbol |19 |female  |    1         |     1          | 5 ft  | 45     | August 20 1996 | single           | Corazon Aquino | Dalipuga Iligan City| mild | none   | none      | none       | none     | none      |  none     | none   | none    | none            | none  |none|  none         |    none      |  none      | none |    none      |   none    |   none      |    none    |  none    |     none         |   none  |  none  |   none   |   none              | true      | 
+    When I enter the existing patient file 
+    Then I get a message Patient already EXISTED
 
 #Rainy Case 
 Scenario: Adding patient file
@@ -60,7 +67,6 @@ Scenario: Adding patient file
     When I click the add button
     Then I should get a message Please fill up the required data
 
-
 #Rainy Case
 Scenario: Adding patient file
     Given the following patient info without sex:
@@ -70,9 +76,30 @@ Scenario: Adding patient file
     Then I should get a message Please fill up the required data
 
 
+#Rainy Case
+Scenario: Adding patient file
+    Given the following patient info without height:
+    |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
+    |14 |    fname5   | mname5     |  lname5   |  20 |      |    1         |     1          |    | 45     | August 20 1996 | single           | Corazon Aquino | Dalipuga Iligan City| mild | none   | none      | none       | none     | none      |  none     | none   | none    | none            | none  |none|  none         |    none      |  none      | none |    none      |   none    |   none      |    none    |  none    |     none         |   none  |  none  |   none   |   none              | true      |    
+    When I click the add button
+    Then I should get a message Please fill up the required data
 
 
+#Rainy Case
+Scenario: Adding patient file
+    Given the following patient info without date_of_bith:
+    |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
+    |16 |    fname6   | mname6     |  lname6   |  20 |    female  |    1         |     1          | 5 ft  | 45     |          | single           | Corazon Aquino | Dalipuga Iligan City| mild | none   | none      | none       | none     | none      |  none     | none   | none    | none            | none  |none|  none         |    none      |  none      | none |    none      |   none    |   none      |    none    |  none    |     none         |   none  |  none  |   none   |   none              | true      |    
+    When I click the add button
+    Then I should get a message Please fill up the required data
 
+#Rainy Case
+Scenario: Adding patient file
+    Given the following patient info without civil_status:
+    |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
+    |17 |    fname8   | mname8     |  lname8   |  20 |    female  |    1         |     1          | 5 ft  | 45     | July 30 1995         |           | Corazon Aquino | Dalipuga Iligan City| mild | none   | none      | none       | none     | none      |  none     | none   | none    | none            | none  |none|  none         |    none      |  none      | none |    none      |   none    |   none      |    none    |  none    |     none         |   none  |  none  |   none   |   none              | true      |    
+    When I click the add button
+    Then I should get a message Please fill up the required data
 
 
 
