@@ -288,6 +288,13 @@ Scenario: Adding patient file
 
 
 
+#Rainy Case
+Scenario: Adding patient file
+    Given the following patient info where pedal_edema isnull:
+    |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
+    |37|    fname28  | mname11     |  lname11   |  20 |    female  |    1         |     1          | 5 ft  | 45     | July 30 1995         |      single     |    Sandara Park    |    Paris, France    |  mild  |  none  |   hemo1    |   tb1     | freq1    |   flak1   |   discharge1   |   dysuria1  |   nocturia1  |      dec_urine_amount1   |   asthma1    |   ptb  |    heartprobs1   | hepa_a1     |   chicken_pox1    |  mumps1    |   typhoid1      |   chestpain1    |   palpitation1     |      |  none    |     none         |   none  |  none  |   none   |   none              | true      |    
+    When I click the add button
+    Then I should get a message Please fill up the required data
 
 
 
