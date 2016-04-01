@@ -66,9 +66,9 @@ def and_admin_should_get_a_status_ok(step):
 
 ###retrieving a user with id __
 
-@step(u'Given user already exists with data:')
-def given_user_already_exists_with_data(step):
-    world.column = step.hashes[0]
+@step(u'Given User with id \'([^\']*)\'')
+def given_user_with_id_group1(step, id):
+    world.get_response = world.app.get('/anoncare.api/users/{}/'.format(id))
 
 
 @step(u'When the System Administrator chooses id \'([^\']*)\'')
@@ -82,15 +82,9 @@ def and_the_system_administrator_can_retrieve_the_user(step):
     assert_equals(world.get_resp['status'], 'ok')
 
 
-@step(u'Given User with id \'([^\']*)\'')
-def given_user_with_id_group1(step, id):
-    world.get_response = world.app.get('/anoncare.api/users/{}/'.format(id))
-
-
 @step(u'When I retrieve the user with id \'([^\']*)\'')
 def when_i_retrieve_the_user_with_id_group1(step, id):
     world.get_response = world.app.get('/anoncare.api/users/{}/'.format(id))
-    # assert_equals(world.get_response, 'ok')
 
 
 
