@@ -99,7 +99,10 @@ def then_i_should_get_a_message_please_fill_up_the_required_data(step):
     assert_equals(world.resp4['message'], 'Please fill up the required data')
 
 
-
+@step(u'Then I should get a message OK')
+def then_i_should_get_a_message_ok(step):
+    world.resp5 = json.loads(world.patient_response.data)
+    assert_equals(world.resp5['message'], 'OK')
 
 
 

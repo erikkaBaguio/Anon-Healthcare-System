@@ -408,7 +408,7 @@ $$
          par_palpitations = '' or par_pedal_edema = '' or par_orthopnea = '' or par_nocturnal_dyspnea = '' or par_headache = '' or
          par_seizure = '' or par_dizziness = '' or par_loss_of_consciousness = ''  then
          loc_res = 'Please fill up the required data';
-      elsif loc_fname isnull and loc_id1 isnull and loc_id2 isnull and loc_id3 isnull and loc_id4 isnull and loc_id5 isnull and loc_id6 isnull and loc_id7 isnull then
+      elsif par_mname = '' or loc_fname isnull and loc_id1 isnull and loc_id2 isnull and loc_id3 isnull and loc_id4 isnull and loc_id5 isnull and loc_id6 isnull and loc_id7 isnull then
           insert into Personal_info(id, height, weight, date_of_birth, civil_status, name_of_guardian, home_address)
               values (par_id, par_height, par_weight, par_date_of_birth, par_civil_status, par_name_of_guardian, par_home_address);
           insert into Pulmonary(id, cough, dyspnea, hemoptysis, tb_exposure)
