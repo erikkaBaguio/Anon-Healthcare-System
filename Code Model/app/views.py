@@ -473,6 +473,33 @@ def new_assessment():
     return jsonify({'status': 'OK', 'message': response[0][0]})
 
 
+@app.route('/anoncare.api/assessments/', methods=['PUT'])
+def update_assessment():
+    data = json.loads(request.data)
+
+    id = data.get('id', '')
+    fname = data.get('fname', '')
+    mname = data.get('mname', '')
+    lname = data.get('lname', '')
+    age = data.get('age', '')
+    department = data.get('department', '')
+    temperature = data.get('temperature','')
+    pulse_rate = data.get('pulse_rate', '')
+    respiration_rate = data.get('respiration_rate', '')
+    blood_pressure = data.get('blood_pressure', '')
+    weight = data.get('weight', '')
+    chiefcomplaint = data.get('chiefcomplaint', '')
+    historyofpresentillness = data.get('historyofpresentillness', '')
+    medicationstaken = data.get('medicationstaken', '')
+    diagnosis = data.get('diagnosis', '')
+    recommendation = data.get('reccomendation', '')
+    attendingphysician = data.get('attendingphysician', '')
+
+    response = spcall('update_assessment', (id, fname, mname, lname, age, department, temperature, pulse_rate, respiration_rate, blood_pressure, weight,
+    chiefcomplaint, historyofpresentillness, medicationstaken, diagnosis, recommendation, attendingphysician, ), True)
+
+    return jsonify({'status': 'Updated'})
+
 @app.after_request
 def add_cors(resp):
     resp.headers['Access-Control-Allow-Origin'] = flask.request.headers.get('Origin', '*')
