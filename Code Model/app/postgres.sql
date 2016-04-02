@@ -612,7 +612,7 @@ $$
 $$
   language 'sql';
 
-create or replace function update_assessment(par_assessment_id int, par_doctor_id int) returns text as
+create or replace function update_assessment_attendingphysician(par_assessment_id int, par_doctor_id int) returns text as
 $$
   declare
       loc_response text;
