@@ -12,8 +12,8 @@ create table Userinfo (
     email text not null,
     username text unique not null,
     password text not null,
-    role_id int references Role(id)--,
---     is_active boolean
+    role_id int references Role(id),
+     is_available boolean
   );
 
 create table College(
@@ -229,7 +229,8 @@ $$
 
 
 create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
-                                par_email text, par_username text, par_password text, par_role int)
+                                par_email text, par_username text,
+                                par_password text, par_role int, par_available boolean)
                                  returns text as
 $$
 
@@ -241,8 +242,8 @@ $$
 --        username := par_fname || '.' || par_lname;
 --        random_password := generate_password();
 
-       insert into Userinfo (fname, mname, lname, email, username, password, role_id)
-       values (par_fname, par_mname, par_lname, par_email, par_username, par_password, par_role);
+       insert into Userinfo (fname, mname, lname, email, username, password, role_id, is_available)
+       values (par_fname, par_mname, par_lname, par_email, par_username, par_password, par_role, par_available);
 
 
        loc_res = 'OK';

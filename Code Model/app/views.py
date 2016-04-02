@@ -181,6 +181,7 @@ def insertuser():
     username = user['username']
     password = user['password']
     role_id = user['role_id']
+    is_available = user['is_available']
 
 
     exists = user_exists(username)
@@ -190,7 +191,7 @@ def insertuser():
         return jsonify({'status': 'error'})
 
     else:
-        spcall("newuserinfo", (fname, mname, lname, email, username, password, role_id), True)
+        spcall("newuserinfo", (fname, mname, lname, email, username, password, role_id, is_available), True)
         return jsonify({'status': 'OK'})
 
 
