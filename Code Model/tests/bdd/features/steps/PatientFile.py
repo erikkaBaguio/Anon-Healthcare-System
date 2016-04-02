@@ -69,8 +69,8 @@ def and_i_should_get_a_message_ok(step):
 
 #------------------------------------------------------------------------------------------------------
 #Rainy Case- POST
-@step(u'Given the following patient file already existed:')
-def given_the_following_patient_file_already_existed(step):
+@step(u'Given the following patient file with id 1 already existed:')
+def given_the_following_patient_file_with_id_1_already_existed(step):
     world.patient3 = step.hashes[0]
 
 @step(u'When I enter the existing patient file')
@@ -83,6 +83,9 @@ def then_i_get_a_message_patient_already_existed(step):
     world.resp3 = json.loads(world.patient3_response.data)
     assert_equals(world.resp3['message'], 'Patient already EXISTED')
 
+@step(u'Given the following patient file with fname, mname and lname already existed:')
+def given_the_following_patient_file_with_fname_mname_and_lname_already_existed(step):
+    world.patient4 = step.hashes[0]
 
 @step(u'Given the following patient info without fname:')
 def given_the_following_patient_info_without_fname(step):
