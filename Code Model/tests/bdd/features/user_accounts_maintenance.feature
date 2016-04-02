@@ -6,10 +6,10 @@ Feature: User Accounts Maintenance
 
   Scenario: Add a new user to the system - all requirements put
     Given admin inputs:
-        | fname   | mname     | lname     | email                   | username          | password               |
-        | Thomas  | Timonera  | Regencia  | jawshaeleazar@gmail.com | thomas.regencia   | josiaheleazareregencia |
+        | fname   | mname     | lname     | email                   | username          | password               |  role_id|  is_available|
+        | Josiah  | Timonera  | Regencia  | jawshaeleazar@gmail.com | josiah.regencia   | josiaheleazareregencia |  1      |  False       |
 
-    And the username 'thomas.regencia' does not yet exist
+    And the username 'josiah.regencia' does not yet exist
 
     When admin clicks the register button
 
@@ -22,8 +22,8 @@ Feature: User Accounts Maintenance
 
   Scenario: Add a new user to the system - username already exists
     Given admin inputs:
-        | fname    | mname    | lname     | email                   | username          | password               |
-        | Josiah  | Timonera  | Regencia  | jawshaeleazar@gmail.com | josiah.regencia   | josiaheleazareregencia |
+        | fname    | mname    | lname     | email                   | username          | password               | role_id| is_available|
+        | Josiah   | Timonera | Regencia  | jawshaeleazar@gmail.com | josiah.regencia   | josiaheleazareregencia | 1      | False       |
 
     And the username 'josiah.regencia' exists
 
@@ -39,19 +39,16 @@ Feature: User Accounts Maintenance
 
 
   Scenario: Retrieve a user's details
-    Given user already exists with data:
-          |fname|  |mname|    |lname|    |email|                 |username|
-          |Josiah| |Timonera| |Regencia| |jetregencia@gmail.com| |Josiah.Regencia|
-
+    Given user with id '1'
     When the System Administrator chooses id '1'
     Then I would get a '200' response
     And  the system administrator can retrieve the user.
 
 
   Scenario: User's details does not exist
-    Given User with id '2'
-    When I retrieve the user's details
+    Given User with id '32'
+    When I retrieve the user with id '32'
     Then I would get a '200' response
-    And I should get a status ok
     And I should get a message No User Found
+#    And I should get a message No User Found
 
