@@ -181,6 +181,7 @@ def insertuser():
     username = user['username']
     password = user['password']
     role_id = user['role_id']
+    is_available = user['is_available']
 
 
     exists = user_exists(username)
@@ -190,7 +191,7 @@ def insertuser():
         return jsonify({'status': 'error'})
 
     else:
-        spcall("newuserinfo", (fname, mname, lname, email, username, password, role_id), True)
+        spcall("newuserinfo", (fname, mname, lname, email, username, password, role_id, is_available), True)
         return jsonify({'status': 'OK'})
 
 
@@ -361,7 +362,7 @@ def getnotify(assessment_id, doctor_id):
 @app.route('/anoncare.api/referral/<int:assessment_id>/<int:doctor_id>/<int:prev_doctor>', methods=['POST'])
 def doctor_referral(assessment_id, doctor_id, prev_doctor):
     update_notification = spcall("update_notification", (assessment_id, prev_doctor), True)
-    update_assessment = spcall("update_assessment", (assessment_id, doctor_id), True)
+    update_assessment = spcall("update_assessment_attendingphysician", (assessment_id, doctor_id), True)
 
     if 'Unable to find assessment' in str(update_assessment[0][0]):
         return jsonify({'status':'error', 'message':update_assessment[0][0]})
