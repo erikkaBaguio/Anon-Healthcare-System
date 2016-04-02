@@ -1,5 +1,6 @@
 #created by Mary grace
-Feature: Patient File
+Feature: Patient File 
+
 
 Scenario: Create patient file
     Given the following patient info
@@ -200,30 +201,152 @@ Scenario: Adding patient file
     Then I should get a message Please fill up the required data
 
 
+#Rainy Case
+Scenario: Adding patient file
+    Given the following patient info where dec_urine_amount isnull:
+    |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
+    |27|    fname18  | mname11     |  lname11   |  20 |    female  |    1         |     1          | 5 ft  | 45     | July 30 1995         |      single     |    Sandara Park    |    Paris, France    |  mild  |  none  |   hemo1    |   tb1     | freq1    |   flank1   |   discharge1   |   dysuria1  |   nocturia1  |            | none  |none|  none         |    none      |  none      | none |    none      |   none    |   none      |    none    |  none    |     none         |   none  |  none  |   none   |   none              | true      |    
+    When I click the add button
+    Then I should get a message Please fill up the required data
+
+
+#Rainy Case
+Scenario: Adding patient file
+    Given the following patient info where asthma isnull:
+    |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
+    |28|    fname19  | mname11     |  lname11   |  20 |    female  |    1         |     1          | 5 ft  | 45     | July 30 1995         |      single     |    Sandara Park    |    Paris, France    |  mild  |  none  |   hemo1    |   tb1     | freq1    |   flank1   |   discharge1   |   dysuria1  |   nocturia1  |      dec_urine_amount1   |       |none|  none         |    none      |  none      | none |    none      |   none    |   none      |    none    |  none    |     none         |   none  |  none  |   none   |   none              | true      |    
+    When I click the add button
+    Then I should get a message Please fill up the required data
+
+#Rainy Case
+Scenario: Adding patient file
+    Given the following patient info where ptb isnull:
+    |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
+    |29|    fname20  | mname11     |  lname11   |  20 |    female  |    1         |     1          | 5 ft  | 45     | July 30 1995         |      single     |    Sandara Park    |    Paris, France    |  mild  |  none  |   hemo1    |   tb1     | freq1    |   flank1   |   discharge1   |   dysuria1  |   nocturia1  |      dec_urine_amount1   |   asthma1    |     |  none         |    none      |  none      | none |    none      |   none    |   none      |    none    |  none    |     none         |   none  |  none  |   none   |   none              | true      |    
+    When I click the add button
+    Then I should get a message Please fill up the required data
+
+#Rainy Case
+Scenario: Adding patient file
+    Given the following patient info where heart_problem  isnull:
+    |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
+    |30|    fname21  | mname11     |  lname11   |  20 |    female  |    1         |     1          | 5 ft  | 45     | July 30 1995         |      single     |    Sandara Park    |    Paris, France    |  mild  |  none  |   hemo1    |   tb1     | freq1    |   flank1   |   discharge1   |   dysuria1  |   nocturia1  |      dec_urine_amount1   |   asthma1    |   ptb  |       |    none      |  none      | none |    none      |   none    |   none      |    none    |  none    |     none         |   none  |  none  |   none   |   none              | true      |    
+    When I click the add button
+    Then I should get a message Please fill up the required data
+
+
+#Rainy Case
+Scenario: Adding patient file
+    Given the following patient info where hepatitis_a_b  isnull:
+    |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
+    |31|    fname22  | mname11     |  lname11   |  20 |    female  |    1         |     1          | 5 ft  | 45     | July 30 1995         |      single     |    Sandara Park    |    Paris, France    |  mild  |  none  |   hemo1    |   tb1     | freq1    |   flank1   |   discharge1   |   dysuria1  |   nocturia1  |      dec_urine_amount1   |   asthma1    |   ptb  |    heartprobs1   |        |  none      | none |    none      |   none    |   none      |    none    |  none    |     none         |   none  |  none  |   none   |   none              | true      |    
+    When I click the add button
+    Then I should get a message Please fill up the required data
+
+
+#Rainy Case
+Scenario: Adding patient file
+    Given the following patient info where chicken_pox  isnull:
+    |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
+    |32|    fname23  | mname11     |  lname11   |  20 |    female  |    1         |     1          | 5 ft  | 45     | July 30 1995         |      single     |    Sandara Park    |    Paris, France    |  mild  |  none  |   hemo1    |   tb1     | freq1    |   flank1   |   discharge1   |   dysuria1  |   nocturia1  |      dec_urine_amount1   |   asthma1    |   ptb  |    heartprobs1   | hepa_a1     |       | none |    none      |   none    |   none      |    none    |  none    |     none         |   none  |  none  |   none   |   none              | true      |    
+    When I click the add button
+    Then I should get a message Please fill up the required data
 
 
 
+#Rainy Case
+Scenario: Adding patient file
+    Given the following patient info where mumps  isnull:
+    |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fevertyphoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
+    |33|    fname24  | mname11     |  lname11   |  20 |    female  |    1         |     1          | 5 ft  | 45     | July 30 1995         |      single     |    Sandara Park    |    Paris, France    |  mild  |  none  |   hemo1    |   tb1     | freq1    |   flank1   |   discharge1   |   dysuria1  |   nocturia1  |      dec_urine_amount1   |   asthma1    |   ptb  |    heartprobs1   | hepa_a1     |   chicken_pox1    |      |    none      |   none    |   none      |    none    |  none    |     none         |   none  |  none  |   none   |   none              | true      |    
+    When I click the add button
+    Then I should get a message Please fill up the required data
+
+#Rainy Case
+Scenario: Adding patient file
+    Given the following patient info where typhoid_fever  isnull:
+    |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
+    |34|    fname25  | mname11     |  lname11   |  20 |    female  |    1         |     1          | 5 ft  | 45     | July 30 1995         |      single     |    Sandara Park    |    Paris, France    |  mild  |  none  |   hemo1    |   tb1     | freq1    |   flank1   |   discharge1   |   dysuria1  |   nocturia1  |      dec_urine_amount1   |   asthma1    |   ptb  |    heartprobs1   | hepa_a1     |   chicken_pox1    |  mumps1    |         |   none    |   none      |    none    |  none    |     none         |   none  |  none  |   none   |   none              | true      |    
+    When I click the add button
+    Then I should get a message Please fill up the required data
+
+#Rainy Case
+Scenario: Adding patient file
+    Given the following patient info where chest_pain isnull:
+    |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
+    |35|    fname26  | mname11     |  lname11   |  20 |    female  |    1         |     1          | 5 ft  | 45     | July 30 1995         |      single     |    Sandara Park    |    Paris, France    |  mild  |  none  |   hemo1    |   tb1     | freq1    |   flank1   |   discharge1   |   dysuria1  |   nocturia1  |      dec_urine_amount1   |   asthma1    |   ptb  |    heartprobs1   | hepa_a1     |   chicken_pox1    |  mumps1    |   typhoid1      |       |   none      |    none    |  none    |     none         |   none  |  none  |   none   |   none              | true      |    
+    When I click the add button
+    Then I should get a message Please fill up the required data
+
+#Rainy Case
+Scenario: Adding patient file
+    Given the following patient info where palpitations  isnull:
+    |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
+    |36|    fname27  | mname11     |  lname11   |  20 |    female  |    1         |     1          | 5 ft  | 45     | July 30 1995         |      single     |    Sandara Park    |    Paris, France    |  mild  |  none  |   hemo1    |   tb1     | freq1    |   flank1   |   discharge1   |   dysuria1  |   nocturia1  |      dec_urine_amount1   |   asthma1    |   ptb  |    heartprobs1   | hepa_a1     |   chicken_pox1    |  mumps1    |   typhoid1      |   chestpain1    |        |    none    |  none    |     none         |   none  |  none  |   none   |   none              | true      |    
+    When I click the add button
+    Then I should get a message Please fill up the required data
 
 
 
+#Rainy Case
+Scenario: Adding patient file
+    Given the following patient info where pedal_edema isnull:
+    |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
+    |37|    fname28  | mname11     |  lname11   |  20 |    female  |    1         |     1          | 5 ft  | 45     | July 30 1995         |      single     |    Sandara Park    |    Paris, France    |  mild  |  none  |   hemo1    |   tb1     | freq1    |   flak1   |   discharge1   |   dysuria1  |   nocturia1  |      dec_urine_amount1   |   asthma1    |   ptb  |    heartprobs1   | hepa_a1     |   chicken_pox1    |  mumps1    |   typhoid1      |   chestpain1    |   palpitation1     |      |  none    |     none         |   none  |  none  |   none   |   none              | true      |    
+    When I click the add button
+    Then I should get a message Please fill up the required data
 
 
+#Rainy Case
+Scenario: Adding patient file
+    Given the following patient info where orthopnea isnull:
+    |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
+    |38|    fname29  | mname11     |  lname11   |  20 |    female  |    1         |     1          | 5 ft  | 45     | July 30 1995         |      single     |    Sandara Park    |    Paris, France    |  mild  |  none  |   hemo1    |   tb1     | freq1    |   flak1   |   discharge1   |   dysuria1  |   nocturia1  |      dec_urine_amount1   |   asthma1    |   ptb  |    heartprobs1   | hepa_a1     |   chicken_pox1    |  mumps1    |   typhoid1      |   chestpain1    |   palpitation1     | pedaledema1     |      |     none         |   none  |  none  |   none   |   none              | true      |    
+    When I click the add button
+    Then I should get a message Please fill up the required data
 
 
+#Rainy Case
+Scenario: Adding patient file
+    Given the following patient info where nocturnal_dyspnea isnull:
+    |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
+    |39|    fname30  | mname11     |  lname11   |  20 |    female  |    1         |     1          | 5 ft  | 45     | July 30 1995         |      single     |    Sandara Park    |    Paris, France    |  mild  |  none  |   hemo1    |   tb1     | freq1    |   flak1   |   discharge1   |   dysuria1  |   nocturia1  |      dec_urine_amount1   |   asthma1    |   ptb  |    heartprobs1   | hepa_a1     |   chicken_pox1    |  mumps1    |   typhoid1      |   chestpain1    |   palpitation1     | pedaledema1     |   orthopnea1   |           |   none  |  none  |   none   |   none              | true      |    
+    When I click the add button
+    Then I should get a message Please fill up the required data
 
 
+#Rainy Case
+Scenario: Adding patient file
+    Given the following patient info where headache isnull:
+    |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
+    |40|    fname31  | mname11     |  lname11   |  20 |    female  |    1         |     1          | 5 ft  | 45     | July 30 1995         |      single     |    Sandara Park    |    Paris, France    |  mild  |  none  |   hemo1    |   tb1     | freq1    |   flak1   |   discharge1   |   dysuria1  |   nocturia1  |      dec_urine_amount1   |   asthma1    |   ptb  |    heartprobs1   | hepa_a1     |   chicken_pox1    |  mumps1    |   typhoid1      |   chestpain1    |   palpitation1     | pedaledema1     |   orthopnea1   |    nocturnaldyspnea1  |       |  none  |   none   |   none              | true      |    
+    When I click the add button
+    Then I should get a message Please fill up the required data
 
 
+#Rainy Case
+Scenario: Adding patient file
+    Given the following patient info where seizure isnull:
+    |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
+    |41|    fname32  | mname11     |  lname11   |  20 |    female  |    1         |     1          | 5 ft  | 45     | July 30 1995         |      single     |    Sandara Park    |    Paris, France    |  mild  |  none  |   hemo1    |   tb1     | freq1    |   flak1   |   discharge1   |   dysuria1  |   nocturia1  |      dec_urine_amount1   |   asthma1    |   ptb  |    heartprobs1   | hepa_a1     |   chicken_pox1    |  mumps1    |   typhoid1      |   chestpain1    |   palpitation1     | pedaledema1     |   orthopnea1   |    nocturnaldyspnea1  |   headache1    |        |   none   |   none              | true      |    
+    When I click the add button
+    Then I should get a message Please fill up the required data
 
+#Rainy Case
+Scenario: Adding patient file
+    Given the following patient info where dizziness isnull:
+    |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
+    |42|    fname33  | mname11     |  lname11   |  20 |    female  |    1         |     1          | 5 ft  | 45     | July 30 1995         |      single     |    Sandara Park    |    Paris, France    |  mild  |  none  |   hemo1    |   tb1     | freq1    |   flak1   |   discharge1   |   dysuria1  |   nocturia1  |      dec_urine_amount1   |   asthma1    |   ptb  |    heartprobs1   | hepa_a1     |   chicken_pox1    |  mumps1    |   typhoid1      |   chestpain1    |   palpitation1     | pedaledema1     |   orthopnea1   |    nocturnaldyspnea1  |   headache1    |   seizure1     |      |   none              | true      |    
+    When I click the add button
+    Then I should get a message Please fill up the required data
 
-
-
-
-
-
-
-
-
+#Rainy Case
+Scenario: Adding patient file
+    Given the following patient info where loss_of_consciousness isnull:
+    |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
+    |43|    fname34  | mname11     |  lname11   |  20 |    female  |    1         |     1          | 5 ft  | 45     | July 30 1995         |      single     |    Sandara Park    |    Paris, France    |  mild  |  none  |   hemo1    |   tb1     | freq1    |   flak1   |   discharge1   |   dysuria1  |   nocturia1  |      dec_urine_amount1   |   asthma1    |   ptb  |    heartprobs1   | hepa_a1     |   chicken_pox1    |  mumps1    |   typhoid1      |   chestpain1    |   palpitation1     | pedaledema1     |   orthopnea1   |    nocturnaldyspnea1  |   headache1    |   seizure1     |    dizziness  |           | true      |    
+    When I click the add button
+    Then I should get a message Please fill up the required data
 
 
 
