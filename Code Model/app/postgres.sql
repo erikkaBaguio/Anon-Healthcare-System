@@ -805,8 +805,6 @@ in par_diagnosis text, in par_recommendation text, in par_attendingphysician int
  $$
   language 'plpgsql';
 
-
-
 --[GET] Retrieve specific Patient's assessment
 --select getassessmentID(1);
 create or replace function getassessmentID(in par_id int, out timestamp, out int,out int,out int,out int, out text,
@@ -826,8 +824,30 @@ $$
 $$
   language 'sql';
 
+--[PUT] Update assessment of patient
+--select update_assessment(1,'Josiah','Timonera','Regencia', 19, 1, 37.1, 80, '19 breaths/minute', '90/70', 48, 'complaint', 'history', 'medication1', 'diagnosis11','recommendation11', 1);
+create or replace function update_assessment(in par_id int, in par_fname text, in par_mname text, in par_lname text, in par_age int, in par_department int,
+in par_temperature float, in par_pulse_rate float, in par_respiration_rate text, in par_blood_pressure text, in par_weight float,
+in par_chiefcomplaint text, in par_historyofpresentillness text, in par_medicationstaken text,
+in par_diagnosis text, in par_recommendation text, in par_attendingphysician int) returns text as
+ $$
+  declare
+    loc_res text;
+  begin
 
+    update Assessment
+    set
+      diagnosis = par_diagnosis,
+      recommendation = par_recommendation,
+      attendingphysician = par_attendingphysician
+    where id = par_id;
 
+    loc_res = 'Updated';
+    return loc_res;
+
+  end;
+$$
+  language 'plpgsql';
 -----------------------------------------------------------------------------------------------------------------
 --[GET] Retrieve patient's vital signs.
 -- select getvitalsignsID(1);
