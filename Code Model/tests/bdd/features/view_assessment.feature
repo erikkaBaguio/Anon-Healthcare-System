@@ -10,8 +10,8 @@ Feature: View Assessment
       And   it should have a field 'status' containing 'OK'
       And   it should have a field 'count' containing '1'
       And 	the following details will be returned
-            |id |assessment_date            |nameofpatient|age|department|  vital_signs | chiefcomplaint|historyofpresentillness|medicationstaken|diagnosis|reccomendation|attendingphysician|
-            |2  |2016-03-28 23:46:52.76     |1            |18 |1         |  2           | fever         |cough                  |medications     |diagnosis|recommendation|1                 |
+            |id |assessment_date            |nameofpatient| age | department  | temperature | pulse_rate  | respiration_rate  | blood_pressure  | weight |chiefcomplaint |historyofpresentillness | medicationstaken | diagnosis   | reccomendation | attendingphysician|
+            | 2 |2016-03-28 23:46:52.76     |1            |18   |  1          |36.4         | 70          | 19 breaths/minute | 100/80          | 45     |fever          | cough                  |medications       |diagnosis    |recommendation  |1                  |
 
   #  Rainy Case
   Scenario: View Assessment of Patient that doesn't exist

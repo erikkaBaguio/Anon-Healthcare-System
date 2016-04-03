@@ -400,17 +400,22 @@ def view_assessment(assessment_id):
 
     else:
         r = assessments[0]
-        records.append({"Date": r[0],
-                        "Patient": r[1],
-                        "Age": r[2],
-                        "Department": r[3],
-                        "Vital Signs": r[4],
-                        "Chief Complaint": r[5],
-                        "History of patient illness": r[6],
-                        "Medications taken": r[7],
-                        "Diagnosis": r[8],
-                        "Recommendation": r[9],
-                        "Attending Physician": r[10]})
+
+        records.append({"assessment_date": r[0],
+                        "patient_id": r[1],
+                        "age": r[2],
+                        "department": r[3],
+                        "temperature":r[4],
+                        "pulse_rate":r[5],
+                        "respiration_rate":r[6],
+                        "blood_pressure":r[7],
+                        "weight":r[8],
+                        "chief_complaint": r[9],
+                        "history_of_present_illness": r[10],
+                        "medications_taken": r[11],
+                        "diagnosis": r[12],
+                        "recommendation": r[13],
+                        "attending_physician": r[14]})
 
         return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
 
