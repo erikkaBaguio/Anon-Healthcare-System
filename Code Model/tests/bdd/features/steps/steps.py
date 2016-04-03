@@ -52,8 +52,8 @@ def and_it_should_get_a_field_message_containing_ok(step):
 def given_the_nurse_have_the_following_assessment_details(step):
     world.assessment = step.hashes[0]
 
-@step(u'When  the nurse POST to the product resource url /anoncare.api/assessments/')
-def when_the_nurse_post_to_the_product_resource_url_anoncare_api_assessments(step):
+@step(u'When  the nurse POST to the assessment resource url /anoncare.api/assessments/')
+def when_the_nurse_post_to_the_assessment_resource_url_anoncare_api_assessments(step):
     world.response = world.app.post('/anoncare.api/assessments/', data=json.dumps(world.assessment))
 
 """ Rainy Cases """
