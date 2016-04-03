@@ -474,10 +474,10 @@ def new_assessment():
     return jsonify({'status': 'OK', 'message': response[0][0]})
 
 
-@app.route('/anoncare.api/assessments/', methods=['PUT'])
-def update_assessment():
+@app.route('/anoncare.api/assessments/update/<assessment_id>/', methods=['PUT'])
+def update_assessment(assessment_id):
     data = json.loads(request.data)
-
+    print "response : ", data
     id = data.get('id', '')
     fname = data.get('fname', '')
     mname = data.get('mname', '')
@@ -496,10 +496,26 @@ def update_assessment():
     recommendation = data.get('reccomendation', '')
     attendingphysician = data.get('attendingphysician', '')
 
-    response = spcall('update_assessment', (id, fname, mname, lname, age, department, temperature, pulse_rate, respiration_rate, blood_pressure, weight,
-    chiefcomplaint, historyofpresentillness, medicationstaken, diagnosis, recommendation, attendingphysician, ), True)
-
-    return jsonify({'status': 'Updated'})
+    response = spcall('update_assessment', (
+        id,
+        fname,
+        mname,
+        lname,
+        age,
+        department,
+        temperature,
+        pulse_rate,
+        respiration_rate,
+        blood_pressure,
+        weight,
+        chiefcomplaint,
+        historyofpresentillness,
+        medicationstaken,
+        diagnosis,
+        recommendation,
+        attendingphysician, ), True)
+    print "response : ",response
+    return jsonify({'status': 'OK', 'message': response[0][0]})
 
 @app.after_request
 def add_cors(resp):

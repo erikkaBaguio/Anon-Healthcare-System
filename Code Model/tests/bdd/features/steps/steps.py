@@ -1,6 +1,6 @@
 from lettuce import step, world, before
 from nose.tools import assert_equals
-
+from webtest import *
 from app import app
 import json
 
@@ -135,7 +135,36 @@ def and_it_should_have_an_empty_field_group1(step, entries):
     assert_equals(world.resp[entries], [])
 
 # ===========================================================================================================================
+""" Feature : Create Final Diagnosis """
 
+""" Sunny Case """
+
+""" Scenario: Update assessment """
+@step(u'Given the details of the patient assessment with an id 2')
+def given_the_details_of_the_patient_assessment_with_an_id_2(step):
+    world.assessment_oldInfo = step.hashes[0]
+
+@step(u'And   the new details for the patient assessment with an id 2')
+def and_the_new_details_for_the_patient_assessment_with_an_id_2(step):
+    world.assessment_updatedInfo = step.hashes[0]
+
+@step(u'When  the doctor PUT to the assessment resource url \'([^\']*)\'')
+def when_the_doctor_put_to_the_assessment_resource_url_group1(step, url):
+    world.browser = TestApp(app)
+    world.response = world.app.put(url, data=json.dumps(world.assessment_updatedInfo))
+    world.response_json = json.loads(world.response.data)
+
+@step(u'Then  it should get a \'([^\']*)\' response')
+def then_it_should_get_a_group1_response(step, expected_status_code):
+    assert_equals(world.response.status_code, int(expected_status_code))
+
+@step(u'And   it should get a field status containing \'([^\']*)\'')
+def and_it_should_get_a_field_status_containing_group1(step, expected_status):
+    assert_equals(world.response_json['status'], expected_status)
+
+@step(u'And   it should get a field message containing \'([^\']*)\'')
+def and_it_should_get_a_field_message_containing_group1(step, expected_message):
+    assert_equals(world.response_json['message'], expected_message)
 # ===========================================================================================================================
 
 # ===========================================================================================================================
