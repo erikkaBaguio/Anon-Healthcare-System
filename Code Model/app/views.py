@@ -7,7 +7,7 @@ from functools import wraps
 # from flask.ext.httpauth import HTTPBasicAuth
 from os import sys
 from models import DBconn
-import json, flask
+import json, flask, requests
 from app import app
 
 #auth = HTTPBasicAuth()
@@ -65,7 +65,7 @@ def check_auth(email, password):
 #         return check_auth(json_data[0], json_data[1])
 
 #     return render_template('login.html')
-    
+
 @app.route('/anoncare.api/login', methods=['POST'])
 def login():
     data = json.loads(request.data)
@@ -124,7 +124,7 @@ def get_college(college_id):
     return jsonify({"college_id": str(college_id), "college_name": str(r[0])})
 
 
-@app.route('/anoncare.api/userexists/<string:username>/', methods=['GET'])
+# @app.route('/anoncare.api/userexists/<string:username>/', methods=['GET'])
 def user_exists(username):
     users = spcall('getuserinfo', ())
     index = 0
@@ -137,10 +137,18 @@ def user_exists(username):
         index += 1
 
     if count == 1:
-        return jsonify({"exists": True})
-
+        # return jsonify({"exists": True})
+        return True
     else:
-        return jsonify({"exists": False})
+        # return jsonify({"exists": False})
+        return False
+
+
+@app.route('/anoncare.api/userexists/<string:username>/', methods=['GET'])
+def jsonify_user_exists(username):
+    exists = user_exists(username)
+
+    return jsonify({"exists": exists})
 
 
 @app.route('/anoncare.api/users/<int:id>/', methods=['GET'])
@@ -184,21 +192,12 @@ def insertuser():
     is_available = user['is_available']
 
 
-    exists = user_exists(username)
-    print "\nexists ", exists
-
-    if str(exists) == '<Response 20 bytes [200 OK]>':
+    if(user_exists(username)) == True:
         return jsonify({'status': 'error'})
 
     else:
         spcall("newuserinfo", (fname, mname, lname, email, username, password, role_id, is_available), True)
         return jsonify({'status': 'OK'})
-
-
-    # if 'Error' in str(response[0][0]):
-    #     return jsonify({'status': 'error', 'message': response[0][0]})
-
-    # return jsonify({'status': 'OK', 'message': response[0][0]}), 200
 
 
 @app.route('/anoncare.api/vital_signs/<int:vital_signID>', methods = ['GET'])
@@ -218,7 +217,7 @@ def get_vital_signs(vital_signID):
 
 def checkauth(username, password):
     res = spcall('checkauth', (username, password))
-    
+
     if 'Invalid username' in str(res[0][0]):
         return jsonify({'status': 'error', 'message': res[0][0], "username": username, "pass" : password})
 
@@ -291,7 +290,7 @@ def newpatient():
         data['dizziness'],
         data['loss_of_consciousness'],
         data['is_active']))
-    
+
     if 'Error' in str(response[0][0]):
         return jsonify({'status': 'error', 'message': response[0][0]})
 
@@ -343,7 +342,7 @@ def getpatient_file(id):
                         "seizure": row[34],
                         "dizziness": row[35],
                         "loss_of_consciousness": row[36]
-                        })                
+                        })
         return jsonify({'status': 'OK', 'message': 'OK', 'entries': entries, 'count':len(entries)})
 
 
