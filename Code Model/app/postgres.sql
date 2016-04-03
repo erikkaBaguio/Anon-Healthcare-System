@@ -807,20 +807,64 @@ in par_diagnosis text, in par_recommendation text, in par_attendingphysician int
 
 --[GET] Retrieve specific Patient's assessment
 --select getassessmentID(1);
-create or replace function getassessmentID(in par_id int, out timestamp, out int,out int,out int,out int, out text,
-out text,out text,out text,out text,out int) returns setof record as
+create or replace function getassessmentID(in par_id int, out timestamp, out int,out int,out int,out float,
+  out float, out text ,out text ,out float, out text,out text,out text,out text,out text,out int)
+  returns setof record as
 $$
-  select assessment_date, nameofpatient, age, department,vital_signs ,chiefcomplaint ,
-      historyofpresentillness ,medicationstaken ,diagnosis ,recommendation ,attendingphysician from Assessment where id = par_id;
+
+  select assessment_date,
+    nameofpatient,
+    age,
+    department,
+    temperature,
+    pulse_rate,
+    respiration_rate,
+    blood_pressure,
+    weight,
+    chiefcomplaint,
+    historyofpresentillness,
+    medicationstaken,
+    diagnosis,
+    recommendation,
+    attendingphysician
+  from Assessment, Vital_signs
+  where Assessment.id = par_id and Vital_signs.id = par_id;
+
 $$
   language 'sql';
 
 -- [GET] Retrieve all patients' assessment
 --select getallassessment();
-create or replace function getallassessment(out bigint,out timestamp, out int,out int,out int,out int, out text,
-out text,out text,out text,out text,out boolean, out int) returns setof record as
+create or replace function getallassessment(out bigint, out timestamp, out int,out int,out int,out float,
+  out float, out text ,out text ,out float, out text,out text,out text,out text,out text,out int) returns setof record as
 $$
   select * from Assessment;
+$$
+  language 'sql';
+
+-- [GET] Retrieve all assessment of a specific patient
+--select getallassessmentID(1);
+create or replace function getallassessmentID(in par_id int, out timestamp, out int,out int,out int,out float,
+  out float, out text ,out text ,out float, out text,out text,out text,out text,out text,out int) returns setof record as
+$$
+  select assessment_date,
+    nameofpatient,
+    age,
+    department,
+    temperature,
+    pulse_rate,
+    respiration_rate,
+    blood_pressure,
+    weight,
+    chiefcomplaint,
+    historyofpresentillness,
+    medicationstaken,
+    diagnosis,
+    recommendation,
+    attendingphysician
+  from Assessment, Vital_signs
+  where Assessment.nameofpatient = par_id and Assessment.id = Vital_signs.id
+
 $$
   language 'sql';
 
