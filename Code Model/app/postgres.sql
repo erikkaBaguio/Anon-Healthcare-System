@@ -669,7 +669,7 @@ $$
 $$
   language 'sql';
 
-create or replace function update_assessment(par_assessment_id int, par_doctor_id int) returns text as
+create or replace function update_assessment_attendingphysician(par_assessment_id int, par_doctor_id int) returns text as
 $$
   declare
       loc_response text;
@@ -805,29 +805,112 @@ in par_diagnosis text, in par_recommendation text, in par_attendingphysician int
  $$
   language 'plpgsql';
 
-
-
 --[GET] Retrieve specific Patient's assessment
 --select getassessmentID(1);
-create or replace function getassessmentID(in par_id int, out timestamp, out int,out int,out int,out int, out text,
-out text,out text,out text,out text,out int) returns setof record as
+create or replace function getassessmentID(in par_id int, out timestamp, out int,out int,out int,out float,
+  out float, out text ,out text ,out float, out text,out text,out text,out text,out text,out int)
+  returns setof record as
 $$
-  select assessment_date, nameofpatient, age, department,vital_signs ,chiefcomplaint ,
-      historyofpresentillness ,medicationstaken ,diagnosis ,recommendation ,attendingphysician from Assessment where id = par_id;
+
+  select assessment_date,
+    nameofpatient,
+    age,
+    department,
+    temperature,
+    pulse_rate,
+    respiration_rate,
+    blood_pressure,
+    weight,
+    chiefcomplaint,
+    historyofpresentillness,
+    medicationstaken,
+    diagnosis,
+    recommendation,
+    attendingphysician
+  from Assessment, Vital_signs
+  where Assessment.id = par_id and Vital_signs.id = par_id;
+
 $$
   language 'sql';
 
 -- [GET] Retrieve all patients' assessment
 --select getallassessment();
-create or replace function getallassessment(out bigint,out timestamp, out int,out int,out int,out int, out text,
-out text,out text,out text,out text,out boolean, out int) returns setof record as
+create or replace function getallassessment(out bigint, out timestamp, out int,out int,out int,out float,
+  out float, out text ,out text ,out float, out text,out text,out text,out text,out text,out int) returns setof record as
 $$
-  select * from Assessment;
+
+  select Assessment.id,
+    assessment_date,
+    nameofpatient,
+    age,
+    department,
+    temperature,
+    pulse_rate,
+    respiration_rate,
+    blood_pressure,
+    weight,
+    chiefcomplaint,
+    historyofpresentillness,
+    medicationstaken,
+    diagnosis,
+    recommendation,
+    attendingphysician
+  from Assessment, Vital_signs
+  where Assessment.id = Vital_signs.id
+
 $$
   language 'sql';
 
+-- [GET] Retrieve all assessment of a specific patient
+--select getallassessmentID(1);
+create or replace function getallassessmentID(in par_id int, out timestamp, out int,out int,out int,out float,
+  out float, out text ,out text ,out float, out text,out text,out text,out text,out text,out int) returns setof record as
+$$
+  select assessment_date,
+    nameofpatient,
+    age,
+    department,
+    temperature,
+    pulse_rate,
+    respiration_rate,
+    blood_pressure,
+    weight,
+    chiefcomplaint,
+    historyofpresentillness,
+    medicationstaken,
+    diagnosis,
+    recommendation,
+    attendingphysician
+  from Assessment, Vital_signs
+  where Assessment.nameofpatient = par_id and Assessment.id = Vital_signs.id
 
+$$
+  language 'sql';
 
+--[PUT] Update assessment of patient
+--select update_assessment(1,'Josiah','Timonera','Regencia', 19, 1, 37.1, 80, '19 breaths/minute', '90/70', 48, 'complaint', 'history', 'medication1', 'diagnosis11','recommendation11', 1);
+create or replace function update_assessment(in par_id int, in par_fname text, in par_mname text, in par_lname text, in par_age int, in par_department int,
+in par_temperature float, in par_pulse_rate float, in par_respiration_rate text, in par_blood_pressure text, in par_weight float,
+in par_chiefcomplaint text, in par_historyofpresentillness text, in par_medicationstaken text,
+in par_diagnosis text, in par_recommendation text, in par_attendingphysician int) returns text as
+ $$
+  declare
+    loc_res text;
+  begin
+
+    update Assessment
+    set
+      diagnosis = par_diagnosis,
+      recommendation = par_recommendation,
+      attendingphysician = par_attendingphysician
+    where id = par_id;
+
+    loc_res = 'Updated';
+    return loc_res;
+
+  end;
+$$
+  language 'plpgsql';
 -----------------------------------------------------------------------------------------------------------------
 --[GET] Retrieve patient's vital signs.
 -- select getvitalsignsID(1);
