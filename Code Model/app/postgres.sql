@@ -838,7 +838,26 @@ $$
 create or replace function getallassessment(out bigint, out timestamp, out int,out int,out int,out float,
   out float, out text ,out text ,out float, out text,out text,out text,out text,out text,out int) returns setof record as
 $$
-  select * from Assessment;
+
+  select Assessment.id,
+    assessment_date,
+    nameofpatient,
+    age,
+    department,
+    temperature,
+    pulse_rate,
+    respiration_rate,
+    blood_pressure,
+    weight,
+    chiefcomplaint,
+    historyofpresentillness,
+    medicationstaken,
+    diagnosis,
+    recommendation,
+    attendingphysician
+  from Assessment, Vital_signs
+  where Assessment.id = Vital_signs.id
+
 $$
   language 'sql';
 

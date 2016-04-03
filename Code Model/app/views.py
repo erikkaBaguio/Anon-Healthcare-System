@@ -387,8 +387,8 @@ def accept_assessment(assessment_id, doctor_id):
     return jsonify({'status':'ok', 'entries':records})
 
 
-@app.route('/anoncare.api/assessments/<int:assessment_id>/', methods=['GET'])
-def view_assessment(assessment_id):
+@app.route('/anoncare.api/assessments/<int:patient_id>/<int:assessment_id>/', methods=['GET'])
+def view_assessment(patient_id,assessment_id):
     assessments = spcall("getassessmentID", (assessment_id, ))
     records = []
 
@@ -420,7 +420,7 @@ def view_assessment(assessment_id):
         return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
 
 @app.route('/anoncare.api/assessments/', methods=['GET'])
-def view_all_ssessment():
+def view_all_assessments():
     assessments = spcall("getallassessment", ())
     records = []
 
@@ -432,18 +432,53 @@ def view_all_ssessment():
 
     else:
         for r in assessments:
-            records.append({"ID":r[0],
-                        "Date": r[1],
-                        "Patient": r[2],
-                        "Age": r[3],
-                        "Department": r[4],
-                        "Vital Signs": r[5],
-                        "Chief Complaint": r[6],
-                        "History of patient illness": r[7],
-                        "Medications taken": r[8],
-                        "Diagnosis": r[9],
-                        "Recommendation": r[10],
-                        "Attending Physician": r[11]})
+            records.append({"assessment_id": r[0],
+                            "assessment_date": r[1],
+                            "patient_id": r[2],
+                            "age": r[3],
+                            "department": r[4],
+                            "temperature": r[5],
+                            "pulse_rate": r[6],
+                            "respiration_rate": r[7],
+                            "blood_pressure": r[8],
+                            "weight": r[9],
+                            "chief_complaint": r[10],
+                            "history_of_present_illness": r[11],
+                            "medications_taken": r[12],
+                            "diagnosis": r[13],
+                            "recommendation": r[14],
+                            "attending_physician": r[15]})
+
+        return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
+
+@app.route('/anoncare.api/assessments/<int:patient_id>/', methods=['GET'])
+def view_all_assessmentID(patient_id):
+    assessments = spcall("getallassessmentID", (patient_id,))
+    records = []
+
+    if len(assessments) == 0:
+        return jsonify({"status": "OK", "message": "No entries found", "entries": [], "count": "0"})
+
+    elif 'Error' in str(assessments[0][0]):
+        return jsonify({'status': 'error', 'message': assessments[0][0]})
+
+    else:
+        for r in assessments:
+            records.append({"assessment_date": r[0],
+                        "patient_id": r[1],
+                        "age": r[2],
+                        "department": r[3],
+                        "temperature":r[4],
+                        "pulse_rate":r[5],
+                        "respiration_rate":r[6],
+                        "blood_pressure":r[7],
+                        "weight":r[8],
+                        "chief_complaint": r[9],
+                        "history_of_present_illness": r[10],
+                        "medications_taken": r[11],
+                        "diagnosis": r[12],
+                        "recommendation": r[13],
+                        "attending_physician": r[14]})
 
         return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
 
