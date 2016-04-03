@@ -12,6 +12,6 @@ Feature: Create final diagnosis
             |2  |2016-03-28 23:46:52.76     |1            |18 |1         |  36.4        | 70          | 19 breaths/minute | 100/80           | 45     | fever         |cough                  |medications     |finaldiagnosis|recommendation|1                 |
 
       When  the doctor PUT to the assessment resource url '/anoncare.api/assessments/update/2/'
-      Then  it should get a '200' response
-      And   it should get a field status containing 'OK'
-      And   it should get a field message containing 'Updated'
+      Then  it should have a '200' response
+      And   it should have a field 'status' containing 'OK'
+      And   it should have a field 'message' containing 'Updated'
