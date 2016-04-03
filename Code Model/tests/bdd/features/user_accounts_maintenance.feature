@@ -52,3 +52,15 @@ Feature: User Accounts Maintenance
     And I should get a message No User Found
 #    And I should get a message No User Found
 
+
+ ######################################################################
+  # Empty Signup Field
+
+  Scenario: Fname field is empty
+    Given admin inputs:
+        | fname    | mname    | lname     | email                   | username          | password               | role_id| is_available|
+        |          | Timonera | Regencia  | jawshaeleazar@gmail.com | josiah.regencia   | josiaheleazareregencia | 1      | False       |
+
+    When When admin clicks the register button
+
+

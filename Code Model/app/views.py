@@ -175,6 +175,21 @@ def get_user_with_id(id):
         return jsonify({"status": "ok", "message": "No User Found"})
 
 
+def register_field_empty(fname, mname, lname, email):
+
+    if fname or mname or lname or email is '':
+        return True
+
+    else:
+        return False
+
+
+@app.route('/anoncare.api/check_field/<string:fname>/<string:mname>/<string:lname>/<string:email>/')
+def jsonify_register_field_empty(fname, mname, lname, email):
+
+    return jsonify({"is_empty": register_field_empty(fname, mname, lname, email)})
+
+
 @app.route('/anoncare.api/user/', methods=['POST', 'GET'])
 def insertuser():
 
@@ -191,8 +206,10 @@ def insertuser():
     role_id = user['role_id']
     is_available = user['is_available']
 
+    if register_field_empty(fname, mname, lname, email):
+        return jsonify({"message": "All Fields Must Be Filled"})
 
-    if(user_exists(username)) == True:
+    elif user_exists(username):
         return jsonify({'status': 'error'})
 
     else:
