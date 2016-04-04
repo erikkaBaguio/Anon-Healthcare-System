@@ -669,6 +669,12 @@ $$
 $$
   language 'sql';
 
+create or replace function get_all_notification(in par_doctor_id int, out int, out int, out boolean) returns setof record as
+$$  
+  select doctor_id, assessment_id, is_read from Notification where doctor_id=par_doctor_id;
+$$
+  language 'sql';
+
 create or replace function update_assessment_attendingphysician(par_assessment_id int, par_doctor_id int) returns text as
 $$
   declare
