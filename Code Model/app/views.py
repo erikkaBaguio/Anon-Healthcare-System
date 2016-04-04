@@ -7,7 +7,7 @@ from functools import wraps
 # from flask.ext.httpauth import HTTPBasicAuth
 from os import sys
 from models import DBconn
-import json, flask, requests
+import json, flask
 from app import app
 
 #auth = HTTPBasicAuth()
@@ -386,8 +386,8 @@ def accept_assessment(assessment_id, doctor_id):
     return jsonify({'status':'ok', 'entries':records})
 
 
-@app.route('/anoncare.api/assessments/<int:patient_id>/<int:assessment_id>/', methods=['GET'])
-def view_assessment(patient_id,assessment_id):
+@app.route('/anoncare.api/assessments/<int:assessment_id>/', methods=['GET'])
+def view_assessment(assessment_id):
     assessments = spcall("getassessmentID", (assessment_id, ))
     records = []
 
@@ -449,38 +449,6 @@ def view_all_assessments():
                             "attending_physician": r[15]})
 
         return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
-
-@app.route('/anoncare.api/assessments/<int:patient_id>/', methods=['GET'])
-def view_all_assessmentID(patient_id):
-    assessments = spcall("getallassessmentID", (patient_id,))
-    records = []
-
-    if len(assessments) == 0:
-        return jsonify({"status": "OK", "message": "No entries found", "entries": [], "count": "0"})
-
-    elif 'Error' in str(assessments[0][0]):
-        return jsonify({'status': 'error', 'message': assessments[0][0]})
-
-    else:
-        for r in assessments:
-            records.append({"assessment_date": r[0],
-                        "patient_id": r[1],
-                        "age": r[2],
-                        "department": r[3],
-                        "temperature":r[4],
-                        "pulse_rate":r[5],
-                        "respiration_rate":r[6],
-                        "blood_pressure":r[7],
-                        "weight":r[8],
-                        "chief_complaint": r[9],
-                        "history_of_present_illness": r[10],
-                        "medications_taken": r[11],
-                        "diagnosis": r[12],
-                        "recommendation": r[13],
-                        "attending_physician": r[14]})
-
-        return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
-
 
 @app.route('/anoncare.api/assessments/', methods = ['POST'])
 def new_assessment():
