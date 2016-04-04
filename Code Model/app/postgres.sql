@@ -182,24 +182,44 @@ create table Notification(
 -----STORED PROCEDURE FUNCTIONS-----
 -----------------------------------------------------------------------------------------------------------
 
---select login('fname.lname', 'pass');
-create or replace function checkauth(par_email text,par_password text) returns setof record as
+--select checkauth('fname.lname', 'pass');
+--select checkauth('josiah.regencia', 'josiaheleazareregencia');
+create or replace function checkauth(in par_username text, in par_password text) returns text as
 $$
   declare
-    loc_account text;
+    loc_id bigint;
+    loc_username text;
+    loc_password text;
     loc_response text;
   begin
-    select into loc_account email from Userinfo where email = par_email and password = par_password;
-       if loc_account isnull then
-        loc_response = 'Invalid Username or Password';
-      else
-        loc_response = 'OK';
-      end if;
-      return loc_response;
+
+    select into loc_username username from Userinfo where username = par_username and password = par_password;
+    select into loc_password password from Userinfo where username = par_username and password = par_password;
+
+    if loc_username isnull or loc_password isnull or loc_username ='' or loc_password='' then
+      loc_response = 'Invalid Username or Password';
+    else
+      loc_response = 'Successfully logged in.';
+    end if;
+    return loc_response;
+
   end;
 $$
   language 'plpgsql';
 
+create or replace function getpassword(par_username text) returns boolean as
+$$
+  declare
+    loc_password text;
+  begin
+     select into loc_password password from Userinfo where username = par_username;
+     if loc_password isnull then
+       loc_password = 'null';
+     end if;
+     return loc_password;
+ end;
+$$
+ language 'plpgsql';
 
 create or replace function newrole(par_rolename  text) returns text as
 $$

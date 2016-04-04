@@ -69,3 +69,15 @@ def when_the_doctor_press_view_assessment_with_an_id_group1(step, assessment_id)
 def step_impl(step):
     response_json = json.loads(world.assessment.data)
     assert_equals(world.response_json['entries'], response_json['entries'])
+
+""" Feature: Login  """
+
+""" Scenario: User successfully logged in """
+@step(u'Given the login requirements')
+def given_the_login_requirements(step):
+    world.login = step.hashes[0]
+
+@step(u'When  the clicks the login button')
+def when_the_clicks_the_login_button(step):
+
+    world.response = world.app.post('/anoncare.api/login',data=json.dumps(world.login))

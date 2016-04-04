@@ -12,7 +12,6 @@ from app import app
 
 #auth = HTTPBasicAuth()
 
-
 def spcall(qry, param, commit=False):
     try:
         dbo = DBconn()
@@ -35,37 +34,6 @@ def page_not_found(e):
 def internal_server_error(e):
     return '(Error 500) Sorry, there was an internal server error.'
 
-def check_auth(email, password):
-    #this function will check the username and password is valid.
-
-    user = spcall('checkauth',(email, password) )
-    print user
-
-    if 'Invalid Username or Password' in str(user[0][0]):
-        return jsonify( { 'status': 'error', 'message':user[0][0]} )
-
-    # user_records = []
-
-    # for r in user:
-    #     user_records.append({'fname':r[2], 'mname':r[3], 'lname':r[4],
-    #                          'email':r[5], 'is_active':r[9]
-    #                         })
-    return jsonify({"user": user})
-    session['logged_in'] = True
-    # return jsonify({'status': 'user is logged in', 'entries':user_records})
-    return redirect('/admin')
-
-
-# @app.route('/login', methods=['POST', 'GET'])
-# def login():
-#     if request.method == 'POST':
-#         data = request.json
-#         json_data = json.dumps(data)
-#         print "json data "+json_data
-#         return check_auth(json_data[0], json_data[1])
-
-#     return render_template('login.html')
-
 @app.route('/anoncare.api/login', methods=['POST'])
 def login():
     data = json.loads(request.data)
@@ -77,7 +45,7 @@ def login():
     if 'Invalid Username or Password' in str(user[0][0]):
         return jsonify({'status': 'error', 'message': user[0][0]})
     else:
-        return jsonify({'status':'User is logged in', 'message': user[0][0]})
+        return jsonify({'status':'OK', 'message': user[0][0]})
 
 
 @app.route('/logout')
@@ -215,26 +183,34 @@ def get_vital_signs(vital_signID):
                     "blood_pressure": str(r[3]),
                     "weight": str(r[4]), "message" : str(r[0][0])})
 
-def checkauth(username, password):
-    res = spcall('checkauth', (username, password))
+@app.route('/anoncare.api/login', methods=['POST'])
+def checkauth():
+    data = json.loads(request.data)
 
-    if 'Invalid username' in str(res[0][0]):
-        return jsonify({'status': 'error', 'message': res[0][0], "username": username, "pass" : password})
+    username = data['username']
+    password = data ['password']
 
-    session['logged_in'] = True
-    return jsonify({'status': 'ok'}), 201
+    if user_exists(username):
+        response = spcall('checkauth', (username, password))
 
 
-@app.route('/anoncare.api/login', methods=['POST', 'GET'])
-def login_index():
-    if request.method == 'POST':
-        json_data = request.get_json(force=True)
-        username = json_data['username']
-        password = json_data['password']
-        return checkauth(username, password)
-        print password
-        print username
-    return render_template('login.html')
+
+    if 'Invalid username' in str(response[0][0]):
+        return jsonify({'status': 'error', 'message': response[0][0], "username": username})
+
+    return jsonify({'status': 'ok', 'message': response[0][0]}), 201
+
+
+# @app.route('/anoncare.api/login', methods=['POST', 'GET'])
+# def login_index():
+#     if request.method == 'POST':
+#         json_data = request.get_json(force=True)
+#         username = json_data['username']
+#         password = json_data['password']
+#         return checkauth(username, password)
+#         print password
+#         print username
+#     return render_template('login.html')
 
 @app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['POST'])
 def notify(assessment_id, doctor_id):
