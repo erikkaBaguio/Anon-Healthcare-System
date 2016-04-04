@@ -35,6 +35,59 @@ Feature: User Accounts Maintenance
 
     And admin should get a status error
 
+
+   Scenario: Empty fname
+    Given admin inputs:
+        | fname    | mname    | lname     | email                   | username          | password               | role_id| is_available|
+        |          | Bingo    | Kaboom    | jawshaeleazar@gmail.com | .kaboom           | josiaheleazareregencia | 1      | False       |
+
+    When admin clicks the register button
+
+    Then admin should get an is_empty True
+
+    And admin should get a '200' response
+
+    And admin should get a status All Fields Must Be Filled
+
+  Scenario: Empty mname
+    Given admin inputs:
+        | fname    | mname    | lname     | email                   | username          | password               | role_id| is_available|
+        | Bam      |          | Kaboom    | jawshaeleazar@gmail.com | bam.kaboom         | josiaheleazareregencia| 1      | False       |
+
+    When admin clicks the register button
+
+    Then admin should get an is_empty True
+
+    And admin should get a '200' response
+
+    And admin should get a status All Fields Must Be Filled
+
+  Scenario: Empty lname
+    Given admin inputs:
+        | fname    | mname    | lname     | email                   | username          | password               | role_id| is_available|
+        | Bam      | Bingo    |           | jawshaeleazar@gmail.com | bam.              | josiaheleazareregencia | 1      | False       |
+
+    When admin clicks the register button
+
+    Then admin should get an is_empty True
+
+    And admin should get a '200' response
+
+    And admin should get a status All Fields Must Be Filled
+
+  Scenario: Empty lname
+    Given admin inputs:
+        | fname    | mname    | lname     | email | username            | password               | role_id| is_available|
+        | Bam      | Bingo    | Kaboom    |       | bam.kaboom         | josiaheleazareregencia  | 1      | False       |
+
+    When admin clicks the register button
+
+    Then admin should get an is_empty True
+
+    And admin should get a '200' response
+
+    And admin should get a status All Fields Must Be Filled
+
   ################################################################
 
 

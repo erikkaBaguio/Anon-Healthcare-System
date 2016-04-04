@@ -124,7 +124,6 @@ def get_college(college_id):
     return jsonify({"college_id": str(college_id), "college_name": str(r[0])})
 
 
-# @app.route('/anoncare.api/userexists/<string:username>/', methods=['GET'])
 def user_exists(username):
     users = spcall('getuserinfo', ())
     index = 0
@@ -137,10 +136,8 @@ def user_exists(username):
         index += 1
 
     if count == 1:
-        # return jsonify({"exists": True})
         return True
     else:
-        # return jsonify({"exists": False})
         return False
 
 
@@ -184,13 +181,13 @@ def register_field_empty(fname, mname, lname, email):
         return False
 
 
-@app.route('/anoncare.api/check_field/<string:fname>/<string:mname>/<string:lname>/<string:email>/', methods=['POST'])
+@app.route('/anoncare.api/check_field/<string:fname>/<string:mname>/<string:lname>/<string:email>/')
 def jsonify_register_field_empty(fname, mname, lname, email):
 
     return jsonify({"is_empty": register_field_empty(fname, mname, lname, email)})
 
 
-@app.route('/anoncare.api/user/', methods=['POST', 'GET'])
+@app.route('/anoncare.api/user/', methods=['POST'])
 def insertuser():
 
     user = json.loads(request.data)
@@ -207,7 +204,7 @@ def insertuser():
     is_available = user['is_available']
 
     if register_field_empty(fname, mname, lname, email):
-        return jsonify({"message": "All Fields Must Be Filled"})
+        return jsonify({"status": "All Fields Must Be Filled"})
 
     elif user_exists(username):
         return jsonify({'status': 'error'})
@@ -215,6 +212,15 @@ def insertuser():
     else:
         spcall("newuserinfo", (fname, mname, lname, email, username, password, role_id, is_available), True)
         return jsonify({'status': 'OK'})
+
+
+@app.route('/anoncare.api/password_reset/')
+def password_reset():
+    id = 1
+    new_password = 'justholla!'
+    spcall("updatepassword", (id, new_password,), True)
+
+    return jsonify({"status": new_password})
 
 
 @app.route('/anoncare.api/vital_signs/<int:vital_signID>', methods = ['GET'])

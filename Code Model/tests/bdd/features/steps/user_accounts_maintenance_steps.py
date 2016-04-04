@@ -60,6 +60,19 @@ def and_admin_should_get_a_status_ok(step):
     world.res = json.loads(world.response.data)
     assert_equals(world.res['status'], 'OK')
 
+
+# Empty Fields
+@step(u'Then admin should get an is_empty True')
+def then_admin_should_get_an_is_empty_true(step):
+    assert False, 'This step must be implemented'
+
+
+@step(u'And admin should get a status All Fields Must Be Filled')
+def and_admin_should_get_a_status_all_fields_must_be_filled(step):
+    assert False, 'This step must be implemented'
+
+
+
 ####End of Adding a user#######
 
 #========================================================================================================#
