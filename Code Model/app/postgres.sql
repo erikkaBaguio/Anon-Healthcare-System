@@ -307,6 +307,20 @@ $$
 
 --select * from getUserinfoid(1);
 
+
+create or replace function updatepassword(in par_id int, in par_new_password text) returns text as
+  $$
+    declare
+      response text;
+
+    begin
+      update Userinfo set password = par_new_password where id = par_id;
+      response := 'OK';
+
+      return response;
+    end;
+  $$
+  language 'plpgsql';
 ----------------------------------------------------------------------------------------------------
 create or replace function newpersonal_history(par_smoking text, par_allergies text, par_alcohol text,
                                                par_medication_taken text, par_drugs text, par_done boolean) returns text as

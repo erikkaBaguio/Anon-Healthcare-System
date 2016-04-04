@@ -184,7 +184,7 @@ def register_field_empty(fname, mname, lname, email):
         return False
 
 
-@app.route('/anoncare.api/check_field/<string:fname>/<string:mname>/<string:lname>/<string:email>/')
+@app.route('/anoncare.api/check_field/<string:fname>/<string:mname>/<string:lname>/<string:email>/', methods=['POST'])
 def jsonify_register_field_empty(fname, mname, lname, email):
 
     return jsonify({"is_empty": register_field_empty(fname, mname, lname, email)})
