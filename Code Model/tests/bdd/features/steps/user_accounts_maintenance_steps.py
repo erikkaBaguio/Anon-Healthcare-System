@@ -20,7 +20,11 @@
 # def when_admin_clicks_the_register_button(step):
 #     world.response = world.app.post('/anoncare.api/user/', data=json.dumps(world.user))
 
+<<<<<<< HEAD
 
+=======
+#
+>>>>>>> 1fb4c2feabe45147ba1f974550ef3570ba1aa663
 # @step(u'And admin should get a status error')
 # def and_admin_should_get_a_status_error(step):
 #     world.respond = world.app.post('/anoncare.api/user/', data=json.dumps(world.user))
@@ -33,10 +37,17 @@
 #     world.user_exists_respond = world.app.get('/anoncare.api/userexists/{}/'.format(username))
 
 
+<<<<<<< HEAD
 # @step(u'Then admin should get an exists True')
 # def then_admin_should_get_an_exists_true(step):
 #     world.user_exists_resp = json.loads(world.user_exists_respond.data)
 #     assert_equals(world.user_exists_resp['exists'], True)
+=======
+@step(u'Then admin should a field \'([^\']*)\' \'([^\']*)\'')
+def then_admin_should_a_field_group1_group2(step, field, expected_boolean):
+    world.user_exists_resp = json.loads(world.user_exists_respond.data)
+    assert_equals(str(world.user_exists_resp[field]), expected_boolean)
+>>>>>>> 1fb4c2feabe45147ba1f974550ef3570ba1aa663
 
 
 # @step(u'And the username \'([^\']*)\' does not yet exist')
@@ -44,10 +55,17 @@
 #     world.user_exists_response = world.app.get('/anoncare.api/userexists/{}/'.format(username))
 
 
+<<<<<<< HEAD
 # @step(u'Then admin should get an exists False')
 # def then_admin_should_get_an_exists_false(step):
 #     world.user_exists_res = json.loads(world.user_exists_response.data)
 #     assert_equals(world.user_exists_res['exists'], False)
+=======
+@step(u'Then admin should get a field \'([^\']*)\' \'([^\']*)\'')
+def then_admin_should_get_a_field_group1_group2(step, field, expected_boolean):
+    world.user_exists_res = json.loads(world.user_exists_response.data)
+    assert_equals(str(world.user_exists_res[field]), expected_boolean)
+>>>>>>> 1fb4c2feabe45147ba1f974550ef3570ba1aa663
 
 
 # @step(u'And admin should get a \'([^\']*)\' response')
@@ -55,10 +73,17 @@
 #     assert_equals(world.response.status_code, int(expected_status_code))
 
 
+<<<<<<< HEAD
 # @step(u'And admin should get a status OK')
 # def and_admin_should_get_a_status_ok(step):
 #     world.res = json.loads(world.response.data)
 #     assert_equals(world.res['status'], 'OK')
+=======
+@step(u'And admin should have a field \'([^\']*)\' \'([^\']*)\'')
+def and_admin_should_have_a_field_group1_group2(step, field, expected_value):
+    world.res = json.loads(world.response.data)
+    assert_equals(str(world.res[field]), expected_value)
+>>>>>>> 1fb4c2feabe45147ba1f974550ef3570ba1aa663
 
 
 
@@ -96,11 +121,19 @@
 #     assert_equals(world.get_response.status_code, int(expected_status_code))
 
 
+<<<<<<< HEAD
 # @step(u'And I should get a message No User Found')
 # def and_i_should_get_a_message_no_user_found(step):
 #     world.get_resp = json.loads(world.get_response.data)
 #     print "world.resp is ", world.get_resp
 #     assert_equals(world.get_resp['message'], 'No User Found')
+=======
+@step(u'And I should get a field \'([^\']*)\' \'([^\']*)\'')
+def and_i_should_get_a_field_group1_group2(step, field, expected_message):
+    world.get_resp = json.loads(world.get_response.data)
+    print "world.resp is ", world.get_resp
+    assert_equals(str(world.get_resp[field]), expected_message)
+>>>>>>> 1fb4c2feabe45147ba1f974550ef3570ba1aa663
 
 # ###End of retrieving a user with id __
 
@@ -122,7 +155,14 @@
 #     assert_equals(world.pass_reset_resp.status_code, int(expected_status_code))
 
 
+<<<<<<< HEAD
 # @step(u'And user should get status Password Changed')
 # def and_user_should_get_status_password_changed(step):
 #     world.pass_reset_response = json.loads(world.pass_reset_resp.data)
 #     assert_equals(world.pass_reset_response['status'], 'Password Changed')
+=======
+@step(u'And user should field \'([^\']*)\' \'([^\']*)\'')
+def and_user_should_field_group1_group2(step, field, expected_status):
+    world.pass_reset_response = json.loads(world.pass_reset_resp.data)
+    assert_equals(str(world.pass_reset_response[field]), expected_status)
+>>>>>>> 1fb4c2feabe45147ba1f974550ef3570ba1aa663

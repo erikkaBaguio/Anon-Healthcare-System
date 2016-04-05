@@ -471,8 +471,8 @@ $$
 --select * from newpatient(1, 'Mary Grace', 'Pasco', 'Cabolbol', 19 ,'female', 1, 1 , '4ft', 45, 'august 13 1995', 'single', 'Juan Manalo', 'iligan city', 'mild', 'none' , 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', TRUE)
 
 --GET patient file
-create or replace function get_patientfileId(in par_id int, out text, out text, out text, out int, out text,     
-                                         out text, out float, out text, out text, out text, 
+create or replace function get_patientfileId(in par_id int, out text, out text, out text, out int, out text,
+                                         out text, out float, out text, out text, out text,
                                          out text, out text, out text, out text, out text,
                                          out text, out text, out text, out text, out text,
                                          out text, out text, out text, out text, out text,
@@ -520,126 +520,126 @@ $$
 
 --select newpersonal_info('4ft 11inch', '84', 'July 25, 1996', 'single', 'Marissa Cabolbol', 'Biga, Lugait, Misamis Oriental');
 
+create or replace function notify() RETURNS trigger AS
 create or replace function get_newpersonal_info(out text, out float, out date, out text, out text, out text, out boolean) returns setof record as
 $$
-  select  from Personal_info; 
+select  from Personal_info;
 $$
-  language 'sql';
+language 'sql';
 
 --select * from get_newpersonal_info();
 
 create or replace function get_newpersonal_info_id(in par_id int, out text, out float, out date, out text, out text, out text, out boolean) returns setof record as
-$$  
-  select height, weight, date_of_birth, civil_status, name_of_guardian, home_address, is_active from Personal_info where par_id = id;
 $$
-  language 'sql';
+select height, weight, date_of_birth, civil_status, name_of_guardian, home_address, is_active from Personal_info where par_id = id;
+$$
+language 'sql';
 
 --select * from get_newpersonal_info_id(1);
 
 
 create or replace function newpulmonary(par_cough text, par_dyspnea text, par_hemoptysis text, par_tb_exposure)returns text as
 $$
-  declare 
-       loc_res text;
-  begin
-       if par_cough isnull or par_dyspnea isnull or par_hemoptysis isnull or par_tb_exposure isnull THEN
-       loc_res = 'Please fill up the required data';
-       else 
-       insert into Pulmonary(cough, dyspnea, hemoptysis, tb_exposure) values (par_cough, par_dyspnea, par_hemoptysis, par_tb_exposure);
-       loc_res = 'OK';
-       end if;
-       return loc_res;
-  end;
+declare
+  loc_res text;
+begin
+  if par_cough isnull or par_dyspnea isnull or par_hemoptysis isnull or par_tb_exposure isnull THEN
+    loc_res = 'Please fill up the required data';
+  else
+    insert into Pulmonary(cough, dyspnea, hemoptysis, tb_exposure) values (par_cough, par_dyspnea, par_hemoptysis, par_tb_exposure);
+    loc_res = 'OK';
+  end if;
+  return loc_res;
+end;
 $$
-  language 'plpgsql';
+language 'plpgsql';
 
 create or replace function newgut(par_frequency text, par_flank_plan text, par_discharge text, par_dysuria text, par_nocturia text, par_dec_urine_amount text) returns text as
 $$
-  declare
-    loc_id text;
-    loc_res text;
-  BEGIN
-    SELECT INTO  loc_id id from Gut;
-    if loc_id isnull THEN
-        insert into Gut(frequency, flank_plan, discharge, dysuria, nocturia, dec_urine_amount) values (par_frequency, par_flank_plan, par_discharge, par_dysuria, par_nocturia, par_dec_urine_amount);
-        loc_res = 'OK';
-    else
-        loc_res = 'ID EXISTED';
-    end if;
-    return loc_res;
-  END;
+declare
+  loc_id text;
+  loc_res text;
+BEGIN
+  SELECT INTO  loc_id id from Gut;
+  if loc_id isnull THEN
+    insert into Gut(frequency, flank_plan, discharge, dysuria, nocturia, dec_urine_amount) values (par_frequency, par_flank_plan, par_discharge, par_dysuria, par_nocturia, par_dec_urine_amount);
+    loc_res = 'OK';
+  else
+    loc_res = 'ID EXISTED';
+  end if;
+  return loc_res;
+END;
 $$
- language 'plpgsql';
+language 'plpgsql';
 
-create or replace function newillness(par_asthma text, par_ptb text, par_heart_problem text, par_hepatitis_a_b text, par_chicken_pox text, par_mumps text, par_typhoid_fever text) returns text as 
+create or replace function newillness(par_asthma text, par_ptb text, par_heart_problem text, par_hepatitis_a_b text, par_chicken_pox text, par_mumps text, par_typhoid_fever text) returns text as
 $$
-  declare
-    DECLARE
-    loc_id text;
-    loc_res text;
-  BEGIN
-    SELECT INTO  loc_id id from Illness;
-    if loc_id isnull THEN
-        Insert into Illness(asthma, ptb, heart_problem, hepatitis_a_b, chicken_pox, mumps, typhoid_fever) values (par_asthma, par_ptb, par_heart_problem, par_hepatitis_a_b, par_chicken_pox, par_mumps, par_typhoid_fever);
-        loc_res = 'OK';
-    ELSE
-      loc_res = 'ID EXISTED';
-    END if;
-    return loc_res;
-  END ;
+declare
+  DECLARE
+          loc_id text;
+  loc_res text;
+BEGIN
+  SELECT INTO  loc_id id from Illness;
+  if loc_id isnull THEN
+    Insert into Illness(asthma, ptb, heart_problem, hepatitis_a_b, chicken_pox, mumps, typhoid_fever) values (par_asthma, par_ptb, par_heart_problem, par_hepatitis_a_b, par_chicken_pox, par_mumps, par_typhoid_fever);
+    loc_res = 'OK';
+  ELSE
+    loc_res = 'ID EXISTED';
+  END if;
+  return loc_res;
+END ;
 $$
- LANGUAGE 'plpgsql';
+LANGUAGE 'plpgsql';
 
 
 CREATE  or replace function newcardiac(par_chest_pain text, par_palpitations text, par_pedal_edema text, par_orthopnea text, par_nocturnal_dyspnea text, par_done boolean) returns text as
 $$
-  DECLARE
-    loc_id text;
-    loc_res text;
-  BEGIN
-    SELECT INTO  loc_id id from Cardiac;
-    if loc_id isnull THEN
+DECLARE
+  loc_id text;
+  loc_res text;
+BEGIN
+  SELECT INTO  loc_id id from Cardiac;
+  if loc_id isnull THEN
 
-      INSERT into Cardiac(chest_pain, palpitations, pedal_edema, orthopnea, nocturnal_dyspnea, done) VALUES (par_chest_pain, par_palpitations, par_pedal_edema, par_orthopnea, par_nocturnal_dyspnea, par_done);
-      loc_res = 'OK';
+    INSERT into Cardiac(chest_pain, palpitations, pedal_edema, orthopnea, nocturnal_dyspnea, done) VALUES (par_chest_pain, par_palpitations, par_pedal_edema, par_orthopnea, par_nocturnal_dyspnea, par_done);
+    loc_res = 'OK';
 
-    ELSE
-      loc_res = 'ID EXISTED';
-    END if;
-    return loc_res;
-  END ;
+  ELSE
+    loc_res = 'ID EXISTED';
+  END if;
+  return loc_res;
+END ;
 $$
- LANGUAGE 'plpgsql';
+LANGUAGE 'plpgsql';
 
 ----------------------------------------------------------------------------------------------------------------
 
 create or replace function newneurologic(par_headache text, par_seizure text, par_dizziness text, par_loss_of_consciousness text, par_done boolean) returns text as
 $$
- DECLARE
-   loc_id text;
-   loc_res text;
- BEGIN
-   SELECT into loc_id id from Neurologic;
-   if loc_id isnull THEN
+DECLARE
+  loc_id text;
+  loc_res text;
+BEGIN
+  SELECT into loc_id id from Neurologic;
+  if loc_id isnull THEN
 
-     INSERT INTO Neurologic(headache, seizure, dizziness, loss_of_consciousness, done) values (par_headache, par_seizure, par_dizziness, par_loss_of_consciousness, par_done);
-     loc_res = 'OK';
+    INSERT INTO Neurologic(headache, seizure, dizziness, loss_of_consciousness, done) values (par_headache, par_seizure, par_dizziness, par_loss_of_consciousness, par_done);
+    loc_res = 'OK';
 
-   ELSE
-     loc_res = 'ID EXISTED';
-   END if;
-   return loc_res;
- END;
+  ELSE
+    loc_res = 'ID EXISTED';
+  END if;
+  return loc_res;
+END;
 $$
- LANGUAGE  'plpgsql';
+LANGUAGE  'plpgsql';
 
-  
+
 ------------------------------------------------------------------------------------------------------------------------------------------
 -- NOTIFICATIONS
 
 -- TRIGGER (notification) - if new assessment is created, automatically create new notification
-create or replace function notify() RETURNS trigger AS
-  $$
+$$
 
   BEGIN
 
