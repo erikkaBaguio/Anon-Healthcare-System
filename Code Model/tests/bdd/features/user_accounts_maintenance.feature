@@ -7,17 +7,17 @@ Feature: User Accounts Maintenance
   Scenario: Add a new user to the system - all requirements put
     Given admin inputs:
         | fname    | mname    | lname     | email                   | username          | password               | role_id| is_available|
-        | Eleazar  | Regencia | Donato    | jawshaeleazar@gmail.com | eleazar.donato    | josiaheleazareregencia | 2      | False       |
+        | Josiah   | Timonera | Regencia  | jawshaeleazar@gmail.com | josiah.regencia   | josiaheleazareregencia | 1      | False       |
 
-    And the username 'eleazar.donato' does not yet exist
+    And the username 'josiah.regencia' does not yet exist
 
     When admin clicks the register button
 
-    Then admin should get an exists False
+    Then admin should get a field 'exists' 'False'
 
     And admin should get a '200' response
 
-    And admin should get a status OK
+    And admin should have a field 'status' 'OK'
 
 
   Scenario: Add a new user to the system - username already exists
@@ -29,11 +29,11 @@ Feature: User Accounts Maintenance
 
     When admin clicks the register button
 
-    Then admin should get an exists True
+    Then admin should a field 'exists' 'True'
 
     And admin should get a '200' response
 
-    And admin should get a status error
+    And admin should have a field 'status' 'error'
 
 
 
@@ -51,7 +51,7 @@ Feature: User Accounts Maintenance
     Given User with id '32'
     When I retrieve the user with id '32'
     Then I would get a '200' response
-    And I should get a message No User Found
+    And I should get a field 'message' 'No User Found'
 #    And I should get a message No User Found
 
 
@@ -68,4 +68,4 @@ Feature: User Accounts Maintenance
 
     Then user gets a '200' response
 
-    And user should get status Password Changed
+    And user should field 'status' 'Password Changed'

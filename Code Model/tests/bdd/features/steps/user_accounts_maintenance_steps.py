@@ -20,12 +20,12 @@ def given_admin_inputs(step):
 def when_admin_clicks_the_register_button(step):
     world.response = world.app.post('/anoncare.api/user/', data=json.dumps(world.user))
 
-
-@step(u'And admin should get a status error')
-def and_admin_should_get_a_status_error(step):
-    world.respond = world.app.post('/anoncare.api/user/', data=json.dumps(world.user))
-    world.resp = json.loads(world.respond.data)
-    assert_equals(world.resp['status'], 'error')
+#
+# @step(u'And admin should get a status error')
+# def and_admin_should_get_a_status_error(step):
+#     world.respond = world.app.post('/anoncare.api/user/', data=json.dumps(world.user))
+#     world.resp = json.loads(world.respond.data)
+#     assert_equals(world.resp['status'], 'error')
 
 
 @step(u'And the username \'([^\']*)\' exists')
@@ -33,10 +33,10 @@ def and_the_username_group1_exists(step, username):
     world.user_exists_respond = world.app.get('/anoncare.api/userexists/{}/'.format(username))
 
 
-@step(u'Then admin should get an exists True')
-def then_admin_should_get_an_exists_true(step):
+@step(u'Then admin should a field \'([^\']*)\' \'([^\']*)\'')
+def then_admin_should_a_field_group1_group2(step, field, expected_boolean):
     world.user_exists_resp = json.loads(world.user_exists_respond.data)
-    assert_equals(world.user_exists_resp['exists'], True)
+    assert_equals(str(world.user_exists_resp[field]), expected_boolean)
 
 
 @step(u'And the username \'([^\']*)\' does not yet exist')
@@ -44,10 +44,10 @@ def and_the_username_group1_does_not_yet_exist(step, username):
     world.user_exists_response = world.app.get('/anoncare.api/userexists/{}/'.format(username))
 
 
-@step(u'Then admin should get an exists False')
-def then_admin_should_get_an_exists_false(step):
+@step(u'Then admin should get a field \'([^\']*)\' \'([^\']*)\'')
+def then_admin_should_get_a_field_group1_group2(step, field, expected_boolean):
     world.user_exists_res = json.loads(world.user_exists_response.data)
-    assert_equals(world.user_exists_res['exists'], False)
+    assert_equals(str(world.user_exists_res[field]), expected_boolean)
 
 
 @step(u'And admin should get a \'([^\']*)\' response')
@@ -55,10 +55,10 @@ def and_admin_should_get_a_group1_response(step, expected_status_code):
     assert_equals(world.response.status_code, int(expected_status_code))
 
 
-@step(u'And admin should get a status OK')
-def and_admin_should_get_a_status_ok(step):
+@step(u'And admin should have a field \'([^\']*)\' \'([^\']*)\'')
+def and_admin_should_have_a_field_group1_group2(step, field, expected_value):
     world.res = json.loads(world.response.data)
-    assert_equals(world.res['status'], 'OK')
+    assert_equals(str(world.res[field]), expected_value)
 
 
 
@@ -96,11 +96,11 @@ def then_i_would_get_a_group1_response(step, expected_status_code):
     assert_equals(world.get_response.status_code, int(expected_status_code))
 
 
-@step(u'And I should get a message No User Found')
-def and_i_should_get_a_message_no_user_found(step):
+@step(u'And I should get a field \'([^\']*)\' \'([^\']*)\'')
+def and_i_should_get_a_field_group1_group2(step, field, expected_message):
     world.get_resp = json.loads(world.get_response.data)
     print "world.resp is ", world.get_resp
-    assert_equals(world.get_resp['message'], 'No User Found')
+    assert_equals(str(world.get_resp[field]), expected_message)
 
 ###End of retrieving a user with id __
 
@@ -122,7 +122,7 @@ def then_user_gets_a_group1_response(step, expected_status_code):
     assert_equals(world.pass_reset_resp.status_code, int(expected_status_code))
 
 
-@step(u'And user should get status Password Changed')
-def and_user_should_get_status_password_changed(step):
+@step(u'And user should field \'([^\']*)\' \'([^\']*)\'')
+def and_user_should_field_group1_group2(step, field, expected_status):
     world.pass_reset_response = json.loads(world.pass_reset_resp.data)
-    assert_equals(world.pass_reset_response['status'], 'Password Changed')
+    assert_equals(str(world.pass_reset_response[field]), expected_status)
