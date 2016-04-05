@@ -7,11 +7,10 @@ from functools import wraps
 # from flask.ext.httpauth import HTTPBasicAuth
 from os import sys
 from models import DBconn
-import json, flask, requests
+import json, flask
 from app import app
 
 #auth = HTTPBasicAuth()
-
 
 def spcall(qry, param, commit=False):
     try:
@@ -35,36 +34,6 @@ def page_not_found(e):
 def internal_server_error(e):
     return '(Error 500) Sorry, there was an internal server error.'
 
-def check_auth(email, password):
-    #this function will check the username and password is valid.
-
-    user = spcall('checkauth',(email, password) )
-    print user
-
-    if 'Invalid Username or Password' in str(user[0][0]):
-        return jsonify( { 'status': 'error', 'message':user[0][0]} )
-
-    # user_records = []
-
-    # for r in user:
-    #     user_records.append({'fname':r[2], 'mname':r[3], 'lname':r[4],
-    #                          'email':r[5], 'is_active':r[9]
-    #                         })
-    return jsonify({"user": user})
-    session['logged_in'] = True
-    # return jsonify({'status': 'user is logged in', 'entries':user_records})
-    return redirect('/admin')
-
-
-# @app.route('/login', methods=['POST', 'GET'])
-# def login():
-#     if request.method == 'POST':
-#         data = request.json
-#         json_data = json.dumps(data)
-#         print "json data "+json_data
-#         return check_auth(json_data[0], json_data[1])
-
-#     return render_template('login.html')
 
 @app.route('/anoncare.api/login', methods=['POST'])
 def login():
@@ -77,7 +46,7 @@ def login():
     if 'Invalid Username or Password' in str(user[0][0]):
         return jsonify({'status': 'error', 'message': user[0][0]})
     else:
-        return jsonify({'status':'User is logged in', 'message': user[0][0]})
+        return jsonify({'status':'OK', 'message': user[0][0]})
 
 
 @app.route('/logout')
@@ -236,26 +205,34 @@ def get_vital_signs(vital_signID):
                     "blood_pressure": str(r[3]),
                     "weight": str(r[4]), "message" : str(r[0][0])})
 
-def checkauth(username, password):
-    res = spcall('checkauth', (username, password))
+@app.route('/anoncare.api/login', methods=['POST'])
+def checkauth():
+    data = json.loads(request.data)
 
-    if 'Invalid username' in str(res[0][0]):
-        return jsonify({'status': 'error', 'message': res[0][0], "username": username, "pass" : password})
+    username = data['username']
+    password = data ['password']
 
-    session['logged_in'] = True
-    return jsonify({'status': 'ok'}), 201
+    if user_exists(username):
+        response = spcall('checkauth', (username, password))
 
 
-@app.route('/anoncare.api/login', methods=['POST', 'GET'])
-def login_index():
-    if request.method == 'POST':
-        json_data = request.get_json(force=True)
-        username = json_data['username']
-        password = json_data['password']
-        return checkauth(username, password)
-        print password
-        print username
-    return render_template('login.html')
+
+    if 'Invalid username' in str(response[0][0]):
+        return jsonify({'status': 'error', 'message': response[0][0], "username": username})
+
+    return jsonify({'status': 'ok', 'message': response[0][0]}), 201
+
+
+# @app.route('/anoncare.api/login', methods=['POST', 'GET'])
+# def login_index():
+#     if request.method == 'POST':
+#         json_data = request.get_json(force=True)
+#         username = json_data['username']
+#         password = json_data['password']
+#         return checkauth(username, password)
+#         print password
+#         print username
+#     return render_template('login.html')
 
 @app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['POST'])
 def notify(assessment_id, doctor_id):
@@ -379,6 +356,20 @@ def getnotify(assessment_id, doctor_id):
         records.append({ "doctor_id": str(r[0]), "assessment_id": str(r[1]), "is_read": str(r[2]) })
     return jsonify({'status': 'Ok','entries': records, 'count': len(records) })
 
+@app.route('/anoncare.api/notify/<int:doctor_id>', methods=['GET'])
+def get_all_notification(doctor_id):
+    notifications = spcall("get_all_notification", (doctor_id,))
+    print notifications
+
+    if notifications is not bool(notifications):
+        return jsonify({'status':'error', 'message':'No available notifications'})
+
+    records = []
+
+    for r in notifications:
+        records.append({ "doctor_id": str(r[0]), "assessment_id": str(r[1]), "is_read": str(r[2]) })
+    return jsonify({'status': 'Ok','entries': records, 'count': len(records) })
+
 @app.route('/anoncare.api/referral/<int:assessment_id>/<int:doctor_id>/<int:prev_doctor>', methods=['POST'])
 def doctor_referral(assessment_id, doctor_id, prev_doctor):
     update_notification = spcall("update_notification", (assessment_id, prev_doctor), True)
@@ -407,8 +398,8 @@ def accept_assessment(assessment_id, doctor_id):
     return jsonify({'status':'ok', 'entries':records})
 
 
-@app.route('/anoncare.api/assessments/<int:patient_id>/<int:assessment_id>/', methods=['GET'])
-def view_assessment(patient_id,assessment_id):
+@app.route('/anoncare.api/assessments/<int:assessment_id>/', methods=['GET'])
+def view_assessment(assessment_id):
     assessments = spcall("getassessmentID", (assessment_id, ))
     records = []
 
@@ -470,38 +461,6 @@ def view_all_assessments():
                             "attending_physician": r[15]})
 
         return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
-
-@app.route('/anoncare.api/assessments/<int:patient_id>/', methods=['GET'])
-def view_all_assessmentID(patient_id):
-    assessments = spcall("getallassessmentID", (patient_id,))
-    records = []
-
-    if len(assessments) == 0:
-        return jsonify({"status": "OK", "message": "No entries found", "entries": [], "count": "0"})
-
-    elif 'Error' in str(assessments[0][0]):
-        return jsonify({'status': 'error', 'message': assessments[0][0]})
-
-    else:
-        for r in assessments:
-            records.append({"assessment_date": r[0],
-                        "patient_id": r[1],
-                        "age": r[2],
-                        "department": r[3],
-                        "temperature":r[4],
-                        "pulse_rate":r[5],
-                        "respiration_rate":r[6],
-                        "blood_pressure":r[7],
-                        "weight":r[8],
-                        "chief_complaint": r[9],
-                        "history_of_present_illness": r[10],
-                        "medications_taken": r[11],
-                        "diagnosis": r[12],
-                        "recommendation": r[13],
-                        "attending_physician": r[14]})
-
-        return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
-
 
 @app.route('/anoncare.api/assessments/', methods = ['POST'])
 def new_assessment():

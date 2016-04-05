@@ -28,9 +28,10 @@ def and_it_should_get_a_field_group1_containing_group2(step, field, expected_val
 def given_the_nurse_have_the_following_assessment_details(step):
     world.assessment = step.hashes[0]
 
-@step(u'When  the nurse POST to the assessment resource url \'([^\']*)\'')
-def when_the_nurse_post_to_the_assessment_resource_url_group1(step, url):
-    world.response = world.app.post(url, data=json.dumps(world.assessment))
+@step(u'When  the nurse clicks the add button')
+def when_the_nurse_clicks_the_add_button(step):
+    world.browser = TestApp(app)
+    world.response = world.app.post('/anoncare.api/assessments/', data=json.dumps(world.assessment))
 
 
 """ Feature : Create Final Diagnosis """
@@ -45,10 +46,10 @@ def given_the_details_of_the_patient_assessment_with_an_id_2(step):
 def and_the_new_details_for_the_patient_assessment_with_an_id_2(step):
     world.assessment_updatedInfo = step.hashes[0]
 
-@step(u'When  the doctor PUT to the assessment resource url \'([^\']*)\'')
-def when_the_doctor_put_to_the_assessment_resource_url_group1(step, url):
+@step(u'When  the doctor clicks the update button')
+def when_the_doctor_clicks_the_update_button(step):
     world.browser = TestApp(app)
-    world.response = world.app.put(url, data=json.dumps(world.assessment_updatedInfo))
+    world.response = world.app.put('/anoncare.api/assessments/update/2/', data=json.dumps(world.assessment_updatedInfo))
 
 
 """ Feature: View Assessment """
@@ -69,3 +70,15 @@ def when_the_doctor_press_view_assessment_with_an_id_group1(step, assessment_id)
 def step_impl(step):
     response_json = json.loads(world.assessment.data)
     assert_equals(world.response_json['entries'], response_json['entries'])
+
+""" Feature: Login  """
+
+""" Scenario: User successfully logged in """
+@step(u'Given the login requirements')
+def given_the_login_requirements(step):
+    world.login = step.hashes[0]
+
+@step(u'When  the clicks the login button')
+def when_the_clicks_the_login_button(step):
+
+    world.response = world.app.post('/anoncare.api/login',data=json.dumps(world.login))
