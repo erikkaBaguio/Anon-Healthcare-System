@@ -9,15 +9,16 @@ Feature: User Accounts Maintenance
         | fname    | mname    | lname     | email                   | username          | password               | role_id| is_available|
         | Sean     | Timonera | Regencia  | jawshaeleazar@gmail.com | sean.regencia     | josiaheleazareregencia | 3      | False       |
 
+
     And the username 'sean.regencia' does not yet exist
 
     When admin clicks the register button
 
-    Then admin should get an exists False
+    Then admin should get a field 'exists' 'False'
 
     And admin should get a '200' response
 
-    And admin should get a status OK
+    And admin should have a field 'status' 'OK'
 
 
   Scenario: Add a new user to the system - username already exists
@@ -29,11 +30,13 @@ Feature: User Accounts Maintenance
 
     When admin clicks the register button
 
-    Then admin should get an exists True
+    Then admin should a field 'exists' 'True'
 
     And admin should get a '200' response
 
-    And admin should get a status error
+    And admin should have a field 'status' 'error'
+
+
 
   ################################################################
 
@@ -49,6 +52,21 @@ Feature: User Accounts Maintenance
     Given User with id '32'
     When I retrieve the user with id '32'
     Then I would get a '200' response
-    And I should get a message No User Found
+    And I should get a field 'message' 'No User Found'
 #    And I should get a message No User Found
 
+
+ ######################################################################
+
+##Password Reset
+
+  Scenario: User resets password
+    Given User updates password:
+      |password      |
+      |new passwordo!|
+
+    When user clicks the update button
+
+    Then user gets a '200' response
+
+    And user should field 'status' 'Password Changed'

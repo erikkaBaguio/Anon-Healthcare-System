@@ -93,7 +93,6 @@ def get_college(college_id):
     return jsonify({"college_id": str(college_id), "college_name": str(r[0])})
 
 
-# @app.route('/anoncare.api/userexists/<string:username>/', methods=['GET'])
 def user_exists(username):
     users = spcall('getuserinfo', ())
     index = 0
@@ -106,10 +105,8 @@ def user_exists(username):
         index += 1
 
     if count == 1:
-        # return jsonify({"exists": True})
         return True
     else:
-        # return jsonify({"exists": False})
         return False
 
 
@@ -144,7 +141,22 @@ def get_user_with_id(id):
         return jsonify({"status": "ok", "message": "No User Found"})
 
 
-@app.route('/anoncare.api/user/', methods=['POST', 'GET'])
+def register_field_empty(fname, mname, lname, email):
+
+    if fname or mname or lname or email is '':
+        return True
+
+    else:
+        return False
+
+
+@app.route('/anoncare.api/check_field/<string:fname>/<string:mname>/<string:lname>/<string:email>/')
+def jsonify_register_field_empty(fname, mname, lname, email):
+
+    return jsonify({"is_empty": register_field_empty(fname, mname, lname, email)})
+
+
+@app.route('/anoncare.api/user/', methods=['POST'])
 def insertuser():
 
     user = json.loads(request.data)
@@ -160,13 +172,22 @@ def insertuser():
     role_id = user['role_id']
     is_available = user['is_available']
 
-
-    if(user_exists(username)) == True:
+    if user_exists(username):
         return jsonify({'status': 'error'})
 
     else:
         spcall("newuserinfo", (fname, mname, lname, email, username, password, role_id, is_available), True)
         return jsonify({'status': 'OK'})
+
+
+@app.route('/anoncare.api/password_reset/', methods=['PUT'])
+def password_reset():
+    id = 3
+    input_password = json.loads(request.data)
+    new_password = input_password['password']
+    spcall("updatepassword", (id, new_password,), True)
+
+    return jsonify({"status": "Password Changed"})
 
 
 @app.route('/anoncare.api/vital_signs/<int:vital_signID>', methods = ['GET'])
@@ -267,7 +288,10 @@ def newpatient():
         data['dizziness'],
         data['loss_of_consciousness'],
         data['is_active']))
+<<<<<<< HEAD
+=======
 
+>>>>>>> b51dd95c82592f394bffdab3ef31cc8150846f17
     if 'Error' in str(response[0][0]):
         return jsonify({'status': 'error', 'message': response[0][0]})
 
