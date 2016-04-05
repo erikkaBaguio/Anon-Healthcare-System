@@ -1,11 +1,5 @@
-<<<<<<< HEAD
 #created by Mary Grace
 Feature: Create patient file
-=======
-#created by Mary grace
-Feature: Patient File
->>>>>>> 1fb4c2feabe45147ba1f974550ef3570ba1aa663
-
 
 Scenario: Create patient file
     Given the following details of patient 
@@ -18,26 +12,15 @@ Scenario: Create patient file
 
 
 Scenario: Get the patient file
-<<<<<<< HEAD
     Given a patient file with id '1'   
-=======
-    Given a patient id '1'
->>>>>>> 1fb4c2feabe45147ba1f974550ef3570ba1aa663
     When I retrieve the patient id '1'
     Then  it should have a '200' response
     And the following patient file is retrieved:
-<<<<<<< HEAD
     |id| fname       | mname | lname    |age| sex    | height | weight | date_of_birth  | civil_status |name_of_guardian|home_address |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| 
     |1 | Mary Grace  | Pasco | Cabolbol |19 | female |      4ft    |   45   |  august 13 1995|    single    |Juan Manalo     |iligan city  |mild  | none   |  none     |    none    | none     |   none    |    none   |   none |  none   |  none            | none |none|    none       |  none          |  none      |none  |    none      |   none    |    none     |    none    | none     |     none         |   none  |  none  |   none   |   none     
 
 
-#Rainy Case    
-=======
-    |id| fname       | mname | lname    |age| sex    | height | weight | date_of_birth  | civil_status |name_of_guardian|home_address |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness|
-    |1 | Mary Grace  | Pasco | Cabolbol |19 | female |  4ft   |   45   |  august 13 1995|    single    |Juan Manalo     |iligan city  |mild  | none   |  none     |    none    | none     |   none    |    none   |   none |  none   |  none            | none |none|    none       |  none          |  none      |none  |    none      |   none    |    none     |    none    | none     |     none         |   none  |  none  |   none   |   none
-
 #Rainy Case
->>>>>>> 1fb4c2feabe45147ba1f974550ef3570ba1aa663
 Scenario: Get patient file that doesn't exists
     Given a patient file with id '100'
     When I retrieve the patient id '100'
@@ -47,7 +30,6 @@ Scenario: Get patient file that doesn't exists
 
 
 #Rainy Case
-<<<<<<< HEAD
 Scenario: ID duplication in adding patient file 
     Given the following details of patient 
     |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
@@ -56,31 +38,19 @@ Scenario: ID duplication in adding patient file
     Then  it should have a '200' response
     And   it should have a field 'status' containing 'OK'
     And   it should have a field 'message' containing 'Patient already EXISTED'
-=======
-Scenario: Adding patient file
-    Given the following patient file with id 1 already existed:
-    |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
-    |1|Mary Grace     |Pasco |Cabolbol |19 |female  |    1         |     1          | 5 ft  | 45     | August 20 1996 | single           | Corazon Aquino | Dalipuga Iligan City| mild | none   | none      | none       | none     | none      |  none     | none   | none    | none            | none  |none|  none         |    none      |  none      | none |    none      |   none    |   none      |    none    |  none    |     none         |   none  |  none  |   none   |   none              | true      |
-    When I enter the existing patient file
-    Then I get a message Patient already EXISTED
->>>>>>> 1fb4c2feabe45147ba1f974550ef3570ba1aa663
+
 
 #Rainy Case
 Scenario: Adding patient file with fname, mname and lname already existed
     Given the following details of patient 
     |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
-<<<<<<< HEAD
     |15|Mary Grace     |Pasco |Cabolbol |19 |female  |    1         |     1          | 5 ft  | 45     | August 20 1996 | single           | Corazon Aquino | Dalipuga Iligan City| mild | none   | none      | none       | none     | none      |  none     | none   | none    | none            | none  |none|  none         |    none      |  none      | none |    none      |   none    |   none      |    none    |  none    |     none         |   none  |  none  |   none   |   none              | true      | 
     When I click the add button
     Then  it should have a '200' response
     And   it should have a field 'status' containing 'OK'
     And   it should have a field 'message' containing 'Patient already EXISTED'
 
-=======
-    |15|Mary Grace     |Pasco |Cabolbol |19 |female  |    1         |     1          | 5 ft  | 45     | August 20 1996 | single           | Corazon Aquino | Dalipuga Iligan City| mild | none   | none      | none       | none     | none      |  none     | none   | none    | none            | none  |none|  none         |    none      |  none      | none |    none      |   none    |   none      |    none    |  none    |     none         |   none  |  none  |   none   |   none              | true      |
-    When I enter the existing patient file
-    Then I get a message Patient already EXISTED
->>>>>>> 1fb4c2feabe45147ba1f974550ef3570ba1aa663
+
 
 #Rainy Case 
 Scenario: Adding patient file where fname isnull
@@ -445,14 +415,10 @@ Scenario: Adding patient file where loss_of_consciousness isnull
     |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
     |43|    fname34  | mname11     |  lname11   |  20 |    female  |    1         |     1          | 5 ft  | 45     | July 30 1995         |      single     |    Sandara Park    |    Paris, France    |  mild  |  none  |   hemo1    |   tb1     | freq1    |   flak1   |   discharge1   |   dysuria1  |   nocturia1  |      dec_urine_amount1   |   asthma1    |   ptb  |    heartprobs1   | hepa_a1     |   chicken_pox1    |  mumps1    |   typhoid1      |   chestpain1    |   palpitation1     | pedaledema1     |   orthopnea1   |    nocturnaldyspnea1  |   headache1    |   seizure1     |    dizziness  |           | true      |    
     When I click the add button
-<<<<<<< HEAD
     Then  it should have a '200' response
     And   it should have a field 'status' containing 'OK'
     And   it should have a field 'message' containing 'Please fill up the required data'
 
-=======
-    Then I should get a message Please fill up the required data
->>>>>>> 1fb4c2feabe45147ba1f974550ef3570ba1aa663
 
 #Rainy Case
 Scenario: Adding patient file where mumps isnull 
