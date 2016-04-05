@@ -288,10 +288,6 @@ def newpatient():
         data['dizziness'],
         data['loss_of_consciousness'],
         data['is_active']))
-<<<<<<< HEAD
-=======
-
->>>>>>> b51dd95c82592f394bffdab3ef31cc8150846f17
     if 'Error' in str(response[0][0]):
         return jsonify({'status': 'error', 'message': response[0][0]})
 
