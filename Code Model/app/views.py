@@ -335,6 +335,20 @@ def getnotify(assessment_id, doctor_id):
         records.append({ "doctor_id": str(r[0]), "assessment_id": str(r[1]), "is_read": str(r[2]) })
     return jsonify({'status': 'Ok','entries': records, 'count': len(records) })
 
+@app.route('/anoncare.api/notify/<int:doctor_id>', methods=['GET'])
+def get_all_notification(doctor_id):
+    notifications = spcall("get_all_notification", (doctor_id,))
+    print notifications
+
+    if notifications is not bool(notifications):
+        return jsonify({'status':'error', 'message':'No available notifications'})
+
+    records = []
+
+    for r in notifications:
+        records.append({ "doctor_id": str(r[0]), "assessment_id": str(r[1]), "is_read": str(r[2]) })
+    return jsonify({'status': 'Ok','entries': records, 'count': len(records) })
+
 @app.route('/anoncare.api/referral/<int:assessment_id>/<int:doctor_id>/<int:prev_doctor>', methods=['POST'])
 def doctor_referral(assessment_id, doctor_id, prev_doctor):
     update_notification = spcall("update_notification", (assessment_id, prev_doctor), True)
