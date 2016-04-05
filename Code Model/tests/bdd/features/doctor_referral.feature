@@ -1,4 +1,4 @@
-Feature: doctor referral 
+Feature: doctor referral
   As a doctor I want refer the patient to another physician.
 
   Scenario: the doctor refers the patient to another for clarity of the situation.
