@@ -6,10 +6,10 @@ Feature: User Accounts Maintenance
 
   Scenario: Add a new user to the system - all requirements put
     Given admin inputs:
-        | fname   | mname     | lname     | email                   | username          | password               |  role_id|
-        | Josiah  | Timonera  | Regencia  | jawshaeleazar@gmail.com | josiah.regencia   | josiaheleazareregencia |  1      |
+        | fname    | mname    | lname     | email                   | username          | password               | role_id| is_available|
+        | Eleazar  | Regencia | Donato    | jawshaeleazar@gmail.com | eleazar.donato    | josiaheleazareregencia | 2      | False       |
 
-    And the username 'heather.regencia' does not yet exist
+    And the username 'eleazar.donato' does not yet exist
 
     When admin clicks the register button
 
@@ -22,8 +22,8 @@ Feature: User Accounts Maintenance
 
   Scenario: Add a new user to the system - username already exists
     Given admin inputs:
-        | fname    | mname    | lname     | email                   | username          | password               | role_id|
-        | Josiah  | Timonera  | Regencia  | jawshaeleazar@gmail.com | josiah.regencia   | josiaheleazareregencia | 1      |
+        | fname    | mname    | lname     | email                   | username          | password               | role_id| is_available|
+        | Josiah   | Timonera | Regencia  | jawshaeleazar@gmail.com | josiah.regencia   | josiaheleazareregencia | 1      | False       |
 
     And the username 'josiah.regencia' exists
 
@@ -34,6 +34,8 @@ Feature: User Accounts Maintenance
     And admin should get a '200' response
 
     And admin should get a status error
+
+
 
   ################################################################
 
@@ -52,3 +54,18 @@ Feature: User Accounts Maintenance
     And I should get a message No User Found
 #    And I should get a message No User Found
 
+
+ ######################################################################
+
+##Password Reset
+
+  Scenario: User resets password
+    Given User updates password:
+      |password      |
+      |new passwordo!|
+
+    When user clicks the update button
+
+    Then user gets a '200' response
+
+    And user should get status Password Changed

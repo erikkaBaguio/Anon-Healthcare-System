@@ -60,6 +60,9 @@ def and_admin_should_get_a_status_ok(step):
     world.res = json.loads(world.response.data)
     assert_equals(world.res['status'], 'OK')
 
+
+
+
 ####End of Adding a user#######
 
 #========================================================================================================#
@@ -100,3 +103,26 @@ def and_i_should_get_a_message_no_user_found(step):
     assert_equals(world.get_resp['message'], 'No User Found')
 
 ###End of retrieving a user with id __
+
+
+##Update Password
+
+@step(u'Given User updates password:')
+def given_user_updates_password(step):
+    world.new_password = step.hashes[0]
+
+
+@step(u'When user clicks the update button')
+def when_user_clicks_the_update_button(step):
+    world.pass_reset_resp = world.app.put('/anoncare.api/password_reset/', data=json.dumps(world.new_password))
+
+
+@step(u'Then user gets a \'([^\']*)\' response')
+def then_user_gets_a_group1_response(step, expected_status_code):
+    assert_equals(world.pass_reset_resp.status_code, int(expected_status_code))
+
+
+@step(u'And user should get status Password Changed')
+def and_user_should_get_status_password_changed(step):
+    world.pass_reset_response = json.loads(world.pass_reset_resp.data)
+    assert_equals(world.pass_reset_response['status'], 'Password Changed')

@@ -12,8 +12,8 @@ create table Userinfo (
     email text not null,
     username text unique not null,
     password text not null,
-    role_id int references Role(id)--,
---     is_active boolean
+    role_id int references Role(id),
+     is_available boolean
   );
 
 create table College(
@@ -182,24 +182,44 @@ create table Notification(
 -----STORED PROCEDURE FUNCTIONS-----
 -----------------------------------------------------------------------------------------------------------
 
---select login('fname.lname', 'pass');
-create or replace function checkauth(par_email text,par_password text) returns setof record as
+--select checkauth('fname.lname', 'pass');
+--select checkauth('josiah.regencia', 'josiaheleazareregencia');
+create or replace function checkauth(in par_username text, in par_password text) returns text as
 $$
   declare
-    loc_account text;
+    loc_id bigint;
+    loc_username text;
+    loc_password text;
     loc_response text;
   begin
-    select into loc_account email from Userinfo where email = par_email and password = par_password;
-       if loc_account isnull then
-        loc_response = 'Invalid Username or Password';
-      else
-        loc_response = 'OK';
-      end if;
-      return loc_response;
+
+    select into loc_username username from Userinfo where username = par_username and password = par_password;
+    select into loc_password password from Userinfo where username = par_username and password = par_password;
+
+    if loc_username isnull or loc_password isnull or loc_username ='' or loc_password='' then
+      loc_response = 'Invalid Username or Password';
+    else
+      loc_response = 'Successfully logged in.';
+    end if;
+    return loc_response;
+
   end;
 $$
   language 'plpgsql';
 
+create or replace function getpassword(par_username text) returns boolean as
+$$
+  declare
+    loc_password text;
+  begin
+     select into loc_password password from Userinfo where username = par_username;
+     if loc_password isnull then
+       loc_password = 'null';
+     end if;
+     return loc_password;
+ end;
+$$
+ language 'plpgsql';
 
 create or replace function newrole(par_rolename  text) returns text as
 $$
@@ -229,7 +249,8 @@ $$
 
 
 create or replace function newuserinfo(par_fname text, par_mname text, par_lname text,
-                                par_email text, par_username text, par_password text, par_role int)
+                                par_email text, par_username text,
+                                par_password text, par_role int, par_available boolean)
                                  returns text as
 $$
 
@@ -241,8 +262,8 @@ $$
 --        username := par_fname || '.' || par_lname;
 --        random_password := generate_password();
 
-       insert into Userinfo (fname, mname, lname, email, username, password, role_id)
-       values (par_fname, par_mname, par_lname, par_email, par_username, par_password, par_role);
+       insert into Userinfo (fname, mname, lname, email, username, password, role_id, is_available)
+       values (par_fname, par_mname, par_lname, par_email, par_username, par_password, par_role, par_available);
 
 
        loc_res = 'OK';
@@ -306,6 +327,20 @@ $$
 
 --select * from getUserinfoid(1);
 
+
+create or replace function updatepassword(in par_id int, in par_new_password text) returns text as
+  $$
+    declare
+      response text;
+
+    begin
+      update Userinfo set password = par_new_password where id = par_id;
+      response := 'OK';
+
+      return response;
+    end;
+  $$
+  language 'plpgsql';
 ----------------------------------------------------------------------------------------------------
 create or replace function newpersonal_history(par_smoking text, par_allergies text, par_alcohol text,
                                                par_medication_taken text, par_drugs text, par_done boolean) returns text as
@@ -668,7 +703,13 @@ $$
 $$
   language 'sql';
 
-create or replace function update_assessment(par_assessment_id int, par_doctor_id int) returns text as
+create or replace function get_all_notification(in par_doctor_id int, out int, out int, out boolean) returns setof record as
+$$  
+  select doctor_id, assessment_id, is_read from Notification where doctor_id=par_doctor_id;
+$$
+  language 'sql';
+
+create or replace function update_assessment_attendingphysician(par_assessment_id int, par_doctor_id int) returns text as
 $$
   declare
       loc_response text;
@@ -804,29 +845,112 @@ in par_diagnosis text, in par_recommendation text, in par_attendingphysician int
  $$
   language 'plpgsql';
 
-
-
 --[GET] Retrieve specific Patient's assessment
 --select getassessmentID(1);
-create or replace function getassessmentID(in par_id int, out timestamp, out int,out int,out int,out int, out text,
-out text,out text,out text,out text,out int) returns setof record as
+create or replace function getassessmentID(in par_id int, out timestamp, out int,out int,out int,out float,
+  out float, out text ,out text ,out float, out text,out text,out text,out text,out text,out int)
+  returns setof record as
 $$
-  select assessment_date, nameofpatient, age, department,vital_signs ,chiefcomplaint ,
-      historyofpresentillness ,medicationstaken ,diagnosis ,recommendation ,attendingphysician from Assessment where id = par_id;
+
+  select assessment_date,
+    nameofpatient,
+    age,
+    department,
+    temperature,
+    pulse_rate,
+    respiration_rate,
+    blood_pressure,
+    weight,
+    chiefcomplaint,
+    historyofpresentillness,
+    medicationstaken,
+    diagnosis,
+    recommendation,
+    attendingphysician
+  from Assessment, Vital_signs
+  where Assessment.id = par_id and Vital_signs.id = par_id;
+
 $$
   language 'sql';
 
 -- [GET] Retrieve all patients' assessment
 --select getallassessment();
-create or replace function getallassessment(out bigint,out timestamp, out int,out int,out int,out int, out text,
-out text,out text,out text,out text,out boolean, out int) returns setof record as
+create or replace function getallassessment(out bigint, out timestamp, out int,out int,out int,out float,
+  out float, out text ,out text ,out float, out text,out text,out text,out text,out text,out int) returns setof record as
 $$
-  select * from Assessment;
+
+  select Assessment.id,
+    assessment_date,
+    nameofpatient,
+    age,
+    department,
+    temperature,
+    pulse_rate,
+    respiration_rate,
+    blood_pressure,
+    weight,
+    chiefcomplaint,
+    historyofpresentillness,
+    medicationstaken,
+    diagnosis,
+    recommendation,
+    attendingphysician
+  from Assessment, Vital_signs
+  where Assessment.id = Vital_signs.id
+
 $$
   language 'sql';
 
+-- [GET] Retrieve all assessment of a specific patient
+--select getallassessmentID(1);
+create or replace function getallassessmentID(in par_id int, out timestamp, out int,out int,out int,out float,
+  out float, out text ,out text ,out float, out text,out text,out text,out text,out text,out int) returns setof record as
+$$
+  select assessment_date,
+    nameofpatient,
+    age,
+    department,
+    temperature,
+    pulse_rate,
+    respiration_rate,
+    blood_pressure,
+    weight,
+    chiefcomplaint,
+    historyofpresentillness,
+    medicationstaken,
+    diagnosis,
+    recommendation,
+    attendingphysician
+  from Assessment, Vital_signs
+  where Assessment.nameofpatient = par_id and Assessment.id = Vital_signs.id
 
+$$
+  language 'sql';
 
+--[PUT] Update assessment of patient
+--select update_assessment(1,'Josiah','Timonera','Regencia', 19, 1, 37.1, 80, '19 breaths/minute', '90/70', 48, 'complaint', 'history', 'medication1', 'diagnosis11','recommendation11', 1);
+create or replace function update_assessment(in par_id int, in par_fname text, in par_mname text, in par_lname text, in par_age int, in par_department int,
+in par_temperature float, in par_pulse_rate float, in par_respiration_rate text, in par_blood_pressure text, in par_weight float,
+in par_chiefcomplaint text, in par_historyofpresentillness text, in par_medicationstaken text,
+in par_diagnosis text, in par_recommendation text, in par_attendingphysician int) returns text as
+ $$
+  declare
+    loc_res text;
+  begin
+
+    update Assessment
+    set
+      diagnosis = par_diagnosis,
+      recommendation = par_recommendation,
+      attendingphysician = par_attendingphysician
+    where id = par_id;
+
+    loc_res = 'Updated';
+    return loc_res;
+
+  end;
+$$
+  language 'plpgsql';
 -----------------------------------------------------------------------------------------------------------------
 --[GET] Retrieve patient's vital signs.
 -- select getvitalsignsID(1);
