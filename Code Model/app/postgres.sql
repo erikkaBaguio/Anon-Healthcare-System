@@ -372,7 +372,7 @@ create or replace function newpatient(par_id int, par_fname text, par_mname text
                                       par_civil_status text, par_name_of_guardian text, par_home_address text, par_cough text, par_dyspnea text, 
                                       par_hemoptysis text, par_tb_exposure text, par_frequency text, par_flank_plan text, par_discharge text, 
                                       par_dysuria text, par_nocturia text, par_dec_urine_amount text, par_asthma text, par_ptb text, 
-                                      par_heart_problem text, par_hepatitis_a_b text, par_chicken_pox text,par_mumps text, par_typhoid_fever text, 
+                                      par_heart_problem text, par_hepatitis_a_b text, par_chicken_pox text, par_mumps text, par_typhoid_fever text, 
                                       par_chest_pain text, par_palpitations text, par_pedal_edema text, par_orthopnea text, par_nocturnal_dyspnea text, 
                                       par_headache text, par_seizure text, par_dizziness text, par_loss_of_consciousness text, par_is_active boolean) returns text as
 $$
@@ -399,16 +399,16 @@ $$
       select into loc_id6 id from Neurologic where id = par_id;
       select into loc_id7 id from Patient where id = par_id;
       SELECT INTO loc_fname fname from Patient where fname = par_fname AND mname = par_mname AND lname = par_lname;
-      if par_fname = '' or par_lname = '' or par_age isnull or par_sex = '' or par_department_id isnull or 
+      if par_id isnull or par_fname = ''or par_mname = '' or par_lname = '' or par_age isnull or par_sex = '' or par_department_id isnull or 
          par_patient_type_id isnull or par_height isnull or par_weight isnull or par_date_of_birth = '' or par_civil_status = '' or
          par_name_of_guardian = '' or par_home_address = '' or par_cough = '' or par_dyspnea = '' or par_hemoptysis = '' or 
          par_tb_exposure = '' or par_frequency = '' or par_flank_plan = '' or par_discharge = '' or par_dysuria = '' or
-         par_nocturia = '' or par_dec_urine_amount = '' or par_asthma = '' or par_ptb = ' ' or par_heart_problem = '' or
+         par_nocturia = '' or par_dec_urine_amount = '' or par_asthma = '' or par_ptb = '' or par_heart_problem = '' or
          par_hepatitis_a_b = '' or par_chicken_pox = '' or par_mumps = '' or par_typhoid_fever = '' or par_chest_pain = '' or
          par_palpitations = '' or par_pedal_edema = '' or par_orthopnea = '' or par_nocturnal_dyspnea = '' or par_headache = '' or
          par_seizure = '' or par_dizziness = '' or par_loss_of_consciousness = ''  then
          loc_res = 'Please fill up the required data';
-      elsif par_mname = '' or loc_fname isnull and loc_id1 isnull and loc_id2 isnull and loc_id3 isnull and loc_id4 isnull and loc_id5 isnull and loc_id6 isnull and loc_id7 isnull then
+      elsif loc_fname isnull and loc_id1 isnull and loc_id2 isnull and loc_id3 isnull and loc_id4 isnull and loc_id5 isnull and loc_id6 isnull and loc_id7 isnull then
           insert into Personal_info(id, height, weight, date_of_birth, civil_status, name_of_guardian, home_address)
               values (par_id, par_height, par_weight, par_date_of_birth, par_civil_status, par_name_of_guardian, par_home_address);
           insert into Pulmonary(id, cough, dyspnea, hemoptysis, tb_exposure)
