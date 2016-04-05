@@ -7,9 +7,9 @@ Feature: User Accounts Maintenance
   Scenario: Add a new user to the system - all requirements put
     Given admin inputs:
         | fname    | mname    | lname     | email                   | username          | password               | role_id| is_available|
-        | Josiah   | Timonera | Regencia  | jawshaeleazar@gmail.com | josiah.regencia   | josiaheleazareregencia | 1      | False       |
+        | Eleazar  | Regencia | Donato    | jawshaeleazar@gmail.com | eleazar.donato    | josiaheleazareregencia | 2      | False       |
 
-    And the username 'josiah.eleazar' does not yet exist
+    And the username 'eleazar.donato' does not yet exist
 
     When admin clicks the register button
 
@@ -36,57 +36,6 @@ Feature: User Accounts Maintenance
     And admin should get a status error
 
 
-   Scenario: Empty fname
-    Given admin inputs:
-        | fname    | mname    | lname     | email                   | username          | password               | role_id| is_available|
-        |          | Bingo    | Kaboom    | jawshaeleazar@gmail.com | .kaboom           | josiaheleazareregencia | 1      | False       |
-
-    When admin clicks the register button
-
-    Then admin should get an is_empty True
-
-    And admin should get a '200' response
-
-    And admin should get a status All Fields Must Be Filled
-
-  Scenario: Empty mname
-    Given admin inputs:
-        | fname    | mname    | lname     | email                   | username          | password               | role_id| is_available|
-        | Bam      |          | Kaboom    | jawshaeleazar@gmail.com | bam.kaboom         | josiaheleazareregencia| 1      | False       |
-
-    When admin clicks the register button
-
-    Then admin should get an is_empty True
-
-    And admin should get a '200' response
-
-    And admin should get a status All Fields Must Be Filled
-
-  Scenario: Empty lname
-    Given admin inputs:
-        | fname    | mname    | lname     | email                   | username          | password               | role_id| is_available|
-        | Bam      | Bingo    |           | jawshaeleazar@gmail.com | bam.              | josiaheleazareregencia | 1      | False       |
-
-    When admin clicks the register button
-
-    Then admin should get an is_empty True
-
-    And admin should get a '200' response
-
-    And admin should get a status All Fields Must Be Filled
-
-  Scenario: Empty lname
-    Given admin inputs:
-        | fname    | mname    | lname     | email | username            | password               | role_id| is_available|
-        | Bam      | Bingo    | Kaboom    |       | bam.kaboom         | josiaheleazareregencia  | 1      | False       |
-
-    When admin clicks the register button
-
-    Then admin should get an is_empty True
-
-    And admin should get a '200' response
-
-    And admin should get a status All Fields Must Be Filled
 
   ################################################################
 
@@ -107,13 +56,16 @@ Feature: User Accounts Maintenance
 
 
  ######################################################################
-  # Empty Signup Field
 
-  Scenario: Fname field is empty
-    Given admin inputs:
-        | fname    | mname    | lname     | email                   | username          | password               | role_id| is_available|
-        |          | Timonera | Regencia  | jawshaeleazar@gmail.com | josiah.regencia   | josiaheleazareregencia | 1      | False       |
+##Password Reset
 
-    When When admin clicks the register button
+  Scenario: User resets password
+    Given User updates password:
+      |password      |
+      |new passwordo!|
 
+    When user clicks the update button
 
+    Then user gets a '200' response
+
+    And user should get status Password Changed

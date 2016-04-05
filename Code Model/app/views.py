@@ -203,10 +203,7 @@ def insertuser():
     role_id = user['role_id']
     is_available = user['is_available']
 
-    if register_field_empty(fname, mname, lname, email):
-        return jsonify({"status": "All Fields Must Be Filled"})
-
-    elif user_exists(username):
+    if user_exists(username):
         return jsonify({'status': 'error'})
 
     else:
@@ -214,13 +211,14 @@ def insertuser():
         return jsonify({'status': 'OK'})
 
 
-@app.route('/anoncare.api/password_reset/')
+@app.route('/anoncare.api/password_reset/', methods=['PUT'])
 def password_reset():
-    id = 1
-    new_password = 'justholla!'
+    id = 3
+    input_password = json.loads(request.data)
+    new_password = input_password['password']
     spcall("updatepassword", (id, new_password,), True)
 
-    return jsonify({"status": new_password})
+    return jsonify({"status": "Password Changed"})
 
 
 @app.route('/anoncare.api/vital_signs/<int:vital_signID>', methods = ['GET'])
