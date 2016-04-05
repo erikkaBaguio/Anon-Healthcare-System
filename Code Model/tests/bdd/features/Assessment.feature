@@ -9,7 +9,7 @@ Feature: Assessment
                 |id | fname   | mname   | lname   | age | department  | temperature | pulse_rate  | respiration_rate  | blood_pressure  | weight |chiefcomplaint |historyofpresentillness | medicationstaken | diagnosis   | reccomendation | attendingphysician|
                 |1  | Josiah  |Timonera |Regencia | 19  | 1           | 37.1        | 80          | 19 breaths/minute | 90/70           | 48     | complaint     | history                | medication1      | diagnosis1  | recommendation1| 1                 |
 
-          When  the nurse POST to the assessment resource url '/anoncare.api/assessments/'
+          When  the nurse clicks the add button
           Then  it should have a '200' response
           And   it should have a field 'status' containing 'OK'
           And   it should have a field 'message' containing 'OK'

@@ -6,7 +6,7 @@ Feature: Login
     Scenario: user successfully logged in
         Given the login requirements
               |username       |password                   |
-              |josiah.regencia|josiaheleazareregencia     |
+              |muhammad.puting|pass     |
 
         When  the clicks the login button
         Then  it should have a '200' response
