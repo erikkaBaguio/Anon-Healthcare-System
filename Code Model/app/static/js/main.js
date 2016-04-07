@@ -1,5 +1,6 @@
 /**
  * Created by Erikka on 4/7/2016.
+ * View - routing
  */
 
 var myApp = angular.module("myApp", ["ngRoute"]);

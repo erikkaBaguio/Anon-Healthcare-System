@@ -1,5 +1,6 @@
 /**
  * Created by Erikka on 4/7/2016.
+ * Controller - receive data from client
  */
 
 angular.module('myApp').controller('loginController',
