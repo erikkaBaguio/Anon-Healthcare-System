@@ -9,24 +9,25 @@ myApp.config(function ($routeProvider) {
     $routeProvider
     .when('/', {
       templateUrl: 'pages/landing.html',
-      access: {restricted: false}
-    })
-    .when('/login', {
-      templateUrl: 'pages/login.html',
       controller: 'loginController',
       access: {restricted: false}
     })
+    .when('/dashboard',{
+        templateUrl: 'pages/dashboard-nurse.html',
+        access: {restricted:true}
+    })
+    .otherwise({
+      redirectTo: '/'
+    });
 });
 
 // Change of state
-// myApp.run(function ($rootScope, $location, $route, AuthService) {
-//   $rootScope.$on('$routeChangeStart',
-//     function (event, next, current) {
-//       AuthService.getUserStatus();
-//       if (next.access.restricted &&
-//           !AuthService.isLoggedIn()) {
-//         $location.path('/login');
-//         $route.reload();
-//       }
-//   });
-// });
+myApp.run(function ($rootScope, $location, $route, AuthService) {
+  $rootScope.$on('$routeChangeStart',
+    function (event, next, current) {
+      if (next.access.restricted && !AuthService.isLoggedIn()) {
+        $location.path('/');
+        $route.reload();
+      }
+  });
+});

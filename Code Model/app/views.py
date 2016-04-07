@@ -232,7 +232,7 @@ def checkauth():
 #         return checkauth(username, password)
 #         print password
 #         print username
-#     return render_template('login.html')
+#     return render_template(.html')
 
 @app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['POST'])
 def notify(assessment_id, doctor_id):
