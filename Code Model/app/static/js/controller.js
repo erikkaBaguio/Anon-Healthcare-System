@@ -13,7 +13,7 @@ angular.module('myApp').controller('loginController',
       $scope.disabled = true;
 
       // call login from service
-      AuthService.login($scope.loginForm.surname, $scope.loginForm.password)
+      AuthService.login($scope.loginForm.username, $scope.loginForm.password)
         // handle success
         .then(function () {
           $location.path('/');

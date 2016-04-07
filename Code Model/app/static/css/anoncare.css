@@ -46,7 +46,7 @@ hr {
     position: relative;
     text-align: left;
     margin: 0 auto;
-    width: 1000px;
+    width: auto;
 }
 
 .boxshadow {
@@ -65,7 +65,7 @@ hr {
 
 .content {
     /*margin-left: 20px;*/
-    min-height: 460px;
+    min-height: 500px;
     width: 100%;
     background: url('../img/2.jpg') left top fixed no-repeat;
 }
