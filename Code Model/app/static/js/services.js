@@ -71,12 +71,28 @@ angular.module('myApp').factory('AuthService',
 
             }
 
+            function getUserStatus() {
+                $http.get('http://localhost:5000/anoncare.api/status')
+                    // handle success
+                    .success(function (data) {
+                        if (data.status) {
+                            user = true;
+                        } else {
+                            user = false;
+                        }
+                    })
+                    // handle error
+                    .error(function (data) {
+                        user = false;
+                    });
+            }
+
             // return available functions for use in controllers
             return ({
                 isLoggedIn: isLoggedIn,
                 login: login,
                 logout: logout,
-                // register: register
+                getUserStatus: getUserStatus
             });
 
         }]);

@@ -54,6 +54,14 @@ def logout():
     session.pop('logged_in', None)
     return jsonify({'status':'ok'})
 
+@app.route('/api/status')
+def status():
+    if session.get('logged_in'):
+        if session['logged_in']:
+            return jsonify({'status': True})
+    else:
+        return jsonify({'status': False})
+
 #create a wrapper: this wrapper is for athenticating users
 def anoncare_login_required(f):
     @wraps(f)
@@ -293,7 +301,7 @@ def newpatient():
 
     return jsonify({'status': 'OK', 'message': response[0][0]}), 200
 
-@app.route('/anoncare.api/patient/<id>/', methods = ['GET'])
+@app.route('/anoncare.api/patient/<int:id>/', methods = ['GET'])
 def getpatient_file(id):
     response = spcall('get_patientfileId', [id])
     entries = []
