@@ -16,6 +16,9 @@ myApp.config(function ($routeProvider) {
         templateUrl: 'pages/dashboard-nurse.html',
         access: {restricted:true}
     })
+    .when('/logout', {
+        controller: 'logoutController',
+    })
     .otherwise({
       redirectTo: '/'
     });

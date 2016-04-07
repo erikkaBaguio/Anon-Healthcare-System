@@ -49,7 +49,7 @@ def login():
         return jsonify({'status':'OK', 'message': user[0][0]})
 
 
-@app.route('/logout')
+@app.route('/anoncare.api/logout')
 def logout():
     session.pop('logged_in', None)
     return jsonify({'status':'ok'})

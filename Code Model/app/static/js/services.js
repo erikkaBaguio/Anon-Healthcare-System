@@ -24,7 +24,7 @@ angular.module('myApp').factory('AuthService',
                 var deferred = $q.defer();
 
                 // send a post request to the server
-                console.log(username,password);
+                console.log(username, password);
                 $http.post('http://localhost:5000/anoncare.api/login', {username: username, password: password})
                     // handle success
                     .success(function (data, status) {
@@ -48,11 +48,34 @@ angular.module('myApp').factory('AuthService',
 
             }
 
+            function logout() {
+
+                // create a new instance of deferred
+                var deferred = $q.defer();
+
+                // send a get request to the server
+                $http.get('http://localhost:5000/anoncare.api/logout')
+                    // handle success
+                    .success(function (data) {
+                        user = false;
+                        deferred.resolve();
+                    })
+                    // handle error
+                    .error(function (data) {
+                        user = false;
+                        deferred.reject();
+                    });
+
+                // return promise object
+                return deferred.promise;
+
+            }
+
             // return available functions for use in controllers
             return ({
                 isLoggedIn: isLoggedIn,
                 login: login,
-                // logout: logout,
+                logout: logout,
                 // register: register
             });
 
