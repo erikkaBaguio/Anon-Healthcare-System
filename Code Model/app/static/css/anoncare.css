@@ -54,7 +54,7 @@ hr {
     -webkit-box-shadow: 0 0 9px #8F1A1A;
 }
 
-#header {
+.header {
     background: #A03741;
     padding: 10px;
     font-size: 11px;
@@ -63,19 +63,19 @@ hr {
     line-height: 14px;
 }
 
-#content {
+.content {
     /*margin-left: 20px;*/
     min-height: 460px;
     width: 100%;
     background: url('../img/2.jpg') left top fixed no-repeat;
 }
 
-#content img{
+.content img{
     width: 840px;
     border:1px solid #ccc;
 }
 
-#footer {
+.footer {
     background: #33151F left no-repeat;
     color: #333;
     font-size: 11px;

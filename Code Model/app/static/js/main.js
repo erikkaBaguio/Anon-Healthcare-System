@@ -7,11 +7,11 @@ var myApp = angular.module("myApp",[]);
 myApp.config(function ($routeProvider) {
     $routeProvider
     .when('/', {
-      templateUrl: 'static/index.html',
-      access: {restricted: true}
+      templateUrl: 'pages/landing.html',
+      access: {restricted: false}
     })
     .when('/login', {
-      templateUrl: 'static/pages/login.html',
+      templateUrl: 'pages/login.html',
       controller: 'loginController',
       access: {restricted: false}
     })
