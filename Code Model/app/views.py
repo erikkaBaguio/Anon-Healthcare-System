@@ -231,17 +231,6 @@ def checkauth():
     return jsonify({'status': 'ok', 'message': response[0][0]}), 201
 
 
-# @app.route('/anoncare.api/login', methods=['POST', 'GET'])
-# def login_index():
-#     if request.method == 'POST':
-#         json_data = request.get_json(force=True)
-#         username = json_data['username']
-#         password = json_data['password']
-#         return checkauth(username, password)
-#         print password
-#         print username
-#     return render_template(.html')
-
 @app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['POST'])
 def notify(assessment_id, doctor_id):
     response = spcall("createnotify", (assessment_id, doctor_id), True)
@@ -250,6 +239,21 @@ def notify(assessment_id, doctor_id):
         return jsonify({'status': 'error', 'message': response[0][0]})
 
     return jsonify({'status': response[0][0]})
+
+
+
+@app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['GET'])
+def getnotify(assessment_id, doctor_id):
+    notification = spcall("getnotify", (assessment_id, doctor_id))
+
+    if 'Error' in str(notification[0][0]):
+        return jsonify({'status': 'error', 'message': notification[0][0]})
+
+    records = []
+    for r in notification:
+        records.append({ "doctor_id": str(r[0]), "assessment_id": str(r[1]), "is_read": str(r[2]) })
+    return jsonify({'status': 'Ok','entries': records, 'count': len(records) })
+
 
 @app.route('/anoncare.api/patient/', methods =['POST'])
 def newpatient():
@@ -301,7 +305,7 @@ def newpatient():
 
     return jsonify({'status': 'OK', 'message': response[0][0]}), 200
 
-@app.route('/anoncare.api/patient/<int:id>/', methods = ['GET'])
+@app.route('/anoncare.api/patient/<id>/', methods = ['GET'])
 def getpatient_file(id):
     response = spcall('get_patientfileId', [id])
     entries = []
@@ -351,17 +355,6 @@ def getpatient_file(id):
         return jsonify({'status': 'OK', 'message': 'OK', 'entries': entries, 'count':len(entries)})
 
 
-@app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['GET'])
-def getnotify(assessment_id, doctor_id):
-    notification = spcall("getnotify", (assessment_id, doctor_id))
-
-    if 'Error' in str(notification[0][0]):
-        return jsonify({'status': 'error', 'message': notification[0][0]})
-
-    records = []
-    for r in notification:
-        records.append({ "doctor_id": str(r[0]), "assessment_id": str(r[1]), "is_read": str(r[2]) })
-    return jsonify({'status': 'Ok','entries': records, 'count': len(records) })
 
 @app.route('/anoncare.api/notify/<int:doctor_id>', methods=['GET'])
 def get_all_notification(doctor_id):

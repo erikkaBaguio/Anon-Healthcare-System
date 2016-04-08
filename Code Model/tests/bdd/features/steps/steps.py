@@ -82,3 +82,35 @@ def given_the_login_requirements(step):
 def when_the_clicks_the_login_button(step):
 
     world.response = world.app.post('/anoncare.api/login',data=json.dumps(world.login))
+
+
+""" Feature: Patient file  """
+
+""" Scenario: Create patient file"""
+
+@step(u'Given the following details of patient')
+def given_the_following_details_of_patient(step):
+    world.patient = step.hashes[0]
+
+@step(u'When I click the add button')
+def when_i_click_the_add_button(step):
+    world.browser = TestApp(app)
+    world.response = world.app.post('/anoncare.api/patient/', data = json.dumps(world.patient))
+
+
+""" Scenario: Create patient file"""
+
+@step(u'Given a patient file with id \'([^\']*)\'')
+def given_a_patient_file_with_id_group1(step, id):
+    world.patient1 = world.app.get('/anoncare.api/patient/{}/'.format(id))
+    world.response_json = json.loads(world.patient1.data)
+    assert_equals(world.response_json['status'], 'OK')
+
+@step(u'And the following patient file is retrieved:')
+def and_the_following_patient_file_is_retrieved(step):
+    world.response_json = json.loads(world.patient1.data)
+    assert_equals(world.response_json['entries'], world.response_json['entries'])
+
+@step(u'When I retrieve the patient id \'([^\']*)\'')
+def when_i_retrieve_the_patient_id_10(step, id):
+    world.response = world.app.get('/anoncare.api/patient/{}/'.format(id))
