@@ -628,6 +628,27 @@ in par_diagnosis text, in par_recommendation text, in par_attendingphysician int
 $$
   language 'plpgsql';
 
+
+-- add is_accepted column to define if the doctor can finalize the assessment or not.
+alter table assessment add is_accepted boolean default 'FALSE';
+
+create or replace function accept_assessment(in par_assessment_id int, in par_doctor_id int) returns text as
+  $$
+    declare loc_response text;
+    begin
+      update Assessment set is_accepted = 'TRUE' where id = par_assessment_id and attendingphysician = par_doctor_id;
+      loc_response = 'UPDATED';
+      return loc_response;
+    end;
+  $$
+    language 'plpgsql';
+
+create or replace function check_if_accepted(in par_assessment_id int, out int8, out int, out boolean) returns setof record as
+  $$
+    select id, attendingphysician, is_accepted from Assessment where id = par_assessment_id;
+  $$
+    language 'sql'
+
 ------------------------------------------------------ END Assessment -----------------------------------------------------
 
 

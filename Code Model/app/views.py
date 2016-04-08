@@ -385,18 +385,18 @@ def doctor_referral(assessment_id, doctor_id, prev_doctor):
 
 @app.route('/anoncare.api/accept/<int:assessment_id>/<int:doctor_id>', methods=['POST'])
 def accept_assessment(assessment_id, doctor_id):
-    assessment_accept = spcall("accept_assessment", (assessment_id, doctor_id, ), True)
-    assessment = spcall("getassessmentID", (assessment_id, ))
+    assessment_accept = spcall("accept_assessment", (assessment_id, doctor_id), True)
+    assessment = spcall("check_if_accepted", (assessment_id, ))
 
     if 'Error' in str(assessment[0][0]):
-        return jsonify({'status':'error'})
+        return jsonify({'status':assessment[0][0]})
 
     records = []
 
     for r in assessment:
-        records.append({'assessment_id':str(r[12]), 'attendingphysician':str(r[10]), 'is_accepted':str(r[11])})
+        records.append({'assessment_id':str(r[0]), 'attendingphysician':str(r[1]), 'is_accepted':str(r[2])})
 
-    return jsonify({'status':'ok', 'entries':records})
+    return jsonify({'status':'OK', 'entries':records})
 
 
 @app.route('/anoncare.api/assessments/<int:assessment_id>/', methods=['GET'])

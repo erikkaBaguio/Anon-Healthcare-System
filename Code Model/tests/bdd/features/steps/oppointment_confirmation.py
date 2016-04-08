@@ -31,13 +31,13 @@ def received_appointment(step):
     world.response = world.browser.get('/anoncare.api/notify/6/2')
     world.response.charset = 'utf8'
     world.load_response = json.loads(world.response.text)[u'status']
-    assert_equals(world.load_response, "Ok")
+    assert_equals(world.load_response, "OK")
 
 @step(u'When the doctor with id 2 accept the appointment')
 def accept_appointment(step):
     world.response = world.browser.post('/anoncare.api/accept/6/2')
     world.response.charset = 'utf8'
-    assert_equals(json.loads(world.response.text)[u'status'], 'ok')
+    assert_equals(json.loads(world.response.text)[u'status'], 'OK')
 
 @step(u'Then The doctor can finalize the diagnosis')
 def finalize_diagnosis(step):
