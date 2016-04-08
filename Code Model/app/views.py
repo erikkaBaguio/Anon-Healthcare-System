@@ -373,7 +373,8 @@ def get_all_notification(doctor_id):
 @app.route('/anoncare.api/referral/<int:assessment_id>/<int:doctor_id>/<int:prev_doctor>', methods=['POST'])
 def doctor_referral(assessment_id, doctor_id, prev_doctor):
     update_notification = spcall("update_notification", (assessment_id, prev_doctor), True)
-    update_assessment = spcall("update_assessment_attendingphysician", (assessment_id, doctor_id), True)
+    update_assessment = spcall("update_assessment_attendingphysician", (doctor_id, assessment_id, prev_doctor), True)
+    create_notification = spcall("createnotify", (assessment_id, doctor_id), True)
 
     if 'Unable to find assessment' in str(update_assessment[0][0]):
         return jsonify({'status':'error', 'message':update_assessment[0][0]})

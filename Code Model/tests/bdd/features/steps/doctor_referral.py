@@ -34,12 +34,10 @@ def already_assess(step, appointment_id):
 def refer_doctor(step):
     world.response = world.browser.post('/anoncare.api/referral/6/2/1')
     world.response.charset = 'utf8'
-    assert_equals(json.loads(world.response.text), {"status": "Updated"})
+    assert_equals(json.loads(world.response.text), {"status": "UPDATED"})
 
 @step(u'Then the doctor with id 2 receives the appointment request')
 def then_i_should_get_a_group1_response(step):
-    world.response = world.browser.post('/anoncare.api/notify/6/2')
-    world.response.charset = 'utf8'
     world.notification = world.app.get('/anoncare.api/notify/6/2')
 
 @step(u'And following details are returned:')

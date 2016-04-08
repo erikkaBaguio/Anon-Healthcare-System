@@ -640,7 +640,7 @@ $$
       loc_response text;
       loc_id int;
   begin
-        select into loc_id assessment_id from Notification where assessment_id = par_assessment_id;
+        select into loc_id assessment_id from Notification where assessment_id = par_assessment_id and doctor_id = par_doctor_id;
         if loc_id isnull then
           insert into Notification(assessment_id, doctor_id) values (par_assessment_id, par_doctor_id);                            
           loc_response = 'OK';
@@ -670,6 +670,21 @@ create or replace function update_notification(in par_assessment_id int, in par_
     begin
 
       update notification set is_read = 'TRUE' where assessment_id= par_assessment_id and doctor_id = par_doctor_id;
+      loc_response = 'UPDATED';
+      return loc_response;
+    end;
+
+  $$
+    language 'plpgsql';
+
+
+create or replace function update_assessment_attendingphysician(in par_attendingphysician int, in par_assessment_id int, in par_prev_doctor int) returns text as
+  $$
+    declare
+      loc_response text;
+
+    begin
+      update Assessment set attendingphysician = par_attendingphysician where id = par_assessment_id and attendingphysician = par_prev_doctor;
       loc_response = 'UPDATED';
       return loc_response;
     end;
