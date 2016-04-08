@@ -7,5 +7,5 @@
 #            Then The doctor can finalize the diagnosis.
 #            And The following appointment confirmation details are returned:
 #              | assessment_id  | attendingphysician | is_accepted 			   |
-#              | 6    		   | 2		            | True   |
-
+#              | 6    		   | 2		             | True                    |
+#

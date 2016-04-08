@@ -90,16 +90,24 @@ def get_all_questions():
     print res
 
 
-@app.route('/anoncare.api/colleges/<college_id>/', methods = ['GET'])
-def get_college(college_id):
-    res = spcall('getcollegeID', str(college_id))
+@app.route('/anoncare.api/colleges/', methods = ['GET'])
+def getallcolleges():
+    colleges = spcall('getallcolleges',())
 
-    if 'Error' in str(res[0][0]):
-        return jsonify({'status': 'error', 'message': res[0][0]})
+    records = []
 
-    r = res[0]
-    return jsonify({"college_id": str(college_id), "college_name": str(r[0])})
+    if len(colleges) == 0:
+        return jsonify({"status": "OK", "message": "No entries found", "entries": [], "count": "0"})
 
+    elif 'Error' in str(colleges[0][0]):
+        return jsonify({'status': 'error', 'message': colleges[0][0]})
+
+    else:
+        for r in colleges:
+            records.append({"college_id": r[0],
+                            "college_name": r[1],})
+
+        return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
 
 def user_exists(username):
     users = spcall('getuserinfo', ())
