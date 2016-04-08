@@ -1,4 +1,4 @@
-Feature: notification
+  Feature: notification
   As a doctor I want to receive a notification after the nurse
   has added assessment.
 

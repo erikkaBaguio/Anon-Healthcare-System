@@ -632,7 +632,49 @@ $$
 
 
 ------------------------------------------------------- Notifications -----------------------------------------------------
+--[POST] Create notification
+-- select createnotify(2, 1);
+create or replace function createnotify(par_assessment_id int, par_doctor_id int) returns text as
+$$
+  declare
+      loc_response text;
+      loc_id int;
+  begin
+        select into loc_id assessment_id from Notification where assessment_id = par_assessment_id;
+        if loc_id isnull then
+          insert into Notification(assessment_id, doctor_id) values (par_assessment_id, par_doctor_id);                            
+          loc_response = 'OK';
+
+        else
+          loc_response = 'ID EXISTED';
+        end if;
+        return loc_response;
+  end;
+$$
+  language 'plpgsql';
 
 
+--[GET] get specific notification
+create or replace function getnotify(in par_assessment_id int, in par_doctor_id int, out par_assessment_id int, out par_doctor_id int, out par_is_read boolean) returns setof record as
+$$  
+  select doctor_id, assessment_id, is_read from Notification where assessment_id=par_assessment_id and doctor_id=par_doctor_id;
+$$
+  language 'sql';
+
+
+create or replace function update_notification(in par_assessment_id int, in par_doctor_id int) returns text as
+  $$
+    declare 
+      loc_response text;
+
+    begin
+
+      update notification set is_read = 'TRUE' where assessment_id= par_assessment_id and doctor_id = par_doctor_id;
+      loc_response = 'UPDATED';
+      return loc_response;
+    end;
+
+  $$
+    language 'plpgsql';
 -----------------------------------------------------END Notifications ----------------------------------------------------
 

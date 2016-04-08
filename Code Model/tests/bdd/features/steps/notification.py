@@ -36,7 +36,7 @@ def already_assess(step):
 def request_appointment(step):
     world.response = world.browser.post('/anoncare.api/notify/6/1')
     world.response.charset = 'utf8'
-    assert_equals(json.loads(world.response.text), {"status": "Ok"})
+    assert_equals(json.loads(world.response.text), {"status": "OK"})
 
 @step(u'Then I should get \'([^\']*)\' response')
 def then_i_should_get_a_group2_response(step, expected_status_code):

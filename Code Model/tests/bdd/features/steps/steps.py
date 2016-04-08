@@ -19,7 +19,6 @@ def and_it_should_get_a_field_group1_containing_group2(step, field, expected_val
     world.response_json = json.loads(world.response.data)
     assert_equals(str(world.response_json[field]), expected_value)
 
-
 """ Feature : Assessment """
 
 """ Scenario: Create assessment successfully """
@@ -64,6 +63,7 @@ def given_the_patient_assessment_with_an_id_group1(step, assessment_id):
 
 @step(u'When  the doctor press view assessment with an id \'([^\']*)\'')
 def when_the_doctor_press_view_assessment_with_an_id_group1(step, assessment_id):
+    world.browser = TestApp(app)
     world.response = world.app.get('/anoncare.api/assessments/{}/'.format(assessment_id))
 
 @step("the following details will be returned")
@@ -114,3 +114,57 @@ def and_the_following_patient_file_is_retrieved(step):
 @step(u'When I retrieve the patient id \'([^\']*)\'')
 def when_i_retrieve_the_patient_id_10(step, id):
     world.response = world.app.get('/anoncare.api/patient/{}/'.format(id))
+
+
+
+""" Feature: User Accounts Maintenance  """
+
+""" Scenario: Add a new user to the system - all requirements put """
+@step(u'Given the following details of a user:')
+def given_the_following_details_of_a_user(step):
+    world.user = step.hashes[0]
+
+@step(u'And   the username \'([^\']*)\' does not yet exist')
+def and_the_username_group1_does_not_yet_exist(step, username):
+    world.user_exists_response = world.app.get('/anoncare.api/userexists/{}/'.format(username))
+
+@step(u'When  admin clicks the register button')
+def when_admin_clicks_the_register_button(step):
+    world.browser = TestApp(app)
+    world.response = world.app.post('/anoncare.api/user/', data=json.dumps(world.user))
+
+@step(u'And   it should get a field \'([^\']*)\' containing \'([^\']*)\'')
+def and_it_should_get_a_field_group1_containing_group2(step, field, expected_boolean):
+    world.user_exists_res = json.loads(world.user_exists_response.data)
+    assert_equals(str(world.user_exists_res[field]), expected_boolean)
+
+
+""" Scenario: Add a new user to the system - username already exists """
+@step(u'And   the username \'([^\']*)\' exists')
+def and_the_username_group1_exists(step, username):
+    world.user_exists_response = world.app.get('/anoncare.api/userexists/{}/'.format(username))
+
+""" Scenario: Retrieve a user's details """
+@step(u'Given user with id \'([^\']*)\'')
+def given_user_with_id_group1(step, id):
+    world.user = world.app.get('/anoncare.api/users/{}/'.format(id))
+
+@step(u'When  the admin enter with an id \'([^\']*)\'')
+def when_the_admin_enter_with_an_id_group1(step, id):
+    world.browser = TestApp(app)
+    world.response = world.app.get('/anoncare.api/users/{}/'.format(id))
+
+@step("the following user details will be returned")
+def step_impl(step):
+    response_json = json.loads(world.user.data)
+    assert_equals(world.response_json['entries'], response_json['entries'])
+
+""" Scenario: User resets password """
+@step(u'Given new password of the user:')
+def given_new_password_of_the_user(step):
+    world.new_password = step.hashes[0]
+
+@step(u'When user clicks the update button')
+def when_user_clicks_the_update_button(step):
+    world.browser = TestApp(app)
+    world.response = world.app.put('/anoncare.api/password_reset/', data=json.dumps(world.new_password))

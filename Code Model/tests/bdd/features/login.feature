@@ -5,8 +5,8 @@ Feature: Login
 #    Sunny Case
     Scenario: user successfully logged in
         Given the login requirements
-              |username       |password                   |
-              |muhammad.puting|pass     |
+              |username       |password  |
+              |muhammad.puting|pass1     |
 
         When  the clicks the login button
         Then  it should have a '200' response

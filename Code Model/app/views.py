@@ -143,10 +143,10 @@ def get_user_with_id(id):
 
         print "username is ", res[0][4]
 
-        return jsonify({"status": "ok", "message": "ok", "entries": entries})
+        return jsonify({"status": "OK", "message": "OK", "entries": entries})
 
     else:
-        return jsonify({"status": "ok", "message": "No User Found"})
+        return jsonify({"status": "OK", "message": "No User Found"})
 
 
 def register_field_empty(fname, mname, lname, email):
@@ -252,7 +252,7 @@ def getnotify(assessment_id, doctor_id):
     records = []
     for r in notification:
         records.append({ "doctor_id": str(r[0]), "assessment_id": str(r[1]), "is_read": str(r[2]) })
-    return jsonify({'status': 'Ok','entries': records, 'count': len(records) })
+    return jsonify({'status': 'OK','entries': records, 'count': len(records) })
 
 
 @app.route('/anoncare.api/patient/', methods =['POST'])
