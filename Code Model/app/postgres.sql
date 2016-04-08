@@ -559,6 +559,14 @@ $$
 $$
     language 'sql';
 
+--[GET] Retrieve list of departments
+--select getalldepartments();
+create or replace function getalldepartments(out bigint, out text) returns setof record as
+$$
+    select id, department_name from Department;
+$$
+    language 'sql';
+
 --[GET] Retrieve the id number of a patient
 --select retrievePatientID('Josiah','Timonera','Regencia');
 CREATE OR REPLACE FUNCTION retrievePatientID(IN par_fname TEXT, IN par_mname TEXT, IN par_lname TEXT)

@@ -6,7 +6,7 @@ Feature: Assessment
       Scenario: Create assessment successfully.
           Given the nurse have the following assessment details:
                 |id | fname   | mname   | lname   | age | department  | temperature | pulse_rate  | respiration_rate  | blood_pressure  | weight |chiefcomplaint |historyofpresentillness | medicationstaken | diagnosis   | reccomendation | attendingphysician|
-                |7  | Josiah  |Timonera |Regencia | 19  | 1           | 37.1        | 80          | 19 breaths/minute | 90/70           | 48     | complaint     | history                | medication1      | diagnosis1  | recommendation1| 1                 |
+                |20  | Josiah  |Timonera |Regencia | 19  | 1           | 37.1        | 80          | 19 breaths/minute | 90/70           | 48     | complaint     | history                | medication1      | diagnosis1  | recommendation1| 1                 |
 
           When  the nurse clicks the add button
           Then  it should have a '200' response
