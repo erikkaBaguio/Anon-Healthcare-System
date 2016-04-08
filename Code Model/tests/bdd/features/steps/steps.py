@@ -116,9 +116,6 @@ def when_i_retrieve_the_patient_id_10(step, id):
     world.response = world.app.get('/anoncare.api/patient/{}/'.format(id))
 
 
-<<<<<<< HEAD
-=======
-
 """ Feature: User Accounts Maintenance  """
 
 """ Scenario: Add a new user to the system - all requirements put """
@@ -170,4 +167,3 @@ def given_new_password_of_the_user(step):
 def when_user_clicks_the_update_button(step):
     world.browser = TestApp(app)
     world.response = world.app.put('/anoncare.api/password_reset/', data=json.dumps(world.new_password))
->>>>>>> c25172d35b744a735ca3fc84716ec3ca771e7a81
