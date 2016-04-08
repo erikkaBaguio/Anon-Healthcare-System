@@ -551,21 +551,6 @@ LANGUAGE 'sql';
 
 
 -------------------------------------------------------- Assessment -------------------------------------------------------
---[GET] Retrieve list of colleges
---select getallcolleges();
-create or replace function getallcolleges(out bigint, out text) returns setof record as
-$$
-    select id, college_name from College;
-$$
-    language 'sql';
-
---[GET] Retrieve list of departments
---select getalldepartments();
-create or replace function getalldepartments(out bigint, out text) returns setof record as
-$$
-    select id, department_name from Department;
-$$
-    language 'sql';
 
 --[GET] Retrieve the id number of a patient
 --select retrievePatientID('Josiah','Timonera','Regencia');

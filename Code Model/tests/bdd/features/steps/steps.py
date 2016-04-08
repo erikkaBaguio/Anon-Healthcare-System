@@ -84,6 +84,17 @@ def step_impl(step):
     response_json = json.loads(world.assessment.data)
     assert_equals(world.response_json['entries'], response_json['entries'])
 
+""" Scenario: View All Assessment of Patient """
+@step(u'Given the assessment of all patient')
+def given_the_assessment_of_all_patient(step):
+    world.assessment = world.app.get('/anoncare.api/assessments/2/')
+    world.response_json = json.loads(world.assessment.data)
+    assert_equals(world.response_json['status'], 'OK')
+
+@step(u'When  the doctor press view all assessment')
+def when_the_doctor_press_view_all_assessment(step):
+    world.browser = TestApp(app)
+    world.response = world.app.get('/anoncare.api/assessments/2/')
 
 """ Feature: Login  """
 

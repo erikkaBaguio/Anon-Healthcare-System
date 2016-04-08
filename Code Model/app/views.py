@@ -79,36 +79,6 @@ def anoncare_login_required(f):
 
 ####################################################################################################
 
-@app.route('/admin', methods=['GET', 'POST'])
-@anoncare_login_required
-def admin_home():
-    return render_template('admin/index.html')
-
-@app.route('/api.anoncare/question', methods=['GET'])
-def get_all_questions():
-    res = spcall('get_newquestion',())
-    print res
-
-
-@app.route('/anoncare.api/colleges/', methods = ['GET'])
-def getallcolleges():
-    colleges = spcall('getallcolleges',())
-
-    records = []
-
-    if len(colleges) == 0:
-        return jsonify({"status": "OK", "message": "No entries found", "entries": [], "count": "0"})
-
-    elif 'Error' in str(colleges[0][0]):
-        return jsonify({'status': 'error', 'message': colleges[0][0]})
-
-    else:
-        for r in colleges:
-            records.append({"college_id": r[0],
-                            "college_name": r[1],})
-
-        return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
-
 def user_exists(username):
     users = spcall('getuserinfo', ())
     index = 0

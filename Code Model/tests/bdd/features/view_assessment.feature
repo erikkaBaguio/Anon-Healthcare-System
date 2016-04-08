@@ -24,11 +24,11 @@ Feature: View Assessment
       And   it should have a field 'entries' containing '[]'
 
 #  Sunny case
-#  Scenario: View All Assessment of Patient
-#    Given   the patient assessment with an <assessment_id> exists
-#    When    the doctor press view assessment with an id <assessment_id>
-#    Then	the doctor should get a '200' response
-#    And     it should have a field "status" containing "OK"
-#    And     it should have following assessment details will be returned
-#            |id |assessment_date|nameofpatient|age|department|chiefcomplaint|historyofpresentillness|medicationstaken|diagnosis|reccomendation|attendingphysician|
-#            |1  |2016-03-21     |1            |18 |1         |fever         |cough                  |medications     |diagnosis|reccomendation|1                 |
+  Scenario: View All Assessment of Patient
+      Given the assessment of all patient
+      When  the doctor press view all assessment
+      Then  it should have a '200' response
+      And   it should have a field 'status' containing 'OK'
+      And 	the following details will be returned
+            |id |assessment_date            |nameofpatient| age | department  | temperature | pulse_rate  | respiration_rate  | blood_pressure  | weight |chiefcomplaint |historyofpresentillness | medicationstaken | diagnosis   | reccomendation | attendingphysician|
+            | 2 |2016-03-28 23:46:52.76     |1            |18   |  1          |36.4         | 70          | 19 breaths/minute | 100/80          | 45     |fever          | cough                  |medications       |diagnosis    |recommendation  |1                  |
