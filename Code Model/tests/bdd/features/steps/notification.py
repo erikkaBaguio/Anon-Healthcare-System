@@ -32,11 +32,19 @@
 #     world.assessments.charset = 'utf8'
 #     assert_equals(json.loads(world.assessments.text)[u'status'], "OK")
 
+<<<<<<< HEAD
 # @step(u'When the nurse request an appointment to the doctor with id 1')
 # def request_appointment(step):
 #     world.response = world.browser.post('/anoncare.api/notify/6/1')
 #     world.response.charset = 'utf8'
 #     assert_equals(json.loads(world.response.text), {"status": "Ok"})
+=======
+@step(u'When the nurse request an appointment to the doctor with id 1')
+def request_appointment(step):
+    world.response = world.browser.post('/anoncare.api/notify/6/1')
+    world.response.charset = 'utf8'
+    assert_equals(json.loads(world.response.text), {"status": "OK"})
+>>>>>>> c25172d35b744a735ca3fc84716ec3ca771e7a81
 
 # @step(u'Then I should get \'([^\']*)\' response')
 # def then_i_should_get_a_group2_response(step, expected_status_code):

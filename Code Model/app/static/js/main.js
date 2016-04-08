@@ -1,33 +1,37 @@
 /**
- * Created by erikka on 3/9/16.
+ * Created by Erikka on 4/7/2016.
+ * View - routing
  */
-$(document).ready(function(){
-	console.log("hgdhsjjka");
-	$("#content").load("/static/pages/home.html");
+
+var myApp = angular.module("myApp", ["ngRoute"]);
+
+myApp.config(function ($routeProvider) {
+    $routeProvider
+    .when('/', {
+      templateUrl: 'pages/landing.html',
+      controller: 'loginController',
+      access: {restricted: false}
+    })
+    .when('/dashboard',{
+        templateUrl: 'pages/dashboard-nurse.html',
+        access: {restricted:true}
+    })
+    .when('/logout', {
+        controller: 'logoutController',
+    })
+    .otherwise({
+      redirectTo: '/'
+    });
 });
 
-function login(username,password){
-	$("#content").load("/static/pages/login.html");
-    //$('#login-form').submit(function (event) {
-    //    event.preventDefault();
-		//var valueUsername = $('input[name="username"]').val()
-		//var valuePassword = $('input[name="password"]').val()
-    //
-    //    $.ajax({
-		//	type: 'POST',
-    //        url: '/login/',
-    //        data: {username:valueUsername, password:valuePassword},
-    //        timeout: 1000,
-    //    success: function(resp) {
-    //        if(resp == 'ok'){
-    //            //window.location = "/dashboard/";
-		//		alert("OK");
-    //    	}
-		//},
-    //    error: function(e) {
-    //         $("#result").html('<p> Invalid ' + e.status + '</p>');
-    //    }
-    //
-    //    })
-    //});
-}
+// Change of state
+myApp.run(function ($rootScope, $location, $route, AuthService) {
+  $rootScope.$on('$routeChangeStart',
+    function (event, next, current) {
+      AuthService.getUserStatus();
+      if (next.access.restricted && !AuthService.isLoggedIn()) {
+        $location.path('/');
+        $route.reload();
+      }
+  });
+});

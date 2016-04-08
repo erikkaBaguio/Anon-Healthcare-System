@@ -49,10 +49,18 @@ def login():
         return jsonify({'status':'OK', 'message': user[0][0]})
 
 
-@app.route('/logout')
+@app.route('/anoncare.api/logout')
 def logout():
     session.pop('logged_in', None)
     return jsonify({'status':'ok'})
+
+@app.route('/api/status')
+def status():
+    if session.get('logged_in'):
+        if session['logged_in']:
+            return jsonify({'status': True})
+    else:
+        return jsonify({'status': False})
 
 #create a wrapper: this wrapper is for athenticating users
 def anoncare_login_required(f):
@@ -135,10 +143,10 @@ def get_user_with_id(id):
 
         print "username is ", res[0][4]
 
-        return jsonify({"status": "ok", "message": "ok", "entries": entries})
+        return jsonify({"status": "OK", "message": "OK", "entries": entries})
 
     else:
-        return jsonify({"status": "ok", "message": "No User Found"})
+        return jsonify({"status": "OK", "message": "No User Found"})
 
 
 def register_field_empty(fname, mname, lname, email):
@@ -223,17 +231,6 @@ def checkauth():
     return jsonify({'status': 'ok', 'message': response[0][0]}), 201
 
 
-# @app.route('/anoncare.api/login', methods=['POST', 'GET'])
-# def login_index():
-#     if request.method == 'POST':
-#         json_data = request.get_json(force=True)
-#         username = json_data['username']
-#         password = json_data['password']
-#         return checkauth(username, password)
-#         print password
-#         print username
-#     return render_template('login.html')
-
 @app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['POST'])
 def notify(assessment_id, doctor_id):
     response = spcall("createnotify", (assessment_id, doctor_id), True)
@@ -242,6 +239,21 @@ def notify(assessment_id, doctor_id):
         return jsonify({'status': 'error', 'message': response[0][0]})
 
     return jsonify({'status': response[0][0]})
+
+
+
+@app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['GET'])
+def getnotify(assessment_id, doctor_id):
+    notification = spcall("getnotify", (assessment_id, doctor_id))
+
+    if 'Error' in str(notification[0][0]):
+        return jsonify({'status': 'error', 'message': notification[0][0]})
+
+    records = []
+    for r in notification:
+        records.append({ "doctor_id": str(r[0]), "assessment_id": str(r[1]), "is_read": str(r[2]) })
+    return jsonify({'status': 'OK','entries': records, 'count': len(records) })
+
 
 @app.route('/anoncare.api/patient/', methods =['POST'])
 def newpatient():
@@ -343,17 +355,6 @@ def getpatient_file(id):
         return jsonify({'status': 'OK', 'message': 'OK', 'entries': entries, 'count':len(entries)})
 
 
-@app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['GET'])
-def getnotify(assessment_id, doctor_id):
-    notification = spcall("getnotify", (assessment_id, doctor_id))
-
-    if 'Error' in str(notification[0][0]):
-        return jsonify({'status': 'error', 'message': notification[0][0]})
-
-    records = []
-    for r in notification:
-        records.append({ "doctor_id": str(r[0]), "assessment_id": str(r[1]), "is_read": str(r[2]) })
-    return jsonify({'status': 'Ok','entries': records, 'count': len(records) })
 
 @app.route('/anoncare.api/notify/<int:doctor_id>', methods=['GET'])
 def get_all_notification(doctor_id):
@@ -372,7 +373,8 @@ def get_all_notification(doctor_id):
 @app.route('/anoncare.api/referral/<int:assessment_id>/<int:doctor_id>/<int:prev_doctor>', methods=['POST'])
 def doctor_referral(assessment_id, doctor_id, prev_doctor):
     update_notification = spcall("update_notification", (assessment_id, prev_doctor), True)
-    update_assessment = spcall("update_assessment_attendingphysician", (assessment_id, doctor_id), True)
+    update_assessment = spcall("update_assessment_attendingphysician", (doctor_id, assessment_id, prev_doctor), True)
+    create_notification = spcall("createnotify", (assessment_id, doctor_id), True)
 
     if 'Unable to find assessment' in str(update_assessment[0][0]):
         return jsonify({'status':'error', 'message':update_assessment[0][0]})
@@ -383,18 +385,18 @@ def doctor_referral(assessment_id, doctor_id, prev_doctor):
 
 @app.route('/anoncare.api/accept/<int:assessment_id>/<int:doctor_id>', methods=['POST'])
 def accept_assessment(assessment_id, doctor_id):
-    assessment_accept = spcall("accept_assessment", (assessment_id, doctor_id, ), True)
-    assessment = spcall("getassessmentID", (assessment_id, ))
+    assessment_accept = spcall("accept_assessment", (assessment_id, doctor_id), True)
+    assessment = spcall("check_if_accepted", (assessment_id, ))
 
     if 'Error' in str(assessment[0][0]):
-        return jsonify({'status':'error'})
+        return jsonify({'status':assessment[0][0]})
 
     records = []
 
     for r in assessment:
-        records.append({'assessment_id':str(r[12]), 'attendingphysician':str(r[10]), 'is_accepted':str(r[11])})
+        records.append({'assessment_id':str(r[0]), 'attendingphysician':str(r[1]), 'is_accepted':str(r[2])})
 
-    return jsonify({'status':'ok', 'entries':records})
+    return jsonify({'status':'OK', 'entries':records})
 
 
 @app.route('/anoncare.api/assessments/<int:assessment_id>/', methods=['GET'])
