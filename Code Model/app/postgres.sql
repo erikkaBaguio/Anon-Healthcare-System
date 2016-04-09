@@ -325,9 +325,15 @@ create or replace function updatepassword(in par_id int, in par_new_password tex
   language 'plpgsql';
 
 
-create or replace function getuserroleid(in par_username text, in par_pass text, out int) returns int as
+create or replace function getuserroleid(in par_username text, in par_pass text) returns int as
   $$
-    select role_id from Userinfo where username = par_username and password = par_pass;
+    declare
+      user_role_id int;
+    begin
+      select into user_role_id role_id from Userinfo where username = par_username and password = par_pass;
+
+      return user_role_id;
+    end;
   $$
   language 'plpgsql';
 
