@@ -749,6 +749,26 @@ END;
 $$
 LANGUAGE 'plpgsql';
 
+--[POST] Add vital signs
+--select add_vital_signs(20,37.1,80,'19 breaths/minute','90/70',48 );
+create or replace function add_vital_signs(par_id int, par_temperature float, par_pulse_rate float, par_respiration_rate text, par_blood_pressure text, par_weight float) returns text as
+  $$
+    declare
+      loc_id int;
+      loc_res text;
+    begin
+      select into loc_id id from Vital_signs where id = par_id;
+      if loc_id isnull then
+        INSERT INTO Vital_signs (id, temperature, pulse_rate, respiration_rate, blood_pressure, weight)
+        VALUES (par_id, par_temperature, par_pulse_rate, par_respiration_rate, par_blood_pressure, par_weight);
+        loc_res = 'OK';
+      else
+        loc_res = 'ID EXISTS';
+      end if;
+      return loc_res;
+    end;
+  $$
+    language 'plpgsql';
 ------------------------------------------------------ END Assessment -----------------------------------------------------
 
 
