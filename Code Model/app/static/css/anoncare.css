@@ -63,9 +63,17 @@ hr {
     line-height: 14px;
 }
 
+.header-dashboard{
+    background: #A03741;
+    padding: 10px;
+    font-size: 11px;;
+    height: 50px;
+    line-height: 10px;
+}
+
 .content {
     /*margin-left: 20px;*/
-    min-height: 500px;
+    min-height: auto;
     width: 100%;
     background: url('../img/2.jpg') left top fixed no-repeat;
 }

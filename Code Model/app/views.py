@@ -427,33 +427,39 @@ def view_all_assessments():
 
 @app.route('/anoncare.api/assessments/', methods=['POST'])
 def new_assessment():
-    data = json.loads(request.data)
+    try:
+        data = json.loads(request.data)
 
-    id = data['id']
-    fname = data['fname']
-    mname = data['mname']
-    lname = data['lname']
-    age = data['age']
-    department = data['department']
-    temperature = data['temperature']
-    pulse_rate = data['pulse_rate']
-    respiration_rate = data['respiration_rate']
-    blood_pressure = data['blood_pressure']
-    weight = data['weight']
-    chiefcomplaint = data['chiefcomplaint']
-    historyofpresentillness = data['historyofpresentillness']
-    medicationstaken = data['medicationstaken']
-    diagnosis = data['diagnosis']
-    recommendation = data['reccomendation']
-    attendingphysician = data['attendingphysician']
+        id = data['id']
+        fname = data['fname']
+        mname = data['mname']
+        lname = data['lname']
+        age = data['age']
+        department = data['department']
+        temperature = data['temperature']
+        pulse_rate = data['pulse_rate']
+        respiration_rate = data['respiration_rate']
+        blood_pressure = data['blood_pressure']
+        weight = data['weight']
+        chiefcomplaint = data['chiefcomplaint']
+        historyofpresentillness = data['historyofpresentillness']
+        medicationstaken = data['medicationstaken']
+        diagnosis = data['diagnosis']
+        recommendation = data['reccomendation']
+        attendingphysician = data['attendingphysician']
 
-    response = spcall("new_assessment", (id, fname, mname, lname, age, department, temperature, pulse_rate, respiration_rate, blood_pressure, weight,
-    chiefcomplaint, historyofpresentillness, medicationstaken, diagnosis, recommendation, attendingphysician,), True)
+        response = spcall('new_assessment', (
+            id, fname, mname, lname, age, department, temperature, pulse_rate, respiration_rate, blood_pressure, weight,
+            chiefcomplaint, historyofpresentillness, medicationstaken, diagnosis, recommendation, attendingphysician,),
+                          True)
 
-    if 'Error' in response[0][0]:
-        return jsonify({'status': 'error', 'message': response[0][0]})
-    print "MESSAGE: \n", response
-    return jsonify({'status': 'OK', 'message': response[0][0]})
+        if 'Error' in response[0][0]:
+            return jsonify({'status': 'error', 'message': response[0][0]})
+        print "MESSAGE: \n", response
+        return jsonify({'status': 'OK', 'message': response[0][0]})
+
+    except ValueError:
+        return jsonify({'status': 'OK', 'message': 'Invalid input'})
 
 
 @app.route('/anoncare.api/assessments/update/<assessment_id>/', methods=['PUT'])

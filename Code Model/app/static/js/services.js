@@ -25,7 +25,7 @@ angular.module('myApp').factory('AuthService',
 
                 // send a post request to the server
                 console.log(username, password);
-                $http.post('http://localhost:5000/anoncare.api/login', {username: username, password: password})
+                $http.post('http://localhost:5000/anoncare.api/login/', {username: username, password: password})
                     // handle success
                     .success(function (data, status) {
                         if (status === 200 && data.status === 'OK') {
