@@ -9,6 +9,7 @@ from os import sys
 from models import DBconn
 import json, flask
 from app import app
+import re
 
 #auth = HTTPBasicAuth()
 
@@ -164,8 +165,23 @@ def jsonify_register_field_empty(fname, mname, lname, email):
     return jsonify({"is_empty": register_field_empty(fname, mname, lname, email)})
 
 
+def email_verification(email):
+    match = re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', email)
+
+    if match == None:
+        return False
+
+    else:
+        return True
+
+
+@app.route('/anoncare.api/user/emailverfication/<string:email>/')
+def email_verif(email):
+    return jsonify({"valid":email_verification(email)})
+
+
 @app.route('/anoncare.api/user/', methods=['POST'])
-def insertuser():
+def insert_user():
 
     user = json.loads(request.data)
 
