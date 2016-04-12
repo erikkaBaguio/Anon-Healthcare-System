@@ -159,7 +159,7 @@ def register_field_empty(fname, mname, lname, email):
         return False
 
 
-@app.route('/anoncare.api/check_field/<string:fname>/<string:mname>/<string:lname>/<string:email>/')
+@app.route('/anoncare.api/check_field/<string:fname>/<string:mname>/<string:lname>/<string:email>/', methods=['GET'])
 def jsonify_register_field_empty(fname, mname, lname, email):
 
     return jsonify({"is_empty": register_field_empty(fname, mname, lname, email)})
@@ -175,9 +175,9 @@ def invalid_email(email):
         return False
 
 
-@app.route('/anoncare.api/user/emailverfication/<string:email>/')
+@app.route('/anoncare.api/user/emailverfication/<string:email>/', methods=['GET'])
 def email_verif(email):
-    return jsonify({"valid": invalid_email(email)})
+    return jsonify({"invalid": invalid_email(email)})
 
 
 @app.route('/anoncare.api/user/', methods=['POST'])

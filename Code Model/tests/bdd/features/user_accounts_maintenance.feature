@@ -28,6 +28,7 @@ Feature: User Accounts Maintenance
     And   it should get a field 'exists' containing 'True'
     And   it should have a field 'status' containing 'error'
 
+
   ################################################################
 
   Scenario: Retrieve a user's details
