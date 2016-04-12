@@ -165,19 +165,19 @@ def jsonify_register_field_empty(fname, mname, lname, email):
     return jsonify({"is_empty": register_field_empty(fname, mname, lname, email)})
 
 
-def email_verification(email):
+def invalid_email(email):
     match = re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', email)
 
     if match == None:
-        return False
+        return True
 
     else:
-        return True
+        return False
 
 
 @app.route('/anoncare.api/user/emailverfication/<string:email>/')
 def email_verif(email):
-    return jsonify({"valid":email_verification(email)})
+    return jsonify({"valid": invalid_email(email)})
 
 
 @app.route('/anoncare.api/user/', methods=['POST'])
@@ -196,7 +196,13 @@ def insert_user():
     role_id = user['role_id']
     is_available = user['is_available']
 
-    if user_exists(username):
+    if register_field_empty(fname, mname, lname, email):
+        return jsonify({'message': 'Empty Field'})
+
+    elif invalid_email(email):
+        return jsonify({'email': 'Invalid!'})
+
+    elif user_exists(username):
         return jsonify({'status': 'error'})
 
     else:
