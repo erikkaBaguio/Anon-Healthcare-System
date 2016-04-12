@@ -1,14 +1,24 @@
-from lettuce import step, world
+from lettuce import step, world, before
+from nose.tools import assert_equals
+from webtest import *
+from app import app
+import json
+
+
+@before.all
+def before_all():
+    world.app = app.test_client()
 
 
 @step(u'Given email address input is \'([^\']*)\'')
-def given_email_address_input_is_group1(step, group1):
-    assert False, 'This step must be implemented'
+def given_email_address_input_is_group1(step, email):
+    world.email = world.app.get('/anoncare.api/user/emailverfication/{}/'.format(email))
 
 
 @step(u'When I click the submit button')
 def when_i_click_the_submit_button(step):
-    assert False, 'This step must be implemented'
+    world.browser = TestApp(app)
+    world.email_validation_res = world.app.get()
 
 
 @step(u'Then it should have a \'([^\']*)\' response')
