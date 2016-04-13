@@ -33,7 +33,7 @@ CREATE TABLE Vital_signs (
   id               SERIAL8 PRIMARY KEY,
   temperature      FLOAT,
   pulse_rate       FLOAT,
-  respiration_rate TEXT,
+  respiration_rate INT,
   blood_pressure   TEXT,
   weight           FLOAT
 );
@@ -130,7 +130,7 @@ CREATE TABLE Patient (
 
 
 CREATE TABLE Assessment (
-  id                      INT8 PRIMARY KEY,
+  id                      SERIAL8 PRIMARY KEY,
   assessment_date         TIMESTAMP DEFAULT 'now',
   nameofpatient           INT REFERENCES Patient (id),
   age                     INT,
@@ -141,8 +141,8 @@ CREATE TABLE Assessment (
   medicationstaken        TEXT,
   diagnosis               TEXT,
   recommendation          TEXT,
-  is_done                 BOOLEAN   DEFAULT FALSE,
-  attendingphysician      INT REFERENCES Userinfo (id)
+  attendingphysician      INT REFERENCES Userinfo (id),
+  is_done                 BOOLEAN  DEFAULT FALSE
 );
 
 
@@ -236,9 +236,9 @@ END;
 $$
 LANGUAGE 'plpgsql';
 
---  select newrole('doctor');
---  select newrole('nurse');
---  select newrole('system administrator');
+ select newrole('doctor');
+ select newrole('nurse');
+ select newrole('system administrator');
 CREATE OR REPLACE FUNCTION newrole(par_rolename TEXT)
   RETURNS TEXT AS
 $$
@@ -630,61 +630,57 @@ LANGUAGE 'plpgsql';
 
 --[GET] Retrieve assessment of a specific patient
 --select getassessmentID(1);
-CREATE OR REPLACE FUNCTION getassessmentID(IN par_id INT, OUT TIMESTAMP, OUT INT, OUT INT, OUT INT, OUT FLOAT,
-                                           OUT       FLOAT, OUT TEXT, OUT TEXT, OUT FLOAT, OUT TEXT, OUT TEXT, OUT TEXT,
-                                           OUT       TEXT, OUT TEXT, OUT INT)
+CREATE OR REPLACE FUNCTION getassessmentID(IN par_id INT, OUT BIGINT, OUT TIMESTAMP, OUT INT, OUT INT, OUT INT, OUT INT,
+                                            OUT TEXT, OUT TEXT, OUT TEXT,OUT TEXT, OUT TEXT,
+                                            OUT INT, OUT BOOLEAN, OUT FLOAT, OUT FLOAT, OUT INT, OUT TEXT, OUT FLOAT,
+                                            OUT TEXT, OUT TEXT)
   RETURNS SETOF RECORD AS
 $$
 
-SELECT
-  assessment_date,
-  nameofpatient,
-  age,
-  department,
-  temperature,
-  pulse_rate,
-  respiration_rate,
-  blood_pressure,
-  weight,
-  chiefcomplaint,
-  historyofpresentillness,
-  medicationstaken,
-  diagnosis,
-  recommendation,
-  attendingphysician
-FROM Assessment, Vital_signs
-WHERE Assessment.id = par_id AND Vital_signs.id = par_id;
+select Assessment.*,
+         Vital_signs.temperature,
+         Vital_signs.pulse_rate,
+         Vital_signs.respiration_rate,
+         Vital_signs.blood_pressure,
+         Vital_signs.weight,
+         Userinfo.fname,
+         Userinfo.lname
+  FROM Assessment
+  INNER JOIN Vital_signs ON (
+    Assessment.vital_signs = Vital_signs.id
+    )
+  INNER JOIN Userinfo ON (
+    Assessment.attendingphysician = Userinfo.id
+    )
+  WHERE Assessment.id = par_id;
 
 $$
 LANGUAGE 'sql';
 
 -- [GET] Retrieve assessments of all patients
 --select getallassessment();
-CREATE OR REPLACE FUNCTION getallassessment(OUT BIGINT, OUT TIMESTAMP, OUT INT, OUT INT, OUT INT, OUT FLOAT,
-                                            OUT FLOAT, OUT TEXT, OUT TEXT, OUT FLOAT, OUT TEXT, OUT TEXT, OUT TEXT,
-                                            OUT TEXT, OUT TEXT, OUT INT)
+CREATE OR REPLACE FUNCTION getallassessment(OUT BIGINT, OUT TIMESTAMP, OUT INT, OUT INT, OUT INT, OUT INT,
+                                            OUT TEXT, OUT TEXT, OUT TEXT,OUT TEXT, OUT TEXT,
+                                            OUT INT, OUT BOOLEAN, OUT FLOAT, OUT FLOAT, OUT INT, OUT TEXT, OUT FLOAT,
+                                            OUT TEXT, OUT TEXT)
   RETURNS SETOF RECORD AS
 $$
 
-SELECT
-  Assessment.id,
-  assessment_date,
-  nameofpatient,
-  age,
-  department,
-  temperature,
-  pulse_rate,
-  respiration_rate,
-  blood_pressure,
-  weight,
-  chiefcomplaint,
-  historyofpresentillness,
-  medicationstaken,
-  diagnosis,
-  recommendation,
-  attendingphysician
-FROM Assessment, Vital_signs
-WHERE Assessment.id = Vital_signs.id
+select Assessment.*,
+         Vital_signs.temperature,
+         Vital_signs.pulse_rate,
+         Vital_signs.respiration_rate,
+         Vital_signs.blood_pressure,
+         Vital_signs.weight,
+         Userinfo.fname,
+         Userinfo.lname
+  FROM Assessment
+  INNER JOIN Vital_signs ON (
+    Assessment.vital_signs = Vital_signs.id
+    )
+  INNER JOIN Userinfo ON (
+    Assessment.attendingphysician = Userinfo.id
+    )
 
 $$
 LANGUAGE 'sql';
@@ -750,20 +746,23 @@ $$
 LANGUAGE 'plpgsql';
 
 --[POST] Add vital signs
---select add_vital_signs(20,37.1,80,'19 breaths/minute','90/70',48 );
-create or replace function add_vital_signs(par_id int, par_temperature float, par_pulse_rate float, par_respiration_rate text, par_blood_pressure text, par_weight float) returns text as
+--select add_vital_signs(37.1,80,19,'90/70',48 );
+create or replace function add_vital_signs(par_temperature float, par_pulse_rate float, par_respiration_rate int, par_blood_pressure text, par_weight float) returns text as
   $$
     declare
-      loc_id int;
       loc_res text;
     begin
-      select into loc_id id from Vital_signs where id = par_id;
-      if loc_id isnull then
-        INSERT INTO Vital_signs (id, temperature, pulse_rate, respiration_rate, blood_pressure, weight)
-        VALUES (par_id, par_temperature, par_pulse_rate, par_respiration_rate, par_blood_pressure, par_weight);
+      if par_temperature isnull or
+         par_pulse_rate isnull or
+         par_respiration_rate isnull or
+         par_blood_pressure isnull or
+         par_blood_pressure = '' or
+         par_weight isnull THEN
+        loc_res = 'Please fill up the required fields';
+      ELSE
+        INSERT INTO Vital_signs (temperature, pulse_rate, respiration_rate, blood_pressure, weight)
+        VALUES (par_temperature, par_pulse_rate, par_respiration_rate, par_blood_pressure, par_weight);
         loc_res = 'OK';
-      else
-        loc_res = 'ID EXISTS';
       end if;
       return loc_res;
     end;
