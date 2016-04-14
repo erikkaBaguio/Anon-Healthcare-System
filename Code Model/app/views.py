@@ -123,7 +123,7 @@ def user_exists(username):
 def jsonify_user_exists(username):
     exists = user_exists(username)
 
-    return jsonify({"exists": exists})
+    return jsonify({"status": exists})
 
 
 @app.route('/anoncare.api/users/<int:id>/', methods=['GET'])
@@ -177,7 +177,9 @@ def invalid_email(email):
 
 @app.route('/anoncare.api/user/emailverfication/<string:email>/', methods=['GET'])
 def email_verif(email):
-    return jsonify({"invalid": invalid_email(email)})
+
+    invalid = invalid_email(email)
+    return jsonify({"status": invalid})
 
 
 @app.route('/anoncare.api/user/', methods=['POST'])
