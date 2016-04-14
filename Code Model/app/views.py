@@ -56,7 +56,7 @@ def logout():
     return jsonify({'status': 'ok'})
 
 
-@app.route('/api/status')
+@app.route('/anoncare.api/status')
 def status():
     if session.get('logged_in'):
         if session['logged_in']:

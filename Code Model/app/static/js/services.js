@@ -1,6 +1,6 @@
 /**
  * Created by Erikks on 4/7/2016.
- * Services - API caller
+ * Services - API caller (functions)
  */
 
 angular.module('myApp').factory('AuthService',
@@ -16,6 +16,22 @@ angular.module('myApp').factory('AuthService',
                 } else {
                     return false;
                 }
+            }
+
+            function getUserStatus() {
+                $http.get('http://localhost:5000/anoncare.api/status')
+                    // handle success
+                    .success(function (data) {
+                        if (data.status) {
+                            user = true;
+                        } else {
+                            user = false;
+                        }
+                    })
+                    // handle error
+                    .error(function (data) {
+                        user = false;
+                    });
             }
 
             function login(username, password) {
@@ -71,21 +87,6 @@ angular.module('myApp').factory('AuthService',
 
             }
 
-            function getUserStatus() {
-                $http.get('http://localhost:5000/anoncare.api/status')
-                    // handle success
-                    .success(function (data) {
-                        if (data.status) {
-                            user = true;
-                        } else {
-                            user = false;
-                        }
-                    })
-                    // handle error
-                    .error(function (data) {
-                        user = false;
-                    });
-            }
 
             // return available functions for use in controllers
             return ({
