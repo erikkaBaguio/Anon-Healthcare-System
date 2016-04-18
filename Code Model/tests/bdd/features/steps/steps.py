@@ -138,6 +138,21 @@ def when_i_retrieve_the_patient_id_10(step, id):
 
 
 """ Feature: User Accounts Maintenance  """
+#
+# """ Common in User Accounts Maintenance """
+# @step(u'And   it should have a field \'([^\']*)\' containing False')
+# def and_it_should_have_a_field_group1_containing_false(step, group1):
+#     # world.assessment = world.app.get('/anoncare.api/assessments/{}/'.format(assessment_id))
+#     # world.response_json = json.loads(world.assessment.data)
+#     # assert_equals(world.response_json['status'], 'OK')
+#     world.response = world.app.post('/anoncare.api/user/', data=json.dumps(world.user))
+#
+#
+#
+# @step(u'And   it should have a field \'([^\']*)\' containing True')
+# def and_it_should_have_a_field_group1_containing_true(step, group1):
+#     world.response = world.app.post('/anoncare.api/user/', data=json.dumps(world.user))
+
 
 """ Scenario: Add a new user to the system - all requirements put """
 
@@ -161,8 +176,11 @@ def when_admin_clicks_the_register_button(step):
 
 @step(u'And   the email \'([^\']*)\' is invalid')
 def and_the_email_group1_is_invalid(step, email):
+    # world.patient1 = world.app.get('/anoncare.api/patient/{}/'.format(id))
+    # world.response_json = json.loads(world.patient1.data)
+    # assert_equals(world.response_json['status'], 'OK')
     world.browser = TestApp(app)
-    world.response = world.app.get('/anoncare.api/emailverfication/{}/'.format(email))
+    world.response = world.app.get('/anoncare.api/user/emailverfication/{}/'.format(email))
 
 """ Scenario: Add a new user to the system - username already exists """
 

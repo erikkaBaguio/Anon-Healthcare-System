@@ -13,7 +13,7 @@ Feature: User Accounts Maintenance
     And   the username 'sean.regencia' does not yet exist
     When  admin clicks the register button
     Then  it should have a '200' response
-    And   it should have a field 'status' containing 'False'
+    And   it should have a field 'exists' containing 'False'
     And   it should have a field 'status' containing 'OK'
 
 
@@ -25,7 +25,7 @@ Feature: User Accounts Maintenance
     And   the username 'josiah.regencia' exists
     When  admin clicks the register button
     Then  it should have a '200' response
-    And   it should have a field 'status' containing 'True'
+    And   it should have a field 'exists' containing 'True'
     And   it should have a field 'status' containing 'error'
 
   Scenario: Invalid email
@@ -37,7 +37,7 @@ Feature: User Accounts Maintenance
     And   the email 'jawshaeleazar' is invalid
     When  admin clicks the register button
     Then  it should have a '200' response
-    And   it should have a field 'status' containing 'True'
+    And   it should have a field 'invalid' containing 'True'
     And   it should have a field 'email' containing 'Invalid!'
 
   ################################################################
