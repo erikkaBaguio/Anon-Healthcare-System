@@ -84,6 +84,17 @@ def step_impl(step):
     response_json = json.loads(world.assessment.data)
     assert_equals(world.response_json['entries'], response_json['entries'])
 
+""" Scenario: View All Assessment of Patient """
+@step(u'Given the assessment of all patient')
+def given_the_assessment_of_all_patient(step):
+    world.assessment = world.app.get('/anoncare.api/assessments/2/')
+    world.response_json = json.loads(world.assessment.data)
+    assert_equals(world.response_json['status'], 'OK')
+
+@step(u'When  the doctor press view all assessment')
+def when_the_doctor_press_view_all_assessment(step):
+    world.browser = TestApp(app)
+    world.response = world.app.get('/anoncare.api/assessments/2/')
 
 """ Feature: Login  """
 
@@ -168,10 +179,18 @@ def and_the_username_group1_does_not_yet_exist(step, username):
     world.response = world.app.get('/anoncare.api/userexists/{}/'.format(username))
 
 
+
 @step(u'When  admin clicks the register button')
 def when_admin_clicks_the_register_button(step):
     world.browser = TestApp(app)
     world.response = world.app.post('/anoncare.api/user/', data=json.dumps(world.user))
+
+
+
+@step(u'And   it should get a field \'([^\']*)\' containing \'([^\']*)\'')
+def and_it_should_get_a_field_group1_containing_group2(step, field, expected_boolean):
+    world.user_exists_res = json.loads(world.user_exists_response.data)
+    assert_equals(str(world.user_exists_res[field]), expected_boolean)
 
 
 @step(u'And   the email \'([^\']*)\' is invalid')
@@ -189,6 +208,7 @@ def and_the_email_group1_is_invalid(step, email):
 def and_the_username_group1_exists(step, username):
     world.browser = TestApp(app)
     world.response = world.app.get('/anoncare.api/userexists/{}/'.format(username))
+
 
 
 """ Scenario: Retrieve a user's details """

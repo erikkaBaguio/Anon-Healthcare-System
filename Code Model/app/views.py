@@ -37,7 +37,7 @@ def internal_server_error(e):
     return '(Error 500) Sorry, there was an internal server error.'
 
 
-@app.route('/anoncare.api/login', methods=['POST'])
+@app.route('/anoncare.api/login/', methods=['POST'])
 def login():
     data = json.loads(request.data)
     username = data['username']
@@ -57,7 +57,7 @@ def logout():
     return jsonify({'status': 'ok'})
 
 
-@app.route('/api/status')
+@app.route('/anoncare.api/status')
 def status():
     if session.get('logged_in'):
         if session['logged_in']:
@@ -82,8 +82,6 @@ def anoncare_login_required(f):
     return decorated
 
 
-####################################################################################################
-
 @app.route('/admin', methods=['GET', 'POST'])
 @anoncare_login_required
 def admin_home():
@@ -106,6 +104,7 @@ def get_college(college_id):
     r = res[0]
     return jsonify({"college_id": str(college_id), "college_name": str(r[0])})
 
+####################################################################################################
 
 def user_exists(username):
     users = spcall('getuserinfo', ())
@@ -185,7 +184,7 @@ def email_verif(email):
 
 
 @app.route('/anoncare.api/user/', methods=['POST'])
-def insert_user():
+def insertuser():
     user = json.loads(request.data)
 
     print "user is ", user
@@ -415,6 +414,11 @@ def accept_assessment(assessment_id, doctor_id):
 
     if 'Error' in str(assessment[0][0]):
         return jsonify({'status': assessment[0][0]})
+    assessment_accept = spcall("accept_assessment", (assessment_id, doctor_id,), True)
+    assessment = spcall("getassessmentID", (assessment_id,))
+
+    if 'Error' in str(assessment[0][0]):
+        return jsonify({'status': 'error'})
 
     records = []
 
@@ -492,35 +496,39 @@ def view_all_assessments():
 
 @app.route('/anoncare.api/assessments/', methods=['POST'])
 def new_assessment():
-    data = json.loads(request.data)
+    try:
+        data = json.loads(request.data)
 
-    id = data['id']
-    fname = data['fname']
-    mname = data['mname']
-    lname = data['lname']
-    age = data['age']
-    department = data['department']
-    temperature = data['temperature']
-    pulse_rate = data['pulse_rate']
-    respiration_rate = data['respiration_rate']
-    blood_pressure = data['blood_pressure']
-    weight = data['weight']
-    chiefcomplaint = data['chiefcomplaint']
-    historyofpresentillness = data['historyofpresentillness']
-    medicationstaken = data['medicationstaken']
-    diagnosis = data['diagnosis']
-    recommendation = data['reccomendation']
-    attendingphysician = data['attendingphysician']
+        id = data['id']
+        fname = data['fname']
+        mname = data['mname']
+        lname = data['lname']
+        age = data['age']
+        department = data['department']
+        temperature = data['temperature']
+        pulse_rate = data['pulse_rate']
+        respiration_rate = data['respiration_rate']
+        blood_pressure = data['blood_pressure']
+        weight = data['weight']
+        chiefcomplaint = data['chiefcomplaint']
+        historyofpresentillness = data['historyofpresentillness']
+        medicationstaken = data['medicationstaken']
+        diagnosis = data['diagnosis']
+        recommendation = data['reccomendation']
+        attendingphysician = data['attendingphysician']
 
-    response = spcall("new_assessment", (
-        id, fname, mname, lname, age, department, temperature, pulse_rate, respiration_rate, blood_pressure, weight,
-        chiefcomplaint, historyofpresentillness, medicationstaken, diagnosis, recommendation, attendingphysician,),
-                      True)
+        response = spcall('new_assessment', (
+            id, fname, mname, lname, age, department, temperature, pulse_rate, respiration_rate, blood_pressure, weight,
+            chiefcomplaint, historyofpresentillness, medicationstaken, diagnosis, recommendation, attendingphysician,),
+                          True)
 
-    if 'Error' in response[0][0]:
-        return jsonify({'status': 'error', 'message': response[0][0]})
-    print "MESSAGE: \n", response
-    return jsonify({'status': 'OK', 'message': response[0][0]})
+        if 'Error' in response[0][0]:
+            return jsonify({'status': 'error', 'message': response[0][0]})
+        print "MESSAGE: \n", response
+        return jsonify({'status': 'OK', 'message': response[0][0]})
+
+    except ValueError:
+        return jsonify({'status': 'OK', 'message': 'Invalid input'})
 
 
 @app.route('/anoncare.api/assessments/update/<assessment_id>/', methods=['PUT'])
