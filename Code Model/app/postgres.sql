@@ -549,9 +549,7 @@ LANGUAGE 'sql';
 
 -----------------------------------------------------END of Patient File --------------------------------------------------
 
-
 -------------------------------------------------------- Assessment -------------------------------------------------------
-
 --[GET] Retrieve the id number of a patient
 --select retrievePatientID('Josiah','Timonera','Regencia');
 CREATE OR REPLACE FUNCTION retrievePatientID(IN par_fname TEXT, IN par_mname TEXT, IN par_lname TEXT)
@@ -568,31 +566,48 @@ END;
 $$
 LANGUAGE 'plpgsql';
 
+--[GET] Retrieve the id number of a patient
+--select getvitalcount();
+CREATE OR REPLACE FUNCTION getvitalcount()
+  RETURNS bigint AS
+$$
+DECLARE
+loc_count bigint;
+BEGIN
+  Select into loc_count count(*)
+  FROM Vital_signs;
+  return loc_count;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+
 -- [POST] Create new assessment
--- select new_assessment(1,'Josiah','Timonera','Regencia', 19, 1, 37.1, 80, '19 breaths/minute', '90/70', 48, 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
-CREATE OR REPLACE FUNCTION new_assessment(IN par_id                 INT, IN par_fname TEXT, IN par_mname TEXT,
-                                          IN par_lname              TEXT, IN par_age INT, IN par_department INT,
-                                          IN par_temperature        FLOAT, IN par_pulse_rate FLOAT,
-                                          IN par_respiration_rate   TEXT, IN par_blood_pressure TEXT,
+--select new_assessment('Josiah','Timonera','Regencia', 19, 1, 37.1, 80, 19, '90/70', 48, 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
+CREATE OR REPLACE FUNCTION new_assessment(IN par_fname TEXT,
+                                          IN par_mname TEXT,
+                                          IN par_lname              TEXT,
+                                          IN par_age INT,
+                                          IN par_department INT,
+                                          IN par_temperature        FLOAT,
+                                          IN par_pulse_rate FLOAT,
+                                          IN par_respiration_rate   INT,
+                                          IN par_blood_pressure TEXT,
                                           IN par_weight             FLOAT,
-                                          IN par_chiefcomplaint     TEXT, IN par_historyofpresentillness TEXT,
+                                          IN par_chiefcomplaint     TEXT,
+                                          IN par_historyofpresentillness TEXT,
                                           IN par_medicationstaken   TEXT,
-                                          IN par_diagnosis          TEXT, IN par_recommendation TEXT,
+                                          IN par_diagnosis          TEXT,
+                                          IN par_recommendation TEXT,
                                           IN par_attendingphysician INT)
   RETURNS TEXT AS
 $$
 DECLARE
-  loc_id1       INT;
-  loc_id2       INT;
+  loc_id       INT;
+  loc_countvs INT;
   loc_res       TEXT;
   loc_patientID BIGINT;
 BEGIN
-  SELECT INTO loc_id1 id
-  FROM Vital_signs
-  WHERE id = par_id;
-  SELECT INTO loc_id2 id
-  FROM Assessment
-  WHERE id = par_id;
 
   IF par_fname = '' OR
      par_mname = '' OR
@@ -603,24 +618,22 @@ BEGIN
   THEN
     loc_res = 'ERROR';
 
-  ELSIF loc_id1 ISNULL AND loc_id2 ISNULL
-    THEN
-      INSERT INTO Vital_signs (id, temperature, pulse_rate, respiration_rate, blood_pressure, weight)
-      VALUES (par_id, par_temperature, par_pulse_rate, par_respiration_rate, par_blood_pressure, par_weight);
+  ELSif
+      INSERT INTO Vital_signs (temperature, pulse_rate, respiration_rate, blood_pressure, weight)
+      VALUES (par_temperature, par_pulse_rate, par_respiration_rate, par_blood_pressure, par_weight);
 
       loc_patientID := retrievepatientID(par_fname, par_mname, par_lname);
+      loc_countvs := getvitalcount();
+      loc_id := loc_countvs + 1 ;
 
-      INSERT INTO Assessment (id, nameofpatient, age, department, vital_signs, chiefcomplaint,
+      INSERT INTO Assessment (nameofpatient, age, department, vital_signs, chiefcomplaint,
                               historyofpresentillness, medicationstaken, diagnosis, recommendation, attendingphysician)
-      VALUES (par_id, loc_patientID, par_age, par_department, par_id,
+      VALUES (loc_patientID, par_age, par_department, loc_id,
                       par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken, par_diagnosis,
                       par_recommendation, par_attendingphysician);
 
       loc_res = 'OK';
 
-  ELSE
-    loc_res = 'ID EXISTS';
-
   END IF;
   RETURN loc_res;
 
@@ -628,206 +641,4 @@ END;
 $$
 LANGUAGE 'plpgsql';
 
---[GET] Retrieve assessment of a specific patient
---select getassessmentID(1);
-CREATE OR REPLACE FUNCTION getassessmentID(IN par_id INT, OUT BIGINT, OUT TIMESTAMP, OUT INT, OUT INT, OUT INT, OUT INT,
-                                            OUT TEXT, OUT TEXT, OUT TEXT,OUT TEXT, OUT TEXT,
-                                            OUT INT, OUT BOOLEAN, OUT FLOAT, OUT FLOAT, OUT INT, OUT TEXT, OUT FLOAT,
-                                            OUT TEXT, OUT TEXT)
-  RETURNS SETOF RECORD AS
-$$
-
-select Assessment.*,
-         Vital_signs.temperature,
-         Vital_signs.pulse_rate,
-         Vital_signs.respiration_rate,
-         Vital_signs.blood_pressure,
-         Vital_signs.weight,
-         Userinfo.fname,
-         Userinfo.lname
-  FROM Assessment
-  INNER JOIN Vital_signs ON (
-    Assessment.vital_signs = Vital_signs.id
-    )
-  INNER JOIN Userinfo ON (
-    Assessment.attendingphysician = Userinfo.id
-    )
-  WHERE Assessment.id = par_id;
-
-$$
-LANGUAGE 'sql';
-
--- [GET] Retrieve assessments of all patients
---select getallassessment();
-CREATE OR REPLACE FUNCTION getallassessment(OUT BIGINT, OUT TIMESTAMP, OUT INT, OUT INT, OUT INT, OUT INT,
-                                            OUT TEXT, OUT TEXT, OUT TEXT,OUT TEXT, OUT TEXT,
-                                            OUT INT, OUT BOOLEAN, OUT FLOAT, OUT FLOAT, OUT INT, OUT TEXT, OUT FLOAT,
-                                            OUT TEXT, OUT TEXT)
-  RETURNS SETOF RECORD AS
-$$
-
-select Assessment.*,
-         Vital_signs.temperature,
-         Vital_signs.pulse_rate,
-         Vital_signs.respiration_rate,
-         Vital_signs.blood_pressure,
-         Vital_signs.weight,
-         Userinfo.fname,
-         Userinfo.lname
-  FROM Assessment
-  INNER JOIN Vital_signs ON (
-    Assessment.vital_signs = Vital_signs.id
-    )
-  INNER JOIN Userinfo ON (
-    Assessment.attendingphysician = Userinfo.id
-    )
-
-$$
-LANGUAGE 'sql';
-
--- [GET] Retrieve all assessment of a specific patient
---select getallassessmentID(1);
-CREATE OR REPLACE FUNCTION getallassessmentID(IN par_id INT, OUT TIMESTAMP, OUT INT, OUT INT, OUT INT, OUT FLOAT,
-                                              OUT       FLOAT, OUT TEXT, OUT TEXT, OUT FLOAT, OUT TEXT, OUT TEXT,
-                                              OUT       TEXT, OUT TEXT, OUT TEXT, OUT INT)
-  RETURNS SETOF RECORD AS
-$$
-SELECT
-  assessment_date,
-  nameofpatient,
-  age,
-  department,
-  temperature,
-  pulse_rate,
-  respiration_rate,
-  blood_pressure,
-  weight,
-  chiefcomplaint,
-  historyofpresentillness,
-  medicationstaken,
-  diagnosis,
-  recommendation,
-  attendingphysician
-FROM Assessment, Vital_signs
-WHERE Assessment.nameofpatient = par_id AND Assessment.id = Vital_signs.id
-
-$$
-LANGUAGE 'sql';
-
---[PUT] Update assessment of patient
---select update_assessment(1,'Josiah','Timonera','Regencia', 19, 1, 37.1, 80, '19 breaths/minute', '90/70', 48, 'complaint', 'history', 'medication1', 'diagnosis11','recommendation11', 1);
-CREATE OR REPLACE FUNCTION update_assessment(IN par_id                 INT, IN par_fname TEXT, IN par_mname TEXT,
-                                             IN par_lname              TEXT, IN par_age INT, IN par_department INT,
-                                             IN par_temperature        FLOAT, IN par_pulse_rate FLOAT,
-                                             IN par_respiration_rate   TEXT, IN par_blood_pressure TEXT,
-                                             IN par_weight             FLOAT,
-                                             IN par_chiefcomplaint     TEXT, IN par_historyofpresentillness TEXT,
-                                             IN par_medicationstaken   TEXT,
-                                             IN par_diagnosis          TEXT, IN par_recommendation TEXT,
-                                             IN par_attendingphysician INT)
-  RETURNS TEXT AS
-$$
-DECLARE
-  loc_res TEXT;
-BEGIN
-
-  UPDATE Assessment
-  SET
-    diagnosis          = par_diagnosis,
-    recommendation     = par_recommendation,
-    attendingphysician = par_attendingphysician
-  WHERE id = par_id;
-
-  loc_res = 'Updated';
-  RETURN loc_res;
-
-END;
-$$
-LANGUAGE 'plpgsql';
-
---[POST] Add vital signs
---select add_vital_signs(37.1,80,19,'90/70',48 );
-create or replace function add_vital_signs(par_temperature float, par_pulse_rate float, par_respiration_rate int, par_blood_pressure text, par_weight float) returns text as
-  $$
-    declare
-      loc_res text;
-    begin
-      if par_temperature isnull or
-         par_pulse_rate isnull or
-         par_respiration_rate isnull or
-         par_blood_pressure isnull or
-         par_blood_pressure = '' or
-         par_weight isnull THEN
-        loc_res = 'Please fill up the required fields';
-      ELSE
-        INSERT INTO Vital_signs (temperature, pulse_rate, respiration_rate, blood_pressure, weight)
-        VALUES (par_temperature, par_pulse_rate, par_respiration_rate, par_blood_pressure, par_weight);
-        loc_res = 'OK';
-      end if;
-      return loc_res;
-    end;
-  $$
-    language 'plpgsql';
------------------------------------------------------- END Assessment -----------------------------------------------------
-
-
-------------------------------------------------------- Notifications -----------------------------------------------------
---[POST] Create notification
--- select createnotify(2, 1);
-CREATE OR REPLACE FUNCTION createnotify(par_assessment_id INT, par_doctor_id INT)
-  RETURNS TEXT AS
-$$
-DECLARE
-  loc_response TEXT;
-  loc_id       INT;
-BEGIN
-  SELECT INTO loc_id assessment_id
-  FROM Notification
-  WHERE assessment_id = par_assessment_id;
-  IF loc_id ISNULL
-  THEN
-    INSERT INTO Notification (assessment_id, doctor_id) VALUES (par_assessment_id, par_doctor_id);
-    loc_response = 'OK';
-
-  ELSE
-    loc_response = 'ID EXISTED';
-  END IF;
-  RETURN loc_response;
-END;
-$$
-LANGUAGE 'plpgsql';
-
---[GET] get specific notification
-CREATE OR REPLACE FUNCTION getnotify(IN  par_assessment_id INT, IN par_doctor_id INT, OUT par_assessment_id INT,
-                                     OUT par_doctor_id     INT, OUT par_is_read BOOLEAN)
-  RETURNS SETOF RECORD AS
-$$
-SELECT
-  doctor_id,
-  assessment_id,
-  is_read
-FROM Notification
-WHERE assessment_id = par_assessment_id AND doctor_id = par_doctor_id;
-$$
-LANGUAGE 'sql';
-
-
-CREATE OR REPLACE FUNCTION update_notification(IN par_assessment_id INT, IN par_doctor_id INT)
-  RETURNS TEXT AS
-$$
-DECLARE
-  loc_response TEXT;
-
-BEGIN
-
-  UPDATE notification
-  SET is_read = 'TRUE'
-  WHERE assessment_id = par_assessment_id AND doctor_id = par_doctor_id;
-  loc_response = 'UPDATED';
-  RETURN loc_response;
-END;
-
-$$
-LANGUAGE 'plpgsql';
------------------------------------------------------END Notifications ----------------------------------------------------
 
