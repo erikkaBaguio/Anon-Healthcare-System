@@ -38,35 +38,39 @@ CREATE TABLE Vital_signs (
   weight           FLOAT
 );
 
-CREATE TABLE Personal_history (
-  id               SERIAL8 PRIMARY KEY,
-  smoking          TEXT,
-  allergies        TEXT,
-  alcohol          TEXT,
-  medication_taken TEXT,
-  drugs            TEXT,
-  done             BOOLEAN
+
+CREATE TABLE Sex(
+  school_id int8 PRIMARY KEY,
+  type    TEXT
 );
 
-
 CREATE TABLE Patient_type (
-  id   SERIAL8 PRIMARY KEY,
+  school_id   SERIAL8 PRIMARY KEY,
   type TEXT
 );
 
 
+CREATE TABLE Personal_history (
+  school_id        SERIAL8 PRIMARY KEY,
+  smoking          TEXT,
+  allergies        TEXT,
+  alcohol          TEXT,
+  medication_taken TEXT,
+  drugs            TEXT
+);
+
 CREATE TABLE Personal_info (
-  id               SERIAL8 PRIMARY KEY,
+  school_id               SERIAL8 PRIMARY KEY,
   height           TEXT,
   weight           FLOAT,
-  date_of_birth    TEXT,
+  date_of_birth    TIMESTAMP,
   civil_status     TEXT,
   name_of_guardian TEXT,
   home_address     TEXT
 );
 
 CREATE TABLE Pulmonary (
-  id          SERIAL8 PRIMARY KEY,
+  school_id          SERIAL8 PRIMARY KEY,
   cough       TEXT,
   dyspnea     TEXT,
   hemoptysis  TEXT,
@@ -74,7 +78,7 @@ CREATE TABLE Pulmonary (
 );
 
 CREATE TABLE Gut (
-  id               SERIAL8 PRIMARY KEY,
+  school_id               SERIAL8 PRIMARY KEY,
   frequency        TEXT,
   flank_plan       TEXT,
   discharge        TEXT,
@@ -84,7 +88,7 @@ CREATE TABLE Gut (
 );
 
 CREATE TABLE Illness (
-  id            SERIAL8 PRIMARY KEY,
+  school_id            SERIAL8 PRIMARY KEY,
   asthma        TEXT,
   ptb           TEXT,
   heart_problem TEXT,
@@ -95,7 +99,7 @@ CREATE TABLE Illness (
 );
 
 CREATE TABLE Cardiac (
-  id                SERIAL8 PRIMARY KEY,
+  school_id                SERIAL8 PRIMARY KEY,
   chest_pain        TEXT,
   palpitations      TEXT,
   pedal_edema       TEXT,
@@ -104,19 +108,20 @@ CREATE TABLE Cardiac (
 );
 
 CREATE TABLE Neurologic (
-  id                    SERIAL8 UNIQUE PRIMARY KEY,
+  school_id                    SERIAL8 UNIQUE PRIMARY KEY,
   headache              TEXT,
   seizure               TEXT,
   dizziness             TEXT,
   loss_of_consciousness TEXT
 );
 CREATE TABLE Patient (
-  id               SERIAL8 PRIMARY KEY,
+  school_id        SERIAL8 PRIMARY KEY,
   fname            TEXT,
   mname            TEXT,
   lname            TEXT,
   age              INT,
-  sex              TEXT,
+  sex              INT REFERENCES Sex (id),
+  college_id       INT REFERENCES College (id),
   department_id    INT REFERENCES Department (id),
   patient_type_id  INT REFERENCES Patient_type (id),
   personal_info_id INT REFERENCES Personal_info (id),
@@ -145,6 +150,8 @@ CREATE TABLE Assessment (
   is_done                 BOOLEAN  DEFAULT FALSE
 );
 
+INSERT INTO Sex VALUES(1, 'Male');
+INSERT INTO Sex VALUES(2, 'Female');
 
 INSERT INTO College VALUES (1, 'SCS');
 INSERT INTO College VALUES (2, 'COE');
