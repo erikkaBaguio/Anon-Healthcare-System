@@ -50,8 +50,6 @@ Scenario: Adding patient file with fname, mname and lname already existed
     And   it should have a field 'status' containing 'OK'
     And   it should have a field 'message' containing 'Patient already EXISTED'
 
-
-
 #Rainy Case
 Scenario: Adding patient file where fname isnull
     Given the following details of patient
@@ -61,7 +59,6 @@ Scenario: Adding patient file where fname isnull
     Then  it should have a '200' response
     And   it should have a field 'status' containing 'OK'
     And   it should have a field 'message' containing 'Please fill up the required data'
-
 
 #Rainy Case
 Scenario: Adding patient file where mname isnull
@@ -83,7 +80,6 @@ Scenario: Adding patient file where lname isnull
     Then  it should have a '200' response
     And   it should have a field 'status' containing 'OK'
     And   it should have a field 'message' containing 'Please fill up the required data'
-
 
 #Rainy Case
 Scenario: Adding patient file where sex isnull
@@ -125,7 +121,6 @@ Scenario: Adding patient file where civil_status isnull
     Then  it should have a '200' response
     And   it should have a field 'status' containing 'OK'
     And   it should have a field 'message' containing 'Please fill up the required data'
-
 
 #Rainy Case
 Scenario: Adding patient file where name_of_guardian isnull
@@ -291,6 +286,7 @@ Scenario: Adding patient file where heart_problem  isnull
 
 #Rainy Case
 Scenario: Adding patient file where hepatitis_a_b  isnull
+
     Given the following details of patient
     |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
     |31|    fname22  | mname11     |  lname11   |  20 |    female  |    1         |     1          | 5 ft  | 45     | July 30 1995         |      single     |    Sandara Park    |    Paris, France    |  mild  |  none  |   hemo1    |   tb1     | freq1    |   flank1   |   discharge1   |   dysuria1  |   nocturia1  |      dec_urine_amount1   |   asthma1    |   ptb  |    heartprobs1   |        |  none      | none |    none      |   none    |   none      |    none    |  none    |     none         |   none  |  none  |   none   |   none              | true      |

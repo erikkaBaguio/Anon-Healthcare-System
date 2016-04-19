@@ -298,6 +298,7 @@ END;
 $$
 LANGUAGE 'plpgsql';
 
+<<<<<<< HEAD
 --Generates password of a user
 CREATE OR REPLACE FUNCTION generate_password()
   RETURNS TEXT AS
@@ -325,6 +326,8 @@ BEGIN
 END;
 $$
 LANGUAGE 'plpgsql';
+=======
+>>>>>>> 4ba69d92f42558d649ffdb6cc3c8574978059833
 
 --[GET] Retrieve information of users
 --select * from getUserinfo();
@@ -376,6 +379,19 @@ BEGIN
 END;
 $$
 LANGUAGE 'plpgsql';
+
+
+create or replace function getuserroleid(in par_username text, in par_pass text) returns int as
+  $$
+    declare
+      user_role_id int;
+    begin
+      select into user_role_id role_id from Userinfo where username = par_username and password = par_pass;
+
+      return user_role_id;
+    end;
+  $$
+  language 'plpgsql';
 
 ---------------------------------------------- END of User Accounts Maintenance ----------------------------------------------
 
@@ -485,6 +501,7 @@ BEGIN
 END;
 $$
 LANGUAGE 'plpgsql';
+
 
 --[GET] patient file
 --select * from get_patientfileId(1);
@@ -752,6 +769,7 @@ END;
 $$
 LANGUAGE 'plpgsql';
 
+<<<<<<< HEAD
 --[POST] Add vital signs
 --select add_vital_signs(37.1,80,19,'90/70',48 );
 create or replace function add_vital_signs(par_temperature float, par_pulse_rate float, par_respiration_rate int, par_blood_pressure text, par_weight float) returns text as
@@ -775,6 +793,29 @@ create or replace function add_vital_signs(par_temperature float, par_pulse_rate
     end;
   $$
     language 'plpgsql';
+=======
+
+-- add is_accepted column to define if the doctor can finalize the assessment or not.
+alter table assessment add is_accepted boolean default 'FALSE';
+
+create or replace function accept_assessment(in par_assessment_id int, in par_doctor_id int) returns text as
+  $$
+    declare loc_response text;
+    begin
+      update Assessment set is_accepted = 'TRUE' where id = par_assessment_id and attendingphysician = par_doctor_id;
+      loc_response = 'UPDATED';
+      return loc_response;
+    end;
+  $$
+    language 'plpgsql';
+
+create or replace function check_if_accepted(in par_assessment_id int, out int8, out int, out boolean) returns setof record as
+  $$
+    select id, attendingphysician, is_accepted from Assessment where id = par_assessment_id;
+  $$
+    language 'sql'
+
+>>>>>>> 4ba69d92f42558d649ffdb6cc3c8574978059833
 ------------------------------------------------------ END Assessment -----------------------------------------------------
 
 
@@ -784,6 +825,7 @@ create or replace function add_vital_signs(par_temperature float, par_pulse_rate
 CREATE OR REPLACE FUNCTION createnotify(par_assessment_id INT, par_doctor_id INT)
   RETURNS TEXT AS
 $$
+<<<<<<< HEAD
 DECLARE
   loc_response TEXT;
   loc_id       INT;
@@ -801,6 +843,22 @@ BEGIN
   END IF;
   RETURN loc_response;
 END;
+=======
+  declare
+      loc_response text;
+      loc_id int;
+  begin
+        select into loc_id assessment_id from Notification where assessment_id = par_assessment_id and doctor_id = par_doctor_id;
+        if loc_id isnull then
+          insert into Notification(assessment_id, doctor_id) values (par_assessment_id, par_doctor_id);                            
+          loc_response = 'OK';
+
+        else
+          loc_response = 'ID EXISTED';
+        end if;
+        return loc_response;
+  end;
+>>>>>>> 4ba69d92f42558d649ffdb6cc3c8574978059833
 $$
 LANGUAGE 'plpgsql';
 
@@ -834,7 +892,27 @@ BEGIN
   RETURN loc_response;
 END;
 
+<<<<<<< HEAD
 $$
 LANGUAGE 'plpgsql';
+=======
+  $$
+    language 'plpgsql';
+
+
+create or replace function update_assessment_attendingphysician(in par_attendingphysician int, in par_assessment_id int, in par_prev_doctor int) returns text as
+  $$
+    declare
+      loc_response text;
+
+    begin
+      update Assessment set attendingphysician = par_attendingphysician where id = par_assessment_id and attendingphysician = par_prev_doctor;
+      loc_response = 'UPDATED';
+      return loc_response;
+    end;
+
+  $$
+    language 'plpgsql';
+>>>>>>> 4ba69d92f42558d649ffdb6cc3c8574978059833
 -----------------------------------------------------END Notifications ----------------------------------------------------
 
