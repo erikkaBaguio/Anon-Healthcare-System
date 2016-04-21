@@ -9,7 +9,7 @@ from models import DBconn
 import json, flask
 from app import app
 import re
-import hashlib
+import hashlib, uuid
 
 
 # auth = HTTPBasicAuth()
@@ -192,6 +192,13 @@ def email_verif(email):
     return jsonify({"invalid": invalid})
 
 
+def hash_password(password):
+    salt = uuid.uuid4().hex
+    hashed = hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
+    return hashed
+    # return hashlib.sha256(salt.enode() + password.encode()).hexdigest() + ':' + salt
+
+
 @app.route('/anoncare.api/user/', methods=['POST'])
 def insertuser():
     user = json.loads(request.data)
@@ -216,9 +223,10 @@ def insertuser():
     elif user_exists(username):
         return jsonify({'status': 'error'})
     else:
-        hashed_password = hashlib.md5(password)
-        saved_password = hashed_password.hexdigest()
-        # saved_password = str(saved_password)
+        # hashed_password = hashlib.md5(password)
+        # saved_password = hashed_password.hexdigest()
+        # password = str(password)
+        saved_password = hash_password(password)
         spcall("newuserinfo", (fname, mname, lname, email, username, saved_password, role_id, is_available), True)
         return jsonify({'status': 'OK'})
 
