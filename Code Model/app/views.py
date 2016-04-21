@@ -8,6 +8,8 @@ from os import sys
 from models import DBconn
 import json, flask
 from app import app
+import re
+import hashlib, uuid
 
 
 # auth = HTTPBasicAuth()
@@ -81,6 +83,28 @@ def anoncare_login_required(f):
     return decorated
 
 
+@app.route('/admin', methods=['GET', 'POST'])
+@anoncare_login_required
+def admin_home():
+    return render_template('admin/index.html')
+
+
+@app.route('/api.anoncare/question', methods=['GET'])
+def get_all_questions():
+    res = spcall('get_newquestion', ())
+    print res
+
+
+@app.route('/anoncare.api/colleges/<college_id>/', methods=['GET'])
+def get_college(college_id):
+    res = spcall('getcollegeID', str(college_id))
+
+    if 'Error' in str(res[0][0]):
+        return jsonify({'status': 'error', 'message': res[0][0]})
+
+    r = res[0]
+    return jsonify({"college_id": str(college_id), "college_name": str(r[0])})
+
 ####################################################################################################
 
 def user_exists(username):
@@ -103,6 +127,8 @@ def user_exists(username):
 @app.route('/anoncare.api/userexists/<string:username>/', methods=['GET'])
 def jsonify_user_exists(username):
     exists = user_exists(username)
+
+    print "exists,", exists
 
     return jsonify({"exists": exists})
 
@@ -132,16 +158,45 @@ def get_user_with_id(id):
 
 
 def register_field_empty(fname, mname, lname, email):
-    if fname or mname or lname or email is '':
+    if fname == '':
+        return True
+    if mname =='':
+        return True
+    if lname == '':
+        return True
+    if email == '':
+        return True
+    else:
+        return False
+
+
+@app.route('/anoncare.api/check_field/<string:fname>/<string:mname>/<string:lname>/<string:email>/', methods=['GET'])
+def jsonify_register_field_empty(fname, mname, lname, email):
+    return jsonify({"is_empty": register_field_empty(fname, mname, lname, email)})
+
+
+def invalid_email(email):
+    match = re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', email)
+
+    if match == None:
         return True
 
     else:
         return False
 
 
-@app.route('/anoncare.api/check_field/<string:fname>/<string:mname>/<string:lname>/<string:email>/')
-def jsonify_register_field_empty(fname, mname, lname, email):
-    return jsonify({"is_empty": register_field_empty(fname, mname, lname, email)})
+@app.route('/anoncare.api/user/emailverfication/<string:email>/', methods=['GET'])
+def email_verif(email):
+    invalid = invalid_email(email)
+    print "invalid is,", invalid
+    return jsonify({"invalid": invalid})
+
+
+def hash_password(password):
+    salt = uuid.uuid4().hex
+    hashed = hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
+    return hashed
+    # return hashlib.sha256(salt.enode() + password.encode()).hexdigest() + ':' + salt
 
 
 @app.route('/anoncare.api/user/', methods=['POST'])
@@ -159,11 +214,20 @@ def insertuser():
     role_id = user['role_id']
     is_available = user['is_available']
 
-    if user_exists(username):
-        return jsonify({'status': 'error'})
+    if register_field_empty(str(fname), str(mname), str(lname), str(email)):
+        return jsonify({'message': 'Empty Field'})
 
+    elif invalid_email(email):
+        return jsonify({'email': 'Invalid!'})
+
+    elif user_exists(username):
+        return jsonify({'status': 'error'})
     else:
-        spcall("newuserinfo", (fname, mname, lname, email, username, password, role_id, is_available), True)
+        # hashed_password = hashlib.md5(password)
+        # saved_password = hashed_password.hexdigest()
+        # password = str(password)
+        saved_password = hash_password(password)
+        spcall("newuserinfo", (fname, mname, lname, email, username, saved_password, role_id, is_available), True)
         return jsonify({'status': 'OK'})
 
 
@@ -191,6 +255,22 @@ def get_vital_signs(vital_signID):
                     "respiration_rate": str(r[2]),
                     "blood_pressure": str(r[3]),
                     "weight": str(r[4]), "message": str(r[0][0])})
+
+
+@app.route('/anoncare.api/login', methods=['POST'])
+def checkauth():
+    data = json.loads(request.data)
+
+    username = data['username']
+    password = data['password']
+
+    if user_exists(username):
+        response = spcall('checkauth', (username, password))
+
+    if 'Invalid username' in str(response[0][0]):
+        return jsonify({'status': 'error', 'message': response[0][0], "username": username})
+
+    return jsonify({'status': 'ok', 'message': response[0][0]}), 201
 
 
 @app.route('/anoncare.api/notify/<int:assessment_id>/<int:doctor_id>', methods=['POST'])
@@ -335,7 +415,8 @@ def get_all_notification(doctor_id):
 @app.route('/anoncare.api/referral/<int:assessment_id>/<int:doctor_id>/<int:prev_doctor>', methods=['POST'])
 def doctor_referral(assessment_id, doctor_id, prev_doctor):
     update_notification = spcall("update_notification", (assessment_id, prev_doctor), True)
-    update_assessment = spcall("update_assessment_attendingphysician", (assessment_id, doctor_id), True)
+    update_assessment = spcall("update_assessment_attendingphysician", (doctor_id, assessment_id, prev_doctor), True)
+    create_notification = spcall("createnotify", (assessment_id, doctor_id), True)
 
     if 'Unable to find assessment' in str(update_assessment[0][0]):
         return jsonify({'status': 'error', 'message': update_assessment[0][0]})
@@ -345,6 +426,11 @@ def doctor_referral(assessment_id, doctor_id, prev_doctor):
 
 @app.route('/anoncare.api/accept/<int:assessment_id>/<int:doctor_id>', methods=['POST'])
 def accept_assessment(assessment_id, doctor_id):
+    assessment_accept = spcall("accept_assessment", (assessment_id, doctor_id), True)
+    assessment = spcall("check_if_accepted", (assessment_id,))
+
+    if 'Error' in str(assessment[0][0]):
+        return jsonify({'status': assessment[0][0]})
     assessment_accept = spcall("accept_assessment", (assessment_id, doctor_id,), True)
     assessment = spcall("getassessmentID", (assessment_id,))
 
@@ -354,9 +440,9 @@ def accept_assessment(assessment_id, doctor_id):
     records = []
 
     for r in assessment:
-        records.append({'assessment_id': str(r[12]), 'attendingphysician': str(r[10]), 'is_accepted': str(r[11])})
+        records.append({'assessment_id': str(r[0]), 'attendingphysician': str(r[1]), 'is_accepted': str(r[2])})
 
-    return jsonify({'status': 'ok', 'entries': records})
+    return jsonify({'status': 'OK', 'entries': records})
 
 
 @app.route('/anoncare.api/assessments/<int:assessment_id>/', methods=['GET'])
