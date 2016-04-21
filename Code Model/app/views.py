@@ -10,8 +10,10 @@ import json, flask
 from app import app
 import re
 import hashlib, uuid
+from flask.ext.bcrypt import Bcrypt
 
 
+bcrypt = Bcrypt(app)
 # auth = HTTPBasicAuth()
 
 def spcall(qry, param, commit=False):
@@ -44,7 +46,11 @@ def login():
     username = data['username']
     password = data['password']
 
+    # pw_hash = bcrypt.generate_password_hash(password)
+
     user = spcall('checkauth', (username, password,), True)
+
+    # p1 = bcrypt.check_password_hash(pw_hash, p)  # returns True
 
     if 'Invalid Username or Password' in str(user[0][0]):
         return jsonify({'status': 'error', 'message': user[0][0]})
@@ -226,7 +232,7 @@ def insertuser():
         # hashed_password = hashlib.md5(password)
         # saved_password = hashed_password.hexdigest()
         # password = str(password)
-        saved_password = hash_password(password)
+        saved_password = bcrypt.generate_password_hash(password)
         spcall("newuserinfo", (fname, mname, lname, email, username, saved_password, role_id, is_available), True)
         return jsonify({'status': 'OK'})
 

@@ -6,15 +6,15 @@ Feature: User Accounts Maintenance
 
   Scenario: Add a new user to the system - all requirements put
     Given the following details of a user:
-        | fname    | mname    | lname     | email                   | username          | password               | role_id| is_available|
-        | Josiah   | Timonera | Regencia  | jawshaeleazar@gmail.com | josiah.regencia   | josiaheleazareregencia | 3      | False       |
+        | fname     | mname    | lname     | email                   | username           | password               | role_id| is_available|
+        | Josiaha   | Timonera | Regencia  | jawshaeleazar@gmail.com | josiaha.regencia   | josiaheleazareregencia | 3      | False       |
 
 
-    And   the username 'josiah.regencia' does not yet exist
+    And   the username 'josiaha.regencia' does not yet exist
     When  admin clicks the register button
     Then  it should have a '200' response
-    And   it should have a field exists containing False
-    And   it should have a field status containing OK
+    And   it should have a field exists containing 'False'
+    And   it should have a field 'status' containing 'OK'
 
 
 #  Scenario: Add a new user to the system - username already exists
