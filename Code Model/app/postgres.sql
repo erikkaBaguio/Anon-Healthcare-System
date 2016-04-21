@@ -132,9 +132,7 @@ CREATE TABLE Patient (
 CREATE TABLE Assessment (
   id                      SERIAL8 PRIMARY KEY,
   assessment_date         TIMESTAMP DEFAULT 'now',
-  nameofpatient           INT REFERENCES Patient (id),
-  age                     INT,
-  department              INT REFERENCES Department (id),
+  school_id               INT REFERENCES Patient (id),
   vital_signs             INT REFERENCES Vital_signs (id),
   chiefcomplaint          TEXT,
   historyofpresentillness TEXT,
@@ -161,6 +159,8 @@ INSERT INTO Patient_type VALUES (3, 'Staff');
 INSERT INTO Patient_type VALUES (4, 'Outpatient Department');
 
 INSERT INTO Department VALUES (1, 'Computer Science', 1);
+INSERT INTO Department VALUES (2, 'Information Technology', 1);
+INSERT INTO Department VALUES (3, 'Information System', 1);
 
 CREATE TABLE Final_diagnosis (
   id            SERIAL8 PRIMARY KEY,
@@ -583,12 +583,8 @@ LANGUAGE 'plpgsql';
 
 
 -- [POST] Create new assessment
---select new_assessment('Josiah','Timonera','Regencia', 19, 1, 37.1, 80, 19, '90/70', 48, 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
-CREATE OR REPLACE FUNCTION new_assessment(IN par_fname TEXT,
-                                          IN par_mname TEXT,
-                                          IN par_lname              TEXT,
-                                          IN par_age INT,
-                                          IN par_department INT,
+--select new_assessment('2013-0000', 19, 1, 37.1, 80, 19, '90/70', 48, 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
+CREATE OR REPLACE FUNCTION new_assessment(IN par_schoolID INT,
                                           IN par_temperature        FLOAT,
                                           IN par_pulse_rate FLOAT,
                                           IN par_respiration_rate   INT,
@@ -603,22 +599,19 @@ CREATE OR REPLACE FUNCTION new_assessment(IN par_fname TEXT,
   RETURNS TEXT AS
 $$
 DECLARE
-  loc_id       INT;
-  loc_countvs INT;
+  loc_id        INT;
+  loc_countvs   INT;
   loc_res       TEXT;
   loc_patientID BIGINT;
 BEGIN
 
-  IF par_fname = '' OR
-     par_mname = '' OR
-     par_lname = '' OR
-     par_chiefcomplaint = '' OR
+  IF par_chiefcomplaint = '' OR
      par_medicationstaken = '' OR
      par_diagnosis = ''
   THEN
     loc_res = 'ERROR';
 
-  ELSif
+  ELSE
       INSERT INTO Vital_signs (temperature, pulse_rate, respiration_rate, blood_pressure, weight)
       VALUES (par_temperature, par_pulse_rate, par_respiration_rate, par_blood_pressure, par_weight);
 
@@ -626,11 +619,10 @@ BEGIN
       loc_countvs := getvitalcount();
       loc_id := loc_countvs + 1 ;
 
-      INSERT INTO Assessment (nameofpatient, age, department, vital_signs, chiefcomplaint,
-                              historyofpresentillness, medicationstaken, diagnosis, recommendation, attendingphysician)
-      VALUES (loc_patientID, par_age, par_department, loc_id,
-                      par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken, par_diagnosis,
-                      par_recommendation, par_attendingphysician);
+      INSERT INTO Assessment (school_id, vital_signs, chiefcomplaint, historyofpresentillness,
+                              medicationstaken, diagnosis, recommendation, attendingphysician)
+      VALUES (par_schoolID, loc_id, par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken,
+              par_diagnosis, par_recommendation, par_attendingphysician);
 
       loc_res = 'OK';
 
@@ -640,5 +632,3 @@ BEGIN
 END;
 $$
 LANGUAGE 'plpgsql';
-
-
