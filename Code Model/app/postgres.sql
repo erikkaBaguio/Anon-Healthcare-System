@@ -236,9 +236,7 @@ END;
 $$
 LANGUAGE 'plpgsql';
 
- select newrole('doctor');
- select newrole('nurse');
- select newrole('system administrator');
+
 CREATE OR REPLACE FUNCTION newrole(par_rolename TEXT)
   RETURNS TEXT AS
 $$
@@ -264,6 +262,11 @@ BEGIN
 END;
 $$
 LANGUAGE 'plpgsql';
+
+
+ select newrole('doctor');
+ select newrole('nurse');
+ select newrole('system administrator');
 
 --[POST] Create user info
 --select newuserinfo('Josiah', 'Timonera', 'Regencia', 'jetregencia@gmail.com', 'josiah.regencia', 'k6bkW9nUoO8^&C+~', true);
@@ -291,8 +294,7 @@ END;
 $$
 LANGUAGE 'plpgsql';
 
-<<<<<<< HEAD
-=======
+
 --Generates password of a user
 CREATE OR REPLACE FUNCTION generate_password()
   RETURNS TEXT AS
@@ -320,7 +322,7 @@ BEGIN
 END;
 $$
 LANGUAGE 'plpgsql';
->>>>>>> 026c69dee386372c23d695dd52ecf3edcecf10e3
+
 
 --[GET] Retrieve information of users
 --select * from getUserinfo();

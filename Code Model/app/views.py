@@ -9,6 +9,7 @@ from models import DBconn
 import json, flask
 from app import app
 import re
+import hashlib
 
 
 # auth = HTTPBasicAuth()
@@ -127,6 +128,8 @@ def user_exists(username):
 def jsonify_user_exists(username):
     exists = user_exists(username)
 
+    print "exists,", exists
+
     return jsonify({"exists": exists})
 
 
@@ -155,9 +158,14 @@ def get_user_with_id(id):
 
 
 def register_field_empty(fname, mname, lname, email):
-    if fname or mname or lname or email is '':
+    if fname == '':
         return True
-
+    if mname =='':
+        return True
+    if lname == '':
+        return True
+    if email == '':
+        return True
     else:
         return False
 
@@ -180,6 +188,7 @@ def invalid_email(email):
 @app.route('/anoncare.api/user/emailverfication/<string:email>/', methods=['GET'])
 def email_verif(email):
     invalid = invalid_email(email)
+    print "invalid is,", invalid
     return jsonify({"invalid": invalid})
 
 
@@ -198,19 +207,19 @@ def insertuser():
     role_id = user['role_id']
     is_available = user['is_available']
 
-    if register_field_empty(fname, mname, lname, email):
-        # raise IOError('Please fill up the empty fields!')
+    if register_field_empty(str(fname), str(mname), str(lname), str(email)):
         return jsonify({'message': 'Empty Field'})
 
     elif invalid_email(email):
-        # raise IOError('Email is invalid!')
         return jsonify({'email': 'Invalid!'})
 
     elif user_exists(username):
         return jsonify({'status': 'error'})
-
     else:
-        spcall("newuserinfo", (fname, mname, lname, email, username, password, role_id, is_available), True)
+        hashed_password = hashlib.md5(password)
+        saved_password = hashed_password.hexdigest()
+        # saved_password = str(saved_password)
+        spcall("newuserinfo", (fname, mname, lname, email, username, saved_password, role_id, is_available), True)
         return jsonify({'status': 'OK'})
 
 
