@@ -115,6 +115,7 @@ CREATE TABLE Patient (
   fname            TEXT,
   mname            TEXT,
   lname            TEXT,
+  school_id        INT,
   age              INT,
   sex              TEXT,
   department_id    INT REFERENCES Department (id),
@@ -581,9 +582,31 @@ END;
 $$
 LANGUAGE 'plpgsql';
 
+--[POST] Add vital signs
+--select add_vital_signs();
+CREATE OR REPLACE FUNCTION add_vital_signs(IN par_temperature         FLOAT,
+                                           IN par_pulse_rate          FLOAT ,
+                                           IN par_respiration_rate    INT,
+                                           IN par_blood_pressure      TEXT,
+                                           IN par_weight              FLOAT)
+  RETURNS TEXT AS
+$$
+DECLARE
+  loc_res TEXT;
+BEGIN
+  INSERT INTO Vital_signs (temperature, pulse_rate, respiration_rate, blood_pressure, weight)
+  VALUES (par_temperature, par_pulse_rate, par_respiration_rate, par_blood_pressure, par_weight);
+
+  loc_res = 'OK';
+  RETURN loc_res;
+END
+$$
+  LANGUAGE 'plpgsql';
+
 
 -- [POST] Create new assessment
---select new_assessment('2013-0000', 19, 1, 37.1, 80, 19, '90/70', 48, 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
+--select new_assessment(20130000, 37.1, 80, 19, '90/70', 48, 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
+--select new_assessment(20130001, 37.1, 80, 19, '90/70', 48, 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
 CREATE OR REPLACE FUNCTION new_assessment(IN par_schoolID INT,
                                           IN par_temperature        FLOAT,
                                           IN par_pulse_rate FLOAT,
@@ -601,9 +624,11 @@ $$
 DECLARE
   loc_id        INT;
   loc_countvs   INT;
+  loc_vital_res TEXT;
   loc_res       TEXT;
   loc_patientID BIGINT;
 BEGIN
+--   loc_vital_res := add_vital_signs(par_temperature, par_pulse_rate, par_respiration_rate, par_blood_pressure, par_weight);
 
   IF par_chiefcomplaint = '' OR
      par_medicationstaken = '' OR
@@ -611,11 +636,8 @@ BEGIN
   THEN
     loc_res = 'ERROR';
 
-  ELSE
-      INSERT INTO Vital_signs (temperature, pulse_rate, respiration_rate, blood_pressure, weight)
-      VALUES (par_temperature, par_pulse_rate, par_respiration_rate, par_blood_pressure, par_weight);
-
-      loc_patientID := retrievepatientID(par_fname, par_mname, par_lname);
+  ELSIF (add_vital_signs(par_temperature, par_pulse_rate, par_respiration_rate, par_blood_pressure, par_weight) )
+  THEN
       loc_countvs := getvitalcount();
       loc_id := loc_countvs + 1 ;
 
@@ -631,4 +653,4 @@ BEGIN
 
 END;
 $$
-LANGUAGE 'plpgsql';
+  LANGUAGE 'plpgsql';
