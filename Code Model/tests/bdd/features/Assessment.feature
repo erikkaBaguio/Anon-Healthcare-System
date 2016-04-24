@@ -5,8 +5,8 @@ Feature: Assessment
 #SUNNY CASE
       Scenario: Create assessment successfully.
           Given the nurse have the following assessment details:
-                |id | fname   | mname   | lname   | age | department  | temperature | pulse_rate  | respiration_rate  | blood_pressure  | weight |chiefcomplaint |historyofpresentillness | medicationstaken | diagnosis   | reccomendation | attendingphysician|
-                |200  | Josiah  |Timonera |Regencia | 19  | 1           | 37.1        | 80          | 19 breaths/minute | 90/70           | 48     | complaint     | history                | medication1      | diagnosis1  | recommendation1| 1                 |
+                |id   | school_id| temperature | pulse_rate  | respiration_rate  | blood_pressure  | weight |chiefcomplaint |historyofpresentillness | medicationstaken | diagnosis   | reccomendation | attendingphysician|
+                |200  | 20130000 | 37.1        | 80          | 19 breaths/minute | 90/70           | 48     | complaint     | history                | medication1      | diagnosis1  | recommendation1| 1                 |
 
           When  the nurse clicks the add button
           Then  it should have a '200' response
@@ -16,36 +16,6 @@ Feature: Assessment
 
 
 #RAINY CASES
-      Scenario: First name field is null.
-          Given the nurse have the following assessment details:
-                |id | fname   | mname   | lname   | age | department  | temperature | pulse_rate  | respiration_rate  | blood_pressure  | weight |chiefcomplaint |historyofpresentillness | medicationstaken | diagnosis   | reccomendation | attendingphysician|
-                |1  |   |Timonera |Regencia | 19  | 1           | 37.1        | 80          | 19 breaths/minute | 90/70           | 48     | complaint     | history                | medication1      | diagnosis1  | recommendation1| 1                 |
-
-          When  the nurse clicks the add button
-          Then  it should have a '200' response
-          And   it should have a field 'status' containing 'OK'
-          And   it should have a field 'message' containing 'ERROR'
-
-      Scenario: Middle name field is null.
-          Given the nurse have the following assessment details:
-                |id | fname   | mname   | lname   | age | department  | temperature | pulse_rate  | respiration_rate  | blood_pressure  | weight |chiefcomplaint |historyofpresentillness | medicationstaken | diagnosis   | reccomendation | attendingphysician|
-                |1  | Josiah  |         |Regencia | 19  | 1           | 37.1        | 80          | 19 breaths/minute | 90/70           | 48     | complaint     | history                | medication1      | diagnosis1  | recommendation1| 1                 |
-
-          When  the nurse clicks the add button
-          Then  it should have a '200' response
-          And   it should have a field 'status' containing 'OK'
-          And   it should have a field 'message' containing 'ERROR'
-
-      Scenario: Last name field is null.
-          Given the nurse have the following assessment details:
-                |id | fname   | mname   | lname   | age | department  | temperature | pulse_rate  | respiration_rate  | blood_pressure  | weight |chiefcomplaint |historyofpresentillness | medicationstaken | diagnosis   | reccomendation | attendingphysician|
-                |1  | Josiah  |Timonera |         | 19  | 1           | 37.1        | 80          | 19 breaths/minute | 90/70           | 48     | complaint     | history                | medication1      | diagnosis1  | recommendation1| 1                 |
-
-          When  the nurse clicks the add button
-          Then  it should have a '200' response
-          And   it should have a field 'status' containing 'OK'
-          And   it should have a field 'message' containing 'ERROR'
-
       Scenario: Chief complaint field is null.
           Given the nurse have the following assessment details:
                 |id | fname   | mname   | lname   | age | department  | temperature | pulse_rate  | respiration_rate  | blood_pressure  | weight |chiefcomplaint |historyofpresentillness | medicationstaken | diagnosis   | reccomendation | attendingphysician|
