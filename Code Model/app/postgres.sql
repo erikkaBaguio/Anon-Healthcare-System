@@ -131,7 +131,7 @@ CREATE TABLE Patient (
 
 
 CREATE TABLE Assessment (
-  id                      SERIAL8 PRIMARY KEY,
+  id                      INT PRIMARY KEY,
   assessment_date         TIMESTAMP DEFAULT 'now',
   school_id               INT REFERENCES Patient (id),
   vital_signs             INT REFERENCES Vital_signs (id),
@@ -606,29 +606,28 @@ $$
 
 -- [POST] Create new assessment
 --select new_assessment(20130000, 37.1, 80, 19, '90/70', 48, 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
---select new_assessment(20130001, 37.1, 80, 19, '90/70', 48, 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
-CREATE OR REPLACE FUNCTION new_assessment(IN par_schoolID INT,
-                                          IN par_temperature        FLOAT,
-                                          IN par_pulse_rate FLOAT,
-                                          IN par_respiration_rate   INT,
-                                          IN par_blood_pressure TEXT,
-                                          IN par_weight             FLOAT,
-                                          IN par_chiefcomplaint     TEXT,
-                                          IN par_historyofpresentillness TEXT,
-                                          IN par_medicationstaken   TEXT,
-                                          IN par_diagnosis          TEXT,
-                                          IN par_recommendation TEXT,
-                                          IN par_attendingphysician INT)
+--select new_assessment(20130001, 36.4, 70, 19, '100/80', 45, 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
+CREATE OR REPLACE FUNCTION new_assessment(IN par_id                       INT,
+                                          IN par_schoolID                 INT,
+                                          IN par_temperature              FLOAT,
+                                          IN par_pulse_rate               FLOAT,
+                                          IN par_respiration_rate         INT,
+                                          IN par_blood_pressure           TEXT,
+                                          IN par_weight                   FLOAT,
+                                          IN par_chiefcomplaint           TEXT,
+                                          IN par_historyofpresentillness  TEXT,
+                                          IN par_medicationstaken         TEXT,
+                                          IN par_diagnosis                TEXT,
+                                          IN par_recommendation           TEXT,
+                                          IN par_attendingphysician       INT)
   RETURNS TEXT AS
 $$
 DECLARE
-  loc_id        INT;
+  loc_id       INT;
   loc_countvs   INT;
-  loc_vital_res TEXT;
   loc_res       TEXT;
   loc_patientID BIGINT;
 BEGIN
---   loc_vital_res := add_vital_signs(par_temperature, par_pulse_rate, par_respiration_rate, par_blood_pressure, par_weight);
 
   IF par_chiefcomplaint = '' OR
      par_medicationstaken = '' OR
@@ -636,14 +635,16 @@ BEGIN
   THEN
     loc_res = 'ERROR';
 
-  ELSIF (add_vital_signs(par_temperature, par_pulse_rate, par_respiration_rate, par_blood_pressure, par_weight) )
-  THEN
-      loc_countvs := getvitalcount();
-      loc_id := loc_countvs + 1 ;
+  ELSE
+      INSERT INTO Vital_signs(id, temperature, pulse_rate, respiration_rate, blood_pressure, weight)
+      VALUES (par_id,par_temperature, par_pulse_rate, par_respiration_rate, par_blood_pressure, par_weight);
 
-      INSERT INTO Assessment (school_id, vital_signs, chiefcomplaint, historyofpresentillness,
+      loc_countvs := getvitalcount();
+      loc_id := loc_countvs;
+
+      INSERT INTO Assessment (id,school_id, vital_signsID, chiefcomplaint, historyofpresentillness,
                               medicationstaken, diagnosis, recommendation, attendingphysician)
-      VALUES (par_schoolID, loc_id, par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken,
+      VALUES (par_id,par_schoolID, loc_id, par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken,
               par_diagnosis, par_recommendation, par_attendingphysician);
 
       loc_res = 'OK';
@@ -653,4 +654,4 @@ BEGIN
 
 END;
 $$
-  LANGUAGE 'plpgsql';
+LANGUAGE 'plpgsql';
