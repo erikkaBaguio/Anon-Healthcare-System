@@ -163,12 +163,9 @@ def email_verif(email):
 
 
 @app.route('/anoncare.api/user/', methods=['POST'])
-<<<<<<< HEAD
-def insertuser():
-=======
 def insert_user():
 
->>>>>>> 4ba69d92f42558d649ffdb6cc3c8574978059833
+
     user = json.loads(request.data)
 
     print "user is ", user
@@ -375,32 +372,25 @@ def doctor_referral(assessment_id, doctor_id, prev_doctor):
 
 @app.route('/anoncare.api/accept/<int:assessment_id>/<int:doctor_id>', methods=['POST'])
 def accept_assessment(assessment_id, doctor_id):
-<<<<<<< HEAD
     assessment_accept = spcall("accept_assessment", (assessment_id, doctor_id,), True)
     assessment = spcall("getassessmentID", (assessment_id,))
 
     if 'Error' in str(assessment[0][0]):
         return jsonify({'status': 'error'})
-=======
     assessment_accept = spcall("accept_assessment", (assessment_id, doctor_id), True)
     assessment = spcall("check_if_accepted", (assessment_id, ))
 
     if 'Error' in str(assessment[0][0]):
         return jsonify({'status':assessment[0][0]})
->>>>>>> 4ba69d92f42558d649ffdb6cc3c8574978059833
 
     records = []
 
     for r in assessment:
-<<<<<<< HEAD
         records.append({'assessment_id': str(r[12]), 'attendingphysician': str(r[10]), 'is_accepted': str(r[11])})
 
-    return jsonify({'status': 'ok', 'entries': records})
-=======
         records.append({'assessment_id':str(r[0]), 'attendingphysician':str(r[1]), 'is_accepted':str(r[2])})
 
     return jsonify({'status':'OK', 'entries':records})
->>>>>>> 4ba69d92f42558d649ffdb6cc3c8574978059833
 
 
 @app.route('/anoncare.api/assessments/<int:assessment_id>/', methods=['GET'])
