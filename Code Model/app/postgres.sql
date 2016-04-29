@@ -764,8 +764,6 @@ END;
 $$
 LANGUAGE 'plpgsql';
 
-<<<<<<< HEAD
-
 -- add is_accepted column to define if the doctor can finalize the assessment or not.
 alter table assessment add is_accepted boolean default 'FALSE';
 
@@ -784,9 +782,9 @@ create or replace function check_if_accepted(in par_assessment_id int, out int8,
   $$
     select id, attendingphysician, is_accepted from Assessment where id = par_assessment_id;
   $$
-    language 'sql'
+    language 'sql';
 
-=======
+
 --[POST] Add vital signs
 --select add_vital_signs(37.1,80,19,'90/70',48 );
 create or replace function add_vital_signs(par_temperature float, par_pulse_rate float, par_respiration_rate int, par_blood_pressure text, par_weight float) returns text as
@@ -810,7 +808,7 @@ create or replace function add_vital_signs(par_temperature float, par_pulse_rate
     end;
   $$
     language 'plpgsql';
->>>>>>> 026c69dee386372c23d695dd52ecf3edcecf10e3
+
 ------------------------------------------------------ END Assessment -----------------------------------------------------
 
 
@@ -820,7 +818,7 @@ create or replace function add_vital_signs(par_temperature float, par_pulse_rate
 CREATE OR REPLACE FUNCTION createnotify(par_assessment_id INT, par_doctor_id INT)
   RETURNS TEXT AS
 $$
-<<<<<<< HEAD
+
   declare
       loc_response text;
       loc_id int;
@@ -835,7 +833,7 @@ $$
         end if;
         return loc_response;
   end;
-=======
+
 DECLARE
   loc_response TEXT;
   loc_id       INT;
@@ -853,7 +851,7 @@ BEGIN
   END IF;
   RETURN loc_response;
 END;
->>>>>>> 026c69dee386372c23d695dd52ecf3edcecf10e3
+
 $$
 LANGUAGE 'plpgsql';
 
@@ -887,7 +885,7 @@ BEGIN
   RETURN loc_response;
 END;
 
-<<<<<<< HEAD
+
   $$
     language 'plpgsql';
 
@@ -905,9 +903,6 @@ create or replace function update_assessment_attendingphysician(in par_attending
 
   $$
     language 'plpgsql';
-=======
-$$
-LANGUAGE 'plpgsql';
->>>>>>> 026c69dee386372c23d695dd52ecf3edcecf10e3
+
 -----------------------------------------------------END Notifications ----------------------------------------------------
 

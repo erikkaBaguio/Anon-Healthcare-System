@@ -3,7 +3,7 @@ import os
 from os import sys
 from flask import Flask, jsonify, render_template, request, session, redirect
 from functools import wraps
-# from flask.ext.httpauth import HTTPBasicAuth
+from flask.ext.httpauth import HTTPBasicAuth
 from os import sys
 from models import DBconn
 import json, flask
@@ -12,7 +12,7 @@ import re
 import hashlib, uuid
 
 
-# auth = HTTPBasicAuth()
+auth = HTTPBasicAuth()
 
 def spcall(qry, param, commit=False):
     try:
@@ -160,7 +160,7 @@ def get_user_with_id(id):
 def register_field_empty(fname, mname, lname, email):
     if fname == '':
         return True
-    if mname =='':
+    if mname == '':
         return True
     if lname == '':
         return True
