@@ -523,11 +523,7 @@ def new_assessment():
         data = json.loads(request.data)
 
         id = data['id']
-        fname = data['fname']
-        mname = data['mname']
-        lname = data['lname']
-        age = data['age']
-        department = data['department']
+        school_id = data['school_id']
         temperature = data['temperature']
         pulse_rate = data['pulse_rate']
         respiration_rate = data['respiration_rate']
@@ -540,10 +536,9 @@ def new_assessment():
         recommendation = data['reccomendation']
         attendingphysician = data['attendingphysician']
 
-        response = spcall('new_assessment', (
-            id, fname, mname, lname, age, department, temperature, pulse_rate, respiration_rate, blood_pressure, weight,
-            chiefcomplaint, historyofpresentillness, medicationstaken, diagnosis, recommendation, attendingphysician,),
-                          True)
+        response = spcall('new_assessment', (id, school_id, temperature, pulse_rate, respiration_rate, blood_pressure, weight,
+                                             chiefcomplaint, historyofpresentillness, medicationstaken, diagnosis, recommendation,
+                                             attendingphysician,), True)
 
         if 'Error' in response[0][0]:
             return jsonify({'status': 'error', 'message': response[0][0]})
