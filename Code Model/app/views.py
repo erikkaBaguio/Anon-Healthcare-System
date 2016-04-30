@@ -484,9 +484,9 @@ def view_assessment(assessment_id):
         return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
 
 
-@app.route('/anoncare.api/assessments/', methods=['GET'])
-def view_all_assessments():
-    assessments = spcall("getallassessment", ())
+@app.route('/api/anoncare/assessments/<int:school_id>/', methods=['GET'])
+def view_all_assessments(school_id):
+    assessments = spcall("getallassessmentID", (school_id,))
     records = []
 
     if len(assessments) == 0:
@@ -500,19 +500,17 @@ def view_all_assessments():
             records.append({"assessment_id": r[0],
                             "assessment_date": r[1],
                             "patient_id": r[2],
-                            "age": r[3],
-                            "department": r[4],
-                            "temperature": r[5],
-                            "pulse_rate": r[6],
-                            "respiration_rate": r[7],
-                            "blood_pressure": r[8],
-                            "weight": r[9],
-                            "chief_complaint": r[10],
-                            "history_of_present_illness": r[11],
-                            "medications_taken": r[12],
-                            "diagnosis": r[13],
-                            "recommendation": r[14],
-                            "attending_physician": r[15]})
+                            "temperature": r[11],
+                            "pulse_rate": r[12],
+                            "respiration_rate": r[13],
+                            "blood_pressure": r[14],
+                            "weight": r[15],
+                            "chief_complaint": r[4],
+                            "history_of_present_illness": r[5],
+                            "medications_taken": r[6],
+                            "diagnosis": r[7],
+                            "recommendation": r[8],
+                            "attending_physician": r[16] + ' ' + r[17]})
 
         return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
 
