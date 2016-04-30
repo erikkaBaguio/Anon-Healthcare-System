@@ -547,16 +547,12 @@ def new_assessment():
         return jsonify({'status': 'OK', 'message': 'Invalid input'})
 
 
-@app.route('/anoncare.api/assessments/update/<assessment_id>/', methods=['PUT'])
-def update_assessment(assessment_id):
+@app.route('/api/anoncare/assessments/update/', methods=['PUT'])
+def update_assessment():
     data = json.loads(request.data)
-    print "response : ", data
+
     id = data.get('id', '')
-    fname = data.get('fname', '')
-    mname = data.get('mname', '')
-    lname = data.get('lname', '')
-    age = data.get('age', '')
-    department = data.get('department', '')
+    school_id = data.get('school_id','')
     temperature = data.get('temperature', '')
     pulse_rate = data.get('pulse_rate', '')
     respiration_rate = data.get('respiration_rate', '')
@@ -571,18 +567,7 @@ def update_assessment(assessment_id):
 
     response = spcall('update_assessment', (
         id,
-        fname,
-        mname,
-        lname,
-        age,
-        department,
-        temperature,
-        pulse_rate,
-        respiration_rate,
-        blood_pressure,
-        weight,
-        chiefcomplaint,
-        historyofpresentillness,
+        school_id,
         medicationstaken,
         diagnosis,
         recommendation,

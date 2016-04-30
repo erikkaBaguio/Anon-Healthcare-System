@@ -724,7 +724,8 @@ BEGIN
     diagnosis          = par_diagnosis,
     recommendation     = par_recommendation,
     attendingphysician = par_attendingphysician
-  WHERE id = par_id;
+  WHERE id = par_id
+  AND school_id = par_schoolID;
 
   loc_res = 'Updated';
   RETURN loc_res;
