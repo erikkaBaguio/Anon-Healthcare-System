@@ -1,8 +1,12 @@
 from flask import Flask
-from flask.ext.cors import CORS
+import os
 
 app = Flask(__name__)
-CORS(app)
+app.debug = True
+
 
 from app import views
 
+
+if __name__ == '__main__':
+    app.run()
