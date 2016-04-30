@@ -569,35 +569,49 @@ CREATE OR REPLACE FUNCTION new_assessment(IN par_id                       INT,
   RETURNS TEXT AS
 $$
 DECLARE
-  loc_id       INT;
-  loc_countvs   INT;
+  loc_id1       INT;
+  loc_id2       INT;
   loc_res       TEXT;
-  loc_patientID BIGINT;
 BEGIN
+  SELECT INTO loc_id1 id
+  FROM Assessment
+  WHERE id = par_id;
 
-  IF par_chiefcomplaint = '' OR
-     par_medicationstaken = '' OR
-     par_diagnosis = ''
+  SELECT INTO loc_id2 id
+  FROM Vital_signs
+  WHERE id = par_id;
+
+  IF loc_id1 ISNULL AND loc_id2 ISNULL
   THEN
-    loc_res = 'PLEASE FLL THE REQUIRE FIELDS';
+    IF par_chiefcomplaint = '' OR
+       par_chiefcomplaint ISNULL OR
+       par_medicationstaken = '' OR
+       par_medicationstaken ISNULL OR
+       par_diagnosis = '' OR
+       par_diagnosis ISNULL
+    THEN
+      loc_res = 'PLEASE FILL THE REQUIRE FIELDS';
 
+    ELSE
+        INSERT INTO Vital_signs(id, temperature, pulse_rate, respiration_rate, blood_pressure, weight)
+        VALUES (par_id,par_temperature, par_pulse_rate, par_respiration_rate, par_blood_pressure, par_weight);
+
+        INSERT INTO Assessment (id,school_id, vital_signsID, chiefcomplaint, historyofpresentillness,
+                                medicationstaken, diagnosis, recommendation, attendingphysician)
+        VALUES (par_id,par_schoolID, par_id, par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken,
+                par_diagnosis, par_recommendation, par_attendingphysician);
+
+        loc_res = 'OK';
+
+    END IF;
   ELSE
-      INSERT INTO Vital_signs(id, temperature, pulse_rate, respiration_rate, blood_pressure, weight)
-      VALUES (par_id,par_temperature, par_pulse_rate, par_respiration_rate, par_blood_pressure, par_weight);
-
-      INSERT INTO Assessment (id,school_id, vital_signsID, chiefcomplaint, historyofpresentillness,
-                              medicationstaken, diagnosis, recommendation, attendingphysician)
-      VALUES (par_id,par_schoolID, par_id, par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken,
-              par_diagnosis, par_recommendation, par_attendingphysician);
-
-      loc_res = 'OK';
-
+      loc_res = 'ID EXISTS';
   END IF;
   RETURN loc_res;
 
 END;
 $$
-LANGUAGE 'plpgsql';
+  LANGUAGE 'plpgsql';
 
 
 --[GET] Retrieve assessment of a specific patient
