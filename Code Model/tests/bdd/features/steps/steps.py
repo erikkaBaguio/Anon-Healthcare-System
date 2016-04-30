@@ -55,16 +55,23 @@ def when_the_doctor_clicks_the_update_button(step):
 
 """ Scenario: View Assessment of Patient """
 
-@step(u'Given the patient assessment with a school id \'([^\']*)\'')
-def given_the_patient_assessment_with_an_id_group1(step, school_id):
+@step(u'Given the patient assessment with school id \'([^\']*)\'')
+def given_the_patient_assessment_with_school_id_group1(step, school_id):
     world.assessment = world.app.get('/api/anoncare/assessments/{}/'.format(school_id))
     world.response_json = json.loads(world.assessment.data)
     assert_equals(world.response_json['status'], 'OK')
 
+@step(u'And   the patient assessment with an assessment id \'([^\']*)\'')
+def and_the_patient_assessment_with_an_assessment_id_group1(step, assessment_id):
+    world.assessment = world.app.get('/api/anoncare/assessments/20130000/{}/'.format(assessment_id))
+    world.response_json = json.loads(world.assessment.data)
+    assert_equals(world.response_json['status'], 'OK')
+
+
 @step(u'When  the doctor press view assessment with an id \'([^\']*)\'')
 def when_the_doctor_press_view_assessment_with_an_id_group1(step, assessment_id):
     world.browser = TestApp(app)
-    world.response = world.app.get('/api/anoncare/assessments/{}/'.format(assessment_id))
+    world.response = world.app.get('/api/anoncare/assessments/20130000/{}/'.format(assessment_id))
 
 @step(u'When  the doctor press search with school id \'([^\']*)\'')
 def when_the_doctor_press_search_with_school_id_group1(step, school_id):

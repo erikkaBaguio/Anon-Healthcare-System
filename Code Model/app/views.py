@@ -451,8 +451,8 @@ def accept_assessment(assessment_id, doctor_id):
     return jsonify({'status': 'OK', 'entries': records})
 
 
-@app.route('/anoncare.api/assessments/<int:assessment_id>/', methods=['GET'])
-def view_assessment(assessment_id):
+@app.route('/api/anoncare/assessments/<int:school_id>/<int:assessment_id>/', methods=['GET'])
+def view_assessment(school_id,assessment_id):
     assessments = spcall("getassessmentID", (assessment_id,))
     records = []
 
@@ -465,21 +465,20 @@ def view_assessment(assessment_id):
     else:
         r = assessments[0]
 
-        records.append({"assessment_date": r[0],
-                        "patient_id": r[1],
-                        "age": r[2],
-                        "department": r[3],
-                        "temperature": r[4],
-                        "pulse_rate": r[5],
-                        "respiration_rate": r[6],
-                        "blood_pressure": r[7],
-                        "weight": r[8],
-                        "chief_complaint": r[9],
-                        "history_of_present_illness": r[10],
-                        "medications_taken": r[11],
-                        "diagnosis": r[12],
-                        "recommendation": r[13],
-                        "attending_physician": r[14]})
+        records.append({"assessment_id": r[0],
+                        "school_id": r[2],
+                        "assessment_date": r[1],
+                        "temperature": r[11],
+                        "pulse_rate": r[12],
+                        "respiration_rate": r[13],
+                        "blood_pressure": r[14],
+                        "weight": r[15],
+                        "chief_complaint": r[4],
+                        "history_of_present_illness": r[5],
+                        "medications_taken": r[6],
+                        "diagnosis": r[7],
+                        "recommendation": r[8],
+                        "attending_physician": r[16] + ' ' + r[17]})
 
         return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
 
