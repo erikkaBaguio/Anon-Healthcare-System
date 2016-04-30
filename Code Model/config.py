@@ -1,1 +1,0 @@
-SQLALCHEMY_DATABASE_URI= 'postgresql://anoncare:anoncare@localhost/acdb'
