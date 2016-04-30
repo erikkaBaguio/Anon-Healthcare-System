@@ -7,9 +7,9 @@ Feature: User Accounts Maintenance
   Scenario: Add a new user to the system - all requirements put
     Given admin inputs:
         | fname    | mname    | lname     | email                   | username          | password               | role_id| is_available|
-        | Eleazar  | Regencia | Timonera  | jawshaeleazar@gmail.com | eleazar.timonera  | josiaheleazareregencia | 2      | False       |
+        | Josiahboy| Timonera | Regencia  | jawshaeleazar@gmail.com | josiahboy.regencia| 12345                  | 1      | False       |
 
-    And the username 'eleazar.timonera' does not yet exist
+    And the username 'josiahboy.regencia' does not yet exist
 
     When admin clicks the register button
 
@@ -23,7 +23,7 @@ Feature: User Accounts Maintenance
   Scenario: Add a new user to the system - username already exists
     Given admin inputs:
         | fname    | mname    | lname     | email                   | username          | password               | role_id| is_available|
-        | Josiah   | Timonera | Regencia  | jawshaeleazar@gmail.com | josiah.regencia   | josiaheleazareregencia | 1      | False       |
+        | Josiah   | Timonera | Regencia  | jawshaeleazar@gmail.com | josiah.regencia   | 12345                  | 1      | False       |
 
     And the username 'josiah.regencia' exists
 

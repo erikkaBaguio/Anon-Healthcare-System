@@ -107,6 +107,11 @@ def get_college(college_id):
 
 ####################################################################################################
 
+@auth.get_password
+def get_password(username):
+    return spcall('getpassword', (username,))[0][0]
+
+
 def user_exists(username):
     users = spcall('getuserinfo', ())
     index = 0
@@ -134,6 +139,7 @@ def jsonify_user_exists(username):
 
 
 @app.route('/anoncare.api/users/<int:id>/', methods=['GET'])
+@auth.login_required
 def get_user_with_id(id):
     res = spcall("getuserinfoid", (id,), True)
     entries = []
@@ -226,8 +232,9 @@ def insertuser():
         # hashed_password = hashlib.md5(password)
         # saved_password = hashed_password.hexdigest()
         # password = str(password)
-        saved_password = hash_password(password)
-        spcall("newuserinfo", (fname, mname, lname, email, username, saved_password, role_id, is_available), True)
+        # saved_password = hash_password(password)
+        spcall("newuserinfo", (fname, mname, lname, email, username, password, role_id, is_available), True)
+        # spcall("newuserinfo", (fname, mname, lname, email, username, saved_password, role_id, is_available), True)
         return jsonify({'status': 'OK'})
 
 

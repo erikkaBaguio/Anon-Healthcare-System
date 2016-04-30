@@ -3,7 +3,6 @@ CREATE TABLE Role (
   rolename TEXT
 );
 
-
 CREATE TABLE Userinfo (
   id           SERIAL8 PRIMARY KEY,
   fname        TEXT        NOT NULL,
