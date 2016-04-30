@@ -704,3 +704,31 @@ $$
 
 $$
   LANGUAGE 'sql';
+
+--[PUT] Update assessment of patient
+--select update_assessment(1,20130000, 'medication1f', 'diagnosis11f','recommendation11', 1);
+CREATE OR REPLACE FUNCTION update_assessment(IN par_id                 INT,
+                                             IN par_schoolID           TEXT,
+                                             IN par_medicationstaken   TEXT,
+                                             IN par_diagnosis          TEXT,
+                                             IN par_recommendation     TEXT,
+                                             IN par_attendingphysician INT)
+  RETURNS TEXT AS
+$$
+DECLARE
+  loc_res TEXT;
+BEGIN
+
+  UPDATE Assessment
+  SET
+    diagnosis          = par_diagnosis,
+    recommendation     = par_recommendation,
+    attendingphysician = par_attendingphysician
+  WHERE id = par_id;
+
+  loc_res = 'Updated';
+  RETURN loc_res;
+
+END;
+$$
+  LANGUAGE 'plpgsql';
