@@ -27,7 +27,7 @@ def spcall(qry, param, commit=False):
 
 
 @app.route('/')
-@auth.login_required
+# @auth.login_required
 def index2():
     return 'Hello world!'
 
