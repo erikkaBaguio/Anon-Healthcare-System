@@ -498,8 +498,8 @@ def view_all_assessments(school_id):
     else:
         for r in assessments:
             records.append({"assessment_id": r[0],
+                            "school_id": r[2],
                             "assessment_date": r[1],
-                            "patient_id": r[2],
                             "temperature": r[11],
                             "pulse_rate": r[12],
                             "respiration_rate": r[13],
