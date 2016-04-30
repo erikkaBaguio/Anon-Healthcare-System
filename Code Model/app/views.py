@@ -6,6 +6,10 @@ import json, flask
 from app import app
 import re                   #this is for verifying if the email is valid
 import hashlib
+from flask.ext.httpauth import HTTPBasicAuth
+
+
+auth = HTTPBasicAuth()
 
 
 def spcall(qry, param, commit=False):
@@ -20,6 +24,18 @@ def spcall(qry, param, commit=False):
     except:
         res = [("Error: " + str(sys.exc_info()[0]) + " " + str(sys.exc_info()[1]),)]
     return res
+
+
+@app.route('/')
+@auth.login_required
+def index2():
+    return 'Hello world!'
+
+
+@auth.get_password
+def get_password(username):
+    return spcall('get_password', (username,))[0][0]
+
 
 
 @app.after_request
