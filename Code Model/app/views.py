@@ -452,8 +452,9 @@ def accept_assessment(assessment_id, doctor_id):
 
 
 @app.route('/api/anoncare/assessments/<int:school_id>/<int:assessment_id>/', methods=['GET'])
-def view_assessment(school_id,assessment_id):
-    assessments = spcall("getassessmentID", (assessment_id,))
+def view_assessment(school_id, assessment_id):
+
+    assessments = spcall("getassessmentID", (school_id, assessment_id))
     records = []
 
     if len(assessments) == 0:

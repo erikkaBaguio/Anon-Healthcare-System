@@ -615,9 +615,10 @@ $$
 
 
 --[GET] Retrieve assessment of a specific patient
---select getassessmentID(1);
-CREATE OR REPLACE FUNCTION getassessmentID(IN par_id INT,
-                                           OUT BIGINT,
+--select getassessmentID(20130000,1);
+CREATE OR REPLACE FUNCTION getassessmentID(IN par_schoolID INT,
+                                           IN par_id INT,
+                                           OUT INT,
                                            OUT TIMESTAMP,
                                            OUT INT,
                                            OUT INT,
@@ -653,7 +654,8 @@ select Assessment.*,
   INNER JOIN Userinfo ON (
     Assessment.attendingphysician = Userinfo.id
     )
-  WHERE Assessment.id = par_id;
+  WHERE Assessment.id = par_id
+  AND Assessment.school_id = par_schoolID
 
 $$
 LANGUAGE 'sql';
