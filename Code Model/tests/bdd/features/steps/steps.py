@@ -83,6 +83,24 @@ def step_impl(step):
     response_json = json.loads(world.assessment.data)
     assert_equals(world.response_json['entries'], response_json['entries'])
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+""" Scenario: View All Assessment of Patient """
+@step(u'Given the assessment of all patient')
+def given_the_assessment_of_all_patient(step):
+    world.assessment = world.app.get('/anoncare.api/assessments/2/')
+    world.response_json = json.loads(world.assessment.data)
+    assert_equals(world.response_json['status'], 'OK')
+
+@step(u'When  the doctor press view all assessment')
+def when_the_doctor_press_view_all_assessment(step):
+    world.browser = TestApp(app)
+    world.response = world.app.get('/anoncare.api/assessments/2/')
+=======
+>>>>>>> 4ba69d92f42558d649ffdb6cc3c8574978059833
+
+>>>>>>> a33f996a9f3307d20820031936c832a2381ba340
 """ Feature: Login  """
 
 """ Scenario: User successfully logged in """
@@ -145,10 +163,21 @@ def when_admin_clicks_the_register_button(step):
     world.browser = TestApp(app)
     world.response = world.app.post('/anoncare.api/user/', data=json.dumps(world.user))
 
+<<<<<<< HEAD
 @step(u'And   it should have a field exists containing \'([^\']*)\'')
 def and_it_should_have_a_field_exists_containing_group1(step, group1):
     world.resp = json.loads(world.response.data)
     assert_equals(world.resp['exists'], False)
+=======
+<<<<<<< HEAD
+
+@step(u'And   it should get a field \'([^\']*)\' containing \'([^\']*)\'')
+def and_it_should_get_a_field_group1_containing_group2(step, field, expected_boolean):
+    world.user_exists_res = json.loads(world.user_exists_response.data)
+    assert_equals(str(world.user_exists_res[field]), expected_boolean)
+=======
+>>>>>>> 4ba69d92f42558d649ffdb6cc3c8574978059833
+>>>>>>> a33f996a9f3307d20820031936c832a2381ba340
 
 
 """ Scenario: Add a new user to the system - username already exists """
