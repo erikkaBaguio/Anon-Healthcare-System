@@ -3,8 +3,9 @@ Feature: Create patient file
 
 Scenario: Create patient file
     Given the following details of patient
-    |id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address         |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
-    |10| Kristel     |Daligdig|Pabillaran|19 |female  |    1         |     1          | 5 ft  | 45     | August 20 1996 | single       | Corazon Aquino | Dalipuga Iligan City| mild | none   | none      | none       | none     | none      |  none     | none   | none    | none            | none  |none|  none         |    none      |  none      | none |    none      |   none    |   none      |    none    |  none    |     none         |   none  |  none  |   none   |   none              | true      |
+    |school_id| fname       | mname  | lname    |age| sex    | department_id| patient_type_id|height | weight | date_of_birth  | civil_status |name_of_guardian|home_address  |smoking    | allergies    | alcohol        | medicationstaken | drugs        |
+    |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
+    |20131222| Hanni    |Daligdig|Pabillaran|19 |female  |    1         |     1          | 5 ft  | 45     | August 20 1996 | single       | Mae Robles | Dalipuga Iligan City| none| none| none| none| none| mild | none   | none      | none       | none     | none      |  none     | none   | none    | none            | none  |none|  none         |    none      |  none      | none |    none      |   none    |   none      |    none    |  none    |     none         |   none  |  none  |   none   |   none              | true      |
     When I click the add button
     Then  it should have a '200' response
     And   it should have a field 'status' containing 'OK'
@@ -12,12 +13,13 @@ Scenario: Create patient file
 
 
 Scenario: Get the patient file
-    Given a patient file with id '1'
-    When I retrieve the patient id '1'
+    Given a patient file with id '20131288'
+    When I retrieve the patient id '20131288'
     Then  it should have a '200' response
     And the following patient file is retrieved:
-    |id| fname       | mname | lname    |age| sex    | height | weight | date_of_birth  | civil_status |name_of_guardian|home_address |cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness|
-    |1 | Mary Grace  | Pasco | Cabolbol |19 | female |      4ft    |   45   |  august 13 1995|    single    |Juan Manalo     |iligan city  |mild  | none   |  none     |    none    | none     |   none    |    none   |   none |  none   |  none            | none |none|    none       |  none          |  none      |none  |    none      |   none    |    none     |    none    | none     |     none         |   none  |  none  |   none   |   none
+    |school_id| fname       | mname | lname    |age| sex    |department_id| patient_type_id| height | weight | date_of_birth  | civil_status |name_of_guardian|home_address |smoking | allergies| alcohol| medicationstaken| drugs| cough |dyspnea |hemoptysis |tb_exposure |frequency |flank_plan |discharge  |dysuria |nocturia |dec_urine_amount |asthma |ptb |heart_problem  |hepatitis_a_b |chicken_pox |mumps |typhoid_fever |chest_pain |palpitations |pedal_edema |orthopnea |nocturnal_dyspnea |headache |seizure |dizziness |loss_of_consciousness| is_active |
+    |20131288| David | Lopez | Guzman | 20 | male |      5ft 5 inches    |   50   |  January 30, 1996|    single    |Maria Lopez     |Davao 
+    City  |none| none| none| none| none| none  | none   |  none     |    none    | none     |   none    |    none   |   none |  none   |  none  | none |none|    none |none      |  none          |  none      |none  |    none      |   none    |    none     |    none    | none     |     none         |   none  |  none  |   none   |   none |none| true |
 
 
 #Rainy Case

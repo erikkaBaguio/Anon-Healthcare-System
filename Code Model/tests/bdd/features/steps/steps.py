@@ -84,7 +84,6 @@ def step_impl(step):
     response_json = json.loads(world.assessment.data)
     assert_equals(world.response_json['entries'], response_json['entries'])
 
-<<<<<<< HEAD
 """ Scenario: View All Assessment of Patient """
 @step(u'Given the assessment of all patient')
 def given_the_assessment_of_all_patient(step):
@@ -96,8 +95,7 @@ def given_the_assessment_of_all_patient(step):
 def when_the_doctor_press_view_all_assessment(step):
     world.browser = TestApp(app)
     world.response = world.app.get('/anoncare.api/assessments/2/')
-=======
->>>>>>> 4ba69d92f42558d649ffdb6cc3c8574978059833
+
 
 """ Feature: Login  """
 
@@ -127,7 +125,7 @@ def given_the_following_details_of_patient(step):
 @step(u'When I click the add button')
 def when_i_click_the_add_button(step):
     world.browser = TestApp(app)
-    world.response = world.app.post('/anoncare.api/patient/', data=json.dumps(world.patient))
+    world.response = world.app.post('/api/anoncaresub/patient/', data=json.dumps(world.patient))
 
 
 """ Scenario: Create patient file"""
@@ -135,7 +133,7 @@ def when_i_click_the_add_button(step):
 
 @step(u'Given a patient file with id \'([^\']*)\'')
 def given_a_patient_file_with_id_group1(step, id):
-    world.patient1 = world.app.get('/anoncare.api/patient/{}/'.format(id))
+    world.patient1 = world.app.get('/api/anoncare/patient/{}/'.format(id))
     world.response_json = json.loads(world.patient1.data)
     assert_equals(world.response_json['status'], 'OK')
 
@@ -148,7 +146,7 @@ def and_the_following_patient_file_is_retrieved(step):
 
 @step(u'When I retrieve the patient id \'([^\']*)\'')
 def when_i_retrieve_the_patient_id_10(step, id):
-    world.response = world.app.get('/anoncare.api/patient/{}/'.format(id))
+    world.response = world.app.get('/api/anoncare/patient/{}/'.format(id))
 
 
 """ Feature: User Accounts Maintenance  """
@@ -173,14 +171,12 @@ def when_admin_clicks_the_register_button(step):
     world.browser = TestApp(app)
     world.response = world.app.post('/anoncare.api/user/', data=json.dumps(world.user))
 
-<<<<<<< HEAD
 
 @step(u'And   it should get a field \'([^\']*)\' containing \'([^\']*)\'')
 def and_it_should_get_a_field_group1_containing_group2(step, field, expected_boolean):
     world.user_exists_res = json.loads(world.user_exists_response.data)
     assert_equals(str(world.user_exists_res[field]), expected_boolean)
-=======
->>>>>>> 4ba69d92f42558d649ffdb6cc3c8574978059833
+
 
 @step(u'And   the email \'([^\']*)\' is invalid')
 def and_the_email_group1_is_invalid(step, email):

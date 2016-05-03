@@ -14,6 +14,26 @@ CREATE TABLE Userinfo (
   role_id      INT REFERENCES Role (id)
 );
 
+CREATE TABLE College (
+  id           SERIAL8 PRIMARY KEY,
+  college_name TEXT NOT NULL,
+  is_active    BOOLEAN DEFAULT TRUE
+);
+
+CREATE TABLE Department (
+  id              SERIAL8 PRIMARY KEY,
+  department_name TEXT NOT NULL,
+  college_id      INT REFERENCES College (id),
+  is_active       BOOLEAN DEFAULT TRUE
+);
+
+
+CREATE TABLE Patient_type (
+  school_id   SERIAL8 PRIMARY KEY,
+  type TEXT
+);
+
+
 CREATE TABLE Personal_info (
   school_id        SERIAL8 PRIMARY KEY,
   fname            TEXT,
