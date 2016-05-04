@@ -21,7 +21,6 @@ myApp.config(function ($routeProvider, $resourceProvider, $locationProvider) {
             controller: 'logoutController'
         })
 
-
         /*Assessment*/
         .when('/dashboard',{
             templateUrl: 'pages/nurse/dashboard-nurse.html',
@@ -29,17 +28,32 @@ myApp.config(function ($routeProvider, $resourceProvider, $locationProvider) {
         })
 
         .when('/dashboard/assessments/add',{
-            templateUrl: 'pages/nurse/dashboard-nurse.html',
+            templateUrl: 'pages/nurse/assessment_form.html',
             controller: 'assessmentController'
         })
 
         .when('/dashboard/assessments/:id',{
-            templateUrl: 'pages/nurse/dashboard-nurse.html',
+            templateUrl: 'pages/nurse/assessment.html',
+            controller: 'assessmentController'
+        })
+
+        .when('/dashboard/assessments',{
+            templateUrl: 'pages/nurse/list_of_assessments.html',
+            controller: 'assessmentController'
+        })
+
+        .when('/dashboard/assessments/:id',{
+            templateUrl: 'pages/nurse/list_of_assessments.html',
             controller: 'assessmentController'
         })
 
         /*Patients*/
         .when('/dashboard/patients/add',{
+            templateUrl: 'pages/nurse/add_patient_form.html',
+            controller: 'patientsController'
+        })
+
+        .when('/dashboard/patients',{
             templateUrl: 'pages/nurse/dashboard-nurse.html',
             controller: 'patientsController'
         })
@@ -57,14 +71,14 @@ myApp.config(function ($routeProvider, $resourceProvider, $locationProvider) {
 });
 
 // Change of state
-myApp.run(function ($rootScope, $location, $route, AuthService) {
-  $rootScope.$on('$routeChangeStart',
-    function (event, next, current) {
-      AuthService.getUserStatus();
-      if (next.access.restricted &&
-          !AuthService.isLoggedIn()) {
-        $location.path('/login');
-        $route.reload();
-      }
-  });
-});
+// myApp.run(function ($rootScope, $location, $route, AuthService) {
+//   $rootScope.$on('$routeChangeStart',
+//     function (event, next, current) {
+//       AuthService.getUserStatus();
+//       if (next.access.restricted &&
+//           !AuthService.isLoggedIn()) {
+//         $location.path('/login');
+//         $route.reload();
+//       }
+//   });
+// });
