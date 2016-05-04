@@ -1,27 +1,20 @@
+# !flask/bin/python
 import os
-from flask import Flask, jsonify, request, session, redirect, url_for
+from os import sys
+from flask import Flask, jsonify, render_template, request, session, redirect
+from functools import wraps
+# from flask.ext.httpauth import HTTPBasicAuth
 from os import sys
 from models import DBconn
 import json, flask
 from app import app
-<<<<<<< HEAD
 import re
 import hashlib, uuid
-from flask.ext.bcrypt import Bcrypt
-=======
-import re                   #this is for verifying if the email is valid
-import hashlib
-from flask.ext.httpauth import HTTPBasicAuth
-
->>>>>>> a33f996a9f3307d20820031936c832a2381ba340
-
-auth = HTTPBasicAuth()
-
-<<<<<<< HEAD
-bcrypt = Bcrypt(app)
-# auth = HTTPBasicAuth()
-=======
->>>>>>> a33f996a9f3307d20820031936c832a2381ba340
+# from flask.ext.bcrypt import Bcrypt
+#
+#
+# bcrypt = Bcrypt(app)
+# # auth = HTTPBasicAuth()
 
 def spcall(qry, param, commit=False):
     try:
@@ -37,7 +30,6 @@ def spcall(qry, param, commit=False):
     return res
 
 
-<<<<<<< HEAD
 @app.errorhandler(404)
 def page_not_found(e):
     return 'Sorry, the page you were looking for was not found.'
@@ -213,36 +205,36 @@ def hash_password(password):
     # return hashlib.sha256(salt.enode() + password.encode()).hexdigest() + ':' + salt
 
 
-@app.route('/anoncare.api/user/', methods=['POST'])
-def insertuser():
-    user = json.loads(request.data)
-
-    print "user is ", user
-
-    fname = user['fname']
-    mname = user['mname']
-    lname = user['lname']
-    email = user['email']
-    username = user['username']
-    password = user['password']
-    role_id = user['role_id']
-    is_available = user['is_available']
-
-    if register_field_empty(str(fname), str(mname), str(lname), str(email)):
-        return jsonify({'message': 'Empty Field'})
-
-    elif invalid_email(email):
-        return jsonify({'email': 'Invalid!'})
-
-    elif user_exists(username):
-        return jsonify({'status': 'error'})
-    else:
-        # hashed_password = hashlib.md5(password)
-        # saved_password = hashed_password.hexdigest()
-        # password = str(password)
-        saved_password = bcrypt.generate_password_hash(password)
-        spcall("newuserinfo", (fname, mname, lname, email, username, saved_password, role_id, is_available), True)
-        return jsonify({'status': 'OK'})
+# @app.route('/anoncare.api/user/', methods=['POST'])
+# def insertuser():
+#     user = json.loads(request.data)
+#
+#     print "user is ", user
+#
+#     fname = user['fname']
+#     mname = user['mname']
+#     lname = user['lname']
+#     email = user['email']
+#     username = user['username']
+#     password = user['password']
+#     role_id = user['role_id']
+#     is_available = user['is_available']
+#
+#     if register_field_empty(str(fname), str(mname), str(lname), str(email)):
+#         return jsonify({'message': 'Empty Field'})
+#
+#     elif invalid_email(email):
+#         return jsonify({'email': 'Invalid!'})
+#
+#     elif user_exists(username):
+#         return jsonify({'status': 'error'})
+#     else:
+#         # hashed_password = hashlib.md5(password)
+#         # saved_password = hashed_password.hexdigest()
+#         # password = str(password)
+#         saved_password = bcrypt.generate_password_hash(password)
+#         spcall("newuserinfo", (fname, mname, lname, email, username, saved_password, role_id, is_available), True)
+#         return jsonify({'status': 'OK'})
 
 
 @app.route('/anoncare.api/password_reset/', methods=['PUT'])
@@ -254,19 +246,14 @@ def password_reset():
 
     return jsonify({"status": "Password Changed"})
 
-=======
-@app.route('/')
-# @auth.login_required
-def index2():
-    return 'Hello world!'
->>>>>>> a33f996a9f3307d20820031936c832a2381ba340
 
+@app.route('/anoncare.api/vital_signs/<int:vital_signID>', methods=['GET'])
+def get_vital_signs(vital_signID):
+    res = spcall('getvitalsignsID', str(vital_signID))
 
-@auth.get_password
-def get_password(username):
-    return spcall('get_password', (username,))[0][0]
+    if 'Error' in str(res[0][0]):
+        return jsonify({'status': 'error', 'message': res[0][0]})
 
-<<<<<<< HEAD
     r = res[0]
     return jsonify({"vital_signID": str(vital_signID),
                     "temperature (C)": str(r[0]),
@@ -587,8 +574,6 @@ def update_assessment():
         attendingphysician,), True)
     print "response : ", response
     return jsonify({'status': 'OK', 'message': response[0][0]})
-=======
->>>>>>> a33f996a9f3307d20820031936c832a2381ba340
 
 
 @app.after_request
@@ -599,6 +584,12 @@ def add_cors(resp):
     resp.headers['Access-Control-Allow-Headers'] = flask.request.headers.get('Access-Control-Request-Headers',
                                                                              'Authorization')
     # set low for debugging
+
+
     if app.debug:
         resp.headers["Access-Control-Max-Age"] = '1'
     return resp
+
+
+if __name__ == '__main__':
+    app.run()
