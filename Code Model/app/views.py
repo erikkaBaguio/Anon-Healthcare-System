@@ -1,20 +1,17 @@
-# !flask/bin/python
 import os
-from os import sys
-from flask import Flask, jsonify, render_template, request, session, redirect
 from functools import wraps
-# from flask.ext.httpauth import HTTPBasicAuth
+from flask import Flask, jsonify, request, session, redirect, url_for
 from os import sys
 from models import DBconn
 import json, flask
 from app import app
-import re
-import hashlib, uuid
-# from flask.ext.bcrypt import Bcrypt
-#
-#
-# bcrypt = Bcrypt(app)
-# # auth = HTTPBasicAuth()
+import re                   #this is for verifying if the email is valid
+import hashlib
+from flask.ext.httpauth import HTTPBasicAuth
+
+
+auth = HTTPBasicAuth()
+
 
 def spcall(qry, param, commit=False):
     try:
@@ -144,14 +141,15 @@ def getpatient_file(school_id):
         return jsonify({'status': 'OK', 'message': 'OK', 'entries': entries, 'count': len(entries)})
 
 
-@app.errorhandler(404)
-def page_not_found(e):
-    return 'Sorry, the page you were looking for was not found.'
+@app.route('/')
+# @auth.login_required
+def index2():
+    return 'Hello world!'
 
 
-@app.errorhandler(500)
-def internal_server_error(e):
-    return '(Error 500) Sorry, there was an internal server error.'
+@auth.get_password
+def get_password(username):
+    return spcall('get_password', (username,))[0][0]
 
 
 @app.route('/anoncare.api/login/', methods=['POST'])
@@ -414,107 +412,6 @@ def getnotify(assessment_id, doctor_id):
     for r in notification:
         records.append({"doctor_id": str(r[0]), "assessment_id": str(r[1]), "is_read": str(r[2])})
     return jsonify({'status': 'OK', 'entries': records, 'count': len(records)})
-
-
-@app.route('/anoncare.api/patient/', methods=['POST'])
-def newpatient():
-    data = json.loads(request.data)
-    response = spcall('newpatient', (
-        data['id'],
-        data['fname'],
-        data['mname'],
-        data['lname'],
-        data['age'],
-        data['sex'],
-        data['department_id'],
-        data['patient_type_id'],
-        data['height'],
-        data['weight'],
-        data['date_of_birth'],
-        data['civil_status'],
-        data['name_of_guardian'],
-        data['home_address'],
-        data['cough'],
-        data['dyspnea'],
-        data['hemoptysis'],
-        data['tb_exposure'],
-        data['frequency'],
-        data['flank_plan'],
-        data['discharge'],
-        data['dysuria'],
-        data['nocturia'],
-        data['dec_urine_amount'],
-        data['asthma'],
-        data['ptb'],
-        data['heart_problem'],
-        data['hepatitis_a_b'],
-        data['chicken_pox'],
-        data['mumps'],
-        data['typhoid_fever'],
-        data['chest_pain'],
-        data['palpitations'],
-        data['pedal_edema'],
-        data['orthopnea'],
-        data['nocturnal_dyspnea'],
-        data['headache'],
-        data['seizure'],
-        data['dizziness'],
-        data['loss_of_consciousness'],
-        data['is_active']))
-    if 'Error' in str(response[0][0]):
-        return jsonify({'status': 'error', 'message': response[0][0]})
-
-    return jsonify({'status': 'OK', 'message': response[0][0]}), 200
-
-
-@app.route('/anoncare.api/patient/<id>/', methods=['GET'])
-def getpatient_file(id):
-    response = spcall('get_patientfileId', [id])
-    entries = []
-    if len(response) == 0:
-        return jsonify({"status": "OK", "message": "No patient file found", "entries": [], "count": "0"})
-    else:
-        row = response[0]
-        entries.append({"id": id,
-                        "fname": row[0],
-                        "mname": row[1],
-                        "lname": row[2],
-                        "age": row[3],
-                        "sex": row[4],
-                        "height": row[5],
-                        "weight": row[6],
-                        "date_of_birth": row[7],
-                        "civil_status": row[8],
-                        "name_of_guardian": row[9],
-                        "home_address": row[10],
-                        "cough": row[11],
-                        "dyspnea": row[12],
-                        "hemoptysis": row[13],
-                        "tb_exposure": row[14],
-                        "frequency": row[15],
-                        "flank_plan": row[16],
-                        "discharge": row[17],
-                        "dysuria": row[18],
-                        "nocturia": row[19],
-                        "dec_urine_amount": row[20],
-                        "asthma": row[21],
-                        "ptb": row[22],
-                        "heart_problem": row[23],
-                        "hepatitis_a_b": row[24],
-                        "chicken_pox": row[25],
-                        "mumps": row[26],
-                        "typhoid_fever": row[27],
-                        "chest_pain": row[28],
-                        "palpitations": row[29],
-                        "pedal_edema": row[30],
-                        "orthopnea": row[31],
-                        "nocturnal_dyspnea": row[32],
-                        "headache": row[33],
-                        "seizure": row[34],
-                        "dizziness": row[35],
-                        "loss_of_consciousness": row[36]
-                        })
-        return jsonify({'status': 'OK', 'message': 'OK', 'entries': entries, 'count': len(entries)})
 
 
 @app.route('/anoncare.api/notify/<int:doctor_id>', methods=['GET'])
