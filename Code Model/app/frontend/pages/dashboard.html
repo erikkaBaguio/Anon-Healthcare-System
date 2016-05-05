@@ -84,7 +84,7 @@
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
                 <li ng-class="{ active: isCurrentPath('/dashboard')}">
-                    <a ui-sref=".dashboard">
+                    <a ui-sref="dashboard">
                         <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                         <i class="fa fa-angle-right pull-right"></i>
                     </a>
@@ -118,8 +118,11 @@
 
             <!-- THIS IS WHERE WE WILL INJECT CONTENTS  -->
 
-
             <div ui-view>
+
+            <div ui-view="dashboard">
+            </div>
+
             </div>
 
         </div>

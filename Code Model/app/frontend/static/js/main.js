@@ -12,13 +12,13 @@ var myApp = angular.module('myApp', ['ui.router']);
 
 myApp.config(function ($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise('/login');
+    $urlRouterProvider.otherwise('/');
 
     $stateProvider
 
     /*Authentication*/
         .state('login', {
-            url: '/login',
+            url: '/',
             templateUrl: 'pages/login.html',
             controller: 'loginController'
         })
@@ -31,11 +31,11 @@ myApp.config(function ($stateProvider, $urlRouterProvider) {
                     controller: 'NavigationController'
                 },
                 'dashboard@dashboard': {
-                    templateUrl: 'pages/content/dashboard.html'
+                    templateUrl: 'pages/content/dashboard.html',
+                    controller: 'NavigationController'
                 },
             }
         })
-
         .state('dashboard.assessment-add', {
             url: '/assessments/add ',
             templateUrl: 'pages/content/assessment.html'
