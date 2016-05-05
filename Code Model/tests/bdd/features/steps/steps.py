@@ -23,11 +23,11 @@ def and_it_should_get_a_field_group1_containing_group2(step, field, expected_val
 
 """ Scenario: Create assessment successfully """
 
-@step(u'Given the nurse have the following assessment details:')
+@step(u'Given the content have the following assessment details:')
 def given_the_nurse_have_the_following_assessment_details(step):
     world.assessment = step.hashes[0]
 
-@step(u'When  the nurse clicks the add button')
+@step(u'When  the content clicks the add button')
 def when_the_nurse_clicks_the_add_button(step):
     world.browser = TestApp(app)
     world.response = world.app.post('/anoncare.api/assessments/', data=json.dumps(world.assessment))

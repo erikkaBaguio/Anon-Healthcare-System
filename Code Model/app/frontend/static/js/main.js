@@ -12,16 +12,11 @@ var myApp = angular.module('myApp', ['ui.router']);
 
 myApp.config(function ($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise('/dashboard');
+    $urlRouterProvider.otherwise('/login');
 
     $stateProvider
-        .state('base', {
-            abstract: true,
-            url: '',
-            templateUrl: 'pages/base.html'
-        })
 
-        /*Authentication*/
+    /*Authentication*/
         .state('login', {
             url: '/login',
             templateUrl: 'pages/login.html',
@@ -30,14 +25,19 @@ myApp.config(function ($stateProvider, $urlRouterProvider) {
 
         .state('dashboard', {
             url: '/dashboard',
-            parent: 'base',
-            templateUrl: 'pages/dashboard.html',
-            controller: 'loginController'
+            views: {
+                '': {
+                    templateUrl: 'pages/dashboard.html',
+                    controller: 'NavigationController'
+                },
+                'dashboard@dashboard': {
+                    templateUrl: 'pages/content/dashboard.html'
+                },
+            }
         })
-        
-        .state('assessment-add', {
-            url: '/dashboard',
-            templateUrl: 'pages/nurse/assessment.html',
-            controller: 'loginController'
+
+        .state('dashboard.assessment-add', {
+            url: '/assessments/add ',
+            templateUrl: 'pages/content/assessment.html'
         })
 });

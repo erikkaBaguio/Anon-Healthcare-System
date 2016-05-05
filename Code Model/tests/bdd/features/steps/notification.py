@@ -22,7 +22,7 @@ from app import app
 def before_all():
     world.app = app.test_client()
 
-@step(u'Given the nurse already assess the patient with assessment id 6')
+@step(u'Given the content already assess the patient with assessment id 6')
 def already_assess(step):
     """
     :type step: lettuce.core.Step
@@ -32,7 +32,7 @@ def already_assess(step):
     world.assessments.charset = 'utf8'
     assert_equals(json.loads(world.assessments.text)[u'status'], "OK")
 
-@step(u'When the nurse request an appointment to the doctor with id 1')
+@step(u'When the content request an appointment to the doctor with id 1')
 def request_appointment(step):
     world.response = world.browser.post('/anoncare.api/notify/6/1')
     world.response.charset = 'utf8'
