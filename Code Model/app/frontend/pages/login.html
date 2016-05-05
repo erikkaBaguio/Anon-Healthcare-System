@@ -1,40 +1,23 @@
-<div id="wrap" class="boxshadow">
-    <div class="header">
-
-    </div>
-    <div class="content">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <h1>Login</h1>
-                    <div ng-show="error" class="alert alert-danger">{{ errorMessage }}</div>
-                    <form class="form" ng-submit="login()">
-                        <div class="form-group">
-                            <label>Username</label>
-                            <input type="text" class="form-control" name="username" ng-model="loginForm.username"
-                                   required>
-                        </div>
-                        <div class="form-group">
-                            <label>Password</label>
-                            <input type="password" class="form-control" name="password" ng-model="loginForm.password"
-                                   required>
-                        </div>
-                        <div>
-                            <button type="submit" class="btn btn-default" ng-disabled="disabled">Login</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-md-4">
-
-                </div>
-                <div class="col-md-4">
-
+<div class="row" style="background-color: #f7f7f7">
+    <div class="login-card" style="background-color: #ffffff">
+        <h3>Login</h3>
+        <div ng-show="error" class="alert alert-danger">{{ errorMessage }}</div>
+        <form class="form-signin" ng-submit="login()"><span class="reauth-email"> </span>
+            <input type="text" required placeholder="Username" autofocus class="form-control"
+                   ng-model="loginForm.username" required/>
+            <input type="password" required placeholder="Password" class="form-control"
+                   ng-model="loginForm.password" required/>
+            <div class="checkbox">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox"/>Remember me</label>
                 </div>
             </div>
-        </div>
-
-    </div>
-    <div class="footer">
-
-    </div>
+            <button class="btn btn-primary btn-block btn-lg btn-signin" type="submit" ng-disabled="disabled">
+                Sign
+                in
+            </button>
+        </form>
+        <a href="#" class="forgot-password">Forgot your password?</a>
+    </div><!-- /.login-card -->
 </div>
