@@ -31,10 +31,51 @@
     <link href="http://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic"
           rel="stylesheet" type="text/css">
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body ng-app="myApp" class="hold-transition skin-blue sidebar-mini">
+
+    <aside class="main-sidebar" ng-controller="NavigationController">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu">
+                <li ng-class="{ active: isCurrentPath('/dashboard')}">
+                    <a ui-sref="dashboard">
+                        <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                </li>
+                <li ng-class="{ active: isCurrentPath('/dashboard/assessments/add') }">
+                    <a ui-sref="assessment-add">
+                        <i class="fa fa-plus"></i> <span>Add Asssessments</span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                </li>
+                <li ng-class="{ active: isCurrentPath('/') }">
+                    <a ui-sref="patient-add">
+                        <i class="fa fa-plus"></i> <span>Add Patient File</span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                </li>
+                <li class="{ active: isCurrentPath('/dashboard/patients') }">
+                    <a ui-sref="patient-view">
+                        <i class="fa fa-list"></i> <span>View Patient</span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
 
     <!-- Application content here -->
-    <div ui-view></div>
+    <div class="wrapper">
+
+        <!-- THIS IS WHERE WE WILL INJECT CONTENTS  -->
+        <div ui-view>
+
+        </div>
+
+    </div>
 
 
     <script src="static/js/plugins/jquery-2.1.4.min.js"></script>
@@ -57,11 +98,6 @@
     <script src="static/js/plugins/jquery.sparkline.min.js"></script>
     <script src="static/js/plugins/jquery.knob.js"></script>
     <script src="static/js/plugins/jquery.slimscroll.min.js"></script>
-    <script src="static/js/plugins/jquery.inputmask.date.extensions.js"></script>
-    <script src="static/js/plugins/jquery.inputmask.extensions.js"></script>
-    <script src="static/js/plugins/jquery.inputmask.date.extensions.js"></script>
-    <script src="static/js/plugins/jquery.inputmask.extensions.js"></script>
-    <script src="static/js/plugins/jquery.inputmask.js"></script>
     <script src="static/js/plugins/jquery.dataTables.min.js"></script>
 
 
