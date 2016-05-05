@@ -30,7 +30,11 @@ CREATE TABLE Department (
 );
 
 CREATE TABLE Vital_signs (
+<<<<<<< HEAD
   id               SERIAL8 PRIMARY KEY,
+=======
+  id               INT PRIMARY KEY,
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
   temperature      FLOAT,
   pulse_rate       FLOAT,
   respiration_rate INT,
@@ -38,13 +42,30 @@ CREATE TABLE Vital_signs (
   weight           FLOAT
 );
 
+<<<<<<< HEAD
 CREATE TABLE Patient_type (
   school_id   SERIAL8 PRIMARY KEY,
+=======
+CREATE TABLE Personal_history (
+  id               SERIAL8 PRIMARY KEY,
+  smoking          TEXT,
+  allergies        TEXT,
+  alcohol          TEXT,
+  medication_taken TEXT,
+  drugs            TEXT,
+  done             BOOLEAN
+);
+
+
+CREATE TABLE Patient_type (
+  id   SERIAL8 PRIMARY KEY,
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
   type TEXT
 );
 
 
 CREATE TABLE Personal_info (
+<<<<<<< HEAD
   school_id        SERIAL8 PRIMARY KEY,
   fname            TEXT,
   mname            TEXT,
@@ -57,10 +78,18 @@ CREATE TABLE Personal_info (
   weight           FLOAT,
   date_of_birth    DATE,
   civil_status     TEXT,  
+=======
+  id               SERIAL8 PRIMARY KEY,
+  height           TEXT,
+  weight           FLOAT,
+  date_of_birth    TEXT,
+  civil_status     TEXT,
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
   name_of_guardian TEXT,
   home_address     TEXT
 );
 
+<<<<<<< HEAD
 CREATE TABLE Personal_history (
   school_id        SERIAL8 PRIMARY KEY,
   smoking          TEXT,
@@ -72,6 +101,10 @@ CREATE TABLE Personal_history (
 
 CREATE TABLE Pulmonary (
   school_id    SERIAL8 PRIMARY KEY,
+=======
+CREATE TABLE Pulmonary (
+  id          SERIAL8 PRIMARY KEY,
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
   cough       TEXT,
   dyspnea     TEXT,
   hemoptysis  TEXT,
@@ -79,7 +112,11 @@ CREATE TABLE Pulmonary (
 );
 
 CREATE TABLE Gut (
+<<<<<<< HEAD
   school_id               SERIAL8 PRIMARY KEY,
+=======
+  id               SERIAL8 PRIMARY KEY,
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
   frequency        TEXT,
   flank_plan       TEXT,
   discharge        TEXT,
@@ -89,7 +126,11 @@ CREATE TABLE Gut (
 );
 
 CREATE TABLE Illness (
+<<<<<<< HEAD
   school_id            SERIAL8 PRIMARY KEY,
+=======
+  id            SERIAL8 PRIMARY KEY,
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
   asthma        TEXT,
   ptb           TEXT,
   heart_problem TEXT,
@@ -100,7 +141,11 @@ CREATE TABLE Illness (
 );
 
 CREATE TABLE Cardiac (
+<<<<<<< HEAD
   school_id                SERIAL8 PRIMARY KEY,
+=======
+  id                SERIAL8 PRIMARY KEY,
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
   chest_pain        TEXT,
   palpitations      TEXT,
   pedal_edema       TEXT,
@@ -109,12 +154,17 @@ CREATE TABLE Cardiac (
 );
 
 CREATE TABLE Neurologic (
+<<<<<<< HEAD
   school_id                    SERIAL8 UNIQUE PRIMARY KEY,
+=======
+  id                    SERIAL8 UNIQUE PRIMARY KEY,
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
   headache              TEXT,
   seizure               TEXT,
   dizziness             TEXT,
   loss_of_consciousness TEXT
 );
+<<<<<<< HEAD
 
 CREATE TABLE Patient (
   school_id        SERIAL8 PRIMARY KEY,
@@ -125,11 +175,29 @@ CREATE TABLE Patient (
   illness_id       INT REFERENCES Illness (school_id),
   cardiac_id       INT REFERENCES Cardiac (school_id),
   neurologic_id    INT REFERENCES Neurologic (school_id),
+=======
+CREATE TABLE Patient (
+  school_id               INT PRIMARY KEY,
+  fname            TEXT,
+  mname            TEXT,
+  lname            TEXT,
+  age              INT,
+  sex              TEXT,
+  department_id    INT REFERENCES Department (id),
+  patient_type_id  INT REFERENCES Patient_type (id),
+  personal_info_id INT REFERENCES Personal_info (id),
+  pulmonary_id     INT REFERENCES Pulmonary (id),
+  gut_id           INT REFERENCES Gut (id),
+  illness_id       INT REFERENCES Illness (id),
+  cardiac_id       INT REFERENCES Cardiac (id),
+  neurologic_id    INT REFERENCES Neurologic (id),
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
   is_active        BOOLEAN DEFAULT TRUE
 );
 
 
 CREATE TABLE Assessment (
+<<<<<<< HEAD
   id                      SERIAL8 PRIMARY KEY,
   assessment_date         TIMESTAMP DEFAULT 'now',
   nameofpatient           INT REFERENCES Patient (id),
@@ -138,6 +206,14 @@ CREATE TABLE Assessment (
   vital_signs             INT REFERENCES Vital_signs (id),
   chiefcomplaint          TEXT,
   historyofpresentillnes s TEXT,
+=======
+  id                      INT PRIMARY KEY,
+  assessment_date         TIMESTAMP DEFAULT 'now',
+  school_id               INT REFERENCES Patient (school_id),
+  vital_signsID           INT REFERENCES Vital_signs (id),
+  chiefcomplaint          TEXT,
+  historyofpresentillness TEXT,
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
   medicationstaken        TEXT,
   diagnosis               TEXT,
   recommendation          TEXT,
@@ -145,8 +221,11 @@ CREATE TABLE Assessment (
   is_done                 BOOLEAN  DEFAULT FALSE
 );
 
+<<<<<<< HEAD
 INSERT INTO Sex VALUES(1, 'Male');
 INSERT INTO Sex VALUES(2, 'Female');
+=======
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
 
 INSERT INTO College VALUES (1, 'SCS');
 INSERT INTO College VALUES (2, 'COE');
@@ -163,6 +242,11 @@ INSERT INTO Patient_type VALUES (3, 'Staff');
 INSERT INTO Patient_type VALUES (4, 'Outpatient Department');
 
 INSERT INTO Department VALUES (1, 'Computer Science', 1);
+<<<<<<< HEAD
+=======
+INSERT INTO Department VALUES (2, 'Information Technology', 1);
+INSERT INTO Department VALUES (3, 'Information System', 1);
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
 
 CREATE TABLE Final_diagnosis (
   id            SERIAL8 PRIMARY KEY,
@@ -294,6 +378,9 @@ $$
 LANGUAGE 'plpgsql';
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
 --Generates password of a user
 CREATE OR REPLACE FUNCTION generate_password()
   RETURNS TEXT AS
@@ -321,8 +408,11 @@ BEGIN
 END;
 $$
 LANGUAGE 'plpgsql';
+<<<<<<< HEAD
 =======
 >>>>>>> 4ba69d92f42558d649ffdb6cc3c8574978059833
+=======
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
 
 --[GET] Retrieve information of users
 --select * from getUserinfo();
@@ -375,6 +465,7 @@ END;
 $$
 LANGUAGE 'plpgsql';
 
+<<<<<<< HEAD
 
 create or replace function getuserroleid(in par_username text, in par_pass text) returns int as
   $$
@@ -388,12 +479,15 @@ create or replace function getuserroleid(in par_username text, in par_pass text)
   $$
   language 'plpgsql';
 
+=======
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
 ---------------------------------------------- END of User Accounts Maintenance ----------------------------------------------
 
 
 
 -------------------------------------------------------- Patient File -----------------------------------------------------
 --[POST] Create patient file
+<<<<<<< HEAD
 -- Select * from store_patient(20131288, 'David', 'Lopez', 'Guzman', 20, 'male' , 1, 1, '5 ft 5 inches' , 50 , 'January 30, 1996', 'single', 'Maria Lopez', 'Davao City', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', TRUE);
 
 CREATE OR REPLACE FUNCTION store_patient(par_schoolId           INT, par_fname TEXT, par_mname  TEXT, par_lname TEXT, par_age INT, 
@@ -406,12 +500,33 @@ CREATE OR REPLACE FUNCTION store_patient(par_schoolId           INT, par_fname T
                                       par_typhoid_fever         TEXT, par_chest_pain            TEXT, par_palpitations TEXT, par_pedal_edema TEXT,  par_orthopnea   TEXT,
                                       par_nocturnal_dyspnea     TEXT, par_headache              TEXT, par_seizure TEXT, par_dizziness TEXT, par_loss_of_consciousness TEXT,
                                       par_is_active BOOLEAN) RETURNS TEXT AS
+=======
+--select * from newpatient(1, 'Mary Grace', 'Pasco', 'Cabolbol', 19 ,'female', 1, 1 , '4ft', 45, 'august 13 1995', 'single', 'Juan Manalo', 'iligan city', 'mild', 'none' , 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', TRUE)
+CREATE OR REPLACE FUNCTION newpatient(par_id                    INT, par_fname TEXT, par_mname TEXT, par_lname TEXT,
+                                      par_age                   INT, par_sex TEXT,
+                                      par_department_id         INT, par_patient_type_id INT, par_height TEXT,
+                                      par_weight                FLOAT, par_date_of_birth TEXT,
+                                      par_civil_status          TEXT, par_name_of_guardian TEXT, par_home_address TEXT,
+                                      par_cough                 TEXT, par_dyspnea TEXT,
+                                      par_hemoptysis            TEXT, par_tb_exposure TEXT, par_frequency TEXT,
+                                      par_flank_plan            TEXT, par_discharge TEXT,
+                                      par_dysuria               TEXT, par_nocturia TEXT, par_dec_urine_amount TEXT,
+                                      par_asthma                TEXT, par_ptb TEXT,
+                                      par_heart_problem         TEXT, par_hepatitis_a_b TEXT, par_chicken_pox TEXT,
+                                      par_mumps                 TEXT, par_typhoid_fever TEXT,
+                                      par_chest_pain            TEXT, par_palpitations TEXT, par_pedal_edema TEXT,
+                                      par_orthopnea             TEXT, par_nocturnal_dyspnea TEXT,
+                                      par_headache              TEXT, par_seizure TEXT, par_dizziness TEXT,
+                                      par_loss_of_consciousness TEXT, par_is_active BOOLEAN)
+  RETURNS TEXT AS
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
 $$
 DECLARE
   loc_fname TEXT;
   loc_mname TEXT;
   loc_lname TEXT;
   loc_res   TEXT;
+<<<<<<< HEAD
   loc_id   INT;
 
 BEGIN
@@ -431,10 +546,58 @@ BEGIN
      par_nocturia = '' OR par_dec_urine_amount = '' OR par_asthma = '' OR par_ptb = '' OR par_heart_problem = '' OR
      par_hepatitis_a_b = '' OR par_chicken_pox = '' OR par_mumps = '' OR par_typhoid_fever = '' OR par_chest_pain = '' OR
      par_palpitations = '' OR par_pedal_edema = '' OR par_orthopnea = '' OR par_nocturnal_dyspnea = '' OR par_headache = '' OR
+=======
+  loc_id1   INT;
+  loc_id2   INT;
+  loc_id3   INT;
+  loc_id4   INT;
+  loc_id5   INT;
+  loc_id6   INT;
+  loc_id7   INT;
+
+BEGIN
+
+  SELECT INTO loc_id1 id
+  FROM Personal_info
+  WHERE id = par_id;
+  SELECT INTO loc_id2 id
+  FROM Pulmonary
+  WHERE id = par_id;
+  SELECT INTO loc_id3 id
+  FROM Gut
+  WHERE id = par_id;
+  SELECT INTO loc_id4 id
+  FROM Illness
+  WHERE id = par_id;
+  SELECT INTO loc_id5 id
+  FROM Cardiac
+  WHERE id = par_id;
+  SELECT INTO loc_id6 id
+  FROM Neurologic
+  WHERE id = par_id;
+  SELECT INTO loc_id7 id
+  FROM Patient
+  WHERE id = par_id;
+  SELECT INTO loc_fname fname
+  FROM Patient
+  WHERE fname = par_fname AND mname = par_mname AND lname = par_lname;
+  IF par_id ISNULL OR par_fname = '' OR par_mname = '' OR par_lname = '' OR par_age ISNULL OR par_sex = '' OR
+     par_department_id ISNULL OR
+     par_patient_type_id ISNULL OR par_height ISNULL OR par_weight ISNULL OR par_date_of_birth = '' OR
+     par_civil_status = '' OR
+     par_name_of_guardian = '' OR par_home_address = '' OR par_cough = '' OR par_dyspnea = '' OR par_hemoptysis = '' OR
+     par_tb_exposure = '' OR par_frequency = '' OR par_flank_plan = '' OR par_discharge = '' OR par_dysuria = '' OR
+     par_nocturia = '' OR par_dec_urine_amount = '' OR par_asthma = '' OR par_ptb = '' OR par_heart_problem = '' OR
+     par_hepatitis_a_b = '' OR par_chicken_pox = '' OR par_mumps = '' OR par_typhoid_fever = '' OR par_chest_pain = ''
+     OR
+     par_palpitations = '' OR par_pedal_edema = '' OR par_orthopnea = '' OR par_nocturnal_dyspnea = '' OR
+     par_headache = '' OR
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
      par_seizure = '' OR par_dizziness = '' OR par_loss_of_consciousness = ''
   THEN
     loc_res = 'Please fill up the required data';
   ELSIF
+<<<<<<< HEAD
     loc_fname ISNULL AND loc_id ISNULL
     THEN
       INSERT INTO Personal_info (school_id, fname, mname, lname,  age, sex, department_id, patient_type_id, height, weight, date_of_birth, civil_status, name_of_guardian, home_address)
@@ -453,6 +616,28 @@ BEGIN
       VALUES (par_schoolId, par_headache, par_seizure, par_dizziness, par_loss_of_consciousness);
       INSERT INTO Patient (school_id, personal_info_id, personal_history_id, pulmonary_id, gut_id, illness_id, cardiac_id, neurologic_id, is_active)   
       VALUES (par_schoolId, par_schoolId, par_schoolId, par_schoolId, par_schoolId, par_schoolId, par_schoolId, par_schoolId, par_is_active);
+=======
+    loc_fname ISNULL AND loc_id1 ISNULL AND loc_id2 ISNULL AND loc_id3 ISNULL AND loc_id4 ISNULL AND loc_id5 ISNULL AND
+    loc_id6 ISNULL AND loc_id7 ISNULL
+    THEN
+      INSERT INTO Personal_info (id, height, weight, date_of_birth, civil_status, name_of_guardian, home_address)
+      VALUES
+        (par_id, par_height, par_weight, par_date_of_birth, par_civil_status, par_name_of_guardian, par_home_address);
+      INSERT INTO Pulmonary (id, cough, dyspnea, hemoptysis, tb_exposure)
+      VALUES (par_id, par_cough, par_dyspnea, par_hemoptysis, par_tb_exposure);
+      INSERT INTO Gut (id, frequency, flank_plan, discharge, dysuria, nocturia, dec_urine_amount)
+      VALUES (par_id, par_frequency, par_flank_plan, par_discharge, par_dysuria, par_nocturia, par_dec_urine_amount);
+      INSERT INTO Illness (id, asthma, ptb, heart_problem, hepatitis_a_b, chicken_pox, mumps, typhoid_fever)
+      VALUES (par_id, par_asthma, par_ptb, par_heart_problem, par_hepatitis_a_b, par_chicken_pox, par_mumps,
+              par_typhoid_fever);
+      INSERT INTO Cardiac (id, chest_pain, palpitations, pedal_edema, orthopnea, nocturnal_dyspnea)
+      VALUES (par_id, par_chest_pain, par_palpitations, par_pedal_edema, par_orthopnea, par_nocturnal_dyspnea);
+      INSERT INTO Neurologic (id, headache, seizure, dizziness, loss_of_consciousness)
+      VALUES (par_id, par_headache, par_seizure, par_dizziness, par_loss_of_consciousness);
+      INSERT INTO Patient (id, fname, mname, lname, age, sex, department_id, patient_type_id, personal_info_id, pulmonary_id, gut_id, illness_id, cardiac_id, neurologic_id, is_active)
+      VALUES (par_id, par_fname, par_mname, par_lname, par_age, par_sex, par_department_id, par_patient_type_id, par_id,
+                      par_id, par_id, par_id, par_id, par_id, par_is_active);
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
 
       loc_res = 'OK';
   ELSE
@@ -464,6 +649,7 @@ $$
 LANGUAGE 'plpgsql';
 
 --[GET] patient file
+<<<<<<< HEAD
 --Select show_patient(20131288);
 CREATE OR REPLACE FUNCTION show_patient(IN par_schoolId INT, out TEXT, out TEXT, out TEXT, out INT,
                         out TEXT, out INT, out INT, out TEXT, out FLOAT,  
@@ -485,17 +671,39 @@ SELECT
   Personal_info.sex,
   Personal_info.department_id,
   Personal_info.patient_type_id,
+=======
+--select * from get_patientfileId(1);
+CREATE OR REPLACE FUNCTION get_patientfileId(IN par_id INT, OUT TEXT, OUT TEXT, OUT TEXT, OUT INT, OUT TEXT,
+                                             OUT       TEXT, OUT FLOAT, OUT TEXT, OUT TEXT, OUT TEXT,
+                                             OUT       TEXT, OUT TEXT, OUT TEXT, OUT TEXT, OUT TEXT,
+                                             OUT       TEXT, OUT TEXT, OUT TEXT, OUT TEXT, OUT TEXT,
+                                             OUT       TEXT, OUT TEXT, OUT TEXT, OUT TEXT, OUT TEXT,
+                                             OUT       TEXT, OUT TEXT, OUT TEXT, OUT TEXT, OUT TEXT,
+                                             OUT       TEXT, OUT TEXT, OUT TEXT, OUT TEXT, OUT TEXT,
+                                             OUT       TEXT, OUT TEXT)
+  RETURNS SETOF RECORD AS
+$$
+SELECT
+  Patient.fname,
+  Patient.mname,
+  Patient.lname,
+  Patient.age,
+  Patient.sex,
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
   Personal_info.height,
   Personal_info.weight,
   Personal_info.date_of_birth,
   Personal_info.civil_status,
   Personal_info.name_of_guardian,
   Personal_info.home_address,
+<<<<<<< HEAD
   Personal_history.smoking,
   Personal_history.allergies,
   Personal_history.alcohol,
   Personal_history.medication_taken,
   Personal_history.drugs,
+=======
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
   Pulmonary.cough,
   Pulmonary.dyspnea,
   Pulmonary.hemoptysis,
@@ -521,12 +729,20 @@ SELECT
   Neurologic.headache,
   Neurologic.seizure,
   Neurologic.dizziness,
+<<<<<<< HEAD
   Neurologic.loss_of_consciousness,
   Patient.is_active
 FROM Patient, Personal_info, Personal_history, Pulmonary, Gut, Illness, Cardiac, Neurologic
 Where Patient.school_id = par_schoolId AND Personal_info.school_id = Patient.personal_info_id AND Personal_history.school_id = Patient.personal_history_id AND Pulmonary.school_id = Patient.pulmonary_id AND Gut.school_id = Patient.gut_id AND
       Illness.school_id = Patient.illness_id AND Cardiac.school_id = Patient.cardiac_id AND Neurologic.school_id = Patient.neurologic_id;
 
+=======
+  Neurologic.loss_of_consciousness
+FROM Patient, Personal_info, Pulmonary, Gut, Illness, Cardiac, Neurologic
+WHERE Patient.id = par_id AND Personal_info.id = Patient.personal_info_id AND Pulmonary.id = Patient.pulmonary_id AND
+      Gut.id = Patient.gut_id AND Illness.id = Patient.illness_id AND Cardiac.id = Patient.cardiac_id AND
+      Neurologic.id = Patient.neurologic_id;
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
 $$
 LANGUAGE 'sql';
 
@@ -543,6 +759,7 @@ LANGUAGE 'sql';
 
 -----------------------------------------------------END of Patient File --------------------------------------------------
 
+<<<<<<< HEAD
 
 -------------------------------------------------------- Assessment -------------------------------------------------------
 
@@ -573,12 +790,32 @@ CREATE OR REPLACE FUNCTION new_assessment(IN par_id                 INT, IN par_
                                           IN par_medicationstaken   TEXT,
                                           IN par_diagnosis          TEXT, IN par_recommendation TEXT,
                                           IN par_attendingphysician INT)
+=======
+-------------------------------------------------------- Assessment -------------------------------------------------------
+-- [POST] Create new assessment
+--select new_assessment(1,20130000, 37.1, 80, 19, '90/70', 48, 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
+--select new_assessment(2,20130001, 36.4, 70, 19, '100/80', 45, 'complaint', 'history', 'medication1', 'diagnosis1','recommendation1', 1);
+CREATE OR REPLACE FUNCTION new_assessment(IN par_id                       INT,
+                                          IN par_schoolID                 INT,
+                                          IN par_temperature              FLOAT,
+                                          IN par_pulse_rate               FLOAT,
+                                          IN par_respiration_rate         INT,
+                                          IN par_blood_pressure           TEXT,
+                                          IN par_weight                   FLOAT,
+                                          IN par_chiefcomplaint           TEXT,
+                                          IN par_historyofpresentillness  TEXT,
+                                          IN par_medicationstaken         TEXT,
+                                          IN par_diagnosis                TEXT,
+                                          IN par_recommendation           TEXT,
+                                          IN par_attendingphysician       INT)
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
   RETURNS TEXT AS
 $$
 DECLARE
   loc_id1       INT;
   loc_id2       INT;
   loc_res       TEXT;
+<<<<<<< HEAD
   loc_patientID BIGINT;
 BEGIN
   SELECT INTO loc_id1 id
@@ -615,11 +852,48 @@ BEGIN
   ELSE
     loc_res = 'ID EXISTS';
 
+=======
+BEGIN
+  SELECT INTO loc_id1 id
+  FROM Assessment
+  WHERE id = par_id;
+
+  SELECT INTO loc_id2 id
+  FROM Vital_signs
+  WHERE id = par_id;
+
+  IF loc_id1 ISNULL AND loc_id2 ISNULL
+  THEN
+    IF par_chiefcomplaint = '' OR
+       par_chiefcomplaint ISNULL OR
+       par_medicationstaken = '' OR
+       par_medicationstaken ISNULL OR
+       par_diagnosis = '' OR
+       par_diagnosis ISNULL
+    THEN
+      loc_res = 'PLEASE FILL THE REQUIRE FIELDS';
+
+    ELSE
+        INSERT INTO Vital_signs(id, temperature, pulse_rate, respiration_rate, blood_pressure, weight)
+        VALUES (par_id,par_temperature, par_pulse_rate, par_respiration_rate, par_blood_pressure, par_weight);
+
+        INSERT INTO Assessment (id,school_id, vital_signsID, chiefcomplaint, historyofpresentillness,
+                                medicationstaken, diagnosis, recommendation, attendingphysician)
+        VALUES (par_id,par_schoolID, par_id, par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken,
+                par_diagnosis, par_recommendation, par_attendingphysician);
+
+        loc_res = 'OK';
+
+    END IF;
+  ELSE
+      loc_res = 'ID EXISTS';
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
   END IF;
   RETURN loc_res;
 
 END;
 $$
+<<<<<<< HEAD
 LANGUAGE 'plpgsql';
 
 --[GET] Retrieve assessment of a specific patient
@@ -628,6 +902,33 @@ CREATE OR REPLACE FUNCTION getassessmentID(IN par_id INT, OUT BIGINT, OUT TIMEST
                                             OUT TEXT, OUT TEXT, OUT TEXT,OUT TEXT, OUT TEXT,
                                             OUT INT, OUT BOOLEAN, OUT FLOAT, OUT FLOAT, OUT INT, OUT TEXT, OUT FLOAT,
                                             OUT TEXT, OUT TEXT)
+=======
+  LANGUAGE 'plpgsql';
+
+
+--[GET] Retrieve assessment of a specific patient
+--select getassessmentID(20130000,1);
+CREATE OR REPLACE FUNCTION getassessmentID(IN par_schoolID INT,
+                                           IN par_id INT,
+                                           OUT INT,
+                                           OUT TIMESTAMP,
+                                           OUT INT,
+                                           OUT INT,
+                                           OUT TEXT,
+                                           OUT TEXT,
+                                           OUT TEXT,
+                                           OUT TEXT,
+                                           OUT TEXT,
+                                           OUT INT,
+                                           OUT BOOLEAN,
+                                           OUT FLOAT,
+                                           OUT FLOAT,
+                                           OUT INT,
+                                           OUT TEXT,
+                                           OUT FLOAT,
+                                           OUT TEXT,
+                                           OUT TEXT)
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
   RETURNS SETOF RECORD AS
 $$
 
@@ -641,16 +942,26 @@ select Assessment.*,
          Userinfo.lname
   FROM Assessment
   INNER JOIN Vital_signs ON (
+<<<<<<< HEAD
     Assessment.vital_signs = Vital_signs.id
+=======
+    Assessment.vital_signsID = Vital_signs.id
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
     )
   INNER JOIN Userinfo ON (
     Assessment.attendingphysician = Userinfo.id
     )
+<<<<<<< HEAD
   WHERE Assessment.id = par_id;
+=======
+  WHERE Assessment.id = par_id
+  AND Assessment.school_id = par_schoolID
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
 
 $$
 LANGUAGE 'sql';
 
+<<<<<<< HEAD
 -- [GET] Retrieve assessments of all patients
 --select getallassessment();
 CREATE OR REPLACE FUNCTION getallassessment(OUT BIGINT, OUT TIMESTAMP, OUT INT, OUT INT, OUT INT, OUT INT,
@@ -661,6 +972,33 @@ CREATE OR REPLACE FUNCTION getallassessment(OUT BIGINT, OUT TIMESTAMP, OUT INT, 
 $$
 
 select Assessment.*,
+=======
+
+-- [GET] Retrieve all assessment of a specific patient
+--select getallassessmentID(20130000);
+CREATE OR REPLACE FUNCTION getallassessmentID(IN par_schoolID INT,
+                                           OUT INT,
+                                           OUT TIMESTAMP,
+                                           OUT INT,
+                                           OUT INT,
+                                           OUT TEXT,
+                                           OUT TEXT,
+                                           OUT TEXT,
+                                           OUT TEXT,
+                                           OUT TEXT,
+                                           OUT INT,
+                                           OUT BOOLEAN,
+                                           OUT FLOAT,
+                                           OUT FLOAT,
+                                           OUT INT,
+                                           OUT TEXT,
+                                           OUT FLOAT,
+                                           OUT TEXT,
+                                           OUT TEXT)
+  RETURNS SETOF RECORD AS
+$$
+  SELECT Assessment.*,
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
          Vital_signs.temperature,
          Vital_signs.pulse_rate,
          Vital_signs.respiration_rate,
@@ -670,11 +1008,16 @@ select Assessment.*,
          Userinfo.lname
   FROM Assessment
   INNER JOIN Vital_signs ON (
+<<<<<<< HEAD
     Assessment.vital_signs = Vital_signs.id
+=======
+    Assessment.vital_signsID = Vital_signs.id
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
     )
   INNER JOIN Userinfo ON (
     Assessment.attendingphysician = Userinfo.id
     )
+<<<<<<< HEAD
 
 $$
 LANGUAGE 'sql';
@@ -718,6 +1061,21 @@ CREATE OR REPLACE FUNCTION update_assessment(IN par_id                 INT, IN p
                                              IN par_chiefcomplaint     TEXT, IN par_historyofpresentillness TEXT,
                                              IN par_medicationstaken   TEXT,
                                              IN par_diagnosis          TEXT, IN par_recommendation TEXT,
+=======
+  WHERE Assessment.school_id = par_schoolID
+  ORDER BY id DESC;
+
+$$
+  LANGUAGE 'sql';
+
+--[PUT] Update assessment of patient
+--select update_assessment(1,20130000, 'medication1f', 'diagnosis11f','recommendation11', 1);
+CREATE OR REPLACE FUNCTION update_assessment(IN par_id                 INT,
+                                             IN par_schoolID           TEXT,
+                                             IN par_medicationstaken   TEXT,
+                                             IN par_diagnosis          TEXT,
+                                             IN par_recommendation     TEXT,
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
                                              IN par_attendingphysician INT)
   RETURNS TEXT AS
 $$
@@ -730,13 +1088,19 @@ BEGIN
     diagnosis          = par_diagnosis,
     recommendation     = par_recommendation,
     attendingphysician = par_attendingphysician
+<<<<<<< HEAD
   WHERE id = par_id;
+=======
+  WHERE id = par_id
+  AND school_id = par_schoolID;
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
 
   loc_res = 'Updated';
   RETURN loc_res;
 
 END;
 $$
+<<<<<<< HEAD
 LANGUAGE 'plpgsql';
 
 <<<<<<< HEAD
@@ -886,3 +1250,6 @@ create or replace function update_assessment_attendingphysician(in par_attending
 >>>>>>> 4ba69d92f42558d649ffdb6cc3c8574978059833
 -----------------------------------------------------END Notifications ----------------------------------------------------
 
+=======
+  LANGUAGE 'plpgsql';
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4

@@ -27,6 +27,7 @@ CREATE TABLE Department (
   is_active       BOOLEAN DEFAULT TRUE
 );
 
+<<<<<<< HEAD
 
 CREATE TABLE Patient_type (
   school_id   SERIAL8 PRIMARY KEY,
@@ -118,3 +119,27 @@ CREATE TABLE Patient (
   neurologic_id    INT REFERENCES Neurologic (school_id),
   is_active        BOOLEAN DEFAULT TRUE
 );
+=======
+CREATE TABLE Vital_signs (
+  id               INT PRIMARY KEY,
+  temperature      FLOAT,
+  pulse_rate       FLOAT,
+  respiration_rate INT,
+  blood_pressure   TEXT,
+  weight           FLOAT
+);
+
+CREATE TABLE Assessment (
+  id                      INT PRIMARY KEY,
+  assessment_date         TIMESTAMP DEFAULT 'now',
+  school_id               INT REFERENCES Patient (school_id),
+  vital_signsID           INT REFERENCES Vital_signs (id),
+  chiefcomplaint          TEXT,
+  historyofpresentillness TEXT,
+  medicationstaken        TEXT,
+  diagnosis               TEXT,
+  recommendation          TEXT,
+  attendingphysician      INT REFERENCES Userinfo (id),
+  is_done                 BOOLEAN  DEFAULT FALSE
+);
+>>>>>>> 2e6f55158c176c0cc0250b11d4d89275cc9b5fb4
