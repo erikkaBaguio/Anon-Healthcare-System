@@ -30,7 +30,7 @@ myApp.config(function ($stateProvider, $urlRouterProvider) {
                     templateUrl: 'pages/dashboard.html',
                     controller: 'NavigationController'
                 },
-                'dashboard': {
+                'dashboard@dashboard': {
                     templateUrl: 'pages/content/dashboard.html',
                     controller: 'NavigationController'
                 },
@@ -38,12 +38,12 @@ myApp.config(function ($stateProvider, $urlRouterProvider) {
         })
 
         .state('dashboard.assessment-add', {
-            url: '/assessments/add ',
+            url: '/assessments/add',
             templateUrl: 'pages/content/assessment.html'
         })
 
         .state('dashboard.patient-search', {
-            url: '/patients ',
+            url: '/patients',
             templateUrl: 'pages/content/assessments-search.html'
         })
 
