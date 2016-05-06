@@ -36,8 +36,15 @@ myApp.config(function ($stateProvider, $urlRouterProvider) {
                 },
             }
         })
+
         .state('dashboard.assessment-add', {
             url: '/assessments/add ',
             templateUrl: 'pages/content/assessment.html'
         })
+
+        .state('dashboard.patient-search', {
+            url: '/patients ',
+            templateUrl: 'pages/content/assessments-search.html'
+        })
+
 });
