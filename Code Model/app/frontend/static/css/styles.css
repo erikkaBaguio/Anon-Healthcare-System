@@ -20,19 +20,23 @@ body{
 }
 
 div.box.box-primary{
+  width: 420px;
   background-color:#5bc0de;
 }
 
 div.box.box-success{
+  width: 420px;
   background-color:#6fa8ba;
 }
 
 div.box.box-info{
+  width: 420px;
   background-color:#BCD9FE;
   border-top-color:green;
 }
 
 div.box.box-warning{
+  width:420px;
   background-color:#6EA5DC;
 }
 
@@ -51,18 +55,22 @@ section.content-header{
 }
 
 div.box.box-primary{
+  width: 420px;
   background-color:white;
 }
 
 div.box.box-success{
+  width: 420px;
   background-color:white;
 }
 
 div.box.box-info{
+  width: 420px;
   background-color:white;
 }
 
 div.box.box-warning{
+  width: 420px;
   background-color:white;
 }
 
