@@ -12,7 +12,7 @@ var myApp = angular.module('myApp', ['ui.router']);
 
 myApp.config(function ($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.otherwise('/dashboard');
 
     $stateProvider
 
@@ -30,7 +30,7 @@ myApp.config(function ($stateProvider, $urlRouterProvider) {
                     templateUrl: 'pages/dashboard.html',
                     controller: 'NavigationController'
                 },
-                'dashboard@dashboard': {
+                'dashboard': {
                     templateUrl: 'pages/content/dashboard.html',
                     controller: 'NavigationController'
                 },
