@@ -49,7 +49,7 @@
                     </li>
 
                     <!-- User Account: style can be found in dropdown.less -->
-                    <li class="dropdown user user-menu">
+                    <li class="dropdown notifications-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-user"></i>
                             <span class="hidden-xs">Alexander Pierce</span>
@@ -60,14 +60,10 @@
                                 <!-- inner menu: contains the actual data -->
                                 <ul class="menu">
                                     <li>
-                                        <a href="#">
-                                            <i class="fa fa-users text-aqua"></i> Reset Password
-                                        </a>
+                                        <a href="#">Reset Password</a>
                                     </li>
                                     <li>
-                                        <a href="#">
-                                            <i class="fa fa-users text-aqua"></i> Logout
-                                        </a>
+                                        <a href="#">Logout</a>
                                     </li>
                                 </ul>
                             </li>
@@ -89,21 +85,26 @@
                         <i class="fa fa-angle-right pull-right"></i>
                     </a>
                 </li>
-                <li ng-class="{ active: isCurrentPath('/assessments/add') }">
+                <li ng-class="{ active: isCurrentPath('/dashboard/assessments/add') }">
                     <a ui-sref=".assessment-add">
                         <i class="fa fa-plus"></i> <span>Add Assessments</span>
                         <i class="fa fa-angle-right pull-right"></i>
                     </a>
                 </li>
+<<<<<<< HEAD
                 <li ng-class="{ active: isCurrentPath('/patients/add') }">
                     <a ui-sref=".patient-add">
+=======
+                <li ng-class="{ active: isCurrentPath('/dashboard/patient/add') }">
+                    <a ui-sref="login">
+>>>>>>> 760d9cf795ebe91bbb86d7f3844359a79c2b416b
                         <i class="fa fa-plus"></i> <span>Add Patient File</span>
                         <i class="fa fa-angle-right pull-right"></i>
                     </a>
                 </li>
-                <li class="{ active: isCurrentPath('/dashboard/patients') }">
-                    <a ui-sref="patient-view">
-                        <i class="fa fa-list"></i> <span>View Patient</span>
+                <li class="{ active: isCurrentPath('/patients') }">
+                    <a ui-sref=".patient-search">
+                        <i class="fa fa-list"></i><span>View Patient</span>
                         <i class="fa fa-angle-right pull-right"></i>
                     </a>
                 </li>

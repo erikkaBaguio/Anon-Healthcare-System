@@ -12,7 +12,7 @@ var myApp = angular.module('myApp', ['ui.router']);
 
 myApp.config(function ($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.otherwise('/dashboard');
 
     $stateProvider
 
@@ -36,12 +36,22 @@ myApp.config(function ($stateProvider, $urlRouterProvider) {
                 },
             }
         })
+
         .state('dashboard.assessment-add', {
-            url: '/assessments/add ',
+            url: '/assessments/add',
             templateUrl: 'pages/content/assessment.html'
         })
+<<<<<<< HEAD
         .state('dashboard.patient-add',{
             url:'/patients/add',
             templateUrl: 'pages/content/addPatient.html'
         })
+=======
+
+        .state('dashboard.patient-search', {
+            url: '/patients',
+            templateUrl: 'pages/content/assessments-search.html'
+        })
+
+>>>>>>> 760d9cf795ebe91bbb86d7f3844359a79c2b416b
 });
