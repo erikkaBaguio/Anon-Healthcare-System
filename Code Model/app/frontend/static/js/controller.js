@@ -61,3 +61,10 @@ angular.module('myApp').controller('NavigationController',
                 return $location.path() == path;
             };
         }]);
+
+
+
+// angular.module('myApp').controller('PatientController',
+//     [''])
+
+
